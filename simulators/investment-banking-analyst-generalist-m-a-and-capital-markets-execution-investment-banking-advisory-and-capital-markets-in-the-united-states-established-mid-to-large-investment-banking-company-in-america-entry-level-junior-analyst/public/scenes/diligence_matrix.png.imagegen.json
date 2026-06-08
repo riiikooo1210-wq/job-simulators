@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-19T05:09:23+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "diligence_matrix",
+  "itemId": "diligence_matrix",
+  "promptHash": "c8c9af1b63221a85",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst/src/data/scene-config.json"
+}

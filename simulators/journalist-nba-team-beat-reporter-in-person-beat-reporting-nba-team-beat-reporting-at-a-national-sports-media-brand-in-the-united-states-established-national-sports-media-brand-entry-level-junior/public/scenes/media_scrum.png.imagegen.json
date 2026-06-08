@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-18T15:07:42+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "media_scrum",
+  "itemId": "media_scrum",
+  "promptHash": "6640423516a48ad0",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/npcs/malik.png",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/locations/postgame-scrum-area.png"
+  ],
+  "sourceFile": "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/IMAGE_PROMPTS.md"
+}

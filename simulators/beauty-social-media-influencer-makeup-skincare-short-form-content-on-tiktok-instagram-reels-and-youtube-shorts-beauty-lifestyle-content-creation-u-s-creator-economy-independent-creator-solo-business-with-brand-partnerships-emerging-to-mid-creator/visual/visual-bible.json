@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "slug": "beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All visuals must adhere to a realistic but stylized flat 2D editorial illustration style.",
+    "Maintain a warm, bright, and slightly aspirational color palette, emphasizing natural light where appropriate.",
+    "Character and object designs should be clean, modern, and professional.",
+    "Avoid any real-world brand names, logos, or copyrighted materials. Use fictional brands like 'GlowKind Beauty'."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "jordan": {
+      "id": "jordan",
+      "name": "Jordan Blake",
+      "role": "Brand Partnerships Manager at GlowKind Beauty",
+      "sourcePersona": "Jordan is friendly, polished, and metrics-driven. Jordan genuinely likes the creator's audience fit, but is responsible for getting campaign assets quickly and efficiently. Jordan will push for broad paid usage and whitelisting if the creator does not set boundaries, but respects creators who explain the business logic clearly.",
+      "appearancePrompt": "Jordan is a polished professional in their late 20s with a sharp, androgynous look. They have a sleek, dark brown undercut hairstyle, clear skin, and well-groomed eyebrows. Their expression is friendly but focused, conveying a sense of competence and efficiency.",
+      "wardrobePrompt": "Jordan consistently wears business-casual attire. Their go-to outfit is a high-quality, solid-colored mock-neck sweater (in jewel tones like emerald or navy) or a crisp white button-down shirt. They wear minimalist silver hoop earrings and a modern, simple watch.",
+      "mustStayConsistent": [
+        "Sleek undercut hairstyle",
+        "Professional mock-neck sweater or button-down shirt",
+        "Minimalist jewelry"
+      ],
+      "referenceImage": "public/visual-refs/npcs/jordan.png"
+    }
+  },
+  "locations": {
+    "creator-workspace": {
+      "id": "creator-workspace",
+      "name": "Creator's Apartment Workspace",
+      "appearancePrompt": "A cozy and organized work corner in a creator's apartment, bathed in warm, natural daylight from a nearby window. The space is aesthetically pleasing and functional, with a light wood desk against a soft neutral-colored wall. The background features floating shelves neatly arranged with beauty products, a small potted plant, and a minimalist art print.",
+      "stableElements": [
+        "Light wood desk",
+        "Comfortable but stylish ergonomic chair (light gray fabric)",
+        "Ring light on a stand",
+        "Phone tripod",
+        "Floating shelves with curated beauty products and a plant"
+      ],
+      "sceneIds": [
+        "intro",
+        "scene_01_briefing",
+        "scene_03_triage",
+        "scene_04_counteroffer",
+        "scene_05_brand_call",
+        "scene_07_post_or_pivot",
+        "scene_07a_polished_only_consequence",
+        "scene_07b_silent_delay_consequence",
+        "scene_07c_transparent_update_consequence",
+        "grading"
+      ],
+      "referenceImage": "public/visual-refs/locations/creator-workspace.png"
+    },
+    "brand-manager-office": {
+      "id": "brand-manager-office",
+      "name": "Brand Manager's Office",
+      "appearancePrompt": "A clean, modern, and professional office space, seen as a background during a video call. The environment is bright and airy, with a slightly blurred background suggesting depth. A large window shows a generic city skyline, and a minimalist abstract painting hangs on the wall. A subtle, silver wall plaque with the fictional 'GlowKind Beauty' logo is visible over Jordan's shoulder.",
+      "stableElements": [
+        "Blurred city view from window",
+        "Minimalist abstract wall art",
+        "'GlowKind Beauty' silver wall plaque"
+      ],
+      "sceneIds": [
+        "scene_05_brand_call"
+      ],
+      "referenceImage": "public/visual-refs/locations/brand-manager-office.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "creator-laptop",
+      "name": "Creator's Laptop",
+      "appearancePrompt": "A modern, slim laptop in a silver finish. The physical device is always consistent, but the screen displays various UIs like an analytics dashboard, email client, video call, or content calendar depending on the scene.",
+      "sceneIds": [
+        "intro",
+        "scene_01_briefing",
+        "scene_04_counteroffer",
+        "scene_05_brand_call",
+        "scene_07_post_or_pivot",
+        "scene_07b_silent_delay_consequence",
+        "grading"
+      ]
+    },
+    {
+      "id": "creator-phone",
+      "name": "Creator's Smartphone",
+      "appearancePrompt": "A current-generation smartphone with a large screen and minimal bezels, protected by a simple, matte beige case. The screen is the focus, showing social media apps, comment threads, or a camera interface.",
+      "sceneIds": [
+        "intro",
+        "scene_02_content_slate",
+        "scene_02b_shoot_reel",
+        "scene_06_audience_reply",
+        "scene_07a_polished_only_consequence",
+        "scene_07b_silent_delay_consequence",
+        "grading"
+      ]
+    },
+    {
+      "id": "ring-light",
+      "name": "Ring Light",
+      "appearancePrompt": "An 18-inch diameter LED ring light on an adjustable black metal tripod. It can be depicted as on (emitting a bright white light) or off, but its physical form remains unchanged.",
+      "sceneIds": [
+        "intro",
+        "scene_02b_shoot_reel",
+        "scene_04_counteroffer"
+      ]
+    },
+    {
+      "id": "glowkind-tint",
+      "name": "GlowKind Beauty Skincare Tint",
+      "appearancePrompt": "The sponsored product. A sleek, 30ml frosted glass bottle with a white dropper cap. The label is minimalist and clean, with the brand 'GlowKind' in a simple sans-serif font and the product name 'Radiant Filter Tint' below it. The liquid inside is a light, neutral beige color.",
+      "sceneIds": [
+        "scene_02b_shoot_reel",
+        "scene_06_audience_reply"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:47:17+00:00",
+  "styleReference": "templates/style-reference.png"
+}

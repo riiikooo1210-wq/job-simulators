@@ -1,0 +1,1714 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "The collected PM sources show a mid-level consumer Product Manager working mostly through digital artifacts, analysis, written communication, and stakeholder conversation. The real work is not physical manipulation; it is reading messy dashboards and feedback, framing the product problem, choosing focused bets, writing decision artifacts, and aligning design, engineering, data, support, and leadership around tradeoffs.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "The PM sources describe meetings, documents, dashboards, roadmaps, and conversations rather than physical workplace manipulation.",
+          "The social trip-planning context is a consumer software product, so concrete work surfaces are digital artifacts."
+        ],
+        "simulatorImplication": "No physical playground is needed; realistic action should happen through dashboard, document, matrix, kanban, Slack, and voice-meeting scenes."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "PM day-in-the-life transcripts emphasize reviewing docs, roadmaps, analytics, design work, and cross-functional planning artifacts.",
+          "Reddit PM discussions repeatedly describe requirements, roadmaps, customer feedback, prioritization, and async updates."
+        ],
+        "simulatorImplication": "Include multiple desk-work scenes with visible source artifacts and realistic app windows."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "PM practitioners frame the role around deciding what problem matters, what to build or test, and what tradeoffs to accept.",
+          "Startup and UX sources emphasize validation and decision quality before committing engineering effort."
+        ],
+        "simulatorImplication": "The core graded tasks should require synthesis, prioritization, hypothesis framing, and tradeoff reasoning."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "PM work commonly produces PRDs, decision memos, roadmap notes, launch updates, and stakeholder summaries.",
+          "Sources describe PM communication as making decisions portable across teams."
+        ],
+        "simulatorImplication": "Require the student to produce a problem brief, research prep, PRD slice, and stakeholder Slack response."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "PM sources describe customer conversations and stakeholder alignment as common parts of the job.",
+          "Influence without authority appears repeatedly in practitioner discussion."
+        ],
+        "simulatorImplication": "Include a remote voice meeting with a user and async alignment with engineering/design."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Day-in-the-life sources describe context switching across meetings, Slack, docs, and quick decisions.",
+          "Reddit PM sources mention calendar fragmentation and ambiguity."
+        ],
+        "simulatorImplication": "Use briefing context to show time pressure, but grade active artifacts rather than waiting."
+      }
+    },
+    "simulatorPlan": "The active scene mix mirrors a PM day: one bounded MCQ with consequences, then structured evidence synthesis, research-question preparation, a voice user interview, a priority matrix, a kanban roadmap triage, and a PRD/decision memo. The player works from visible product artifacts and produces role-specific PM deliverables.",
+    "activeSceneMixRationale": "The simulator keeps physical work rare and makes the concrete action happen in digital work surfaces: Notion-style notes, a remote user call, Miro priority matrix, kanban roadmap board, document editor, and Slack."
+  },
+  "storyline": {
+    "gameTitle": "Product Manager Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Diagnose"
+      },
+      {
+        "num": 2,
+        "label": "Learn & Prioritize"
+      },
+      {
+        "num": 3,
+        "label": "Align"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Problem Brief",
+        "targetNodeId": "scene_02_problem_brief"
+      },
+      {
+        "label": "App Audit",
+        "targetNodeId": "scene_02_app_audit"
+      },
+      {
+        "label": "User Call",
+        "targetNodeId": "scene_04_user_call"
+      },
+      {
+        "label": "PRD Slice",
+        "targetNodeId": "scene_07_prd_slice"
+      },
+      {
+        "label": "Assessment",
+        "targetNodeId": "assessment_gate"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Roamly",
+        "content": "You are a mid-level Product Manager at Roamly, a growth-stage consumer app that helps friend groups plan trips together. Today you own a messy activation problem: people create group trips and invite friends, but too many groups stall before choosing dates, budget, and itinerary details.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "Original Roamly product office, first-person PM laptop on a desk in a bright growth-stage consumer-app workspace. The single laptop shows a warm cream product dashboard with short neutral labels for group trips, invite conversion, budget preferences, and itinerary completion. Beside it are simple sticky notes with short product-topic words only. In the background, ordinary adult design and engineering coworkers, age 25-45, gather near a non-digital whiteboard with a simple trip-planning flow. Use a fresh room layout and fresh people; do not copy the reference image composition, people, furniture, window, table, wheelchair, prosthetic limb, tablet, or monitor. Exactly one digital device: the foreground laptop. No external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, screen-like dark rectangle, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "briefing_kickoff"
+      },
+      "briefing_kickoff": {
+        "id": "briefing_kickoff",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Monday Product Source Workspace",
+        "content": "Your job today: identify the biggest group-trip planning problem to solve first.",
+        "illustration": "/scenes/briefing_kickoff.png",
+        "imageBrief": "First-person PM laptop on a desk showing a cream Roamly product-review workspace. The screen contains only source evidence: a simple funnel chart with the provided percentages and brief user-quote cards. A small Slack notification from Maya is fully inside the laptop screen, not floating outside the screen edge. Printed notes on the desk are neutral source snippets only, not recommendations or answers. Original room and ordinary adult coworkers only. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_01_first_move",
+        "actionLabel": "Pick first move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Monday product inputs",
+              "files": [
+                {
+                  "id": "product_context",
+                  "name": "Roamly activation context.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Product context",
+                  "sections": [
+                    {
+                      "heading": "Product context",
+                      "body": "Roamly helps friend groups coordinate shared trips, compare dates, share budget preferences, vote on saved places, and assemble an itinerary. The current product question is why groups create trips and invite friends but stall before date, budget, and first-day itinerary decisions."
+                    }
+                  ],
+                  "category": "Product context",
+                  "lookFor": "Use this file to understand the product goal, the current activation problem, and what kind of opportunity the team is looking for."
+                },
+                {
+                  "id": "feedback_inbox",
+                  "name": "Customer feedback excerpts.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Customer feedback excerpts",
+                  "sections": [
+                    {
+                      "heading": "Customer feedback excerpts",
+                      "body": "Quote digest: \"I sent the link and then had to follow up.\" \"Some friends filled things out, others just hovered.\" \"I could not tell which decision the group should make next.\" \"Roamly helped collect ideas, but planning still felt scattered.\""
+                    }
+                  ],
+                  "category": "User evidence",
+                  "lookFor": "Use these notes to find repeated pain, emotional friction, and where group-trip planning breaks down for real users."
+                },
+                {
+                  "id": "eng_constraints",
+                  "name": "Engineering constraints note.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Engineering constraints",
+                  "sections": [
+                    {
+                      "heading": "Engineering constraints",
+                      "body": "The team can support one lightweight Q3 experiment. Notification changes touch a fragile service, budget-preference privacy needs careful design, and heavy calendar, payment, booking, or recommender work is out of scope for this cycle."
+                    }
+                  ],
+                  "category": "Build constraints",
+                  "lookFor": "Use this file to separate ideas that are feasible soon from ideas that would need heavier engineering or policy work."
+                },
+                {
+                  "id": "candidate_bets",
+                  "name": "Candidate opportunity tickets.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Product ops",
+                  "previewTitle": "Candidate opportunity tickets",
+                  "columns": [
+                    "ticket",
+                    "value",
+                    "risk"
+                  ],
+                  "rows": [
+                    {
+                      "ticket": "Shared availability poll",
+                      "value": "helps friends make one concrete date decision",
+                      "risk": "may not address budget awkwardness"
+                    },
+                    {
+                      "ticket": "Budget preference cards",
+                      "value": "lowers pressure around budget discussion",
+                      "risk": "sensitive if defaults feel judgmental"
+                    },
+                    {
+                      "ticket": "Smart nudges",
+                      "value": "clarifies the next small action",
+                      "risk": "could feel pushy and touches fragile notifications"
+                    },
+                    {
+                      "ticket": "AI itinerary auto-build",
+                      "value": "turns saved places into a plan",
+                      "risk": "large scope and weak evidence for the immediate stall"
+                    },
+                    {
+                      "ticket": "Social voting",
+                      "value": "makes lightweight participation easier",
+                      "risk": "may add noise if too many places pile up"
+                    },
+                    {
+                      "ticket": "Booking integration",
+                      "value": "moves groups closer to purchase",
+                      "risk": "partner dependency and not tied to invite-to-decision drop-off"
+                    }
+                  ],
+                  "category": "Opportunity options",
+                  "lookFor": "Use this file to compare possible bets against the strongest user problem and the known build constraints."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#social-trip-planning",
+              "messages": [
+                {
+                  "id": "lead",
+                  "channel": "slack",
+                  "from": "Maya Patel",
+                  "timestamp": "8:42 AM",
+                  "body": "Before standup, open the Roamly source workspace and come back with the problem shape. Use the funnel, quotes, constraints, and candidate tickets; do not jump straight to a feature bet.",
+                  "channelName": "#social-trip-planning",
+                  "linkedFileIds": [
+                    "product_context",
+                    "feedback_inbox"
+                  ],
+                  "category": "Product direction",
+                  "lookFor": "Use this Slack message to understand the PM lead’s ask, decision deadline, and which evidence should guide the opportunity choice."
+                }
+              ]
+            },
+            {
+              "id": "analytics",
+              "label": "Analytics",
+              "kind": "analytics",
+              "title": "Trip planning funnel",
+              "rows": [
+                {
+                  "metric": "Create group trip",
+                  "target": "baseline",
+                  "actual": "100%",
+                  "status": "on_track"
+                },
+                {
+                  "metric": "Invite at least 2 friends",
+                  "target": "new trip activation",
+                  "actual": "64%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "At least 1 friend joins",
+                  "target": "new trip activation",
+                  "actual": "41%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "Dates or budget completed by 3+ people",
+                  "target": "group momentum",
+                  "actual": "19%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "First-day itinerary completed",
+                  "target": "7-day activation goal",
+                  "actual": "11%",
+                  "status": "warning"
+                }
+              ],
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "lookFor": "Use these funnel rows to see where group-trip planning stalls and which segment shows the clearest pain."
+            }
+          ],
+          "continueLabel": "Pick first move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "briefing_kickoff.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      },
+      "scene_01_first_move": {
+        "id": "scene_01_first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "Pick the First Move",
+        "content": "You have 25 minutes before stand-up. Based on the workspace, what is the best first move?",
+        "isPivot": true,
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Product workspace triage",
+          "inputArtifacts": [
+            {
+              "id": "product_workspace",
+              "label": "Roamly product-review workspace",
+              "whereVisible": "briefing_kickoff.sourceWorkspace",
+              "summary": "The same Roamly source workspace opened in the kickoff: funnel metrics, user quotes, constraints, candidate tickets, and Maya's prompt."
+            }
+          ],
+          "studentAction": "Choose the first PM move under time pressure.",
+          "outputArtifact": {
+            "id": "first_move_choice",
+            "label": "First-move decision",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.scene_01_first_move",
+            "branchFlags.scene_01_first_move"
+          ],
+          "continuity": [
+            "Each choice routes to an immediate consequence before the shared problem-brief work."
+          ],
+          "authenticityCheck": "PMs often need to choose how to spend a short prep window before a cross-functional meeting."
+        },
+        "options": [
+          {
+            "id": "write_solution",
+            "label": "Draft a solution pitch for smart reminders before talking to anyone.",
+            "body": "This gives the team something concrete, but it risks locking onto a solution before the problem is clear.",
+            "branchFlag": "solution_first"
+          },
+          {
+            "id": "frame_problem",
+            "label": "Write a short problem frame from the funnel, quotes, and risks.",
+            "body": "This turns the workspace into a clear decision point before proposing a feature.",
+            "branchFlag": "problem_first"
+          },
+          {
+            "id": "ask_engineering",
+            "label": "Ask engineering for an estimate on notification changes immediately.",
+            "body": "Feasibility matters, but an estimate is premature until the team knows what problem it is solving.",
+            "branchFlag": "estimate_first"
+          },
+          {
+            "id": "request_more_data",
+            "label": "Ask data for another full dashboard before making any recommendation.",
+            "body": "More data may help, but the current workspace is already enough to form a first hypothesis.",
+            "branchFlag": "data_first"
+          }
+        ],
+        "illustration": "/scenes/scene_01_first_move.png",
+        "imageBrief": "First-person PM laptop with the Roamly workspace on the left and a blank notes pane titled Stand-up prep on the right. The desk has four unlabeled sticky notes with simple icons for possible work modes, not the exact answer choices and not a recommendation. A small calendar countdown remains fully inside the laptop screen. Original room and ordinary adult coworkers only. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": {
+          "branchOn": "scene_01_first_move",
+          "cases": {
+            "solution_first": "redirect_solution_first",
+            "problem_first": "redirect_problem_first",
+            "estimate_first": "redirect_estimate_first",
+            "data_first": "redirect_data_first"
+          },
+          "default": "redirect_problem_first"
+        }
+      },
+      "redirect_solution_first": {
+        "id": "redirect_solution_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Slows the Room Down",
+        "content": "Maya likes the initiative, but she asks what problem the reminder solves and whether it risks annoying friends who did not ask to be nudged. She wants a problem frame before a solution pitch.",
+        "illustration": "/scenes/redirect_solution_first.png",
+        "imageBrief": "Original small conference room with Maya, an ordinary adult product lead, standing near a whiteboard with a neutral problem/evidence sketch. On the table, a laptop shows a draft feature-pitch document with blurred placeholder lines; a red sticky note has only a question-mark icon, no readable coaching phrase. Constructive corrective mood. Fresh room and people; do not copy the reference image. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_02_app_audit"
+      },
+      "redirect_problem_first": {
+        "id": "redirect_problem_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Team Has a Shared Starting Point",
+        "content": "Maya nods. A crisp problem frame gives design, engineering, and data something to react to without pretending the answer is already known.",
+        "illustration": "/scenes/redirect_problem_first.png",
+        "imageBrief": "Original product-team meeting room with ordinary adult teammates around a table. A laptop is the active device and a wall whiteboard shows a neutral Group Momentum frame with short headings only: evidence, friction, hypothesis, risks. Do not write a completed problem statement or answer. Fresh room and people; do not copy the reference image. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_02_app_audit"
+      },
+      "redirect_estimate_first": {
+        "id": "redirect_estimate_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Leo Pushes Back on Premature Estimates",
+        "content": "Leo can estimate notification work later, but he asks which behavior the team is trying to change first. Estimating too early would make the technical path feel like the product strategy.",
+        "illustration": "/scenes/redirect_estimate_first.png",
+        "imageBrief": "Engineering manager Leo, an ordinary adult coworker, stands beside a simple roadmap board in an original product office. A laptop on the table shows a small funnel chart; roadmap cards use generic short labels and one question-mark marker. The scene communicates feasibility discussion without revealing a recommendation. Fresh room and people; do not copy the reference image. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_02_app_audit"
+      },
+      "redirect_data_first": {
+        "id": "redirect_data_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Data Can Help, but It Cannot Replace Judgment",
+        "content": "The data team can pull a deeper cut later. Maya points out that the existing funnel, quotes, and support notes are already enough to form a first hypothesis and identify what to learn next.",
+        "illustration": "/scenes/redirect_data_first.png",
+        "imageBrief": "Tight first-person PM desk view with exactly one laptop filling most of the frame. The laptop shows several neutral dashboard/source cards and a concise product source workspace; nearby paper notes are blank or contain only neutral labels like data, quote, risk, and next question. Background should be a plain office wall, window, plant, or empty chairs only. Do not include any people in the background for this scene. Do not include any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. Do not include advice text, recommendations, sample answers, typed responses, or Slack reply content. The laptop screen content must stay fully inside the laptop bezel.",
+        "next": "scene_02_app_audit"
+      },
+      "scene_02_app_audit": {
+        "id": "scene_02_app_audit",
+        "type": "app_audit",
+        "section": 1,
+        "title": "Audit the Current Roamly Flow",
+        "content": "The funnel shows where group momentum drops. Now inspect the current app flow to form cause hypotheses before you write the problem brief. Use the hint button on each observation point if you need help knowing what to look for.",
+        "prompt": "Write one short observation for each point. Focus on what the current experience makes easy, unclear, or socially awkward. Do not propose a finished solution yet.",
+        "appName": "Roamly",
+        "bindingKey": "appAuditNotes",
+        "minCompleted": 4,
+        "screens": [
+          {
+            "id": "create_trip",
+            "title": "Create Trip",
+            "stepLabel": "Step 1",
+            "subtitle": "A Roamly organizer creates a Montreal weekend trip and adds a few basics before inviting friends.",
+            "progressLabel": "Trip setup progress",
+            "chips": [
+              "Montreal",
+              "7 friends",
+              "Weekend"
+            ],
+            "sections": [
+              {
+                "label": "Trip basics",
+                "body": "Dates, budget, saved places, votes, and itinerary all appear as setup areas."
+              },
+              {
+                "label": "Organizer task",
+                "body": "The organizer can start everything, but the app does not yet show which shared decision matters first.",
+                "tone": "warning"
+              }
+            ],
+            "primaryAction": "Invite friends",
+            "secondaryAction": "Add saved places",
+            "footerNote": "The first screen makes the trip feel started, but not yet coordinated."
+          },
+          {
+            "id": "invite_status",
+            "title": "Invite Friends",
+            "stepLabel": "Step 2",
+            "subtitle": "After the invite, the organizer can see some friend activity but not a clear next move.",
+            "progressLabel": "Group response",
+            "listItems": [
+              {
+                "label": "Nina",
+                "detail": "Organizer",
+                "status": "complete"
+              },
+              {
+                "label": "Ari",
+                "detail": "Joined, no preferences yet",
+                "status": "pending"
+              },
+              {
+                "label": "Sam",
+                "detail": "Invited, no activity",
+                "status": "quiet"
+              },
+              {
+                "label": "Jo",
+                "detail": "Joined, saved places only",
+                "status": "pending"
+              }
+            ],
+            "primaryAction": "Send reminder",
+            "secondaryAction": "Copy invite link",
+            "footerNote": "The CTA is available, but the screen does not explain what the reminder should ask people to do."
+          },
+          {
+            "id": "date_budget",
+            "title": "Dates and Budget",
+            "stepLabel": "Step 3",
+            "subtitle": "The group needs shared preferences before the itinerary can move forward.",
+            "sections": [
+              {
+                "label": "Date preference",
+                "body": "Three people have not added availability. One friend added maybe for both weekends.",
+                "tone": "warning"
+              },
+              {
+                "label": "Budget preference",
+                "body": "The app asks each friend to add a budget range, but the screen does not clarify privacy or how answers will be summarized.",
+                "tone": "warning"
+              }
+            ],
+            "primaryAction": "Ask group to finish",
+            "secondaryAction": "Skip for now",
+            "footerNote": "This is a necessary decision point, but it can feel sensitive if the social framing is unclear."
+          },
+          {
+            "id": "saved_places",
+            "title": "Saved Places",
+            "stepLabel": "Step 4",
+            "subtitle": "The group has collected many ideas, but the voting state is uneven.",
+            "chips": [
+              "18 saved",
+              "3 voters",
+              "5 categories"
+            ],
+            "listItems": [
+              {
+                "label": "Old Port walk",
+                "detail": "3 votes",
+                "status": "complete"
+              },
+              {
+                "label": "Bagel crawl",
+                "detail": "2 votes",
+                "status": "pending"
+              },
+              {
+                "label": "Jazz bar",
+                "detail": "1 vote",
+                "status": "pending"
+              },
+              {
+                "label": "Museum pass",
+                "detail": "0 votes",
+                "status": "quiet"
+              },
+              {
+                "label": "Rooftop dinner",
+                "detail": "0 votes",
+                "status": "quiet"
+              }
+            ],
+            "primaryAction": "Add more places",
+            "secondaryAction": "Remind friends to vote",
+            "footerNote": "The list is rich, but the next decision is not obvious."
+          },
+          {
+            "id": "itinerary_empty",
+            "title": "Itinerary",
+            "stepLabel": "Step 5",
+            "subtitle": "The first day itinerary is still empty even though the group has invites, preferences, and saved places.",
+            "emptyStateTitle": "No itinerary yet",
+            "emptyStateBody": "Add activities, dates, budget choices, and votes to build the first day plan.",
+            "primaryAction": "Build itinerary",
+            "secondaryAction": "Back to planning",
+            "footerNote": "The empty state asks for a completed plan, not one small decision the group can make now."
+          }
+        ],
+        "observations": [
+          {
+            "id": "invite_followthrough",
+            "label": "Invite follow-through",
+            "screenId": "invite_status",
+            "metricLink": "Related metric: invite to active friend participation",
+            "prompt": "What makes it hard for the organizer to know what to ask friends to do next?",
+            "placeholder": "Example: The status list shows activity, but...",
+            "hint": "Look at the friend statuses and the reminder CTA. Does the organizer know whether to ask for dates, budget, votes, or a general response?"
+          },
+          {
+            "id": "budget_pressure",
+            "label": "Budget and date pressure",
+            "screenId": "date_budget",
+            "metricLink": "Related metric: dates or budget completed by 3+ people",
+            "prompt": "What could make the date or budget step feel slow, sensitive, or easy to avoid?",
+            "placeholder": "Example: The budget request may feel...",
+            "hint": "Focus on social comfort and privacy. Budget is useful product data, but friends may hesitate if they do not know how it will be shown to the group."
+          },
+          {
+            "id": "decision_overload",
+            "label": "Saved-place decision overload",
+            "screenId": "saved_places",
+            "metricLink": "Related metric: voting and first-day itinerary completion",
+            "prompt": "What happens when the group has many saved places but uneven voting?",
+            "placeholder": "Example: The place list gives the group options, but...",
+            "hint": "Compare the number of saved places with the number of voters. A larger list is not always a clearer decision."
+          },
+          {
+            "id": "next_decision",
+            "label": "Missing next small decision",
+            "screenId": "itinerary_empty",
+            "metricLink": "Related metric: first-day itinerary completed",
+            "prompt": "Where does the current app ask for too much instead of helping the group make one small decision?",
+            "placeholder": "Example: The empty itinerary state asks the organizer to...",
+            "hint": "Look at the empty state and CTA. Is it helping the group choose the next smallest decision, or asking the organizer to produce the whole plan?"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Current consumer-app flow audit",
+          "inputArtifacts": [
+            {
+              "id": "current_roamly_flow",
+              "label": "Current Roamly app screens",
+              "whereVisible": "scene_02_app_audit.screens",
+              "summary": "Invite, date/budget, saved places, and itinerary states in the current product."
+            },
+            {
+              "id": "funnel_context",
+              "label": "Funnel context",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_app_audit observation prompts",
+              "summary": "Activation metrics that show where group momentum drops."
+            }
+          ],
+          "studentAction": "Inspect current app screens, use hints as needed, and write cause-hypothesis observations.",
+          "outputArtifact": {
+            "id": "appAuditNotes",
+            "label": "Current app audit notes",
+            "format": "app_audit_notes"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.appAuditNotes"
+          ],
+          "continuity": [
+            "The audit notes appear as a tab in the problem brief workspace and inform user-call prep."
+          ],
+          "authenticityCheck": "PMs often touch the current product after seeing funnel data so they can turn drop-off metrics into testable cause hypotheses."
+        },
+        "next": "scene_02_problem_brief",
+        "imageBrief": "First-person PM laptop showing a cream Roamly current-app audit workspace with a phone preview of a social trip-planning app and observation note cards. The note fields are blank, hint buttons are visible but not opened, and no answer text is filled in. Laptop only; no external monitor, tablet, phone outside the app preview, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "illustration": "/scenes/scene_02_app_audit.png"
+      },
+      "scene_02_problem_brief": {
+        "id": "scene_02_problem_brief",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Synthesize the Problem",
+        "content": "Using the funnel, source workspace, and current app audit notes, write a short PM problem brief. Separate the main product problem from your cause hypothesis. Do not list unrelated issues or propose a full solution yet.",
+        "appWindow": "notion",
+        "windowTitle": "Roamly - Group Momentum Problem Brief",
+        "workSurface": {
+          "kind": "notion_doc",
+          "device": "laptop",
+          "appWindow": "notion",
+          "title": "Roamly - Group Momentum Problem Brief",
+          "sourceTabs": [
+            {
+              "id": "product_context",
+              "label": "Product Context",
+              "content": "Roamly activation context document.",
+              "name": "Roamly activation context.doc",
+              "kind": "doc",
+              "modified": "today",
+              "owner": "Shared",
+              "previewTitle": "Product context",
+              "sections": [
+                {
+                  "heading": "Product context",
+                  "body": "Roamly helps friend groups coordinate shared trips, compare dates, share budget preferences, vote on saved places, and assemble an itinerary. The current product question is why groups create trips and invite friends but stall before date, budget, and first-day itinerary decisions."
+                }
+              ]
+            },
+            {
+              "id": "amplitude_funnel",
+              "label": "Amplitude Funnel",
+              "content": "Trip planning funnel dashboard.",
+              "name": "Trip planning funnel",
+              "kind": "dashboard",
+              "modified": "today",
+              "owner": "Amplitude",
+              "previewTitle": "Trip planning funnel",
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "rows": [
+                {
+                  "metric": "Create group trip",
+                  "target": "baseline",
+                  "actual": "100%",
+                  "status": "on_track"
+                },
+                {
+                  "metric": "Invite at least 2 friends",
+                  "target": "new trip activation",
+                  "actual": "64%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "At least 1 friend joins",
+                  "target": "new trip activation",
+                  "actual": "41%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "Dates or budget completed by 3+ people",
+                  "target": "group momentum",
+                  "actual": "19%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "First-day itinerary completed",
+                  "target": "7-day activation goal",
+                  "actual": "11%",
+                  "status": "warning"
+                }
+              ]
+            },
+            {
+              "id": "current_app_audit",
+              "label": "Current App Audit",
+              "content": "Your notes from the current Roamly flow. Use these as cause hypotheses, not as final proof.",
+              "sourceBindingKey": "appAuditNotes",
+              "sourceBindingTitle": "Current App Audit Notes",
+              "sourceBindingEmptyText": "No app audit notes saved yet.",
+              "sourceBindingLabels": {
+                "invite_followthrough": "Invite follow-through",
+                "budget_pressure": "Budget and date pressure",
+                "decision_overload": "Saved-place decision overload",
+                "next_decision": "Missing next small decision"
+              }
+            },
+            {
+              "id": "customer_feedback",
+              "label": "Customer Feedback",
+              "content": "Customer feedback excerpts.",
+              "name": "Customer feedback excerpts.txt",
+              "kind": "text",
+              "modified": "today",
+              "owner": "Shared",
+              "previewTitle": "Customer feedback excerpts",
+              "sections": [
+                {
+                  "heading": "Customer feedback excerpts",
+                  "body": "Quote digest: \"I sent the link and then had to follow up.\" \"Some friends filled things out, others just hovered.\" \"I could not tell which decision the group should make next.\" \"Roamly helped collect ideas, but planning still felt scattered.\""
+                }
+              ]
+            },
+            {
+              "id": "constraints",
+              "label": "Constraints",
+              "content": "Engineering constraints note.",
+              "name": "Engineering constraints note.doc",
+              "kind": "doc",
+              "modified": "today",
+              "owner": "Shared",
+              "previewTitle": "Engineering constraints",
+              "sections": [
+                {
+                  "heading": "Engineering constraints",
+                  "body": "The team can support one lightweight Q3 experiment. Notification changes touch a fragile service, budget-preference privacy needs careful design, and heavy calendar, payment, booking, or recommender work is out of scope for this cycle."
+                }
+              ]
+            },
+            {
+              "id": "candidate_bets",
+              "label": "Candidate Tickets",
+              "content": "Candidate opportunity tickets spreadsheet.",
+              "name": "Candidate opportunity tickets.xlsx",
+              "kind": "spreadsheet",
+              "modified": "today",
+              "owner": "Product ops",
+              "previewTitle": "Candidate opportunity tickets",
+              "columns": [
+                "ticket",
+                "value",
+                "risk"
+              ],
+              "rows": [
+                {
+                  "ticket": "Shared availability poll",
+                  "value": "helps friends make one concrete date decision",
+                  "risk": "may not address budget awkwardness"
+                },
+                {
+                  "ticket": "Budget preference cards",
+                  "value": "lowers pressure around budget discussion",
+                  "risk": "sensitive if defaults feel judgmental"
+                },
+                {
+                  "ticket": "Smart nudges",
+                  "value": "clarifies the next small action",
+                  "risk": "could feel pushy and touches fragile notifications"
+                },
+                {
+                  "ticket": "AI itinerary auto-build",
+                  "value": "turns saved places into a plan",
+                  "risk": "large scope and weak evidence for the immediate stall"
+                },
+                {
+                  "ticket": "Social voting",
+                  "value": "makes lightweight participation easier",
+                  "risk": "may add noise if too many places pile up"
+                },
+                {
+                  "ticket": "Booking integration",
+                  "value": "moves groups closer to purchase",
+                  "risk": "partner dependency and not tied to invite-to-decision drop-off"
+                }
+              ]
+            }
+          ]
+        },
+        "prompt": "Create a concise problem brief that combines funnel evidence with current-app observations.",
+        "definition": {
+          "itemLabel": "Problem brief",
+          "bindingKey": "problemBrief",
+          "initialCount": 1,
+          "minItems": 1,
+          "maxItems": 1,
+          "fields": [
+            {
+              "key": "problem",
+              "label": "Main problem statement",
+              "placeholder": "What is the main user or business problem visible across the funnel? Keep this at the group-momentum level, not a feature idea.",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 90
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "placeholder": "Name the strongest metric signals and one or two current-app observations that support the problem.",
+              "multiline": true,
+              "rows": 4,
+              "maxWords": 120
+            },
+            {
+              "key": "hypothesis",
+              "label": "Initial hypothesis",
+              "placeholder": "What cause hypothesis did the current app audit suggest? What should you validate with Nina?",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 90
+            },
+            {
+              "key": "risk",
+              "label": "Key risk or unknown",
+              "placeholder": "What could make the obvious product direction wrong, risky, or socially awkward?",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 80
+            }
+          ]
+        },
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Notion-style product brief",
+          "inputArtifacts": [
+            {
+              "id": "product_context_workspace",
+              "label": "Product context",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_problem_brief.workSurface.sourceTabs.product_context",
+              "summary": "Same Roamly activation context document from the kickoff workspace."
+            },
+            {
+              "id": "metrics_workspace",
+              "label": "Funnel metrics",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_problem_brief.workSurface.sourceTabs.amplitude_funnel",
+              "summary": "Same Amplitude activation funnel and 7-day itinerary completion goal from the kickoff workspace."
+            },
+            {
+              "id": "current_app_audit",
+              "label": "Current app audit notes",
+              "whereVisible": "scene_02_problem_brief.workSurface.sourceTabs.current_app_audit",
+              "summary": "Student observations from the current Roamly flow."
+            },
+            {
+              "id": "quotes_workspace",
+              "label": "User quotes",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_problem_brief.workSurface.sourceTabs.customer_feedback",
+              "summary": "Same customer feedback excerpts from the kickoff workspace."
+            },
+            {
+              "id": "constraints_workspace",
+              "label": "Constraints",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_problem_brief.workSurface.sourceTabs.constraints",
+              "summary": "Same support, UX, engineering, and scope constraints from the kickoff workspace."
+            },
+            {
+              "id": "candidate_bets_workspace",
+              "label": "Candidate tickets",
+              "whereVisible": "briefing_kickoff.sourceWorkspace and scene_02_problem_brief.workSurface.sourceTabs.candidate_bets",
+              "summary": "Same candidate opportunity tickets from the Linear workspace."
+            }
+          ],
+          "studentAction": "Synthesize funnel data, source context, and current-app observations into a concise problem brief.",
+          "outputArtifact": {
+            "id": "problemBrief",
+            "label": "Problem brief",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.appAuditNotes",
+            "structuredEntries.problemBrief"
+          ],
+          "continuity": [
+            "The problem brief informs research prep, prioritization, PRD writing, and stakeholder alignment."
+          ],
+          "authenticityCheck": "PMs commonly translate mixed qualitative and quantitative inputs into a problem frame before committing to a solution."
+        },
+        "next": "transition_research",
+        "imageBrief": "Tight first-person view of exactly one laptop showing a cream Notion-style problem-brief workspace titled Problem Brief Workspace. Source evidence cards are visible on one side with short neutral labels only, and the student entry fields are blank: Main problem statement, Evidence, Initial hypothesis, Key risk. Do not fill in the fields, do not write a completed problem title, do not write a sample problem brief, and do not reveal the answer. Background should be a plain office wall, window, plant, or empty chairs only. Do not include coworkers or any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The app window must stay fully inside the laptop screen.",
+        "illustration": "/scenes/scene_02_problem_brief.png"
+      },
+      "transition_research": {
+        "id": "transition_research",
+        "type": "section_transition",
+        "section": 1,
+        "title": "Stand-up Ends with One Open Question",
+        "content": "Stand-up is reviewing the problem brief before the team chooses what to learn next.",
+        "aiResponseCheck": {
+          "responseKey": "problemBrief",
+          "targetMeaning": "The main product problem is not simply trip creation. The main stall is group momentum after the organizer invites friends, before the group completes shared date, budget, and first-day itinerary decisions; the current app appears weak at guiding one low-pressure next decision.",
+          "matchedContent": "The team builds on your problem brief: the main stall is group momentum after the organizer invites friends, before shared date, budget, and itinerary decisions. Your app audit gives Maya a testable cause hypothesis, so she asks you to talk to a frequent organizer before narrowing the Q3 bet.",
+          "fallbackContent": "In stand-up, Maya reframes the packet into the team working problem: Roamly is not just losing people at trip creation; groups are losing momentum after the organizer invites friends, before shared date, budget, and itinerary decisions. She asks you to use the current-app audit as a hypothesis and validate it with a frequent organizer.",
+          "loadingContent": "Stand-up is reviewing your problem brief before the team chooses what to learn next."
+        },
+        "illustration": "/scenes/transition_research.png",
+        "imageBrief": "Original product office transition after stand-up. A small product trio of ordinary adult coworkers leaves a meeting room; a laptop on the table shows a calendar tile for a user interview and a neutral Group Momentum diagram. Whiteboard text is minimal and not an answer. Fresh room and people; do not copy the reference image. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_03_research_prep"
+      },
+      "scene_03_research_prep": {
+        "id": "scene_03_research_prep",
+        "type": "free_text",
+        "section": 2,
+        "title": "Prepare the User Call",
+        "content": "Nina Brooks organizes two or three friend trips a year and recently used Roamly for a weekend in Montreal. Prepare questions that test your app-audit hypotheses without leading her toward your favorite feature.",
+        "appWindow": "notion",
+        "windowTitle": "Nina Brooks - Research Prep",
+        "workSurface": {
+          "kind": "notion_doc",
+          "device": "laptop",
+          "appWindow": "notion",
+          "title": "Nina Brooks - Research Prep"
+        },
+        "prompt": "Write 5 user interview questions plus one sentence explaining what you are trying to learn.",
+        "minWords": 80,
+        "maxWords": 220,
+        "placeholder": "Questions:\n1. ...\n\nLearning goal: ...",
+        "appTabs": [
+          {
+            "id": "profile",
+            "label": "User Profile",
+            "content": "Nina Brooks\n- 29, lives in Chicago\n- Usually plans trips with 5-8 friends\n- Used Roamly for a Montreal weekend trip\n- Created a trip and invited friends\n- The group did not finish planning inside Roamly"
+          },
+          {
+            "id": "research_guardrails",
+            "label": "Research Guardrails",
+            "content": "Avoid leading questions like: Would smart reminders fix this?\nAsk exactly 5 prepared questions about actual behavior, recent examples, emotions, workarounds, decision points, and moments when the group lost momentum.\nUse your app audit notes as hypotheses to test, not as facts to confirm.\nDuring the call, ask one question, listen to Nina response, then ask at most one brief follow-up if her answer needs clarification."
+          },
+          {
+            "id": "your_brief",
+            "label": "Your Problem Brief",
+            "content": "Use the problem brief and current app audit you just wrote as background. During the call, listen for evidence that confirms, refines, or challenges your hypothesis."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Research-prep note",
+          "inputArtifacts": [
+            {
+              "id": "user_profile",
+              "label": "Nina user profile",
+              "whereVisible": "scene_03_research_prep.appTabs.profile",
+              "summary": "Trip organizer profile and recent Roamly behavior."
+            },
+            {
+              "id": "research_guardrails",
+              "label": "Research guardrails",
+              "whereVisible": "scene_03_research_prep.appTabs.research_guardrails",
+              "summary": "Guidance to avoid leading questions and learn from actual behavior."
+            }
+          ],
+          "studentAction": "Draft non-leading user interview questions and a learning goal.",
+          "outputArtifact": {
+            "id": "scene_03_research_prep",
+            "label": "User-call prep questions",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.scene_03_research_prep"
+          ],
+          "continuity": [
+            "This prep note appears in the voice meeting through prepNoteKey."
+          ],
+          "authenticityCheck": "PMs often prepare research questions from a user profile and prior product evidence before a customer conversation."
+        },
+        "next": "scene_04_user_call",
+        "imageBrief": "First-person PM laptop showing a cream Notion-style research-prep note. The source tabs show a compact user profile and research guardrails, while the main question list is blank with numbered empty lines. Do not include drafted interview questions or a learning-goal answer. The app window must stay fully inside the laptop screen. Original desk setting. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "illustration": "/scenes/scene_03_research_prep.png"
+      },
+      "scene_04_user_call": {
+        "id": "scene_04_user_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Remote User Interview with Nina",
+        "content": "Use your prep questions, but listen actively. Your goal is to understand what happens when a real friend group loses planning momentum.",
+        "npcId": "nina",
+        "meetingMode": "remote",
+        "meetingContext": "A 20-minute remote user interview with Nina Brooks, a frequent Roamly organizer who planned a Montreal weekend trip with seven friends.",
+        "prepNoteKey": "scene_03_research_prep",
+        "prepNoteTitle": "Your user-call prep",
+        "prepReferenceTitle": "Compact user context",
+        "prepReferenceContent": "Nina organized a Montreal weekend trip with a friend group and used Roamly before the final plan moved outside the app. Your goal is to learn what happened, where the group stalled, and what kind of help would have felt natural.",
+        "goalPrompt": "You are Nina Brooks, a friendly but busy Roamly user who organizes friend-group trips. The player is a Product Manager interviewing you. Answer like a real user, not a product expert. Treat each player turn as one interview question or one brief follow-up: answer that question in one response, then pause for the next question. Do not ask your own interview questions. Do not volunteer every issue at once. If the player asks about saved places or voting, explain that the Montreal group saved 18 places and only 3 of 7 friends voted. If the player asks about dates or budget, explain that budget felt awkward and made people quiet. If the player asks about reminders or nudges, say reminders can help only if they do not make the organizer sound bossy. If the player asks how planning finished or what would have helped, explain that final decisions happened in group text and that you needed help getting everyone to make one small decision, not a whole planning system. If the player asks a broad opening question, share one concrete recent moment and wait for the next question. If the player asks leading questions, gently answer from your real behavior instead of endorsing their proposed feature. After the player covers actual recent behavior, group decision friction, and what would have helped at the moment of stall, wrap up with: \"That is probably the main thing: I need help getting everyone to make one small decision, not a whole planning system.\" Do not introduce new topics after that closing signal.",
+        "requiredDisclosure": {
+          "intro": "Oh, one thing I should make sure I say:",
+          "items": [
+            {
+              "id": "saved_places",
+              "text": "For the Montreal trip, we saved 18 places.",
+              "matchAny": [
+                "18 places",
+                "eighteen places"
+              ]
+            },
+            {
+              "id": "vote_count",
+              "text": "Only 3 of the 7 friends actually voted.",
+              "matchAny": [
+                "3 of 7",
+                "3 out of 7",
+                "three of seven",
+                "three out of seven",
+                "only 3 friends voted",
+                "only three friends voted"
+              ]
+            },
+            {
+              "id": "budget_pressure",
+              "text": "Budget pressure made people quiet.",
+              "matchAny": [
+                "budget pressure made people quiet",
+                "budget made people quiet",
+                "budget felt awkward",
+                "budget was awkward"
+              ]
+            },
+            {
+              "id": "one_small_decision",
+              "text": "What I needed was help getting everyone to make one small decision, not a whole planning system.",
+              "matchAny": [
+                "one small decision",
+                "not a whole planning system",
+                "not a full planning system"
+              ]
+            }
+          ]
+        },
+        "minTurns": 5,
+        "maxTurns": 10,
+        "voiceName": "Aoede",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Hi, I have about 20 minutes. Happy to talk about the Montreal trip; Roamly helped us collect ideas, but the planning still got messy."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Remote user interview",
+          "inputArtifacts": [
+            {
+              "id": "prep_note",
+              "label": "Student's user-call prep",
+              "whereVisible": "scene_04_user_call.prepNoteKey",
+              "summary": "Questions the student prepared in the prior scene."
+            },
+            {
+              "id": "compact_user_context",
+              "label": "Compact user context",
+              "whereVisible": "scene_04_user_call.prepReferenceContent",
+              "summary": "Thin user context that leaves key friction details for the interview."
+            }
+          ],
+          "studentAction": "Conduct a spoken user interview that explores behavior and motivation without leading the user.",
+          "outputArtifact": {
+            "id": "scene_04_user_call",
+            "label": "User interview transcript",
+            "format": "voice_meeting_transcript"
+          },
+          "rubricEvidence": [
+            "transcripts.scene_04_user_call"
+          ],
+          "continuity": [
+            "Interview insights inform prioritization and the PRD slice."
+          ],
+          "authenticityCheck": "PMs frequently use customer or user conversations to refine product hypotheses before prioritization."
+        },
+        "illustration": "/scenes/scene_04_user_call.png",
+        "imageBrief": "Remote user interview setup on the PM laptop. The cream meeting window shows Nina Brooks, an ordinary adult Roamly user, on video in her apartment with a suitcase and small Montreal postcard. A compact side panel shows neutral source labels and blank prep-note lines, not the student's prepared questions. The meeting UI stays fully inside the laptop screen. The PM is visible only as hands near the keyboard and notebook. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "scene_05_priority_matrix",
+        "playerGoal": "Ask your 5 prepared questions about Nina recent group trip planning stall. Use your app-audit hypotheses, but do not pitch your solution. After each answer, ask at most one brief follow-up only if it helps clarify behavior, motivation, workarounds, or what would have helped.",
+        "endpoint": "End once you understand the recent behavior, the group decision friction, and whether the current app experience failed to help the group make one small next decision.",
+        "successCriteria": "You ask each question clearly, let Nina answer without confusion, and use optional follow-ups only when they clarify a useful detail without steering her."
+      },
+      "scene_05_priority_matrix": {
+        "id": "scene_05_priority_matrix",
+        "type": "priority_matrix",
+        "section": 2,
+        "title": "Place the Candidate Bets",
+        "content": "Use the tabs inside the Group Momentum Bet Matrix window. Combine the funnel, your current app audit, constraints, candidate tickets, and Nina call evidence. Place each candidate initiative by likely activation impact and delivery effort, then add a rationale that explains your top bet and what you would not build first.",
+        "appWindow": "miro",
+        "windowTitle": "Group Momentum Bet Matrix",
+        "workSurface": {
+          "kind": "priority_matrix",
+          "device": "laptop",
+          "appWindow": "miro",
+          "title": "Group Momentum Bet Matrix",
+          "sourceTabs": [
+            {
+              "id": "amplitude_funnel",
+              "label": "Amplitude Funnel",
+              "content": "Trip planning funnel dashboard.",
+              "name": "Trip planning funnel",
+              "kind": "dashboard",
+              "modified": "today",
+              "owner": "Amplitude",
+              "previewTitle": "Trip planning funnel",
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "rows": [
+                {
+                  "metric": "Create group trip",
+                  "target": "baseline",
+                  "actual": "100%",
+                  "status": "on_track"
+                },
+                {
+                  "metric": "Invite at least 2 friends",
+                  "target": "new trip activation",
+                  "actual": "64%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "At least 1 friend joins",
+                  "target": "new trip activation",
+                  "actual": "41%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "Dates or budget completed by 3+ people",
+                  "target": "group momentum",
+                  "actual": "19%",
+                  "status": "warning"
+                },
+                {
+                  "metric": "First-day itinerary completed",
+                  "target": "7-day activation goal",
+                  "actual": "11%",
+                  "status": "warning"
+                }
+              ]
+            },
+            {
+              "id": "customer_feedback",
+              "label": "Customer Feedback",
+              "content": "Customer feedback excerpts.",
+              "name": "Customer feedback excerpts.txt",
+              "kind": "text",
+              "modified": "today",
+              "owner": "Shared",
+              "previewTitle": "Customer feedback excerpts",
+              "sections": [
+                {
+                  "heading": "Customer feedback excerpts",
+                  "body": "Quote digest: \"I send the link, then everyone says they will check it later.\" \"Budget is awkward, so nobody wants to be the first to say no.\" \"We save too many places and then freeze.\" \"The app is useful when everyone participates, but I still end up texting the group separately.\""
+                }
+              ]
+            },
+            {
+              "id": "current_app_audit",
+              "label": "Current App Audit",
+              "content": "Your notes from the current Roamly flow. Use these as cause hypotheses, not as final proof.",
+              "sourceBindingKey": "appAuditNotes",
+              "sourceBindingTitle": "Current App Audit Notes",
+              "sourceBindingEmptyText": "No app audit notes saved yet.",
+              "sourceBindingLabels": {
+                "invite_followthrough": "Invite follow-through",
+                "budget_pressure": "Budget and date pressure",
+                "decision_overload": "Saved-place decision overload",
+                "next_decision": "Missing next small decision"
+              }
+            },
+            {
+              "id": "constraints",
+              "label": "Constraints",
+              "content": "Engineering constraints note.",
+              "name": "Engineering constraints note.doc",
+              "kind": "doc",
+              "modified": "today",
+              "owner": "Shared",
+              "previewTitle": "Engineering constraints",
+              "sections": [
+                {
+                  "heading": "Engineering constraints",
+                  "body": "The team can support one lightweight Q3 experiment. Notification changes touch a fragile service, budget-preference privacy needs careful design, and heavy calendar, payment, booking, or recommender work is out of scope for this cycle."
+                }
+              ]
+            },
+            {
+              "id": "candidate_bets",
+              "label": "Candidate Tickets",
+              "content": "Candidate opportunity tickets spreadsheet.",
+              "name": "Candidate opportunity tickets.xlsx",
+              "kind": "spreadsheet",
+              "modified": "today",
+              "owner": "Product ops",
+              "previewTitle": "Candidate opportunity tickets",
+              "columns": [
+                "ticket",
+                "value",
+                "risk"
+              ],
+              "rows": [
+                {
+                  "ticket": "Shared availability poll",
+                  "value": "helps friends make one concrete date decision",
+                  "risk": "may not address budget awkwardness"
+                },
+                {
+                  "ticket": "Budget preference cards",
+                  "value": "lowers pressure around budget discussion",
+                  "risk": "sensitive if defaults feel judgmental"
+                },
+                {
+                  "ticket": "Smart nudges",
+                  "value": "clarifies the next small action",
+                  "risk": "could feel pushy and touches fragile notifications"
+                },
+                {
+                  "ticket": "AI itinerary auto-build",
+                  "value": "turns saved places into a plan",
+                  "risk": "large scope and weak evidence for the immediate stall"
+                },
+                {
+                  "ticket": "Social voting",
+                  "value": "makes lightweight participation easier",
+                  "risk": "may add noise if too many places pile up"
+                },
+                {
+                  "ticket": "Booking integration",
+                  "value": "moves groups closer to purchase",
+                  "risk": "partner dependency and not tied to invite-to-decision drop-off"
+                }
+              ]
+            },
+            {
+              "id": "nina_interview",
+              "label": "Nina Interview",
+              "content": "Remote user interview notes.",
+              "name": "Nina Brooks interview notes.txt",
+              "kind": "text",
+              "modified": "today",
+              "owner": "Research",
+              "previewTitle": "Nina interview notes",
+              "sections": [
+                {
+                  "heading": "What Nina said",
+                  "body": "Nina said the Montreal group saved 18 places, but only 3 of the 7 friends actually voted. She said budget pressure made people quiet. Her clearest need was help getting everyone to make one small decision, not a whole planning system."
+                }
+              ]
+            }
+          ]
+        },
+        "xAxis": {
+          "label": "Activation impact",
+          "lowLabel": "Lower",
+          "highLabel": "Higher"
+        },
+        "yAxis": {
+          "label": "Delivery effort / risk",
+          "lowLabel": "Lower",
+          "highLabel": "Higher"
+        },
+        "items": [
+          {
+            "id": "availability_poll",
+            "label": "Lightweight date availability poll"
+          },
+          {
+            "id": "budget_cards",
+            "label": "Private budget preference cards"
+          },
+          {
+            "id": "smart_nudge",
+            "label": "Smart organizer nudge suggestions"
+          },
+          {
+            "id": "auto_itinerary",
+            "label": "AI auto-build full itinerary"
+          },
+          {
+            "id": "place_voting",
+            "label": "One-tap voting on saved places"
+          },
+          {
+            "id": "booking_integration",
+            "label": "Hotel and activity booking integration"
+          }
+        ],
+        "bindingKey": "priorityMatrix",
+        "rationalePrompt": "Explain which bet you would take into planning, why it fits the evidence, and which tempting idea you would defer.",
+        "rationalePlaceholder": "I would take ... into planning because the evidence shows ... I would defer ... because ...",
+        "rationaleBindingKey": "priorityMatrixRationale",
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Miro-style impact/effort matrix",
+          "inputArtifacts": [
+            {
+              "id": "product_workspace",
+              "label": "Workplace source tabs",
+              "whereVisible": "scene_05_priority_matrix.workSurface.sourceTabs",
+              "summary": "Matrix-window tabs for Amplitude Funnel, Current App Audit, Customer Feedback, Constraints, and Candidate Tickets."
+            },
+            {
+              "id": "nina_interview",
+              "label": "Nina interview insights",
+              "whereVisible": "scene_04_user_call transcript and scene_05_priority_matrix.workSurface.sourceTabs.nina_interview",
+              "summary": "Separate Nina Interview tab covering 18 saved places, 3 of 7 votes, quiet budget pressure, and the need for one small group decision."
+            }
+          ],
+          "studentAction": "Place product bets on an impact/effort matrix and justify the recommended bet.",
+          "outputArtifact": {
+            "id": "priorityMatrix",
+            "label": "Impact/effort matrix and rationale",
+            "format": "priority_matrix"
+          },
+          "rubricEvidence": [
+            "interactiveCanvas.priorityMatrix",
+            "freeTextResponses.priorityMatrixRationale"
+          ],
+          "continuity": [
+            "The selected top bet informs the roadmap triage and PRD slice."
+          ],
+          "authenticityCheck": "PMs often compare candidate bets using impact, effort, risk, and learning value before narrowing scope."
+        },
+        "next": "scene_06_roadmap_kanban",
+        "imageBrief": "Tight first-person view of exactly one laptop showing a cream Miro-style impact-effort matrix for candidate product bets. The matrix quadrants must be empty: no cards placed inside the matrix and no highlighted winner. Put all candidate cards in an unplaced tray or sidebar labeled Candidate cards, with short generic initiative labels only. Do not include a Focus sticky note, recommendation, rationale, correct placement, answer, coaching phrase, or completed prioritization. Background should be a plain office wall, window, plant, or empty chairs only. Do not include any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The matrix and controls stay fully inside the laptop screen.",
+        "illustration": "/scenes/scene_05_priority_matrix.png"
+      },
+      "scene_06_roadmap_kanban": {
+        "id": "scene_06_roadmap_kanban",
+        "type": "kanban_board",
+        "section": 3,
+        "title": "Triage the Roadmap Board",
+        "content": "Maya asks you to translate your recommendation into roadmap triage. Move every card out of Inbox using the reference criteria, then write a short rationale.",
+        "appWindow": "kanban",
+        "windowTitle": "Roamly Q3 Group Momentum Board",
+        "workSurface": {
+          "kind": "kanban_board",
+          "device": "laptop",
+          "appWindow": "kanban",
+          "title": "Roamly Q3 Group Momentum Board"
+        },
+        "columns": [
+          {
+            "id": "inbox",
+            "label": "Inbox"
+          },
+          {
+            "id": "commit",
+            "label": "Commit for discovery/build"
+          },
+          {
+            "id": "test",
+            "label": "Prototype or experiment"
+          },
+          {
+            "id": "defer",
+            "label": "Defer"
+          },
+          {
+            "id": "risk",
+            "label": "Needs risk review"
+          }
+        ],
+        "cards": [
+          {
+            "id": "budget_cards",
+            "text": "Private budget preference cards for each friend",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "one_tap_vote",
+            "text": "One-tap voting on saved places",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "organizer_nudge",
+            "text": "Organizer nudge suggestions when the group stalls",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "ai_full_itinerary",
+            "text": "AI auto-builds the complete itinerary",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "booking_partner",
+            "text": "Partner booking integration for hotels and activities",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "analytics_event_fix",
+            "text": "Fix missing analytics event for budget completion",
+            "initialColumn": "inbox"
+          }
+        ],
+        "bindingKey": "roadmapKanban",
+        "referenceTabs": [
+          {
+            "id": "summary",
+            "label": "Summary of information",
+            "content": "Decision inputs\n- Activation stall is after invite: dates/budget completed by 3+ people is 19%, and first-day itinerary completed is 11%.\n- The current app audit points to unclear friend follow-through, sensitive budget/date sharing, overloaded saved places, and an empty itinerary state that asks for a full plan rather than one next decision.\n- Nina's interview can validate or refine those hypotheses with concrete trip behavior.\n- Constraints: notification work is fragile; pushy reminders can damage trust; friends want lightweight participation."
+          },
+          {
+            "id": "triage_criteria",
+            "label": "Triage criteria",
+            "content": "Commit when: strong evidence, clear user problem, feasible enough for Q3, and directly tied to group momentum.\nPrototype or experiment when: promising but needs learning before build.\nDefer when: large scope, weak evidence, or not directly tied to the activation drop-off.\nNeeds risk review when: feasibility, trust, notification fatigue, data quality, or partner dependency could invalidate the plan."
+          }
+        ],
+        "rationalePrompt": "Write a PM rationale for your roadmap triage. Name your committed bet, your learning plan, and one explicit non-goal.",
+        "rationalePlaceholder": "I would commit/prototype/defer... because...",
+        "rationaleBindingKey": "roadmapRationale",
+        "requireAllCardsMoved": true,
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Kanban roadmap board",
+          "inputArtifacts": [
+            {
+              "id": "information_summary",
+              "label": "Summary of information",
+              "whereVisible": "scene_06_roadmap_kanban.referenceTabs.summary",
+              "summary": "Decision evidence carried forward from the workspace, user feedback, Nina interview, and constraints."
+            },
+            {
+              "id": "triage_criteria",
+              "label": "Triage criteria",
+              "whereVisible": "scene_06_roadmap_kanban.referenceTabs.triage_criteria",
+              "summary": "Rules for commit, prototype, defer, and risk review."
+            },
+            {
+              "id": "candidate_cards",
+              "label": "Roadmap cards",
+              "whereVisible": "scene_06_roadmap_kanban.cards",
+              "summary": "Candidate initiatives and infrastructure work."
+            }
+          ],
+          "studentAction": "Move roadmap cards into triage columns and explain the PM rationale.",
+          "outputArtifact": {
+            "id": "roadmapKanban",
+            "label": "Roadmap triage board and rationale",
+            "format": "kanban_board"
+          },
+          "rubricEvidence": [
+            "kanban.roadmapKanban",
+            "freeTextResponses.roadmapRationale"
+          ],
+          "continuity": [
+            "The triage rationale becomes the basis for the PRD slice."
+          ],
+          "authenticityCheck": "PMs commonly translate product strategy into roadmap triage while balancing feasibility and learning."
+        },
+        "next": "scene_07_prd_slice",
+        "imageBrief": "First-person PM laptop showing a cream roadmap kanban board. Cards are in an Inbox column with neutral candidate labels; other columns are visible but empty. Do not show completed triage, correct card locations, or a written rationale. The kanban board stays fully inside the laptop screen. Original desk setting. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "illustration": "/scenes/scene_06_roadmap_kanban.png"
+      },
+      "scene_07_prd_slice": {
+        "id": "scene_07_prd_slice",
+        "type": "free_text",
+        "section": 3,
+        "title": "Draft the PRD Slice",
+        "content": "Write the decision memo / PRD slice Maya can share with design and engineering. It should be specific enough to align the team, but scoped enough to avoid pretending everything is solved.",
+        "appWindow": "doc",
+        "windowTitle": "Q3 Group Momentum - PRD Slice",
+        "workSurface": {
+          "kind": "document_editor",
+          "device": "laptop",
+          "appWindow": "doc",
+          "title": "Q3 Group Momentum - PRD Slice"
+        },
+        "prompt": "Draft a concise PRD slice for your recommended next bet.",
+        "minWords": 180,
+        "maxWords": 420,
+        "placeholder": "Problem\n...\nTarget user\n...\nHypothesis\n...\nSuccess metric\n...\nScope / non-goals\n...\nRisks and open questions\n...",
+        "appTabs": [
+          {
+            "id": "problem_brief",
+            "label": "Problem Brief",
+            "content": "Problem to carry forward\nFriend groups are creating trips and inviting people, but momentum drops before shared date, budget, and itinerary decisions.\n\nEvidence\n- Dates or budget completed by 3+ people: 19%.\n- First-day itinerary completed: 11%.\n- Current app audit notes should connect the drop-off to unclear next action, sensitive sharing, choice overload, or a missing small-decision path.\n- Nina interview evidence should confirm, refine, or challenge that cause hypothesis.\n\nRisk/unknown\nReminder-style features could feel pushy, budget sharing may be sensitive, and notification changes touch a fragile service."
+          },
+          {
+            "id": "prioritization",
+            "label": "Prioritization Notes",
+            "content": "Use your matrix and roadmap triage to name one next bet. Strong candidates should help a group make one small decision, preserve user control, and create learning without committing the team to a large platform build.\n\nTempting ideas to scrutinize\n- AI auto-build full itinerary: broad scope and weak evidence for the immediate stall.\n- Booking integration: partner dependency and not directly tied to the invite-to-decision drop-off.\n- Smart nudges: potentially useful, but tone, control, and notification-service risk need explicit scope."
+          },
+          {
+            "id": "prd_checklist",
+            "label": "PRD Checklist",
+            "content": "Include\n- Problem and target user.\n- Hypothesis connected to the source evidence.\n- Success metric tied to group momentum, such as dates/budget completed by 3+ people or first-day itinerary completion within 7 days.\n- Proposed scope and non-goals.\n- Rollout or experiment plan.\n- Risks/open questions.\n- Design, engineering, data, or support dependencies."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "product",
+          "workSurface": "Doc editor / PRD draft",
+          "inputArtifacts": [
+            {
+              "id": "problem_brief_summary",
+              "label": "Problem brief reminder",
+              "whereVisible": "scene_07_prd_slice.appTabs.problem_brief",
+              "summary": "Reminder to use the earlier problem brief."
+            },
+            {
+              "id": "prioritization_notes",
+              "label": "Prioritization notes",
+              "whereVisible": "scene_07_prd_slice.appTabs.prioritization",
+              "summary": "Matrix and kanban rationale reminder."
+            },
+            {
+              "id": "prd_checklist",
+              "label": "PRD checklist",
+              "whereVisible": "scene_07_prd_slice.appTabs.prd_checklist",
+              "summary": "Expected PM document sections."
+            }
+          ],
+          "studentAction": "Draft a concise PRD slice / decision memo.",
+          "outputArtifact": {
+            "id": "scene_07_prd_slice",
+            "label": "PRD slice",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.scene_07_prd_slice"
+          ],
+          "continuity": [
+            "This PRD slice is the final PM artifact before assessment."
+          ],
+          "authenticityCheck": "Mid-level PMs are expected to turn discovery and prioritization into a written artifact the team can align around."
+        },
+        "next": "assessment_gate",
+        "imageBrief": "Tight first-person view of exactly one laptop showing a cream document editor titled PRD Slice Draft. Reference tabs are visible as compact neutral labels, and the main document has blank section headings only: Problem, Target user, Hypothesis, Success metric, Scope, Risks. Do not write a drafted PRD, decision memo, recommendation, sample answer, or typed body text. Background should be a plain office wall, window, plant, or empty chairs only. Do not include coworkers or any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The document stays fully inside the laptop screen.",
+        "illustration": "/scenes/scene_07_prd_slice.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Product Planning Day Is Complete",
+        "content": "You have diagnosed the group momentum problem, interviewed a user, prioritized candidate bets, and drafted a PRD slice. Maya has enough to assess your PM judgment for this scenario.",
+        "actionLabel": "View Assessment",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "End-of-day original product office scene with a PM laptop on the desk. The laptop shows small warm cream thumbnail windows for PRD slice, priority matrix, and roadmap board, but no readable answers or typed responses. The Roamly Q3 Group Momentum board is tidied in the background. Fresh room and ordinary adult coworkers only if people appear. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment in Progress",
+        "content": "Your PM artifacts and conversation transcript are being assessed against the rubric.",
+        "next": "final_report",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Product Manager Simulation Report",
+        "content": "Review your strengths and next steps as a product manager.",
+        "next": null,
+        "illustration": "/scenes/assessment_gate.png"
+      }
+    }
+  },
+  "npcs": {
+    "nina": {
+      "id": "nina",
+      "name": "Nina Brooks",
+      "role": "Roamly user and trip organizer",
+      "persona": "Nina is a busy but generous Roamly user who often organizes friend trips. She is not a product expert and speaks in concrete stories rather than frameworks. She liked saving places in Roamly, but her group still drifted into text messages when budget, dates, and final choices got awkward. She is open to helpful prompts, but she dislikes anything that makes her sound bossy to friends.",
+      "voice": "warm, candid, conversational",
+      "avatar": "/avatars/nina.png"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Product Manager Simulation",
+    "welcomeBody": "Roamly is a fictional growth-stage consumer app that helps friend groups plan trips by collecting saved places, coordinating preferences, and building shared itineraries. You are a mid-level Product Manager responsible for improving group momentum after a trip is created.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Roamly serves friend groups planning weekend trips, reunions, and shared vacations. Users invite friends, save places, vote on ideas, share budget/date preferences, and assemble an itinerary together."
+      },
+      {
+        "label": "Your Role",
+        "content": "You own a product area, not the entire company. Your job is to diagnose the activation problem, learn from users, prioritize a scoped bet, and align design and engineering."
+      },
+      {
+        "label": "How You Will Work",
+        "content": "You will read product artifacts, write PM deliverables, speak with a user, move roadmap items, and draft a scoped PRD slice. Your final assessment is based on your artifacts and conversation transcript."
+      }
+    ]
+  },
+  "glossary": {
+    "activation": "The moment when a new or returning user reaches meaningful value in a product. For Roamly, activation means a group trip moves from creation to real collaborative planning.",
+    "funnel": "A sequence of user steps measured as conversion rates, such as creating a trip, inviting friends, and completing an itinerary.",
+    "hypothesis": "A testable explanation or bet about what user problem exists and what product change might improve it.",
+    "PRD": "Product Requirements Document. A written artifact that explains the problem, goal, scope, success metrics, and constraints for a product initiative.",
+    "roadmap": "A prioritized plan of product work over time. It is not just a list of ideas; it reflects strategy, tradeoffs, timing, and constraints.",
+    "scope": "The boundaries of what a team is committing to build or test. Clear scope also says what is not included.",
+    "non-goal": "Something the team explicitly chooses not to solve in the current effort, often to preserve focus.",
+    "tradeoff": "A decision that accepts one cost or limitation to gain something more important, such as faster learning or lower engineering risk.",
+    "prototype": "A lightweight version of an idea used to learn before building the full product experience.",
+    "success metric": "The measurable outcome used to judge whether a product change worked."
+  },
+  "sample_answers": {
+    "scene_02_problem_brief": {
+      "problem": "Friend groups are creating trips and inviting people, but they lose momentum before making shared date, budget, and itinerary decisions.",
+      "evidence": "The funnel drops from 64% invited to 19% dates/budget completed by 3+ people and 11% first-day itinerary completed. The current app audit shows unclear next actions after invite, sensitive budget/date sharing, uneven voting on many saved places, and an empty itinerary state that asks for a full plan.",
+      "hypothesis": "The organizer lacks a low-pressure way to move friends toward one small next decision, so planning drifts back to text.",
+      "risk": "Reminder-style features could feel pushy, budget sharing may be sensitive, and notification work has engineering risk."
+    }
+  },
+  "rubric": {
+    "simulation_id": "product-manager-general-consumer-product-manager-the-most-common-pm-role-aspiring-pms-imagine-social-trip-planning-app-for-friend-groups-growth-stage-mid-level",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の判断",
+            "evidenceSceneIds": [
+              "scene_01_first_move"
+            ],
+            "rubric_text": "9-10: 利用者課題、チームの制約、学ぶべき情報を見て、最初に進めるべきプロダクト行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "現行画面調査",
+            "evidenceSceneIds": [
+              "scene_02_app_audit"
+            ],
+            "rubric_text": "9-10: 現行フローを実際に見て、摩擦、迷い、情報不足、測るべき行動を観察として整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "問題要約",
+            "evidenceSceneIds": [
+              "scene_02_problem_brief"
+            ],
+            "rubric_text": "9-10: 観察から問題、影響、対象ユーザー、まだ分からないことを分けて要約できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "利用者面談",
+            "evidenceSceneIds": [
+              "scene_04_user_call"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の面談で、利用者の行動、動機、困りごと、回避策を聞き取り、誘導を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "優先順位表",
+            "evidenceSceneIds": [
+              "scene_05_priority_matrix"
+            ],
+            "rubric_text": "9-10: 候補施策を、ユーザー価値、学習価値、実装負荷、リスクで比較し、優先順位をつけられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "予定表整理",
+            "evidenceSceneIds": [
+              "scene_06_roadmap_kanban"
+            ],
+            "rubric_text": "9-10: ロードマップ上の依存関係、無理な順序、確認待ち、先にやるべきものを整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "要件文書",
+            "evidenceSceneIds": [
+              "scene_07_prd_slice"
+            ],
+            "rubric_text": "9-10: 要件文書だけを根拠に、問題、対象、成功条件、範囲外、未決事項、次の検証を明確に書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

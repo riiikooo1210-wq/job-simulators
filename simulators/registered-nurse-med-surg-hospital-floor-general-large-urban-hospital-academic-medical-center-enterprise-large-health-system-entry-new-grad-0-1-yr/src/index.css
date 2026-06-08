@@ -1,0 +1,1634 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #6B9EA6;
+}
+
+body {
+  background-color: #6B9EA6;
+  color: #000000;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.voice-meeting-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 0.625rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.voice-meeting-workspace--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.voice-meeting-window,
+.voice-meeting-reference {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-meeting-inperson-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.voice-meeting-inperson-layout--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.voice-meeting-inperson-scene-image {
+  width: calc(100% + 6rem);
+  margin-left: -3rem;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  background: #E8DCC8;
+}
+
+.voice-meeting-inperson-scene-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.voice-meeting-inperson-card,
+.voice-meeting-inperson-reference {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-meeting-inperson-shell,
+.voice-meeting-reference-card {
+  background: #EFE8D2;
+  border: 1px solid #000000;
+  box-shadow: 5px 5px 0 #000000;
+}
+
+.voice-meeting-inperson-shell {
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-meeting-inperson-title {
+  border-bottom: 1px solid #000000;
+  background: #D8C99F;
+  color: #1E1E1A;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 0.55rem 0.875rem;
+}
+
+.voice-meeting-reference-card {
+  padding: 0.875rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.physical-playground {
+  width: calc(100% + 6rem);
+  margin-left: -3rem;
+  margin-right: -3rem;
+  border: 1px solid #000000;
+  border-left: 0;
+  border-right: 0;
+  background: #EFE8D2;
+  padding: 0;
+  box-shadow: none;
+}
+
+.physical-playground-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #E8DCC8;
+  touch-action: none;
+}
+
+.physical-playground-dev-reset {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 80;
+  border: 1px solid #000000;
+  background: #FFF5C2;
+  color: #1E1E1A;
+  box-shadow: 2px 2px 0 #000000;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0.42rem 0.52rem;
+  cursor: pointer;
+}
+
+.physical-playground-dev-reset:hover,
+.physical-playground-dev-reset:focus-visible {
+  background: #FFE66D;
+  outline: none;
+}
+
+.physical-playground-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.physical-playground-stage--scene2_assessment {
+  background: #EFE8D2;
+}
+
+.physical-playground-object,
+.physical-playground-hotspot,
+.physical-playground-step,
+.physical-playground-scene-link {
+  position: absolute;
+  border: 0;
+  background: transparent;
+  color: #1E1E1A;
+  font-family: inherit;
+  font-size: clamp(0.55rem, 1.1vw, 0.78rem);
+  font-weight: 800;
+  line-height: 1.15;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: none;
+  z-index: 15;
+}
+
+.physical-playground-object:hover,
+.physical-playground-hotspot:hover,
+.physical-playground-step:hover,
+.physical-playground-scene-link:hover,
+.physical-playground-object:focus-visible,
+.physical-playground-hotspot:focus-visible,
+.physical-playground-step:focus-visible,
+.physical-playground-scene-link:focus-visible {
+  background: transparent;
+  outline: none;
+}
+
+.physical-playground-object img,
+.physical-playground-hotspot img,
+.physical-playground-target img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.physical-playground-generated-asset {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.physical-playground-generated-asset-hitbox {
+  position: absolute;
+  display: block;
+  pointer-events: auto;
+  cursor: grab;
+  background: transparent;
+}
+
+.physical-playground-generated-asset-hitbox:active {
+  cursor: grabbing;
+}
+
+.physical-playground-placed-asset {
+  display: block;
+}
+
+.physical-playground-asset-placeholder {
+  width: 100%;
+  min-height: 220px;
+  border-bottom: 1px solid #000000;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(205, 191, 148, 0.22),
+      rgba(205, 191, 148, 0.22) 10px,
+      rgba(239, 232, 210, 0.74) 10px,
+      rgba(239, 232, 210, 0.74) 20px
+    );
+  color: #1E1E1A;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 1rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.physical-playground-asset-placeholder b {
+  color: #3A6B5E;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.physical-playground-asset-placeholder span {
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.physical-playground-asset-placeholder code {
+  max-width: 100%;
+  border: 1px solid rgba(30, 30, 26, 0.55);
+  background: rgba(247, 241, 227, 0.88);
+  color: #1E1E1A;
+  padding: 0.24rem 0.35rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.physical-playground-asset-placeholder.is-compact {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.16rem;
+  gap: 0.12rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.physical-playground-asset-placeholder.is-compact b {
+  background: rgba(247, 241, 227, 0.82);
+  padding: 0.08rem 0.16rem;
+  font-size: clamp(0.42rem, 0.78vw, 0.58rem);
+}
+
+.physical-playground-asset-placeholder.is-compact span {
+  display: none;
+}
+
+.physical-playground-asset-placeholder.is-compact code {
+  display: none;
+}
+
+.physical-playground-asset-placeholder.is-modal {
+  min-height: 340px;
+  pointer-events: auto;
+}
+
+.physical-playground-object-label {
+  position: absolute;
+  left: 0.18rem;
+  right: auto;
+  bottom: 0.18rem;
+  pointer-events: none;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: calc(100% - 0.36rem);
+  border: 0;
+  background: rgba(247, 241, 227, 0.86);
+  color: #1E1E1A;
+  padding: 0.18rem 0.22rem;
+  font-size: clamp(0.48rem, 0.9vw, 0.68rem);
+  line-height: 1.05;
+  text-align: left;
+}
+
+.physical-playground-object-label b {
+  color: #3A6B5E;
+  font-size: 0.58rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.physical-playground-object.is-complete,
+.physical-playground-hotspot.is-complete,
+.physical-playground-step.is-complete,
+.physical-playground-scene-link.is-complete {
+  border-color: #3A6B5E;
+  background: transparent;
+  box-shadow: none;
+}
+
+.physical-playground-scene-link {
+  border: 0;
+  background: transparent;
+  color: #1E1E1A;
+  box-shadow: none;
+  z-index: 22;
+}
+
+.physical-playground-scene-link:hover,
+.physical-playground-scene-link:focus-visible {
+  background: transparent;
+}
+
+.physical-playground-scene-link.is-locked {
+  background: transparent;
+  color: #1E1E1A;
+  border: 0;
+  box-shadow: none;
+}
+
+.physical-playground-scene-link.is-locked .physical-playground-object-label {
+  opacity: 1;
+}
+
+.physical-playground-object.is-placed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.physical-playground-target {
+  position: absolute;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1E1E1A;
+  font-size: clamp(0.55rem, 1.1vw, 0.75rem);
+  font-weight: 800;
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-unit--pressure_site {
+  z-index: 25;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-unit--site_cleaned {
+  z-index: 26;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-unit--pressure_site.has-placement {
+  z-index: 14;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-unit--hold_pressure {
+  z-index: 20;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-target.is-active-drop-target {
+  z-index: 40;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-target.is-completed-target {
+  pointer-events: none;
+  z-index: 12;
+}
+
+.physical-playground-control {
+  position: absolute;
+  border: 1px solid #000000;
+  background: rgba(239, 232, 210, 0.9);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  justify-content: center;
+  font-size: clamp(0.55rem, 1vw, 0.72rem);
+  font-weight: 800;
+  color: #1E1E1A;
+}
+
+.physical-playground-control input {
+  width: 100%;
+  accent-color: #3A6B5E;
+}
+
+.physical-playground-control.is-disabled {
+  opacity: 0.58;
+}
+
+.physical-playground-control.is-disabled input {
+  cursor: not-allowed;
+}
+
+.physical-playground-control b {
+  font-size: 0.7rem;
+  color: #3A6B5E;
+}
+
+.physical-playground-stage--scene2_reassessment_reminder .physical-playground-control {
+  padding: 0.28rem 0.34rem;
+  gap: 0.12rem;
+  font-size: clamp(0.5rem, 0.88vw, 0.66rem);
+}
+
+.physical-playground-stage--scene2_reassessment_reminder .physical-playground-control b {
+  font-size: 0.66rem;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot,
+.physical-playground-stage--scene2_assessment .physical-playground-target,
+.physical-playground-stage--scene2_assessment .physical-playground-step {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object:hover,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot:hover,
+.physical-playground-stage--scene2_assessment .physical-playground-step:hover,
+.physical-playground-stage--scene2_assessment .physical-playground-object:focus-visible,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot:focus-visible,
+.physical-playground-stage--scene2_assessment .physical-playground-step:focus-visible {
+  background: transparent;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  max-width: 100%;
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.36rem 0.48rem;
+  font-size: clamp(0.56rem, 1vw, 0.78rem);
+  line-height: 1.1;
+  text-align: center;
+  align-items: center;
+}
+
+.physical-playground-stage--scene2_med_pass .physical-playground-object-label {
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.36rem 0.48rem;
+  font-size: clamp(0.56rem, 1vw, 0.78rem);
+  line-height: 1.1;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object-label,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object-label,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object-label,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object-label,
+.physical-playground-stage--scene4_stabilize .physical-playground-object-label {
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.32rem 0.42rem;
+  font-size: clamp(0.52rem, 0.92vw, 0.72rem);
+  line-height: 1.08;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object-label b {
+  color: #3A6B5E;
+  font-size: 0.54rem;
+}
+
+.physical-playground-stage--scene2_med_pass .physical-playground-object-label b {
+  color: #3A6B5E;
+  font-size: 0.54rem;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object-label b,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object-label b,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object-label b,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object-label b,
+.physical-playground-stage--scene4_stabilize .physical-playground-object-label b {
+  color: #3A6B5E;
+  font-size: 0.52rem;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.has-stage-asset,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.has-stage-asset,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.has-stage-asset,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.has-stage-asset {
+  overflow: visible;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset {
+  pointer-events: none;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset .physical-playground-object-label {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset .physical-playground-object-label:active {
+  cursor: grabbing;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.has-stage-asset img,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset img,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.has-stage-asset img,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.has-stage-asset img,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.has-stage-asset img {
+  filter: drop-shadow(2px 3px 2px rgba(30, 30, 26, 0.28));
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.has-stage-asset .physical-playground-object-label,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.has-stage-asset .physical-playground-object-label,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.has-stage-asset .physical-playground-object-label,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.has-stage-asset .physical-playground-object-label,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.has-stage-asset .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: -1.25rem;
+  transform: translateX(-50%);
+  max-width: 8.5rem;
+  text-align: center;
+  align-items: center;
+}
+
+.physical-playground-stage--scene3_label_specimen .physical-playground-unit--bedside_label_apply {
+  align-items: center;
+  cursor: grab;
+}
+
+.physical-playground-stage--scene3_label_specimen .physical-playground-unit--bedside_label_apply:active {
+  cursor: grabbing;
+}
+
+.physical-playground-stage--scene3_label_specimen .physical-playground-unit--bedside_label_apply .physical-playground-object-label {
+  top: calc(100% - 0.04rem);
+  bottom: auto;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.physical-playground-stage--scene3_label_specimen .physical-playground-unit--bedside_label_apply .physical-playground-object-label:active {
+  cursor: grabbing;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-target .physical-playground-object-label,
+.physical-playground-stage--scene3_perform_draw .physical-playground-target .physical-playground-object-label,
+.physical-playground-stage--scene3_label_specimen .physical-playground-target .physical-playground-object-label,
+.physical-playground-stage--scene3_dispose_send .physical-playground-target .physical-playground-object-label,
+.physical-playground-stage--scene4_stabilize .physical-playground-target .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  max-width: calc(100% - 0.4rem);
+  text-align: center;
+  align-items: center;
+  opacity: 0.82;
+}
+
+.physical-playground-stage--scene4_stabilize .physical-playground-control {
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.32rem 0.4rem;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-holdable,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.is-holdable,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.is-holdable,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.is-holdable,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.is-holdable,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step,
+.physical-playground-stage--scene3_perform_draw .physical-playground-step,
+.physical-playground-stage--scene3_label_specimen .physical-playground-step,
+.physical-playground-stage--scene3_dispose_send .physical-playground-step,
+.physical-playground-stage--scene4_stabilize .physical-playground-step {
+  touch-action: none;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-holdable:active .physical-playground-object-label,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.is-holdable:active .physical-playground-object-label,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.is-holdable:active .physical-playground-object-label,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.is-holdable:active .physical-playground-object-label,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.is-holdable:active .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step:active .physical-playground-object-label,
+.physical-playground-stage--scene3_perform_draw .physical-playground-step:active .physical-playground-object-label,
+.physical-playground-stage--scene3_label_specimen .physical-playground-step:active .physical-playground-object-label,
+.physical-playground-stage--scene3_dispose_send .physical-playground-step:active .physical-playground-object-label,
+.physical-playground-stage--scene4_stabilize .physical-playground-step:active .physical-playground-object-label {
+  background: #3A6B5E;
+  color: #F7F1E3;
+}
+
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-holdable:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_perform_draw .physical-playground-object.is-holdable:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_label_specimen .physical-playground-object.is-holdable:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_dispose_send .physical-playground-object.is-holdable:active .physical-playground-object-label b,
+.physical-playground-stage--scene4_stabilize .physical-playground-object.is-holdable:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_perform_draw .physical-playground-step:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_label_specimen .physical-playground-step:active .physical-playground-object-label b,
+.physical-playground-stage--scene3_dispose_send .physical-playground-step:active .physical-playground-object-label b,
+.physical-playground-stage--scene4_stabilize .physical-playground-step:active .physical-playground-object-label b {
+  color: #F7F1E3;
+}
+
+.physical-playground-stage--scene2_administer_meds .physical-playground-target .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  max-width: calc(100% - 0.4rem);
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.28rem 0.36rem;
+  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
+  line-height: 1.08;
+  text-align: center;
+  align-items: center;
+}
+
+.physical-playground-stage--scene2_administer_meds .physical-playground-object.has-stage-asset .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: -1.35rem;
+  transform: translateX(-50%);
+  max-width: 10rem;
+  text-align: center;
+  align-items: center;
+}
+
+.physical-playground-stage--scene2_reassessment_reminder .physical-playground-object-label {
+  left: 50%;
+  right: auto;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  max-width: calc(100% - 0.3rem);
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.96);
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.28rem 0.34rem;
+  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
+  line-height: 1.08;
+  text-align: center;
+  align-items: center;
+}
+
+.physical-playground-stage--scene2_reassessment_reminder .physical-playground-object.is-complete .physical-playground-object-label {
+  opacity: 0.58;
+}
+
+.physical-playground-post-stage-hint {
+  color: #1E1E1A;
+  padding: 0.1rem 0.15rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.physical-playground-post-stage-lead,
+.physical-playground-inline-choice p {
+  margin: 0;
+  color: #1E1E1A;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.physical-playground-post-stage-body {
+  margin-top: 0.65rem;
+  font-weight: 400;
+}
+
+.physical-playground-inline-choice {
+  display: block;
+}
+
+.physical-playground-inline-choice p {
+  padding: 0.1rem 0.15rem;
+  margin-bottom: 0.45rem;
+}
+
+.physical-playground-inline-choice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.physical-playground-inline-choice-buttons button {
+  border: 1px solid #000000;
+  background: #F7F1E3;
+  color: #1E1E1A;
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.34rem 0.48rem;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.physical-playground-inline-choice-buttons button.is-selected {
+  background: #3A6B5E;
+  color: #F7F1E3;
+}
+
+.physical-playground-stage-selected-list {
+  position: absolute;
+  left: 56%;
+  top: 28%;
+  width: 22%;
+  min-height: 15%;
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.38rem 0.45rem;
+  color: #1E1E1A;
+  font-size: clamp(0.48rem, 0.85vw, 0.66rem);
+  font-weight: 800;
+  line-height: 1.22;
+  opacity: 1;
+  z-index: 18;
+}
+
+.physical-playground-stage-selected-list b {
+  display: block;
+  color: #3A6B5E;
+  font-size: clamp(0.46rem, 0.78vw, 0.6rem);
+  text-transform: uppercase;
+  margin-bottom: 0.22rem;
+}
+
+.physical-playground-stage-selected-list ol {
+  margin: 0;
+  padding-left: 0.95rem;
+}
+
+.physical-playground-stage-selected-list span {
+  color: #1E1E1A;
+}
+
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-holdable {
+  touch-action: none;
+}
+
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-holdable:active .physical-playground-object-label {
+  background: #3A6B5E;
+  color: #F7F1E3;
+}
+
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-holdable:active .physical-playground-object-label b {
+  color: #F7F1E3;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-unit--review_orders .physical-playground-object-label {
+  left: auto;
+  right: 100%;
+  bottom: 50%;
+  transform: translateY(50%);
+  margin-right: 0.35rem;
+  max-width: 8rem;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-unit--place_call_light .physical-playground-object-label {
+  left: auto;
+  right: -1.25rem;
+  bottom: 42%;
+  transform: translateY(50%);
+  max-width: 9rem;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.is-complete,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.is-complete,
+.physical-playground-stage--scene2_assessment .physical-playground-step.is-complete {
+  border-color: transparent;
+  background: transparent;
+}
+
+.physical-playground-object.is-complete .physical-playground-object-label,
+.physical-playground-hotspot.is-complete .physical-playground-object-label,
+.physical-playground-step.is-complete .physical-playground-object-label,
+.physical-playground-scene-link.is-complete .physical-playground-object-label {
+  opacity: 0.58;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.has-stage-asset,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.has-stage-asset {
+  overflow: visible;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.has-stage-asset img,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.has-stage-asset img {
+  filter: drop-shadow(2px 2px 0 rgba(30, 30, 26, 0.55));
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.has-stage-asset:hover img,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.has-stage-asset:hover img,
+.physical-playground-stage--scene2_assessment .physical-playground-object.has-stage-asset:focus-visible img,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.has-stage-asset:focus-visible img {
+  outline: 2px solid #1E1E1A;
+  outline-offset: 2px;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-unit--place_call_light.is-placed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-target {
+  color: transparent;
+  pointer-events: auto;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-unit--call_light_reach {
+  border: 2px dashed rgba(58, 107, 94, 0.88);
+  background: rgba(247, 241, 227, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(247, 241, 227, 0.62);
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-unit--call_light_reach .physical-playground-object-label {
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  max-width: calc(100% - 0.3rem);
+  padding: 0.22rem 0.28rem;
+  color: #1E1E1A;
+  font-size: clamp(0.5rem, 0.9vw, 0.66rem);
+  line-height: 1.05;
+}
+
+.physical-playground-dev-zone {
+  position: absolute;
+  border: 1px dashed rgba(199, 84, 72, 0.9);
+  background: rgba(242, 235, 217, 0.18);
+  color: #C75448;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 0.2rem;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.physical-playground-cart-supply {
+  position: absolute;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 2px rgba(30, 30, 26, 0.32));
+  transform-origin: center center;
+}
+
+.physical-playground-tablet-overlay {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(3px 4px 5px rgba(30, 30, 26, 0.32));
+  transform-origin: center center;
+}
+
+.physical-playground-tablet-overlay img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.physical-playground-tablet-screen {
+  position: absolute;
+  left: 34%;
+  top: 16%;
+  width: 32%;
+  height: 67%;
+  border: 1px solid rgba(30, 30, 26, 0.65);
+  border-radius: 3px;
+  background: #F7F1E3;
+  color: #1E1E1A;
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  padding: 0.16rem;
+  font-size: clamp(0.26rem, 0.55vw, 0.48rem);
+  font-weight: 800;
+  line-height: 1.04;
+  overflow: hidden;
+}
+
+.physical-playground-tablet-screen b {
+  color: #3A6B5E;
+  font-size: 1.05em;
+  line-height: 1;
+  border-bottom: 1px solid rgba(58, 107, 94, 0.5);
+  padding-bottom: 0.12rem;
+  margin-bottom: 0.06rem;
+}
+
+.physical-playground-tablet-screen span {
+  border-bottom: 1px solid rgba(205, 191, 148, 0.58);
+  padding-bottom: 0.06rem;
+}
+
+.physical-playground-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.physical-playground-checklist span {
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  color: #1E1E1A;
+  padding: 0.28rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.physical-playground-checklist span.is-complete {
+  background: #D2A39A;
+}
+
+.physical-playground-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 26, 0.55);
+  padding: 1rem;
+}
+
+.physical-playground-modal {
+  width: min(620px, 100%);
+  max-height: min(760px, calc(100dvh - 2rem));
+  overflow: auto;
+  border: 1px solid #000000;
+  box-shadow: 8px 8px 0 #000000;
+  background: #F7F1E3;
+  color: #1E1E1A;
+}
+
+.physical-playground-modal.has-reference {
+  width: min(900px, 100%);
+}
+
+.physical-playground-modal.has-embedded-scene {
+  width: min(1120px, 100%);
+}
+
+.physical-playground-embedded-modal-body {
+  padding: 0.875rem;
+}
+
+.physical-playground-embedded-content h1 {
+  font-size: 1rem !important;
+}
+
+.physical-playground-embedded-content .physical-playground {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  box-shadow: none;
+}
+
+.physical-playground-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid #000000;
+  background: #EFE8D2;
+  padding: 0.75rem 0.875rem;
+}
+
+.physical-playground-modal-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.physical-playground-modal-header button {
+  border: 1px solid #000000;
+  background: #F2EBD9;
+  color: #1E1E1A;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.physical-playground-modal img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  background: #E8DCC8;
+  border-bottom: 1px solid #000000;
+}
+
+.physical-playground-modal .physical-playground-stage img {
+  max-height: none;
+  background: transparent;
+  border-bottom: 0;
+}
+
+.physical-playground-modal-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-bottom: 1px solid #000000;
+  background: #E8DCC8;
+}
+
+.physical-playground-modal-evidence.has-reference {
+  grid-template-columns: minmax(360px, 1fr) minmax(230px, 270px);
+  align-items: stretch;
+}
+
+.physical-playground-modal-evidence .physical-playground-modal-image-wrap,
+.physical-playground-modal-evidence .physical-playground-asset-placeholder {
+  border-bottom: 0;
+}
+
+.physical-playground-modal-image-wrap {
+  position: relative;
+  background: #E8DCC8;
+  border-bottom: 1px solid #000000;
+}
+
+.physical-playground-modal-image-wrap img {
+  border-bottom: 0;
+}
+
+.physical-playground-image-hold-target {
+  position: absolute;
+  border: 2px dashed #3F605C;
+  border-radius: 999px;
+  background: rgba(247, 241, 227, 0.3);
+  color: #1E1E1A;
+  box-shadow: 2px 2px 0 #1E1E1A;
+  font-family: inherit;
+  font-size: clamp(0.55rem, 1.25vw, 0.75rem);
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  text-transform: uppercase;
+  touch-action: none;
+}
+
+.physical-playground-image-hold-target.is-complete {
+  border-color: #3A6B5E;
+  background: rgba(58, 107, 94, 0.24);
+  box-shadow: none;
+}
+
+.physical-playground-image-hold-target.is-active {
+  background: rgba(58, 107, 94, 0.18);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #1E1E1A;
+}
+
+.physical-playground-image-hold-fallback {
+  width: min(24rem, 100%);
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.physical-playground-image-hold-target.is-fallback {
+  position: static;
+  min-height: 3rem;
+  width: 100%;
+  border-radius: 0;
+  background: #F2EBD9;
+  text-transform: none;
+  font-size: 0.86rem;
+}
+
+.physical-playground-image-hold-hint {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  max-width: min(460px, calc(100% - 1.5rem));
+  border: 1px solid #000000;
+  background: rgba(247, 241, 227, 0.94);
+  color: #1E1E1A;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.physical-playground-image-hold-hint.is-complete {
+  border-color: #3A6B5E;
+  background: rgba(239, 232, 210, 0.96);
+  color: #3A6B5E;
+}
+
+.physical-playground-image-hold-hint.is-fallback {
+  position: static;
+  max-width: none;
+}
+
+.physical-playground-image-select-item {
+  position: absolute;
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  color: #1E1E1A;
+  box-shadow: 3px 3px 0 #000000;
+  font-family: inherit;
+  font-size: clamp(0.58rem, 1.05vw, 0.82rem);
+  font-weight: 900;
+  line-height: 1.1;
+  padding: 0.45rem 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.physical-playground-image-select-item.is-selected {
+  background: #3A6B5E;
+  color: #F7F1E3;
+  box-shadow: none;
+}
+
+.physical-playground-image-checkmark {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000000;
+  background: #3A6B5E;
+  color: #F7F1E3;
+  box-shadow: none;
+  border-radius: 999px;
+  font-size: clamp(0.68rem, 1.15vw, 0.95rem);
+  font-weight: 950;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.physical-playground-image-select-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem 0;
+}
+
+.physical-playground-image-select-list button {
+  border: 1px solid #000000;
+  background: #F2EBD9;
+  color: #1E1E1A;
+  box-shadow: 2px 2px 0 #000000;
+  padding: 0.45rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.physical-playground-image-select-list button.is-selected {
+  background: #3A6B5E;
+  color: #F7F1E3;
+  box-shadow: none;
+}
+
+.physical-playground-modal-reference-card {
+  border-left: 1px solid #000000;
+  background: #F7F1E3;
+  color: #1E1E1A;
+  padding: 0.875rem;
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+}
+
+.physical-playground-modal-reference-card h3 {
+  margin: 0;
+  color: #3A6B5E;
+  font-size: 0.76rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.physical-playground-modal-reference-card div {
+  white-space: pre-wrap;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  font-weight: 720;
+}
+
+.physical-playground-modal-reference-card img {
+  width: 100%;
+  max-height: none;
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  object-fit: contain;
+}
+
+.physical-playground-modal-reference-card .physical-playground-asset-placeholder {
+  min-height: 260px;
+  border: 1px solid #000000;
+}
+
+.physical-playground-modal-reference-trigger {
+  padding: 0.875rem 1rem 0;
+}
+
+.physical-playground-modal-reference-trigger button {
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  color: #1E1E1A;
+  box-shadow: 3px 3px 0 #000000;
+  padding: 0.55rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.physical-playground-reference-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 26, 0.68);
+  padding: 1rem;
+}
+
+.physical-playground-reference-modal {
+  width: min(620px, 100%);
+  max-height: min(820px, calc(100dvh - 2rem));
+  overflow: auto;
+  border: 1px solid #000000;
+  box-shadow: 8px 8px 0 #000000;
+  background: #F7F1E3;
+  color: #1E1E1A;
+}
+
+.physical-playground-reference-modal img {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 7rem);
+  object-fit: contain;
+  background: #EFE8D2;
+}
+
+.physical-playground-modal p {
+  margin: 0;
+  padding: 1rem;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.physical-playground-match-surfaces {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  padding: 0 1rem 1rem;
+}
+
+.physical-playground-match-surfaces div {
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  padding: 0.75rem;
+  min-height: 104px;
+}
+
+.physical-playground-match-surfaces b {
+  display: block;
+  color: #3A6B5E;
+  font-size: 0.75rem;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+.physical-playground-match-surfaces span {
+  display: block;
+  white-space: pre-wrap;
+  color: #1E1E1A;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.physical-playground-rpg-panel {
+  margin: 0 1rem 1rem;
+  border: 1px solid #000000;
+  background: #EFE8D2;
+  color: #1E1E1A;
+  padding: 0.875rem;
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.physical-playground-rpg-panel blockquote {
+  margin: 0;
+  border-left: 4px solid #C75448;
+  padding-left: 0.75rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.physical-playground-rpg-panel blockquote b {
+  color: #3A6B5E;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.physical-playground-observation-field {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0 1rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #3A6B5E;
+}
+
+.physical-playground-observation-field textarea {
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  border: 1px solid #000000;
+  background: #FFF8E8;
+  color: #1E1E1A;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: 0.65rem;
+}
+
+.physical-playground-voice-panel {
+  margin: 0 1rem 1rem;
+  border: 1px solid #000000;
+  background: #FFF8E8;
+  color: #1E1E1A;
+  box-shadow: 4px 4px 0 #000000;
+  padding: 0.875rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.physical-playground-voice-panel.is-error {
+  color: #9b2d20;
+  font-weight: 800;
+}
+
+.physical-playground-voice-notes {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: #F7F1E3;
+  padding: 0.7rem 0.8rem;
+  display: grid;
+  gap: 0.45rem;
+  align-content: start;
+  min-height: 190px;
+}
+
+.physical-playground-voice-notes b {
+  color: #3A6B5E;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.physical-playground-voice-notes span {
+  white-space: pre-wrap;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.physical-playground-voice-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.78rem;
+}
+
+.physical-playground-voice-status div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.physical-playground-voice-status b {
+  font-size: 0.9rem;
+}
+
+.physical-playground-voice-status span {
+  color: #555555;
+}
+
+.physical-playground-voice-main {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.physical-playground-voice-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+}
+
+.physical-playground-voice-controls button {
+  border: 1px solid #000000;
+  background: #F2EBD9;
+  color: #1E1E1A;
+  box-shadow: 3px 3px 0 #000000;
+  padding: 0.5rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.physical-playground-voice-controls button.is-primary {
+  background: #3A6B5E;
+  color: #ffffff;
+}
+
+.physical-playground-voice-transcript {
+  min-height: 128px;
+  height: 240px;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: #F7F1E3;
+  padding: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.physical-playground-voice-transcript .is-empty {
+  color: #666666;
+  font-size: 0.8rem;
+}
+
+.physical-playground-voice-transcript div {
+  max-width: 88%;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.physical-playground-voice-transcript div.is-user {
+  align-self: flex-end;
+}
+
+.physical-playground-voice-transcript div.is-npc {
+  align-self: flex-start;
+}
+
+.physical-playground-voice-transcript b {
+  font-size: 0.68rem;
+  color: #555555;
+}
+
+.physical-playground-voice-transcript div > span {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: #F2EBD9;
+  padding: 0.48rem 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.physical-playground-voice-transcript .is-user > span {
+  background: #B87D6B;
+  color: #F2EBD9;
+}
+
+.physical-playground-voice-transcript .is-live > span {
+  border-style: dashed;
+}
+
+.physical-playground-voice-hint {
+  margin: 0;
+  padding: 0;
+  color: #666666;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .physical-playground-voice-main {
+    grid-template-columns: 1fr;
+  }
+
+  .physical-playground-voice-notes {
+    min-height: 0;
+  }
+
+  .physical-playground-voice-transcript {
+    height: 220px;
+  }
+}
+
+.physical-playground-modal-actions {
+  border-top: 1px solid #000000;
+  background: #EFE8D2;
+  padding: 0.875rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+.physical-playground-modal-actions div {
+  flex-basis: 100%;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #3A6B5E;
+}
+
+.physical-playground-modal-actions button {
+  border: 1px solid #000000;
+  background: #F2EBD9;
+  color: #1E1E1A;
+  box-shadow: 3px 3px 0 #000000;
+  padding: 0.55rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.physical-playground-modal-actions button:disabled {
+  background: #CDBF94;
+  color: rgba(30, 30, 26, 0.7);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .physical-playground-modal-evidence.has-reference {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .physical-playground-modal-reference-card {
+    border-left: 0;
+    border-top: 1px solid #000000;
+  }
+
+  .voice-meeting-workspace:not(.voice-meeting-workspace--solo) {
+    grid-template-columns: minmax(0, 1fr) 112px;
+    gap: 0.375rem;
+  }
+
+  .voice-meeting-inperson-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,35 @@
+# Scene Blueprint — consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior
+
+Use this as the Phase 2 approval artifact before scaffolding. It shows the practical chain that reduces manual repair: visible input artifact → student action → output artifact → rubric evidence.
+
+## Work Mix
+
+- Summary: Sources describe entry-level management consulting as a desk-tool role dominated by gathering information, working with spreadsheets and documents, analyzing messy business data, writing recommendations, and communicating with managers and clients. O*NET emphasizes gathering/organizing information, analyzing data, documenting findings, preparing recommendations, email, phone conversations, face-to-face discussions, and computer work. The manual YouTube notes and Reddit digest emphasize Excel-to-PowerPoint production, manager feedback, client calls with caveats, and fast context switching under ambiguity.
+- `physicalProceduralTool`: rare — No physical_playground scenes are needed; realism should come from concrete digital artifacts and communication surfaces.
+- `digitalToolArtifactWork`: dominant — Most active scenes should happen inside realistic work surfaces: source packet, Notion/doc notes, Miro-style matrix, spreadsheet-style findings, Slack, and slide notes.
+- `cognitiveAnalysisDecision`: major — The player must frame hypotheses, prioritize ambiguous inputs, separate evidence from implication, and decide how much confidence is justified.
+- `writtenDocumentationArtifact`: major — The simulator should require typed consultant artifacts rather than reflection-only answers.
+- `spokenInterpersonalCommunication`: secondary — Include one remote voice meeting with a client plus asynchronous Slack manager communication.
+- `passiveMonitoringWaitingContextSwitching`: secondary — Context switching appears through deadlines, incoming client/manager messages, and triage, but passive waiting should not dominate active play.
+
+## Scene Table
+
+| Scene | Type / Surface | Visible Inputs | Student Action | Output Artifact | Rubric Evidence | Next |
+| --- | --- | --- | --- | --- | --- | --- |
+| `intro`<br>Welcome to Aster Lane | `intro` | — | — | — | not explicitly mapped | briefing_morning |
+| `briefing_morning`<br>Client Files Arrive | `briefing` | HarborMart source packet | — | — | not explicitly mapped | first_move |
+| `first_move`<br>Reply With Your First Move | `multiple_choice` / `slack` | HarborMart source packet (briefing_morning.referenceContent) | Choose the first Slack response that sets up credible consultant work. | First-move Slack choice | First-Move Judgment | branch: analysis_first->redirect_analysis, polish_first->redirect_polish, question_dump->redirect_questions, background_first->redirect_background |
+| `redirect_analysis`<br>Priya Greenlights the Structure | `briefing` | — | — | — | not explicitly mapped | case_packet_review |
+| `redirect_polish`<br>A Pretty Blank Slide | `briefing` | — | — | — | not explicitly mapped | case_packet_review |
+| `redirect_questions`<br>Questions Need a Spine | `briefing` | — | — | — | not explicitly mapped | case_packet_review |
+| `redirect_background`<br>Context Without an Answer | `briefing` | — | — | — | not explicitly mapped | case_packet_review |
+| `case_packet_review`<br>Write the Packet Readout | `free_text` / `notion` | tab: Case brief, tab: KPI extract, tab: Metric definitions, tab: Priya's bar, Case brief (briefing_morning.referenceContent and case_packet_review.appTabs.case_brief), KPI extract (briefing_morning.referenceContent and case_packet_review.appTabs.kpi_extract), Metric definitions (briefing_morning.referenceContent and case_packet_review.appTabs.metric_definitions) | Read the visible source tabs and write a concise packet readout. | Packet readout note | First-Move Judgment | issue_tree |
+| `issue_tree`<br>Build the First-Cut Issue Tree | `structured_entry` / `notion` | Case brief (briefing_morning.referenceContent and case_packet_review.appTabs.case_brief), KPI extract (briefing_morning.referenceContent and case_packet_review.appTabs.kpi_extract), Metric definitions (briefing_morning.referenceContent and case_packet_review.appTabs.metric_definitions), Student packet readout (case_packet_review output and section briefing drawer) | Transform source facts into testable issue-tree branches. | Issue tree rows | Issue Tree Quality | data_triage |
+| `data_triage`<br>Triage the Input Dump | `priority_matrix` / `miro` | Triage criteria, Case brief (briefing_morning.referenceContent and case_packet_review.appTabs.case_brief), KPI extract (briefing_morning.referenceContent and case_packet_review.appTabs.kpi_extract), Metric definitions (briefing_morning.referenceContent and case_packet_review.appTabs.metric_definitions), Triage criteria (data_triage.referenceContent and scene content) | Place every incoming issue on an urgency/decision-impact matrix and explain the first action. | Completed triage matrix plus rationale | Data Triage | client_call_prep |
+| `client_call_prep`<br>Prepare for Marcus | `free_text` / `notion` | tab: Current findings, tab: Definitions, tab: Triage criteria, Current findings (client_call_prep.appTabs.current_findings) | Prepare compact client-call talking points and questions from visible source facts. | Client call prep note | Client Call Handling | client_call |
+| `client_call`<br>Client Call with HarborMart Ops | `voice_meeting` | Compact call reference, prep note from `client_call_prep`, Student call prep (client_call.prepNoteKey), Compact call reference (client_call.prepReferenceContent) | Speak with the client and clarify the missing inputs without over-claiming. | Voice transcript | Client Call Handling | analysis_findings |
+| `analysis_findings`<br>Synthesize the Store Analysis | `structured_entry` / `spreadsheet` | Current analysis notes (analysis_findings.content) | Convert source data and client-call information into evidence/implication/caveat findings. | Structured findings table | Analytical Synthesis | manager_slack |
+| `manager_slack`<br>Update the Engagement Manager | `slack_thread` / `slack` | Student findings (previous scene output), Client-call transcript (prior voice meeting transcript) | Send a concise answer-first manager update in Slack. | Manager Slack reply | Manager Communication | slide_draft |
+| `slide_draft`<br>Draft the Client-Ready Slide Note | `free_text` / `doc` | tab: Slide inputs, tab: Findings, tab: Priya's bar, Slide inputs (slide_draft.appTabs.slide_inputs) | Draft a conclusion-style slide headline and speaker note. | Slide headline and speaker note | Slide-Ready Storytelling | grading |
+| `grading`<br>End of Consulting Day | `grading` | — | — | — | not explicitly mapped | final_report |
+| `final_report`<br>Final Report | `final_report` | — | — | — | not explicitly mapped | null |

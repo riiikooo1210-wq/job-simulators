@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:30:10+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene_03_ballroom_setup",
+  "itemId": "guest_book",
+  "promptHash": "90597c2754458fc8",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/wedding-planner-general-wedding-planning-most-common-responsibilities-wedding-venue-mid-sized-venue-business-mid-level/ACTION_ASSETS.md"
+}

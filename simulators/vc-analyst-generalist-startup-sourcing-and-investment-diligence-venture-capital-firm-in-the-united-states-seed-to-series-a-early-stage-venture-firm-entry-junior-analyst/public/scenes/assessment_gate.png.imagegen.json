@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:20:09+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "1faaacde92473c97",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst/src/data/scene-config.json"
+}

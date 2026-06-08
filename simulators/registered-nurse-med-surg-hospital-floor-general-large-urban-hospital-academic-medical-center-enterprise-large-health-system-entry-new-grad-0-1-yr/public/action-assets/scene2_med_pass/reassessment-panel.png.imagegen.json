@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T15:35:39+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene2_reassessment_reminder",
+  "itemId": "reassessment-panel",
+  "promptHash": "3f2179018532ed98",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/room-512.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/ACTION_ASSETS.md"
+}

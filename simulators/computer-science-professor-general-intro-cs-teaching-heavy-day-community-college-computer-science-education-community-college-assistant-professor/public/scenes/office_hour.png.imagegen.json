@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-19T04:46:57+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "office_hour",
+  "itemId": "office_hour",
+  "promptHash": "e9b116d484165734",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/public/visual-refs/npcs/jayden.png",
+    "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/public/visual-refs/locations/faculty-office.png"
+  ],
+  "sourceFile": "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/IMAGE_PROMPTS.md"
+}

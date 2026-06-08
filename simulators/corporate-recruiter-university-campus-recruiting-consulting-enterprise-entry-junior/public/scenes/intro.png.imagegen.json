@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T04:57:28+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "intro",
+  "itemId": "intro",
+  "promptHash": "a2f342521822c64c",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/locations/player-desk-stratosphere.png"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

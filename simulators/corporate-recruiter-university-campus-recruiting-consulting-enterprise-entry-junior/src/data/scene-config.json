@@ -1,0 +1,664 @@
+{
+  "storyline": {
+    "gameTitle": "Corporate Recruiter Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Planning & Strategy"
+      },
+      {
+        "num": 2,
+        "label": "Execution & Communication"
+      },
+      {
+        "num": 3,
+        "label": "Problem-Solving"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Stratosphere Consulting",
+        "content": "You are a University Recruiter at Stratosphere Consulting, six months into your first recruiting job after graduating. It's a busy Tuesday morning, and your day is about to kick off.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "An illustration of a modern, open-plan corporate office for a consulting firm. Sunlight streams in through large windows. In the foreground, a person's hands are on a keyboard, with a laptop showing a welcome email from 'Stratosphere Consulting'.",
+        "next": "scene_1"
+      },
+      "scene_1": {
+        "id": "scene_1",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "The Morning Rush",
+        "appWindow": "slack",
+        "windowTitle": "#talent-acquisition · channel",
+        "content": "You've just logged on. Your {{Applicant Tracking System (ATS)}} dashboard shows a dozen new applications for your active roles. You also have an automated email notifying you that a new {{requisition (req)}} has been assigned to you: a Financial Analyst role for Eleanor Vance's team. Your manager, Priya, Slacks you.",
+        "slackMessages": [
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:05 AM",
+            "content": "Morning! Big day. How are you prioritizing the morning?",
+            "avatarInitials": "P"
+          }
+        ],
+        "prompt": "Choose the response you'd send to Priya.",
+        "isPivot": true,
+        "options": [
+          {
+            "id": "sourcing_first",
+            "label": "Immediately start {{sourcing}} for Eleanor's new role to get ahead.",
+            "branchFlag": "sourcing_first"
+          },
+          {
+            "id": "review_first",
+            "label": "Review the new applications for my other roles first, then prep for Eleanor's {{intake call}}.",
+            "branchFlag": "review_first"
+          },
+          {
+            "id": "balanced_approach",
+            "label": "Schedule the {{intake call}} with Eleanor, review new applicants, and prep for this afternoon's {{phone screen}}.",
+            "branchFlag": "balanced_approach"
+          },
+          {
+            "id": "ask_eleanor",
+            "label": "Ask Eleanor for a good time to connect and then focus on my existing candidate pipeline.",
+            "branchFlag": "ask_eleanor"
+          }
+        ],
+        "next": {
+          "branchOn": "scene_1",
+          "cases": {
+            "sourcing_first": "scene_1_sourcing_first",
+            "review_first": "scene_1_review_first",
+            "balanced_approach": "scene_1_balanced_approach",
+            "ask_eleanor": "scene_1_ask_eleanor"
+          },
+          "default": "scene_1_balanced_approach"
+        },
+        "illustration": "/scenes/scene_1.png"
+      },
+      "scene_1_sourcing_first": {
+        "id": "scene_1_sourcing_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Redirects You",
+        "content": "You start to open LinkedIn Recruiter, but Priya catches the risk immediately. Sourcing before the {{intake call}} means you would be guessing at Eleanor's real needs and could waste the first candidate batch on the wrong profile. You pause, send Eleanor a specific 10:00 AM invite, and use the next few minutes to prepare sharper discovery questions.",
+        "slackMessages": [
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:05 AM",
+            "content": "Morning! Big day. How are you prioritizing the morning?",
+            "avatarInitials": "P"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "University Recruiter",
+            "timestamp": "9:06 AM",
+            "content": "{{mc.scene_1.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:07 AM",
+            "content": "Hold off on {{sourcing}} until you know what Eleanor actually needs. Get the {{intake call}} on the calendar first, then use the JD to prep questions.",
+            "avatarInitials": "P"
+          }
+        ],
+        "next": "scene_2"
+      },
+      "scene_1_review_first": {
+        "id": "scene_1_review_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Tightens the Plan",
+        "content": "Reviewing overnight applicants is useful, but leaving Eleanor's new {{requisition (req)}} unscheduled would create avoidable delay. You block 10:00 AM for the {{intake call}}, then skim the applicant queue for urgent follow-ups before shifting into prep.",
+        "slackMessages": [
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:05 AM",
+            "content": "Morning! Big day. How are you prioritizing the morning?",
+            "avatarInitials": "P"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "University Recruiter",
+            "timestamp": "9:06 AM",
+            "content": "{{mc.scene_1.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:07 AM",
+            "content": "Candidate review matters, but don't let the new req sit loose. Send Eleanor a concrete time now, then triage the overnight applications.",
+            "avatarInitials": "P"
+          }
+        ],
+        "next": "scene_2"
+      },
+      "scene_1_balanced_approach": {
+        "id": "scene_1_balanced_approach",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Confirms the Plan",
+        "content": "Priya gives you the green light. This is the strongest morning plan: lock the {{intake call}} before anyone's calendar fills, keep the existing applicant pipeline moving, and protect time to prepare for the scheduled {{phone screen}}.",
+        "slackMessages": [
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:05 AM",
+            "content": "Morning! Big day. How are you prioritizing the morning?",
+            "avatarInitials": "P"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "University Recruiter",
+            "timestamp": "9:06 AM",
+            "content": "{{mc.scene_1.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:07 AM",
+            "content": "Exactly. Get Eleanor scheduled, keep the existing pipeline moving, and don't walk into that {{phone screen}} cold.",
+            "avatarInitials": "P"
+          }
+        ],
+        "next": "scene_2"
+      },
+      "scene_1_ask_eleanor": {
+        "id": "scene_1_ask_eleanor",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Makes It More Specific",
+        "content": "Asking Eleanor when she is free is directionally right, but a vague availability question can stall with a busy stakeholder. You tighten it into a specific 10:00 AM {{intake call}} invite and then turn back to your existing pipeline.",
+        "slackMessages": [
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:05 AM",
+            "content": "Morning! Big day. How are you prioritizing the morning?",
+            "avatarInitials": "P"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "University Recruiter",
+            "timestamp": "9:06 AM",
+            "content": "{{mc.scene_1.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Priya Sharma",
+            "role": "Recruiting Manager",
+            "timestamp": "9:07 AM",
+            "content": "Good instinct to connect with Eleanor. Make it easier for her: propose a specific slot and include the agenda so we don't lose the morning.",
+            "avatarInitials": "P"
+          }
+        ],
+        "next": "scene_2"
+      },
+      "scene_2": {
+        "id": "scene_2",
+        "type": "free_text",
+        "section": 1,
+        "title": "Prepping for the Intake Call",
+        "appWindow": "notion",
+        "windowTitle": "Intake Call Prep: Eleanor Vance",
+        "content": "You've scheduled the {{intake call}} with Eleanor for 10:00 AM. The job description attached to the {{requisition (req)}} is open in the same workspace window.\n\nThe JD gives you surface-level skills, but it does not explain what success looks like, why the role is open, how Eleanor's team works, or what kind of person can survive the pace. To have a productive conversation with a difficult stakeholder like Eleanor, you need specific questions that get past the fluff and uncover the real needs of the role.",
+        "appTabs": [
+          {
+            "id": "job_description",
+            "label": "Job Description",
+            "content": "**Job Description Excerpt - Financial Analyst, Financial Advisory**\n\n- Support senior managers with financial modeling, variance analysis, and client-ready reporting.\n- Synergize business objectives by leveraging financial models, dashboards, and cross-functional insights.\n- Partner with project teams to analyze revenue, cost, and margin trends.\n- Prepare weekly analyses and executive summaries under tight deadlines.\n- Required: advanced Excel or Sheets skills, strong analytical coursework or internship experience, and ability to manage multiple priorities in a fast-paced environment.\n- Nice to have: consulting, corporate finance, or FP&A exposure."
+          }
+        ],
+        "prompt": "The job description for the Financial Analyst role is vague. Write 3-5 key questions you will ask Eleanor during the {{intake call}} to understand what she *actually* needs in a candidate. Focus on questions that go beyond what's in the JD.",
+        "minWords": 20,
+        "placeholder": "1. What does success look like for this person in their first 6 months?\n2. Can you tell me about the team dynamic...?",
+        "next": "scene_3",
+        "illustration": "/scenes/scene_2.png"
+      },
+      "scene_3": {
+        "id": "scene_3",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "Intake Call with Eleanor",
+        "content": "It's time for your {{intake call}} with Eleanor Vance. As expected, she's short on time and seems impatient. 'I'm sure you've seen the job description,' she begins. 'We just need someone smart who can get the work done. It's all there.' You need to use the questions you prepared to gently guide the conversation and extract the critical information you need to find the right candidates.",
+        "npcId": "eleanor_vance",
+        "goalPrompt": "You are Eleanor Vance, a busy and impatient Senior Manager. Start the call by being dismissive ('It's all in the JD'). If the user asks generic questions, give short, unhelpful answers. If they ask insightful, open-ended questions about team dynamics, performance expectations, or challenges, become more engaged and provide detailed answers. Reveal that the last two analysts quit because they couldn't handle the high-pressure, independent nature of the work. Before ending the call, state clearly that you need to see the first batch of candidates by Friday. After covering these points, end the call by saying you have to run to another meeting.",
+        "meetingMode": "remote",
+        "prepReferenceTitle": "Job description excerpt",
+        "prepReferenceContent": "**Financial Analyst, Financial Advisory**\n- Support senior managers with financial modeling, variance analysis, and client-ready reporting.\n- Synergize business objectives by leveraging financial models, dashboards, and cross-functional insights.\n- Partner with project teams to analyze revenue, cost, and margin trends.\n- Prepare weekly analyses and executive summaries under tight deadlines.\n- Required: advanced Excel or Sheets skills, strong analytical coursework or internship experience, and ability to manage multiple priorities in a fast-paced environment.\n- Nice to have: consulting, corporate finance, or FP&A exposure.",
+        "prepNoteKey": "scene_2",
+        "prepNoteTitle": "Your intake call prep",
+        "voiceName": "Leda",
+        "maxTurns": 5,
+        "illustration": "/scenes/scene_3.png",
+        "imageBrief": "A professional woman in her late 40s, Eleanor Vance, is seen in a video call window with a stern, impatient expression. Beside the call, a separate recruiter reference packet window is open with a compact 'Job Description Excerpt' and a smaller prep note, signaling that the player can reference both the JD and their prepared questions during the call without crowding the transcript.",
+        "next": "section_transition_1_2"
+      },
+      "section_transition_1_2": {
+        "id": "section_transition_1_2",
+        "type": "section_transition",
+        "section": 1,
+        "title": "Section 2: Execution & Communication",
+        "content": "With a clearer picture of what Eleanor needs, it's time to switch gears and manage your existing candidate pipeline.",
+        "illustration": "/scenes/section_transition_1_2.png",
+        "imageBrief": "A stylized graphic showing a checklist with the first section 'Planning & Strategy' checked off. The background is a subtle montage of office elements like calendars and charts, indicating a shift in focus.",
+        "next": "scene_4"
+      },
+      "scene_4": {
+        "id": "scene_4",
+        "type": "kanban_board",
+        "section": 2,
+        "title": "Screening Resumes",
+        "appWindow": "kanban",
+        "windowTitle": "ATS | Business Analyst Applicants",
+        "content": "You switch gears to the Business Analyst role for David Chen's team. Ten new applications are waiting in the **New Applications** column.\n\nUse the **Job Description** tab to review the must-haves and preferences for the role. Then return to the **ATS | Business Analyst Applicants** tab and drag each candidate into the right screening bucket:\n\n- **Advance to Screen:** clearly meets the must-haves and is worth a recruiter phone screen.\n- **Hold:** close fit, but one important requirement needs calibration or manager review.\n- **Reject:** misses a core requirement.\n\nAfter sorting all candidates, use the **Screening notes** tab to briefly explain one advance, one hold, and one reject decision.",
+        "columns": [
+          {
+            "id": "new",
+            "label": "New Applications"
+          },
+          {
+            "id": "advance",
+            "label": "Advance to Screen"
+          },
+          {
+            "id": "hold",
+            "label": "Hold"
+          },
+          {
+            "id": "reject",
+            "label": "Reject"
+          }
+        ],
+        "cards": [
+          {
+            "id": "aisha",
+            "text": "Aisha Khan, B.S. Economics, GPA 3.8. Internship at Deloitte. Capstone project on market entry strategy for a SaaS product.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "chloe",
+            "text": "Chloe Kim, B.S. Business Analytics, GPA 3.7. Product analytics internship at a fintech startup. Built a dashboard analyzing churn and activation trends.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "maria",
+            "text": "Maria Rodriguez, B.S. Computer Science, GPA 3.2. Built a full-stack inventory management app for a local business. Strong portfolio.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "nathan",
+            "text": "Nathan Brooks, B.S. Computer Science, GPA 3.5. Analytics consulting internship. Used SQL and Python for a customer segmentation project.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "jordan",
+            "text": "Jordan Lee, B.A. Economics, GPA 3.4. Econometrics research assistant. No internship, but completed a pricing-analysis project using public market data.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "samira",
+            "text": "Samira Patel, B.S. Business Administration, GPA 3.6. HR operations internship. Resume emphasizes event planning and onboarding; no analytical coursework or projects listed.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "owen",
+            "text": "Owen Miller, B.S. Business, GPA 3.1. Tech sales internship. Built a basic pipeline report, but GPA is below the stated cutoff.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "talia",
+            "text": "Talia Greene, B.A. Psychology, GPA 3.9. UX research internship. Ran surveys and synthesized user behavior data, but degree fit is unclear for this req.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "devon",
+            "text": "Devon Price, B.S. Finance, GPA 3.4. Campus investment fund analyst. Built Excel models, but no tech, consulting, or product/project work listed.",
+            "initialColumn": "new"
+          },
+          {
+            "id": "leo",
+            "text": "Leo Petrov, B.A. History, GPA 3.9. Internship at a museum. No analytical projects listed.",
+            "initialColumn": "new"
+          }
+        ],
+        "bindingKey": "resume_screening",
+        "referenceTitle": "Job Description",
+        "referenceContent": "**Job Description Snippet (Business Analyst, Tech Strategy)**\n- Must be a recent graduate (graduating this spring) with a degree in Business, Economics, Computer Science, or a related field.\n- Must have demonstrated analytical skills through coursework or projects (e.g., data analysis, market research).\n- Strong preference for candidates with internship experience at a tech or consulting firm.\n- Must have a GPA of 3.3 or higher.",
+        "rationalePrompt": "Briefly explain one advance, one hold, and one reject decision.",
+        "rationalePlaceholder": "Example: I would advance Chloe because she meets the degree, GPA, analytics project, and internship signals. I would hold Maria because her portfolio is strong but the GPA misses the stated cutoff. I would reject Leo because the degree and experience do not match the role.",
+        "requireAllCardsMoved": true,
+        "next": "scene_5_prep",
+        "illustration": "/scenes/scene_4.png"
+      },
+      "scene_5_prep": {
+        "id": "scene_5_prep",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 2,
+        "title": "Prep for Chloe's Phone Screen",
+        "content": "Before you join Chloe's {{phone screen}}, open her resume and turn it into a few focused probes. The goal is not to repeat what is already on the page; it is to learn the context behind her strongest signals, check motivation, and leave her with a clear picture of the role.",
+        "appWindow": "doc",
+        "windowTitle": "Chloe Kim - Resume",
+        "referenceTitle": "Chloe Kim - Resume",
+        "referenceContent": "**Chloe Kim**\nUniversity candidate - Business Analyst, Tech Strategy\n\n**Education**\nB.S. Business Analytics, Westbridge University, expected May 2026\nGPA: 3.7\nRelevant coursework: Business Statistics, SQL for Analytics, Product Strategy, Consulting Lab\n\n**Experience**\nProduct Analytics Intern, MeridianPay (fintech startup), Summer 2025\n- Built a Tableau dashboard combining product event data and support tags to track activation, churn, and onboarding drop-off.\n- Partnered with a product manager to identify a friction point in account setup and recommend two experiment ideas.\n- Presented weekly insight summaries to product and lifecycle marketing stakeholders.\n\nCampus Strategy Consultant, Westbridge Consulting Group, 2024-2026\n- Led a four-student team analyzing pricing and market-entry options for a regional SaaS client.\n- Built spreadsheet models, synthesized survey responses, and presented recommendations to a client sponsor.\n\n**Projects & Skills**\nSenior capstone: churn-risk dashboard using SQL, Python/pandas, and Sheets.\nTools: SQL, Excel/Sheets, Tableau, Python, survey analysis, presentation writing.\nInterests: tech strategy, product analytics, customer behavior, and client-facing problem solving.\n\n**Resume notes for your screen**\nGraduates in mid-May. Strong analytics signals; probe how much of the dashboard work she owned, how she communicates messy findings, why consulting instead of a pure analytics role, and what she needs to understand about Stratosphere.",
+        "imageBrief": "A recruiter's desk before a candidate phone screen. A laptop displays Chloe Kim's full resume in a clean ATS profile, with a notepad nearby containing a few handwritten question marks and a headset ready beside the keyboard.",
+        "next": "scene_5",
+        "illustration": "/scenes/scene_5_prep.png"
+      },
+      "scene_5": {
+        "id": "scene_5",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Phone Screen with Chloe Kim",
+        "content": "It's time for your scheduled 20-minute {{phone screen}} with Chloe Kim, one of the promising candidates for David's Business Analyst role. Use the resume you just reviewed as your baseline: assess her qualifications and motivation more deeply than the document allows, and get her excited about the opportunity at Stratosphere.",
+        "npcId": "chloe_kim",
+        "goalPrompt": "You are Chloe Kim, a bright but nervous university student. You are very interested in the role. Answer the recruiter's questions thoughtfully, but sound a little rehearsed at first. If the recruiter builds good rapport (sounds friendly, asks follow-up questions), become more relaxed and enthusiastic. Ask at least one question about company culture and one about the day-to-day responsibilities. Before the call ends, thank the recruiter for their time. Do not mention your post-graduation trip. End the conversation after you've asked your questions and the recruiter has explained the next steps.",
+        "meetingMode": "remote",
+        "meetingContext": "Chloe's resume shows a B.S. in Business Analytics from Westbridge University, expected May 2026, GPA 3.7. She interned at MeridianPay, a fintech startup, where she built a Tableau dashboard combining product event data and support tags to track activation, churn, and onboarding drop-off. She worked with a product manager, recommended two experiment ideas, and presented weekly summaries to product and lifecycle marketing stakeholders. She also led a campus consulting project for a regional SaaS client, building spreadsheet models and presenting recommendations. If asked, she can discuss SQL, Excel/Sheets, Tableau, basic Python/pandas, survey analysis, and client-facing presentation work. She is drawn to Stratosphere because she wants a role that blends analytics with client problem solving, not just a back-office reporting job.",
+        "prepReferenceTitle": "Chloe's resume cues",
+        "prepReferenceContent": "**Education:** B.S. Business Analytics, Westbridge University, expected May 2026; GPA 3.7.\n**Internship:** Product analytics at MeridianPay; built activation/churn dashboard from product event data and support tags.\n**Project signals:** Campus consulting lead for SaaS pricing/market-entry work; senior capstone on churn-risk dashboard.\n**Skills:** SQL, Excel/Sheets, Tableau, Python/pandas, survey analysis, presentation writing.\n**Probe for depth:** ownership level, messy-data judgment, communication with stakeholders, why consulting, and what would make Stratosphere compelling.",
+        "voiceName": "Kore",
+        "maxTurns": 6,
+        "illustration": "/scenes/scene_5.png",
+        "imageBrief": "A laptop screen shows a professional resume for 'Chloe Kim'. Next to the laptop is a notepad with handwritten questions and a headset, ready for a phone screen call. The background is a comfortable but professional home office setting.",
+        "next": "scene_6"
+      },
+      "scene_6": {
+        "id": "scene_6",
+        "type": "free_text",
+        "section": 2,
+        "title": "Submit Candidate to Hiring Manager",
+        "appWindow": "email",
+        "windowTitle": "New Message",
+        "content": "You were impressed with Chloe. Now, you need to present her to the hiring manager, David Chen. A crucial part of a recruiter's job is writing a concise, compelling summary that highlights a candidate's strengths and aligns them with the role's requirements. A great write-up can be the difference between a candidate getting an interview or getting lost in the shuffle.",
+        "prompt": "Write an email to David Chen submitting Chloe Kim for the Business Analyst role. Your email should include:\n1. A brief introduction of the candidate.\n2. 2-3 bullet points highlighting her key strengths and qualifications, referencing your conversation.\n3. Your official recommendation (e.g., 'I recommend we move her to a first-round interview').\n4. A link to her resume (you can just type '[Link to Resume]').",
+        "emailHeaders": {
+          "from": "{{playerName}} · University Recruiter",
+          "to": "David Chen · Hiring Manager",
+          "subject": "Candidate for Business Analyst: Chloe Kim"
+        },
+        "placeholder": "Hi David,\n\nI just spoke with Chloe Kim and was very impressed...",
+        "next": "section_transition_2_3",
+        "illustration": "/scenes/scene_6.png"
+      },
+      "section_transition_2_3": {
+        "id": "section_transition_2_3",
+        "type": "section_transition",
+        "section": 2,
+        "title": "Section 3: Problem-Solving",
+        "content": "You've submitted a strong candidate and are making good progress. But in recruiting, things can change in an instant.",
+        "illustration": "/scenes/scene_7a.png",
+        "imageBrief": "A stylized graphic showing a split screen. On the left, a candidate profile is visible. On the right, a Slack message from a manager pops up with an urgent question, representing a new challenge.",
+        "next": "scene_7a"
+      },
+      "scene_7a": {
+        "id": "scene_7a",
+        "type": "free_text",
+        "section": 3,
+        "title": "Checking Candidate Availability",
+        "appWindow": "email",
+        "windowTitle": "Re: Availability for Business Analyst Role",
+        "content": "You get an email reply from David Chen. He's read your email, reviewed Chloe's resume, and is excited. But then comes the curveball: he wants to fast-track the process and needs to know if she can start by June 1st. You recall from her resume that she graduates in mid-May, but you haven't explicitly discussed her start date. The best first step is to get the information from the candidate before committing to anything with David.",
+        "prompt": "Write a brief, professional email to Chloe to inquire about her availability and potential start date.",
+        "emailHeaders": {
+          "from": "{{playerName}} · University Recruiter",
+          "to": "Chloe Kim",
+          "subject": "Following up - Stratosphere Consulting"
+        },
+        "placeholder": "",
+        "next": "scene_7b",
+        "illustration": "/scenes/scene_7a.png"
+      },
+      "scene_7b": {
+        "id": "scene_7b",
+        "type": "multiple_choice",
+        "section": 3,
+        "title": "What Can You Safely Tell David?",
+        "appWindow": "slack",
+        "windowTitle": "@David Chen",
+        "content": "David follows up on Slack while Chloe's availability is still unconfirmed. You have one confirmed fact from Chloe's resume: she graduates in mid-May. You do not yet know whether June 1 works for her.",
+        "slackMessages": [
+          {
+            "sender": "David Chen",
+            "role": "Director, Tech Strategy",
+            "timestamp": "4:07 PM",
+            "content": "Can we assume Chloe can start June 1? Her resume says she graduates mid-May, and my project lead wants to staff this today.",
+            "avatarInitials": "DC"
+          }
+        ],
+        "prompt": "Choose the response you'd send to David.",
+        "isPivot": true,
+        "options": [
+          {
+            "id": "confirmed_boundary",
+            "label": "Chloe's resume confirms she graduates in mid-May, but not June 1 availability. I've emailed her to verify and won't treat that date as confirmed until she replies.",
+            "branchFlag": "confirmed_boundary"
+          },
+          {
+            "id": "safe_but_sparse",
+            "label": "I'm not sure yet whether June 1 works for Chloe. I'd hold off on assuming that start date for now.",
+            "branchFlag": "safe_but_sparse"
+          },
+          {
+            "id": "assume_available",
+            "label": "Her resume says she graduates in mid-May, so June 1 should work. I'll keep moving her forward assuming that date unless she tells us otherwise.",
+            "branchFlag": "assume_available"
+          },
+          {
+            "id": "speculate_conflict",
+            "label": "I'd be cautious about assuming June 1. Since Chloe didn't proactively mention availability during our screen, there may be something she's holding back.",
+            "branchFlag": "speculate_conflict"
+          }
+        ],
+        "next": {
+          "branchOn": "scene_7b",
+          "cases": {
+            "confirmed_boundary": "scene_7c_confirmed_boundary",
+            "safe_but_sparse": "scene_7c_safe_but_sparse",
+            "assume_available": "scene_7c_assume_available",
+            "speculate_conflict": "scene_7c_speculate_conflict"
+          },
+          "default": "scene_7c_confirmed_boundary"
+        },
+        "illustration": "/scenes/scene_7b.png"
+      },
+      "scene_7c_confirmed_boundary": {
+        "id": "scene_7c_confirmed_boundary",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "actionLabel": "View Assessment",
+        "section": 3,
+        "title": "End of Day Outcome",
+        "content": "David appreciates the clear boundary. You shared what was confirmed, kept June 1 unconfirmed, and gave him a concrete next step without committing Chloe to a date she has not approved. You close the day with the right follow-up in motion.",
+        "next": "grading",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "scene_7c_safe_but_sparse": {
+        "id": "scene_7c_safe_but_sparse",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "actionLabel": "View Assessment",
+        "section": 3,
+        "title": "End of Day Outcome",
+        "content": "David hears uncertainty but not much process. You avoided overcommitting, but you did not share the confirmed mid-May graduation context or make clear that you already asked Chloe to verify the date, so his staffing question is still floating.",
+        "next": "grading",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "scene_7c_assume_available": {
+        "id": "scene_7c_assume_available",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "actionLabel": "View Assessment",
+        "section": 3,
+        "title": "End of Day Outcome",
+        "content": "David treats June 1 as likely and starts planning around it. If Chloe replies with a conflict, you will have to unwind an expectation created from an assumption, not a confirmed candidate commitment.",
+        "next": "grading",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "scene_7c_speculate_conflict": {
+        "id": "scene_7c_speculate_conflict",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "actionLabel": "View Assessment",
+        "section": 3,
+        "title": "End of Day Outcome",
+        "content": "David now wonders whether Chloe may be withholding something. You avoided promising June 1, but you turned an ordinary unasked logistics detail into a negative signal about the candidate, which can create unfair concern around an otherwise strong screen.",
+        "next": "grading",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Grading in Progress",
+        "content": "Your day is done. Let's review your performance.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A symbolic illustration showing various work artifacts—a resume, a transcript of a call, an email draft—being analyzed and compiled into a performance report.",
+        "next": "final_report"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Simulation Complete",
+        "content": "Here is your performance report.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A clean, professional-looking performance report on a tablet screen. The report shows scores and feedback, with congratulatory text. The background is a bright, optimistic office environment.",
+        "next": null
+      }
+    }
+  },
+  "npcs": {
+    "priya_sharma": {
+      "id": "priya_sharma",
+      "name": "Priya Sharma",
+      "role": "Senior University Recruiter",
+      "persona": "Priya is your manager. She is direct, efficient, and data-driven, but also a supportive coach. She's feeling pressure from leadership to increase hiring targets without a budget increase, so she needs her team to be autonomous and effective. She prefers quick check-ins and doesn't have time for hand-holding.",
+      "voice": "Prefers quick Slack check-ins and scheduled 1:1s. Her emails are short and to the point."
+    },
+    "eleanor_vance": {
+      "id": "eleanor_vance",
+      "name": "Eleanor Vance",
+      "role": "Senior Manager, Financial Advisory",
+      "persona": "Eleanor is a brilliant but impatient and traditional hiring manager. She sees recruiting as a service and gets frustrated by questions she thinks are obvious. Her team is overworked after two junior analysts quit, so she needs a new hire urgently and is skeptical that a junior recruiter can meet her high standards.",
+      "voice": "Formal and brief. Expects you to have all the answers."
+    },
+    "david_chen": {
+      "id": "david_chen",
+      "name": "David Chen",
+      "role": "Director, Tech Strategy",
+      "persona": "David is a collaborative, thoughtful, and tech-savvy hiring manager. He views recruiting as a true partnership and appreciates getting context and data. He is building a new data analytics sub-team and needs candidates with a very specific, niche skillset, so he needs a recruiter who can screen for potential, not just experience.",
+      "voice": "Friendly and responsive on Slack and email."
+    },
+    "chloe_kim": {
+      "id": "chloe_kim",
+      "name": "Chloe Kim",
+      "role": "University Student",
+      "persona": "Chloe is an eager, intelligent, and well-prepared student, but she is nervous because Stratosphere is her top-choice company. She has a non-negotiable, pre-paid family trip planned for three weeks immediately after graduation and is worried it will jeopardize her chances if she brings it up too early.",
+      "voice": "Professional and slightly formal in emails, but more conversational and earnest on the phone."
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Welcome to Stratosphere Consulting",
+    "welcomeBody": "You're a new University Recruiter at Stratosphere Consulting, a top-tier management consulting firm. Your job is to find the next generation of talent that will help Fortune 500 companies solve their biggest challenges.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Stratosphere Consulting provides strategic advisory services to Fortune 500 companies across technology, finance, and healthcare. The firm's growth depends on a constant influx of bright, ambitious talent hired directly from top universities."
+      },
+      {
+        "label": "Your Role",
+        "content": "As a University Recruiter on the North American Talent Acquisition team, you are responsible for managing the full recruiting lifecycle for entry-level Analyst roles, from partnering with hiring managers to screening candidates and guiding them through the process."
+      },
+      {
+        "label": "Your Goal",
+        "content": "In this simulation, you'll navigate a typical day, balancing urgent new requests from demanding hiring managers with your ongoing candidate pipeline. Your success will depend on your ability to prioritize, communicate effectively, and solve problems under pressure."
+      }
+    ]
+  },
+  "glossary": {
+    "Applicant Tracking System (ATS)": "Software used by recruiters to manage job postings, applications, and candidate data in one place.",
+    "intake call": "A meeting between a recruiter and a hiring manager at the start of a search to discuss the role's requirements, objectives, and ideal candidate profile.",
+    "requisition (req)": "An official job opening or vacancy that has been approved for hiring.",
+    "sourcing": "The proactive process of searching for and identifying qualified candidates for open roles, often using tools like LinkedIn or internal databases.",
+    "phone screen": "A short, initial interview (usually 15-30 minutes) conducted by a recruiter to assess a candidate's basic qualifications and interest in a role.",
+    "time to fill": "A key recruiting metric that measures the number of days between when a job requisition is opened and when an offer is accepted by a candidate."
+  },
+  "sample_answers": {},
+  "rubric": {
+    "simulation_id": "corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "朝の優先判断",
+            "evidenceSceneIds": [
+              "scene_1"
+            ],
+            "rubric_text": "9-10: 複数の採用タスクが重なる中で、候補者体験、採用責任者の判断、締切リスクを見て最初の行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "採用責任者との通話",
+            "evidenceSceneIds": [
+              "scene_3"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の通話で、必須条件、評価基準、懸念、締切、候補者へ伝えてよい情報を確認できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "履歴書選考",
+            "evidenceSceneIds": [
+              "scene_4"
+            ],
+            "rubric_text": "9-10: 職務要件と根拠に基づいて候補者を選び、強み、懸念、確認すべき点を混同せず整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "候補者面談",
+            "evidenceSceneIds": [
+              "scene_5"
+            ],
+            "rubric_text": "9-10: 実際の面談で、経験、意欲、制約、懸念を聞き取り、誠実で公平な候補者体験を作れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "推薦文",
+            "evidenceSceneIds": [
+              "scene_6"
+            ],
+            "rubric_text": "9-10: 採用責任者が判断できるように、候補者の根拠ある強み、リスク、次の確認事項を書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "入社可能時期確認",
+            "evidenceSceneIds": [
+              "scene_7a"
+            ],
+            "rubric_text": "9-10: 候補者に対して、圧をかけずに入社可能時期や制約を確認し、採用側へ伝えるべき事実を整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "採用責任者への安全な回答",
+            "evidenceSceneIds": [
+              "scene_7b"
+            ],
+            "rubric_text": "9-10: 候補者に関する未確認情報や言ってはいけない情報を避け、採用責任者へ安全で正確な返答を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Craft detail tag sticker placeholder">
+  <path d="M102 58 H230 L260 92 V252 H102 Z" fill="#F7F1E3" stroke="#1E1E1A" stroke-width="10"/>
+  <circle cx="134" cy="92" r="14" fill="#8FA18B" stroke="#1E1E1A" stroke-width="6"/>
+  <path d="M138 92 C174 54 208 42 244 36" fill="none" stroke="#3A6B5E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M132 148 H228 M132 186 H228 M132 224 H200" stroke="#CDBF94" stroke-width="10" stroke-linecap="round"/>
+</svg>

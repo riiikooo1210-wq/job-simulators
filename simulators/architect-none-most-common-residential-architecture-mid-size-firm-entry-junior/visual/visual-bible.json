@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "slug": "architect-none-most-common-residential-architecture-mid-size-firm-entry-junior",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "dana_moreno": {
+      "id": "dana_moreno",
+      "name": "Dana Moreno",
+      "role": "Homeowner Client",
+      "sourcePersona": "Budget-conscious homeowner who wants daylight, privacy, and clear next steps without jargon.",
+      "appearancePrompt": "Dana Moreno, Homeowner Client. Use this as the locked character identity: Budget-conscious homeowner who wants daylight, privacy, and clear next steps without jargon.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/dana_moreno.png"
+    },
+    "maya_chen": {
+      "id": "maya_chen",
+      "name": "Maya Chen",
+      "role": "Project Architect",
+      "sourcePersona": "Licensed project architect, calm and direct, protective of technical accuracy. She expects focused questions, careful uncertainty handling, and constraint-aware schematic design notes.",
+      "appearancePrompt": "Maya Chen, Project Architect. Use this as the locked character identity: Licensed project architect, calm and direct, protective of technical accuracy. She expects focused questions, careful uncertainty handling, and constraint-aware schematic design notes. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/maya_chen.png"
+    },
+    "owen_reed": {
+      "id": "owen_reed",
+      "name": "Owen Reed",
+      "role": "Job Captain",
+      "sourcePersona": "Practical Revit and drawing-set lead who appreciates exact sheet, tag, and detail references.",
+      "appearancePrompt": "Owen Reed, Job Captain. Use this as the locked character identity: Practical Revit and drawing-set lead who appreciates exact sheet, tag, and detail references.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/owen_reed.png"
+    },
+    "riley_patel": {
+      "id": "riley_patel",
+      "name": "Riley Patel",
+      "role": "Contractor Field Lead",
+      "sourcePersona": "Concise field lead who wants the design team to clarify drawings before construction proceeds.",
+      "appearancePrompt": "Riley Patel, Contractor Field Lead. Use this as the locked character identity: Concise field lead who wants the design team to clarify drawings before construction proceeds.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/riley_patel.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Harbor & Ash Studio\nFirst-person residential architecture studio desk with laptop dashboard, redlines, trace paper, plans, and material samples.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "intro"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "primary-workplace": {
+      "id": "primary-workplace",
+      "name": "Primary Workplace",
+      "appearancePrompt": "Create a stable location reference for Primary Workplace. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Client Call With Dana Moreno\nRemote client call with Dana Moreno in a home kitchen under renovation and student prep notes visible.",
+      "stableElements": [],
+      "sceneIds": [
+        "client_call",
+        "site_observation"
+      ],
+      "referenceImage": "public/visual-refs/locations/primary-workplace.png"
+    }
+  },
+  "reusableObjects": []
+}

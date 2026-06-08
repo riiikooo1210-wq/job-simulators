@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:20:02+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "intro",
+  "itemId": "intro",
+  "promptHash": "f47c45ad9bc708d7",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/wedding-planner-general-wedding-planning-most-common-responsibilities-wedding-venue-mid-sized-venue-business-mid-level/IMAGE_PROMPTS.md"
+}

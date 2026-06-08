@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:38:44+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "luma_fizz_workspace",
+  "itemId": "luma_fizz_workspace",
+  "promptHash": "57039cb16cac5bf8",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/public-relations-specialist-general-public-relations-media-relations-and-brand-communications-large-food-and-beverage-brand-consumer-packaged-goods-enterprise-entry-junior/IMAGE_PROMPTS.md"
+}

@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-18T15:06:18+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "redirect_color",
+  "itemId": "redirect_color",
+  "promptHash": "4ca9e8cefee8fd56",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/npcs/coach.png",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/locations/pregame-interview-room.png"
+  ],
+  "sourceFile": "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/IMAGE_PROMPTS.md"
+}

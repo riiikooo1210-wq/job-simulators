@@ -1,0 +1,10 @@
+{
+  "createdAt": "2026-05-28T04:46:00+00:00",
+  "model": "openai-imagegen-fallback",
+  "kind": "scene",
+  "sceneId": "scene_05_priority_matrix",
+  "itemId": "scene_05_priority_matrix",
+  "promptHash": "5e921b5fcd69dd4f",
+  "references": [],
+  "sourceFile": "built-in image_gen fallback after Gemini quota exhaustion"
+}

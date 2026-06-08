@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:02:08+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_06_daily_action_memo",
+  "itemId": "scene_06_daily_action_memo",
+  "promptHash": "30603eb9168ef4dd",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/src/data/scene-config.json"
+}

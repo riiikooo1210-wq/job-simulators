@@ -1,0 +1,1060 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "Public relations specialist work in the collected sources is primarily desk-based communication work: writing, email, media lists, press releases, pitching, monitoring, reporting, calls, and internal coordination. O*NET emphasizes media response, writing, public image, external communication, social content, time pressure, and daily email/phone/team contact. The YouTube and Reddit sources reinforce that junior PR work is concrete and artifact-heavy rather than abstract: build lists, draft pitches, track coverage, monitor issues, and escalate carefully.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "O*NET work context is indoors and computer/email/phone heavy.",
+          "Collected videos focus on documents, media lists, emails, reporting, and monitoring rather than hands-on physical work."
+        ],
+        "simulatorImplication": "No physical playground is needed. The concrete tools should be digital work surfaces: launch briefs, media lists, email, Slack, monitoring queues, and call reference workspaces."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET lists email, social content, Google Drive, Cision, CRM, spreadsheets, documents, and web tools.",
+          "Reddit threads mention Cision, Meltwater, Muck Rack, monitoring, reporting, and press-release distribution tools."
+        ],
+        "simulatorImplication": "Most active scenes should happen in realistic desk windows: Notion/source workspace, media-list table, email compose, Slack, monitoring kanban, and remote meeting reference panels."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET includes making decisions, solving problems, analyzing information, and determining priorities.",
+          "Reddit threads distinguish press-release distribution from real pitching and emphasize escalation judgment in crisis planning."
+        ],
+        "simulatorImplication": "The student must decide which reporters fit the story, what information is safe to say, what issue signal is urgent, and what should be escalated."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET lists writing press releases, media communications, publications, and informational material.",
+          "YouTube transcripts and Reddit threads repeatedly mention press releases, media alerts, pitches, coverage reports, and statements."
+        ],
+        "simulatorImplication": "The simulator must require typed work: reporter angles, a pitch email, and a concise correction request or holding statement."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists daily phone calls, face-to-face discussions, external communication, and relationship building.",
+          "PR practitioners describe media relations as relationship-driven and sensitive to journalist relevance."
+        ],
+        "simulatorImplication": "Include a remote voice meeting with a skeptical journalist so the student practices spoken relationship management and fact discipline."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "O*NET includes monitoring processes or surroundings and time pressure.",
+          "YouTube and Reddit sources mention social monitoring, coverage tracking, and crisis/issues acceleration."
+        ],
+        "simulatorImplication": "Monitoring appears as a triage queue where the student must sort signals and write an escalation rationale, not as passive narration."
+      }
+    },
+    "simulatorPlan": "Build a half-day enterprise food and beverage launch simulator. The student receives a visible source workspace, makes a first-priority decision, builds a media target table, drafts a reporter pitch, speaks with a journalist, triages monitoring signals, and writes a disciplined internal update before an assessment gate.",
+    "activeSceneMixRationale": "The active scenes are weighted toward writing and digital artifact production, with one voice meeting and two decision/triage surfaces. This matches a junior PR specialist in a large CPG brand: concrete desk artifacts, media judgment, rapid context switching, and careful escalation."
+  },
+  "storyline": {
+    "gameTitle": "Launch Day at Northstar Foods",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Launch Prep"
+      },
+      {
+        "num": 2,
+        "label": "Media Outreach"
+      },
+      {
+        "num": 3,
+        "label": "Issues Response"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Jump to media pitch",
+        "targetNodeId": "pitch_email"
+      },
+      {
+        "label": "Jump to journalist call",
+        "targetNodeId": "journalist_call"
+      },
+      {
+        "label": "Jump to issue triage",
+        "targetNodeId": "monitoring_triage"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Northstar Foods",
+        "content": "You are a junior Public Relations Specialist on the Brand Communications team at Northstar Foods, a fictional enterprise food and beverage company. Today is launch day for Luma Fizz, a low-sugar sparkling fruit tea. Your job is to help the team earn credible coverage, protect reporter trust, and respond clearly if an issue signal appears.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "A warm editorial illustration of a large food and beverage company PR desk on launch morning. A laptop shows a Northstar Foods launch calendar for Luma Fizz, with cans of colorful sparkling fruit tea on the desk, press notes, and a headset. No real logos.",
+        "next": "luma_fizz_workspace"
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With Your First Move",
+        "content": "Maya checks whether you know how to start launch morning without creating avoidable media risk.",
+        "appWindow": "slack",
+        "windowTitle": "#luma-fizz-launch",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:42 AM",
+            "avatarInitials": "MC",
+            "content": "Morning. Before the team standup, what are you doing first with the Luma Fizz workspace?"
+          }
+        ],
+        "prompt": "Choose the Slack reply you would send.",
+        "options": [
+          {
+            "id": "source_first",
+            "label": "I will confirm the approved facts and guardrails, then build a tight reporter target list before drafting outreach.",
+            "branchFlag": "source_first"
+          },
+          {
+            "id": "blast_release",
+            "label": "I will send the press release broadly now so reporters have the news before standup.",
+            "branchFlag": "blast_release"
+          },
+          {
+            "id": "creative_first",
+            "label": "I will ask brand marketing for more exciting claims and visuals so the pitch feels bigger.",
+            "branchFlag": "creative_first"
+          },
+          {
+            "id": "wait_for_maya",
+            "label": "I will wait until you tell me exactly which reporters to contact so I do not make a mistake.",
+            "branchFlag": "wait_for_maya"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "approved_launch_workspace",
+              "label": "Approved Launch Workspace",
+              "whereVisible": "luma_fizz_workspace.sourceWorkspace",
+              "summary": "Facts, launch goals, risk watch, and guardrails."
+            }
+          ],
+          "studentAction": "Choose a first Slack response that protects source discipline and realistic PR workflow.",
+          "outputArtifact": {
+            "id": "first_move",
+            "label": "First-move Slack choice",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mc.first_move"
+          ],
+          "continuity": [
+            "Each branch shows a realistic consequence and then converges into media targeting."
+          ],
+          "authenticityCheck": "Junior PR specialists often need to show they can start with approved facts and targeted outreach rather than blasts or overclaiming."
+        },
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "source_first": "redirect_source_first",
+            "blast_release": "redirect_blast_release",
+            "creative_first": "redirect_creative_first",
+            "wait_for_maya": "redirect_wait_for_maya"
+          },
+          "default": "redirect_source_first"
+        },
+        "illustration": "/scenes/first_move.png"
+      },
+      "redirect_source_first": {
+        "id": "redirect_source_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Confirms the Sequence",
+        "content": "Maya gives you the green light. Starting with approved facts and reporter fit protects credibility before speed.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:42 AM",
+            "avatarInitials": "MC",
+            "content": "Morning. Before the team standup, what are you doing first with the Luma Fizz workspace?"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Junior PR Specialist",
+            "timestamp": "8:43 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:44 AM",
+            "avatarInitials": "MC",
+            "content": "Exactly. Target before you pitch. Use the workspace, keep the sweetener and allergen language precise, and make the reporter list defensible."
+          }
+        ],
+        "illustration": "/scenes/redirect_source_first.png",
+        "imageBrief": "First-person PR desk view after Maya confirms the launch sequence. A laptop shows a generic cream team chat with Maya's supportive reply, while the approved Luma Fizz workspace, a small reporter list, and colorful beverage cans sit nearby. Do not use real app logos. The player is not visible except optional hands at the keyboard.",
+        "next": "media_targets"
+      },
+      "redirect_blast_release": {
+        "id": "redirect_blast_release",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Stops the Blast",
+        "content": "A broad release blast would move fast, but it would not earn relevant coverage and could annoy reporters who do not cover beverages or CPG launches. Maya redirects you to targeted media work.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:42 AM",
+            "avatarInitials": "MC",
+            "content": "Morning. Before the team standup, what are you doing first with the Luma Fizz workspace?"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Junior PR Specialist",
+            "timestamp": "8:43 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:44 AM",
+            "avatarInitials": "MC",
+            "content": "Pause on any blast. A wire or mass send is not the same as earned coverage. Build the list first, then tailor the pitch."
+          }
+        ],
+        "illustration": "/scenes/redirect_blast_release.png",
+        "imageBrief": "First-person PR desk view of a corrected launch-morning moment. A laptop shows a generic cream team chat where Maya warns against blasting the press release before targeting. A draft broad-send email is visible as a minimized unsent window, crossed out only as a subtle pencil note on paper, not a UI error. Luma Fizz cans and the launch workspace are on the desk. No real app logos.",
+        "next": "media_targets"
+      },
+      "redirect_creative_first": {
+        "id": "redirect_creative_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Tightens the Guardrails",
+        "content": "Brand energy matters, but asking for bigger claims before checking approved language can create overclaim risk. Maya points you back to the facts and the journalist audience.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:42 AM",
+            "avatarInitials": "MC",
+            "content": "Morning. Before the team standup, what are you doing first with the Luma Fizz workspace?"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Junior PR Specialist",
+            "timestamp": "8:43 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:44 AM",
+            "avatarInitials": "MC",
+            "content": "We can make the story lively without inventing claims. Stay inside the workspace and show why the story fits each reporter."
+          }
+        ],
+        "illustration": "/scenes/redirect_creative_first.png",
+        "imageBrief": "First-person PR desk view after Maya redirects away from hype. The laptop shows a generic cream team chat with Maya reminding the student to stay inside approved facts. Beside it are a brand moodboard, the approved facts sheet, a sticky note reading 'No overclaims', and Luma Fizz cans. No real app logos or sample player-written text.",
+        "next": "media_targets"
+      },
+      "redirect_wait_for_maya": {
+        "id": "redirect_wait_for_maya",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Nudges You to Own a Draft",
+        "content": "Waiting avoids mistakes, but a junior specialist is still expected to produce a defensible first pass. Maya asks you to use the workspace and bring her a targeted list to review.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:42 AM",
+            "avatarInitials": "MC",
+            "content": "Morning. Before the team standup, what are you doing first with the Luma Fizz workspace?"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Junior PR Specialist",
+            "timestamp": "8:43 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior PR Manager",
+            "timestamp": "8:44 AM",
+            "avatarInitials": "MC",
+            "content": "I do want you to make a first pass. Use the approved facts and explain your reasoning. I will review before anything goes out."
+          }
+        ],
+        "illustration": "/scenes/redirect_wait_for_maya.png",
+        "imageBrief": "First-person PR desk view after Maya nudges the junior specialist to own the first pass. A laptop shows a generic cream team chat with a concise coaching reply from Maya. On the desk are blank media target rows, a pen, the launch workspace, and Luma Fizz cans, suggesting the student will draft a list for review. No real app logos.",
+        "next": "media_targets"
+      },
+      "media_targets": {
+        "id": "media_targets",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Build the Media Target Table",
+        "content": "Use the reporter cards and launch workspace to choose three journalists or outlets worth pitching first. Do not choose people just because they are high-profile. Choose fit.",
+        "prompt": "Create three media target rows. For each, name the reporter or outlet, explain why they fit Luma Fizz, choose a tailored angle, and note one risk or watch-out.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "Luma Fizz - media target table",
+        "workSurface": {
+          "kind": "spreadsheet_workbook",
+          "device": "desktop",
+          "title": "Luma Fizz - media target table",
+          "sourceTabs": [
+            {
+              "id": "media_pool",
+              "label": "Media Pool",
+              "content": "Approved Luma Fizz launch workspace:\n- Three flavors: Peach Yuzu, Blackberry Mint, Citrus Ginger.\n- 35 calories per can.\n- Sweetened with fruit juice and monk fruit extract.\n- No artificial colors.\n- National grocery rollout next week.\n- Produced in a facility that also processes tree nuts. The product formula does not contain tree nuts.\n\nMedia pool:\n\nCaleb Stone, Market Ledger\nBeat: mergers, earnings, and executive changes.\nFit cue: Low launch fit unless the story is a major corporate strategy move.\nWatch-out: High-profile business reporter, but not a strong first pitch for a product launch.\n\nTalia Brooks, Wellness Wire\nBeat: wellness roundups and product trend pieces.\nFit cue: Could engage with low-sugar beverage language.\nWatch-out: Frequently asks whether products are healthy, clean, or detoxifying, so claims risk is high.\n\nLena Ortiz, The Daily Table\nBeat: grocery trends, beverage launches, and ingredient transparency.\nFit cue: Recent story on shoppers reading sweetener labels closely.\nWatch-out: Needs exact claims and honest ingredient context.\n\nEvan Pike, SnackScope\nBeat: candy, limited-edition snacks, and novelty flavors.\nFit cue: May care only if there is a strong novelty flavor angle.\nWatch-out: Rarely covers beverages, so first-pass fit is weak.\n\nMarco Bell, Retail Shelf\nBeat: national grocery rollouts, pricing, and category strategy.\nFit cue: Likes availability, retail context, and category positioning.\nWatch-out: Needs specific rollout timing and price point.\n\nJasmine Reed, Morning Sip Newsletter\nBeat: coffee, tea, and low-sugar drinks.\nFit cue: Strong fit for taste, tea, and afternoon routine angles.\nWatch-out: Keep the pitch useful and avoid wellness overclaiming."
+            }
+          ]
+        },
+        "definition": {
+          "itemLabel": "Media Target",
+          "bindingKey": "media_targets",
+          "presentation": "spreadsheet",
+          "initialCount": 3,
+          "minItems": 3,
+          "maxItems": 3,
+          "fields": [
+            {
+              "key": "reporter",
+              "label": "Reporter / outlet",
+              "placeholder": "Select from Media Pool",
+              "inputType": "select",
+              "options": [
+                "Caleb Stone, Market Ledger",
+                "Talia Brooks, Wellness Wire",
+                "Lena Ortiz, The Daily Table",
+                "Evan Pike, SnackScope",
+                "Marco Bell, Retail Shelf",
+                "Jasmine Reed, Morning Sip Newsletter"
+              ]
+            },
+            {
+              "key": "fit",
+              "label": "Why this fit",
+              "placeholder": "Connect their beat to the launch workspace.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "angle",
+              "label": "Tailored angle",
+              "placeholder": "What story would be useful to this reporter?",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "watchout",
+              "label": "Risk / watch-out",
+              "placeholder": "What should you avoid or prepare for?",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "referenceTitle": "Reporter Cards and Launch Facts",
+        "referenceContent": "Approved Luma Fizz facts:\n- Three flavors: Peach Yuzu, Blackberry Mint, Citrus Ginger.\n- 35 calories per can.\n- Sweetened with fruit juice and monk fruit extract.\n- No artificial colors.\n- National grocery rollout next week.\n- Produced in a facility that also processes tree nuts. The product formula does not contain tree nuts.\n\nReporter / outlet cards:\n1. Caleb Stone, Market Ledger - Business reporter focused on mergers, earnings, and executive changes. Not a launch-fit unless there is a major corporate strategy angle.\n2. Talia Brooks, Wellness Wire - Writes wellness roundups. Frequently asks whether products are healthy, clean, or detoxifying.\n3. Lena Ortiz, The Daily Table - Covers grocery trends, beverage launches, and ingredient transparency. Recent story: why shoppers are reading sweetener labels more closely.\n4. Evan Pike, SnackScope - Covers candy and limited-edition snacks. Rarely covers beverages unless there is a novelty flavor angle.\n5. Marco Bell, Retail Shelf - Trade outlet covering national grocery rollouts, pricing, and category strategy. Likes clear availability and retail context.\n6. Jasmine Reed, Morning Sip Newsletter - Independent newsletter about coffee, tea, and low-sugar drinks. Strong fit for taste and afternoon routine angles.",
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "spreadsheet media list",
+          "inputArtifacts": [
+            {
+              "id": "reporter_cards",
+              "label": "Reporter Cards and Launch Facts",
+              "whereVisible": "media_targets.referenceContent",
+              "summary": "Reporter beats, fit cues, approved product facts, and risk language."
+            }
+          ],
+          "studentAction": "Build a three-row media target table with fit, tailored angle, and risk note.",
+          "outputArtifact": {
+            "id": "media_targets",
+            "label": "Media target table",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.media_targets"
+          ],
+          "continuity": [
+            "The target table sets up the pitch email to Lena and the journalist call."
+          ],
+          "authenticityCheck": "Media-list building and reporter fit are core junior PR tasks."
+        },
+        "next": "section_transition_1_2",
+        "illustration": "/scenes/media_targets.png"
+      },
+      "section_transition_1_2": {
+        "id": "section_transition_1_2",
+        "type": "section_transition",
+        "section": 1,
+        "title": "Section 2: Media Outreach",
+        "content": "You have a defensible target list. Now turn it into outreach that a reporter might actually want to read.",
+        "actionLabel": "Continue",
+        "illustration": "/scenes/section_transition_1_2.png",
+        "imageBrief": "Transition illustration from a completed media target table to an email compose window, with a small clock showing late morning.",
+        "next": "pitch_email"
+      },
+      "pitch_email": {
+        "id": "pitch_email",
+        "type": "free_text",
+        "section": 2,
+        "title": "Draft the Reporter Pitch",
+        "content": "Maya asks you to draft the first tailored pitch to Lena Ortiz at The Daily Table. Review the Launch Facts, Reporter Context, and Pitch Guidance tabs in the email window before writing. Keep it short, relevant, and fact-safe. A pitch is not a full press release.",
+        "prompt": "Write the email pitch to Lena using the source tabs. Include: a specific subject line, why the story fits her beat, 2-3 approved facts, an offer for more information or a spokesperson, and careful language around sweetener/allergen questions.",
+        "placeholder": "",
+        "minWords": 90,
+        "maxWords": 220,
+        "appWindow": "email",
+        "windowTitle": "New Message - Lena Ortiz",
+        "emailHeaders": {
+          "from": "{{playerName}} <pr.specialist@northstarfoods.example>",
+          "to": "Lena Ortiz <lena.ortiz@dailytable.example>",
+          "subject": "Pitch: Northstar Foods launches Luma Fizz sparkling fruit tea"
+        },
+        "appTabs": [
+          {
+            "id": "launch_facts",
+            "label": "Launch Facts",
+            "content": "Approved facts to use:\n- Luma Fizz is a low-sugar sparkling fruit tea.\n- Three flavors: Peach Yuzu, Blackberry Mint, and Citrus Ginger.\n- 35 calories per can.\n- Sweetened with fruit juice and monk fruit extract.\n- No artificial colors.\n- National grocery rollout starts next week.\n- Suggested retail price: $2.49 per can.\n\nGuardrails:\n- Do not call it healthy, clean, detoxifying, or better for everyone.\n- Do not imply it is allergen-free.\n- Approved language: Produced in a facility that also processes tree nuts. The product formula does not contain tree nuts."
+          },
+          {
+            "id": "reporter_context",
+            "label": "Reporter Context",
+            "content": "Lena Ortiz, The Daily Table\nBeat: grocery trends, beverage launches, ingredient transparency.\nRecent story: why shoppers are reading sweetener labels more closely.\nLikely useful angle: a major food and beverage brand entering sparkling tea with transparent lower-sugar positioning and clear ingredient language.\nLikely question: how Northstar describes monk fruit and facility allergen language."
+          },
+          {
+            "id": "pitch_guidance",
+            "label": "Pitch Guidance",
+            "content": "Strong pitch:\n- Shows you know Lena's beat.\n- Leads with the useful story, not hype.\n- Uses approved facts only.\n- Offers interview, samples, or fact sheet as next step.\n\nWeak pitch:\n- Blasts generic product copy.\n- Includes the full press release before Lena asks.\n- Says healthy, clean, guilt-free, detox, allergen-free, or miracle alternative.\n- Pretends coverage is guaranteed."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "email compose",
+          "inputArtifacts": [
+            {
+              "id": "launch_facts",
+              "label": "Launch Facts",
+              "whereVisible": "pitch_email.appTabs.launch_facts",
+              "summary": "Approved facts and prohibited claims."
+            },
+            {
+              "id": "reporter_context",
+              "label": "Reporter Context",
+              "whereVisible": "pitch_email.appTabs.reporter_context",
+              "summary": "Lena's beat and likely useful angle."
+            }
+          ],
+          "studentAction": "Write a concise reporter pitch email.",
+          "outputArtifact": {
+            "id": "pitch_email",
+            "label": "Reporter pitch email",
+            "format": "free_text_email"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.pitch_email"
+          ],
+          "continuity": [
+            "The pitch becomes the context for Lena's follow-up call."
+          ],
+          "authenticityCheck": "Drafting tailored email pitches is a realistic junior PR deliverable."
+        },
+        "next": "journalist_call",
+        "illustration": "/scenes/pitch_email.png"
+      },
+      "journalist_call": {
+        "id": "journalist_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Follow-Up Call With Lena",
+        "content": "Lena replies after reading your pitch draft: she has ten minutes before an editorial meeting and will ask four questions, one at a time. You have one round to answer each question, especially around the sweetener and allergen language. Join the call and keep the relationship credible.",
+        "npcId": "lena_ortiz",
+        "meetingMode": "remote",
+        "voiceName": "Aoede",
+        "playerGoal": "Lena will ask 4 questions, one at a time. You have one round to answer each question. Use only approved facts about sweetener and allergen language, and preserve credibility by offering the right follow-up.",
+        "prepNoteKey": "pitch_email",
+        "prepNoteTitle": "Your pitch draft",
+        "prepReferenceTitle": "Approved call facts",
+        "prepReferenceContent": "Facts you may use:\n- Luma Fizz is a low-sugar sparkling fruit tea with 35 calories per can.\n- Sweetener: fruit juice and monk fruit extract.\n- Product formula does not contain tree nuts.\n- Facility language: Produced in a facility that also processes tree nuts.\n- You may offer: fact sheet, ingredient statement, interview with Jordan Reyes from brand marketing, or follow-up with Priya Nair for regulatory details.\n\nAvoid:\n- Healthy, clean, detox, guilt-free, allergen-free, safe for everyone, no risk, or guaranteed coverage.\n- Guessing about manufacturing beyond the approved facility statement.",
+        "goalPrompt": "You are Lena Ortiz, a skeptical but fair food and beverage journalist at The Daily Table. Run a four-question follow-up call based on the student's pitch draft. Ask exactly one question at a time and give the student one answer round per question. Question 1 should address the pitch angle, claim, omission, or confusing wording most relevant to the draft. Question 2 should ask about monk fruit, fruit juice, and lower-sugar language. Question 3 should ask about tree-nut and facility language. Question 4 should ask what materials, spokesperson access, or exact follow-up the student can provide. If the student uses approved facts and admits limits, become more receptive. If the student overclaims or sounds promotional, push back briefly before the next scheduled question. After the fourth student answer, close by saying you will review the fact sheet if they send it promptly.",
+        "meetingContext": "Remote reporter follow-up call. The student is a junior PR specialist at Northstar Foods. Lena covers grocery trends, beverage launches, and ingredient transparency. The student has access to approved facts and should not invent claims.",
+        "minTurns": 4,
+        "maxTurns": 4,
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Hi {{playerName}}, I read your note and have about ten minutes before edit. I have four questions, one answer each. First: why is Luma Fizz worth reader attention beyond another big-brand beverage launch?"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "remote voice meeting",
+          "inputArtifacts": [
+            {
+              "id": "pitch_email",
+              "label": "Pitch draft",
+              "whereVisible": "journalist_call.prepNoteKey",
+              "summary": "Student's email pitch from the prior scene."
+            },
+            {
+              "id": "approved_call_facts",
+              "label": "Approved call facts",
+              "whereVisible": "journalist_call.prepReferenceContent",
+              "summary": "Facts, allowed offers, and do-not-say language."
+            }
+          ],
+          "studentAction": "Speak with a skeptical journalist and maintain credibility under questioning.",
+          "outputArtifact": {
+            "id": "journalist_call",
+            "label": "Journalist call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "transcript.journalist_call"
+          ],
+          "continuity": [
+            "Call context informs the later issue-response update."
+          ],
+          "authenticityCheck": "Media relations requires real-time spoken judgment, not just polished written materials."
+        },
+        "illustration": "/scenes/journalist_call.png",
+        "imageBrief": "Remote video-call workspace on a laptop. Lena Ortiz appears in a large call tile from a newsroom desk with food magazines and a notebook. A reference workspace window beside the call shows approved call facts and the student's pitch draft. Warm cream interface, no real logos.",
+        "next": "section_transition_2_3",
+        "endpoint": "End once you have clarified the facility/allergen language, avoided banned claims, and offered a usable next source or fact sheet.",
+        "successCriteria": "You stay factual, avoid health/allergen overclaims, and keep the reporter relationship credible under skepticism."
+      },
+      "section_transition_2_3": {
+        "id": "section_transition_2_3",
+        "type": "section_transition",
+        "section": 2,
+        "title": "Section 3: Issues Response",
+        "content": "The pitch and call are done. As the launch moves into the afternoon, monitoring starts to matter.",
+        "actionLabel": "Open Monitoring",
+        "illustration": "/scenes/section_transition_2_3.png",
+        "imageBrief": "Transition illustration showing a reporter call transcript fading into a monitoring dashboard with social posts and coverage alerts.",
+        "next": "monitoring_triage"
+      },
+      "monitoring_triage": {
+        "id": "monitoring_triage",
+        "type": "kanban_board",
+        "section": 3,
+        "title": "Triage the Monitoring Queue",
+        "content": "Your monitoring dashboard pulls in launch mentions. Sort every card into the right action bucket, then explain which item needs PR action first.",
+        "appWindow": "kanban",
+        "windowTitle": "Luma Fizz - monitoring queue",
+        "columns": [
+          {
+            "id": "watch",
+            "label": "Watch"
+          },
+          {
+            "id": "respond",
+            "label": "Respond / clarify"
+          },
+          {
+            "id": "escalate",
+            "label": "Escalate to Maya"
+          },
+          {
+            "id": "log",
+            "label": "Log as positive"
+          }
+        ],
+        "cards": [
+          {
+            "id": "sweetener_thread",
+            "text": "TikTok comment thread: 'Monk fruit is just artificial sweetener with rebrand, right?' 412 likes and growing. Several users ask for source.",
+            "initialColumn": "watch"
+          },
+          {
+            "id": "allergen_dm",
+            "text": "Instagram DM from parent: 'Can my child with a tree nut allergy drink this? Your site says facility handles tree nuts.'",
+            "initialColumn": "watch"
+          },
+          {
+            "id": "retail_trade",
+            "text": "Retail Shelf posts a neutral brief: 'Northstar Foods to roll out Luma Fizz nationally next week at $2.49.'",
+            "initialColumn": "watch"
+          },
+          {
+            "id": "misquote_blog",
+            "text": "Small wellness blog headline: 'Northstar launches clean detox soda alternative.' It appears to paraphrase a retailer, not Northstar.",
+            "initialColumn": "watch"
+          },
+          {
+            "id": "influencer_positive",
+            "text": "Food creator posts an unpaid taste test praising Peach Yuzu flavor. Comments are mostly positive.",
+            "initialColumn": "watch"
+          },
+          {
+            "id": "reporter_followup",
+            "text": "Lena emails: 'Can you send the ingredient fact sheet and confirm the exact facility allergen language before 3 PM?'",
+            "initialColumn": "watch"
+          }
+        ],
+        "bindingKey": "monitoring_triage",
+        "referenceTitle": "Issue Triage Guide",
+        "referenceContent": "Use these buckets:\n\nWatch:\n- Low-risk chatter or early comments that need tracking but no immediate brand reply.\n\nRespond / clarify:\n- Direct questions where approved facts can help and the brand can safely answer.\n\nEscalate to Maya:\n- Potentially sensitive, fast-growing, or externally published claims involving health, safety, allergens, inaccurate quotes, or reporter deadlines.\n\nLog as positive:\n- Favorable coverage or social proof worth capturing for reporting.\n\nApproved language reminders:\n- Sweetener: fruit juice and monk fruit extract.\n- Facility: Produced in a facility that also processes tree nuts. The product formula does not contain tree nuts.\n- Do not call Luma Fizz healthy, clean, detoxifying, or allergen-free.",
+        "rationalePrompt": "Which one item needs PR action first, and why? Separate confirmed facts from assumptions.",
+        "rationalePlaceholder": "I would flag ... first because ... Confirmed facts are ... We should not assume ...",
+        "requireAllCardsMoved": true,
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "monitoring kanban",
+          "inputArtifacts": [
+            {
+              "id": "monitoring_cards",
+              "label": "Monitoring cards",
+              "whereVisible": "monitoring_triage.cards",
+              "summary": "Social comments, direct messages, blog headline, reporter follow-up, and positive mention."
+            },
+            {
+              "id": "triage_guide",
+              "label": "Issue Triage Guide",
+              "whereVisible": "monitoring_triage.referenceContent",
+              "summary": "Definitions for watch, respond, escalate, and log as positive."
+            }
+          ],
+          "studentAction": "Sort monitoring signals and write a top-priority rationale.",
+          "outputArtifact": {
+            "id": "monitoring_triage",
+            "label": "Monitoring triage board and rationale",
+            "format": "kanban_board"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.monitoring_triage",
+            "freeTextResponses.monitoring_triage_rationale"
+          ],
+          "continuity": [
+            "The blog-headline signal feeds the final external correction request."
+          ],
+          "authenticityCheck": "PR specialists monitor and triage coverage, social signals, reporter questions, and issue risk during launches."
+        },
+        "next": "issue_update",
+        "illustration": "/scenes/monitoring_triage.png"
+      },
+      "issue_update": {
+        "id": "issue_update",
+        "type": "free_text",
+        "section": 3,
+        "title": "Request a Blog Correction",
+        "content": "One monitoring card needs external PR action: a small wellness blog used unapproved \"clean detox\" language in its headline. Draft a calm correction request that protects accuracy without sounding threatening or promotional. Thank the editor, name the issue, ask for an update rather than a takedown, and keep it factual.",
+        "prompt": "Write the correction request email to BrightFork Wellness. Include: the specific language that needs correction, what Northstar can confirm, the approved replacement language, an offer to send the fact sheet, and a polite ask to update the headline or copy.",
+        "placeholder": "",
+        "minWords": 90,
+        "maxWords": 220,
+        "appWindow": "email",
+        "windowTitle": "New Message - BrightFork Wellness",
+        "emailHeaders": {
+          "from": "{{playerName}} <pr.specialist@northstarfoods.example>",
+          "to": "Nora Vale <editor@brightforkwellness.example>",
+          "subject": "Correction request: Luma Fizz headline language"
+        },
+        "appTabs": [
+          {
+            "id": "article",
+            "label": "Article",
+            "content": "BrightFork Wellness\nEditor: Nora Vale\nPublished: 2:14 PM ET\n\nNorthstar launches clean detox soda alternative\nBy Nora Vale\n\nNorthstar Foods is rolling out Luma Fizz nationally next week, a sparkling fruit tea line coming to grocery and convenience shelves. A retailer preview described the drink as a \"clean detox soda alternative\" for shoppers looking for lighter afternoon options.\n\nThe line includes Peach Yuzu, Blackberry Mint, and Citrus Ginger. Northstar materials say Luma Fizz has 35 calories per can and is sweetened with fruit juice and monk fruit extract. The company also says the product is produced in a facility that processes tree nuts, while the formula itself does not contain tree nuts.\n\nThe launch arrives as shoppers continue to scrutinize sweetener labels and seek lower-sugar beverages that still feel fun. Northstar did not immediately provide additional comment on the detox language before publication."
+          },
+          {
+            "id": "article_alert",
+            "label": "Article Alert",
+            "content": "PR readout:\n- The article appears to rely on a retailer preview rather than Northstar's approved launch language.\n- It uses unapproved health-benefit framing.\n- The claim could be repeated in social posts if not corrected quickly.\n\nCorrection goal:\n- Ask for an update to the inaccurate language in the headline and body copy.\n- Provide approved factual replacement language.\n- Offer the Luma Fizz fact sheet as source material."
+          },
+          {
+            "id": "approved_language",
+            "label": "Approved Language",
+            "content": "Approved facts:\n- Luma Fizz is a low-sugar sparkling fruit tea.\n- Sweetened with fruit juice and monk fruit extract.\n- 35 calories per can.\n- Produced in a facility that also processes tree nuts.\n- The product formula does not contain tree nuts.\n\nAllowed replacement wording:\n- \"Northstar Foods launches Luma Fizz, a low-sugar sparkling fruit tea sweetened with fruit juice and monk fruit extract.\"\n\nDo not say:\n- Healthy, clean, detox, guilt-free, allergen-free, safe for everyone, or no risk."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "email correction request",
+          "inputArtifacts": [
+            {
+              "id": "article",
+              "label": "Article",
+              "whereVisible": "issue_update.appTabs.article",
+              "summary": "BrightFork Wellness article with the unapproved clean/detox headline and body language."
+            },
+            {
+              "id": "article_alert",
+              "label": "Article Alert",
+              "whereVisible": "issue_update.appTabs.article_alert",
+              "summary": "Small wellness blog headline uses unapproved clean/detox language."
+            },
+            {
+              "id": "approved_language",
+              "label": "Approved Language",
+              "whereVisible": "issue_update.appTabs.approved_language",
+              "summary": "Ingredient and facility language with prohibited claims."
+            }
+          ],
+          "studentAction": "Write a calm external correction request using approved facts.",
+          "outputArtifact": {
+            "id": "issue_update",
+            "label": "Blog correction request email",
+            "format": "email"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.issue_update"
+          ],
+          "continuity": [
+            "Final graded artifact before assessment gate."
+          ],
+          "authenticityCheck": "Junior PR specialists often support media correction requests by using approved facts, avoiding threats, and preserving relationships while protecting public accuracy."
+        },
+        "next": "assessment_gate",
+        "illustration": "/scenes/issue_update.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Launch Work Period Is Complete",
+        "content": "The simulated launch work period is complete. You prepared media outreach, handled a reporter follow-up, triaged issue signals, and drafted a blog correction request. When you are ready, view your assessment.",
+        "actionLabel": "View Assessment",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "End-of-day PR launch desk. The laptop shows submitted tabs for media targets, pitch email, journalist call transcript, monitoring triage, and a blog correction request email. Luma Fizz cans and a closed notebook sit nearby. No score is visible.",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment",
+        "content": "Your public relations work products are ready for review. The assessment will evaluate source discipline, media targeting, writing, reporter communication, and issue response judgment.",
+        "illustration": "/scenes/grading.png",
+        "imageBrief": "A clean assessment-ready laptop screen showing submitted PR work tabs: Media Targets, Pitch Email, Reporter Call, Monitoring Triage, and Blog Correction Request. Warm cream palette, no scores visible.",
+        "next": "final_report"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as a junior Public Relations Specialist on the Luma Fizz launch.",
+        "illustration": "/scenes/final_report.png",
+        "imageBrief": "Final report view on a laptop at a food and beverage PR desk. Sections are labeled Evidence, Media Targeting, Pitch Writing, Reporter Trust, and Correction Judgment. Warm cream palette, no real logos.",
+        "next": null
+      },
+      "luma_fizz_workspace": {
+        "id": "luma_fizz_workspace",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Luma Fizz Source Workspace",
+        "content": "Your job today: pitch Luma Fizz using only approved facts.",
+        "actionLabel": "Next",
+        "deskWorkDesign": {
+          "roleFamily": "public_relations",
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "luma_fizz_workspace.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for all later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        },
+        "illustration": "/scenes/luma_fizz_workspace.png",
+        "imageBrief": "PR launch desk with a laptop source workspace showing app icons for Google Drive, Google Sheets, Meltwater, and Slack. Luma Fizz cans sit beside the laptop. The source text is rendered by the simulator, so keep laptop details generic and unreadable.",
+        "next": "first_move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Drive source files",
+              "files": [
+                {
+                  "id": "approved_facts",
+                  "name": "Approved facts - Luma Fizz.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Approved facts",
+                  "sections": [
+                    {
+                      "heading": "Approved facts",
+                      "body": "Product: Luma Fizz, a low-sugar sparkling fruit tea from Northstar Foods. Three flavors: Peach Yuzu, Blackberry Mint, Citrus Ginger. 35 calories per can. Sweetened with fruit juice and monk fruit extract. No artificial colors. National grocery rollout starts next week. Suggested retail price: $2.49 per can."
+                    }
+                  ],
+                  "category": "Approved facts",
+                  "lookFor": "Use this file to find the only product facts and proof points you can safely use with reporters."
+                },
+                {
+                  "id": "claims_guardrails",
+                  "name": "Claims and allergy guardrails.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Do-not-overclaim guardrails",
+                  "sections": [
+                    {
+                      "heading": "Do-not-overclaim guardrails",
+                      "body": "Do not call it healthy, clean, detoxifying, or better for everyone. Do not imply allergen-free. Approved allergen language: Produced in a facility that also processes tree nuts. The product formula does not contain tree nuts."
+                    }
+                  ],
+                  "category": "Claims guardrails",
+                  "lookFor": "Use this file to catch claims that are too broad, unapproved, or likely to create legal or credibility risk."
+                },
+                {
+                  "id": "launch_angles",
+                  "name": "Launch angles notes.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Launch goals and angles",
+                  "sections": [
+                    {
+                      "heading": "Launch goals and angles",
+                      "body": "Goals: earn credible food, beverage, retail, and lifestyle coverage; lead with taste, lower sugar than regular soda, and transparent ingredient language. Potential angles: big CPG brand enters sparkling tea; lower-sugar afternoon beverage; fruit tea and soda flavor development; grocery availability and price point."
+                    }
+                  ],
+                  "category": "Launch angles",
+                  "lookFor": "Use this file to compare possible story angles against the approved facts and reporter fit."
+                },
+                {
+                  "id": "media_list",
+                  "name": "Luma_Fizz_media_targets.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Maya Chen",
+                  "previewTitle": "Media target starter rows",
+                  "columns": [
+                    "outlet",
+                    "beat",
+                    "fit",
+                    "risk"
+                  ],
+                  "rows": [
+                    {
+                      "outlet": "Daily Sip",
+                      "beat": "beverage retail",
+                      "fit": "new grocery beverage launches",
+                      "risk": "needs exact claims"
+                    },
+                    {
+                      "outlet": "Pantry Wire",
+                      "beat": "CPG food",
+                      "fit": "ingredient transparency",
+                      "risk": "allergy language must be precise"
+                    },
+                    {
+                      "outlet": "City Lifestyle",
+                      "beat": "lifestyle",
+                      "fit": "afternoon routines",
+                      "risk": "avoid wellness overclaim"
+                    }
+                  ],
+                  "category": "Media targets",
+                  "lookFor": "Use this table to match the pitch angle to reporter interests and avoid outlets where the risk is higher."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#luma-fizz-launch",
+              "messages": [
+                {
+                  "id": "maya",
+                  "channel": "slack",
+                  "from": "Maya Chen",
+                  "timestamp": "8:42 AM",
+                  "body": "Before anyone contacts media, open the approved facts, claims guardrails, and media list. We need credible coverage, not overclaims.",
+                  "channelName": "#luma-fizz-launch",
+                  "linkedFileIds": [
+                    "approved_facts",
+                    "claims_guardrails"
+                  ],
+                  "category": "Comms direction",
+                  "lookFor": "Use this Slack message to understand the approved pitch task, urgency, and claims discipline Maya expects."
+                }
+              ]
+            },
+            {
+              "id": "watch",
+              "label": "Media Monitoring",
+              "kind": "dashboard",
+              "title": "Launch issue watch",
+              "rows": [
+                {
+                  "signal": "Ingredient transparency questions",
+                  "owner": "PR",
+                  "status": "monitor"
+                },
+                {
+                  "signal": "Sweetener misunderstandings",
+                  "owner": "PR/legal",
+                  "status": "monitor"
+                },
+                {
+                  "signal": "Allergy or facility-language confusion",
+                  "owner": "legal",
+                  "status": "high care"
+                },
+                {
+                  "signal": "Diet soda comparisons",
+                  "owner": "social",
+                  "status": "monitor"
+                }
+              ],
+              "columns": [
+                "signal",
+                "owner",
+                "status"
+              ],
+              "lookFor": "Use this watch list to spot public signals that may change the pitch angle or claims risk."
+            }
+          ],
+          "continueLabel": "Next"
+        }
+      }
+    }
+  },
+  "npcs": {
+    "lena_ortiz": {
+      "id": "lena_ortiz",
+      "name": "Lena Ortiz",
+      "role": "Food and Beverage Journalist, The Daily Table",
+      "persona": "Lena is a skeptical but fair journalist who covers grocery trends, beverage launches, and ingredient transparency. She dislikes hype and irrelevant pitches, but responds well to clear facts, useful context, and honest limits.",
+      "voice": "Sharp, efficient, curious, and professional.",
+      "avatar": "LO"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Welcome to Northstar Foods",
+    "welcomeBody": "You are a junior Public Relations Specialist supporting the Luma Fizz launch at a large food and beverage brand. Your work is to make public communication accurate, useful, and credible under time pressure.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Northstar Foods is a fictional enterprise food and beverage company with national grocery distribution and a large brand communications team."
+      },
+      {
+        "label": "Your Role",
+        "content": "As a junior Public Relations Specialist, you help prepare media materials, target reporters, draft outreach, support media conversations, monitor public reaction, and escalate issues to senior PR leaders."
+      },
+      {
+        "label": "Your Goal",
+        "content": "Use approved facts, tailor your outreach, communicate professionally with a journalist, and respond to issue signals without hype or panic."
+      }
+    ]
+  },
+  "glossary": {
+    "earned media": "Coverage or attention a brand receives from journalists, creators, or outlets without directly paying for the placement.",
+    "media list": "A targeted list of reporters, editors, producers, or outlets whose beat makes them relevant for a particular story.",
+    "media pitch": "A short, tailored message to a journalist that explains why a story is relevant to their audience.",
+    "press release": "An official written announcement prepared for media or public distribution.",
+    "embargo": "An agreement that information may be shared before a specified time but not published until that time.",
+    "holding statement": "A short approved statement used while an organization is still confirming details during an issue or crisis.",
+    "message pull-through": "Evidence that key messages appeared accurately in resulting coverage or public conversation.",
+    "spokesperson": "A person authorized to speak publicly or on the record for an organization.",
+    "monitoring": "Tracking media coverage, social mentions, and public reaction to identify opportunities or risks.",
+    "escalation": "Bringing an issue to the right senior person or cross-functional partner when risk, uncertainty, or sensitivity increases."
+  },
+  "sample_answers": {
+    "media_targets": "Strong targets would include Lena Ortiz for ingredient transparency and beverage launch fit, Marco Bell for grocery rollout and price/category context, and Jasmine Reed for taste, tea, and low-sugar drink routines. Watch-outs should flag wellness overclaim risk and allergen/facility language.",
+    "pitch_email": "A strong pitch references Lena's ingredient transparency coverage, leads with why Luma Fizz is relevant to grocery and beverage readers, uses approved facts, avoids health claims, and offers a fact sheet or interview.",
+    "issue_update": "A strong correction request politely identifies the clean/detox headline as inaccurate or unapproved, explains what Northstar can confirm, offers approved replacement language and a fact sheet, and avoids threats, overclaims, or ad-copy tone."
+  },
+  "rubric": {
+    "simulation_id": "public-relations-specialist-general-public-relations-media-relations-and-brand-communications-large-food-and-beverage-brand-consumer-packaged-goods-enterprise-entry-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の優先判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: メディア対応、修正依頼、監視キューが重なる中で、評判リスクと締切を見て最初の行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "メディアリスト",
+            "evidenceSceneIds": [
+              "media_targets"
+            ],
+            "rubric_text": "9-10: 記者の関心、媒体、角度、避けるべきミスマッチを見て、現実的な接触先を整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "記者向け提案文",
+            "evidenceSceneIds": [
+              "pitch_email"
+            ],
+            "rubric_text": "9-10: 記者にとってのニュース価値、根拠、簡潔さ、誇張のなさを満たす提案文を書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "記者通話",
+            "evidenceSceneIds": [
+              "journalist_call"
+            ],
+            "rubric_text": "9-10: 実際の通話で、記者の関心を聞き取り、答えられる範囲を守り、次の素材や確認事項につなげられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "監視キュー整理",
+            "evidenceSceneIds": [
+              "monitoring_triage"
+            ],
+            "rubric_text": "9-10: 反応の重要度、事実誤認、炎上リスク、対応の必要性を見分けて優先順位づけできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "ブログ修正依頼",
+            "evidenceSceneIds": [
+              "issue_update"
+            ],
+            "rubric_text": "9-10: 誤りを正す依頼として、事実、根拠、望む修正、相手への敬意を保った文面にできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" role="img" aria-label="City morning commute placeholder">
+  <rect width="1080" height="1350" fill="#B9C8BF"/>
+  <rect x="0" y="940" width="1080" height="410" fill="#EFE8D2"/>
+  <rect x="132" y="1042" width="220" height="48" fill="#F7F1E3" stroke="#8FA18B" stroke-width="5"/>
+  <rect x="428" y="1042" width="220" height="48" fill="#F7F1E3" stroke="#8FA18B" stroke-width="5"/>
+  <rect x="724" y="1042" width="220" height="48" fill="#F7F1E3" stroke="#8FA18B" stroke-width="5"/>
+  <path d="M780 196 L900 900 L720 900 Z" fill="#8FA18B" stroke="#1E1E1A" stroke-width="8"/>
+</svg>

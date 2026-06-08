@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-19T05:04:25+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "section_transition_2_3",
+  "itemId": "section_transition_2_3",
+  "promptHash": "455976d53c57a839",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

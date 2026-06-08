@@ -1,0 +1,15 @@
+{
+  "createdAt": "2026-05-18T14:54:02+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_5",
+  "itemId": "scene_5",
+  "promptHash": "50d53b348c305a04",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/npcs/chloe_kim.png",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/locations/player-desk-stratosphere.png",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/locations/chloe-home-office-vcall.png"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/IMAGE_PROMPTS.md"
+}

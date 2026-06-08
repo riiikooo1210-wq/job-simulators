@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-18T15:40:02+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_03_checkin",
+  "itemId": "scene_03_checkin",
+  "promptHash": "24fcb04c434c9fc2",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/npcs/maya.png",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/locations/wellnest-project-room.png"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/IMAGE_PROMPTS.md"
+}

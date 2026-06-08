@@ -1,0 +1,15 @@
+{
+  "createdAt": "2026-05-27T18:50:46Z",
+  "model": "openai-imagegen-built-in",
+  "kind": "scene",
+  "sceneId": "briefing_morning",
+  "itemId": "briefing_morning",
+  "promptHash": "8011b07139c3a7bb",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/public/visual-refs/npcs/priya.png",
+    "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/public/visual-refs/npcs/marcus.png",
+    "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/public/visual-refs/locations/consultant-desk.png"
+  ],
+  "sourceFile": "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/IMAGE_PROMPTS.md"
+}

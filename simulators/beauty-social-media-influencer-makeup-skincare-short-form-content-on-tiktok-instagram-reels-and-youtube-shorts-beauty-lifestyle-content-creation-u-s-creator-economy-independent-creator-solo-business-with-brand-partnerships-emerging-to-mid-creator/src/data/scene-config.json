@@ -1,0 +1,718 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "An emerging beauty creator's launch day mixes hands-on filming and product demonstration with platform planning, audience-trust judgment, sponsor negotiation, written deliverables, comment management, and constant context switching across email, short-form video, comments, and brand calls.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "Creators personally film short-form beauty content, handle products on camera, demonstrate texture/application, and capture usable takes under time pressure."
+        ],
+        "simulatorImplication": "The player should actually use the camera for one focused sponsored reel take, then choose which filmed beats belong in the edit."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Launch-day creator work happens across content calendars, platform analytics, email, comment threads, and edit/export workflows."
+        ],
+        "simulatorImplication": "The simulator should keep visible work surfaces for slate planning, audience comment handling, counteroffer drafting, and comment response."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Creators decide how to balance sponsor value, audience trust, performance metrics, and brand relationship risk."
+        ],
+        "simulatorImplication": "The player should repeatedly weigh business impact, trust risk, deadlines, proof quality, and disclosure choices."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Creators produce captions, brand emails, public replies, content plans, and contract-scope notes as part of the business."
+        ],
+        "simulatorImplication": "The player should write a content slate, counteroffer email, edit/caption note, and public audience reply."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Sponsor negotiation often includes quick calls to align fees, rights, timeline, and creative constraints."
+        ],
+        "simulatorImplication": "The player should handle a spoken brand call about usage rights, whitelisting, rate logic, and launch timing."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "The day includes monitoring analytics, rendering/export timing, and switching between audience comments and sponsor deadlines."
+        ],
+        "simulatorImplication": "Monitoring appears as context and pressure, while active scenes focus on creator decisions and deliverables."
+      }
+    },
+    "simulatorPlan": "The active mix emphasizes creator-business artifacts: review the offer, draft the brand counteroffer, negotiate by voice, review Maya's post-call planning note, plan the slate, film a real-camera sponsored reel, handle audience comments, and make a final post/pivot decision with consequences.",
+    "activeSceneMixRationale": "The real camera scene covers the tangible filming/product-demo work, while the rest of the day remains grounded in the digital and communication tasks that determine whether the partnership is commercially useful and audience-safe."
+  },
+  "storyline": {
+    "gameTitle": "Beauty Social Media Influencer Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "A Sponsored Launch Day"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "A Day as a Beauty Social Media Influencer",
+        "content": "You are an emerging beauty creator in the U.S. Today is a launch day: a skincare brand wants sponsored short-form content, your audience is watching for honesty, and your analytics are not being polite.",
+        "next": "scene_01_briefing",
+        "imageBrief": "A cozy creator apartment work corner in the morning, ring light, phone tripod, makeup brushes, skincare bottles, shipping boxes, open laptop, warm daylight, first-person view with only the creator's hands visible. Do not show any human face, selfie face, profile photo, or face thumbnail on the phone, laptop, or any screen.",
+        "illustration": "/scenes/intro.png"
+      },
+      "scene_01_briefing": {
+        "id": "scene_01_briefing",
+        "type": "briefing",
+        "section": 1,
+        "title": "Morning Dashboard",
+        "briefingMode": "sequential",
+        "content": "It is 8:12 AM. You open your laptop before agreeing to anything. Two notifications are waiting: GlowKind's campaign brief and Maya's contract-scope warning.",
+        "subSteps": [
+          {
+            "emails": [
+              {
+                "from": "Jordan Blake <partnerships@glowkindbeauty.com>",
+                "to": "you@glowdesk.studio",
+                "subject": "GlowKind SPF Skin Tint launch - paid collab + brief",
+                "content": "We love your sensitive-skin wear tests and practical makeup routines. Could you create 1 TikTok, 1 Instagram Reel, and 3 Story frames by tonight for our SPF Skin Tint launch? Offer is $650 + product. We'd also like usage rights for paid social and whitelisting from your handle so we can boost the best-performing asset.\n\nAttached launch brief:\nProduct: GlowKind SPF Skin Tint, a lightweight everyday skin tint with mineral SPF 30.\nPositioning: sensitive-skin friendly, breathable natural coverage, non-cakey finish for real daily wear.\nLaunch goal: show how the tint looks and feels in normal light, not just a polished studio setup.\nKey proof points to capture: shade match, texture on application, finish in natural light, comfort after several hours, how it layers with blush or concealer, and any oxidation or wear notes.\nAvoid claiming: acne treatment, dermatologist-level skincare benefits, all-day wear beyond what you actually test, or universal shade success without testing.\nRequired disclosure: paid partnership; product provided by GlowKind.\nCTA: invite viewers to join the launch waitlist or visit the launch page."
+              }
+            ]
+          },
+          {
+            "slackMessages": [
+              {
+                "sender": "Maya Chen",
+                "role": "Creator ops assistant",
+                "timestamp": "8:16 AM",
+                "content": "Morning {{playerName}}. I took a quick look at the GlowKind note, and the product brief is helpful, but the business side still feels too loose for a yes. I would ask Jordan to pin down the paid usage window, what whitelisting would actually allow, whether they expect category exclusivity, how many revision rounds are included, and the exact final deadline/time zone before you lock in a price or start planning the shoot."
+              }
+            ]
+          }
+        ],
+        "next": "scene_04_counteroffer",
+        "imageBrief": "First-person creator desk with an open laptop centered close enough for a browser window overlay. Leave the laptop screen as a clean warm cream/light blank workspace with only faint unreadable UI blocks, because the simulator will render coded email and message windows on top. Beauty products and handwritten contract notes beside it, anxious but focused morning planning mood. Do not show any human face, selfie face, profile photo, or face thumbnail anywhere.",
+        "illustration": "/scenes/scene_01_briefing.png"
+      },
+      "scene_02_content_slate": {
+        "id": "scene_02_content_slate",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Build Today's Content Slate",
+        "content": "The business conversation has moved far enough that the work shifts to content planning, even if any loose terms still need written confirmation. Use the GlowKind launch brief, the brand-call context, and Maya's attached performance/comment screenshots to plan a slate that can satisfy the sponsor without making the whole day feel like an ad.",
+        "prompt": "Create 3 content items from the morning sources. Each one needs a platform, hook, proof point, and trust/disclosure risk.",
+        "appWindow": "notion",
+        "windowTitle": "Glow Desk / Today Content Slate",
+        "deskWorkDesign": {
+          "roleFamily": "creator marketing",
+          "workSurface": "Notion-style content slate",
+          "inputArtifacts": [
+            {
+              "id": "campaign_email",
+              "label": "GlowKind campaign email and launch brief",
+              "whereVisible": "Morning Dashboard mail window and View Briefing during the counteroffer",
+              "summary": "Sponsor request plus product positioning, proof points, claim limits, disclosure requirement, CTA, deliverables, and same-day delivery."
+            },
+            {
+              "id": "audience_metrics",
+              "label": "Maya's analytics and trust-comment screenshots",
+              "whereVisible": "Maya's content planning message after the brand call",
+              "summary": "Save-rate data, underperforming polished GRWM, and Renee's audience concern about PR-only content."
+            },
+            {
+              "id": "brand_scope",
+              "label": "Counteroffer and brand-call scope",
+              "whereVisible": "Counteroffer email and Jordan's follow-up call",
+              "summary": "Usage rights, whitelisting, exclusivity, revision count, deadline/time zone, and honest review language were discussed; if anything stayed loose, the content plan should stay conservative until final written confirmation."
+            }
+          ],
+          "studentAction": "Create three platform-specific content items with hook, proof point, and disclosure/trust risk.",
+          "outputArtifact": {
+            "id": "content_slate",
+            "label": "Today content slate",
+            "format": "structured Notion rows"
+          },
+          "rubricEvidence": [
+            "Content Strategy",
+            "Audience Trust and Disclosure"
+          ],
+          "continuity": [
+            "The player chooses one slate item, or writes a stronger new idea, as the script reference in the camera shoot scene."
+          ],
+          "authenticityCheck": "A creator would plan posts from brand requirements, platform fit, proof moments, and audience trust before filming."
+        },
+        "definition": {
+          "itemLabel": "Content item",
+          "initialCount": 3,
+          "minItems": 3,
+          "maxItems": 3,
+          "bindingKey": "content_slate",
+          "fields": [
+            {
+              "key": "platform",
+              "label": "Platform + format",
+              "placeholder": "TikTok 45-sec wear test"
+            },
+            {
+              "key": "hook",
+              "label": "Opening hook",
+              "placeholder": "I wore this SPF tint for four hours on sensitive skin..."
+            },
+            {
+              "key": "proof",
+              "label": "Proof point",
+              "placeholder": "Natural light check-in, shade oxidation, price comparison"
+            },
+            {
+              "key": "trust",
+              "label": "Disclosure / trust risk",
+              "placeholder": "Paid partnership; say what was gifted and what is still untested",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "next": "scene_02b_shoot_reel",
+        "imageBrief": "First-person creator desk with an open laptop showing a clean warm cream/light blank workspace reserved for a coded Notion content slate overlay, with makeup swatches, a phone showing TikTok and Instagram icons, and a pen nearby. Do not bake readable task text into the laptop screen and do not show any human face, selfie face, profile photo, or face thumbnail anywhere.",
+        "illustration": "/scenes/scene_02_content_slate.png"
+      },
+      "scene_02b_shoot_reel": {
+        "id": "scene_02b_shoot_reel",
+        "type": "camera_shoot",
+        "section": 1,
+        "title": "Shoot the Sponsored Reel",
+        "content": "Choose one content idea as your filming reference, or write a stronger new idea if the setup gives you a better angle. Then film a quick sponsored Reel with your real camera and make a rough edit: cut awkward silence, filler words, false starts, or rambles while keeping the hook, proof, paid disclosure, and wear-test caveat intact. The simulator captures a spoken transcript from the recorded take and recalculates the edited transcript after cuts.",
+        "bindingKey": "sponsored_reel_shoot",
+        "sourceBindingKey": "content_slate",
+        "maxSeconds": 120,
+        "beatSeconds": 30,
+        "minSelectedBeats": 3,
+        "captionPrompt": "Write the caption/export note you would attach to the edited Reel. It must disclose the partnership, preserve the wear-test caveat, and briefly explain any non-cut edits you would add, if any. If you would add subtitles that match what you said throughout the video, just say that; you do not need to type out the full subtitles.",
+        "beats": [
+          {
+            "id": "hook",
+            "label": "Hook",
+            "prompt": "Open with the hook from your slate. Say what the viewer will learn before this sounds like an ad.",
+            "sourceField": "hook"
+          },
+          {
+            "id": "texture_demo",
+            "label": "Texture demo",
+            "prompt": "Hold the product where the camera can see it, show texture or application, and say this is a paid partnership.",
+            "sourceField": "platform"
+          },
+          {
+            "id": "proof_point",
+            "label": "Proof point",
+            "prompt": "Show the proof moment: natural light, shade check, wear-test detail, or price/value comparison.",
+            "sourceField": "proof"
+          },
+          {
+            "id": "trust_caveat",
+            "label": "Trust caveat",
+            "prompt": "Say the honest caveat: what you tested, what you cannot claim yet, and what you will update after longer wear.",
+            "sourceField": "trust"
+          }
+        ],
+        "next": "scene_03_triage",
+        "imageBrief": "A real-camera creator filming screen with script beats, phone tripod, ring light, skincare tint bottle, disclosure reminder, and quick edit timeline.",
+        "illustration": "/scenes/scene_02b_shoot_reel.png"
+      },
+      "scene_03_triage": {
+        "id": "scene_03_triage",
+        "type": "comment_queue",
+        "section": 1,
+        "title": "Reply to Audience Comments",
+        "content": "After filming the GlowKind draft, you take a quick pass through yesterday's LumaVeil GRWM comments. That thread got more skepticism than usual, and you need to decide which comments deserve a public reply, then write the replies you would actually send.",
+        "bindingKey": "audience_comment_queue",
+        "windowTitle": "Comment Inbox - Yesterday's GRWM",
+        "contextTitle": "Context for this comment thread",
+        "contextNotes": [
+          "This comment section is from yesterday's already-posted LumaVeil GRWM video.",
+          "The LumaVeil Cloud Tint in that video was gifted PR with no required post. No brand paid for the video.",
+          "The concealer and blush in the video were products you bought yourself.",
+          "You wore the base for about four hours, checked it indoors and near natural light, and noticed slight creasing around the nose.",
+          "You have not tested full-day wear, sunscreen layering, or multiple-day sensitive-skin results for that product."
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "community management",
+          "workSurface": "Comment inbox and reply composer",
+          "inputArtifacts": [
+            {
+              "id": "audience_comment_queue",
+              "label": "Audience comments on yesterday's LumaVeil GRWM",
+              "whereVisible": "Comment queue cards",
+              "summary": "Questions about PR disclosure, wear-test proof, SPF layering, creator honesty, and hostile bait on a recently posted LumaVeil video."
+            },
+            {
+              "id": "recorded_reel_plan",
+              "label": "Known facts for yesterday's video",
+              "whereVisible": "Context panel above the comment queue",
+              "summary": "The player knows what was gifted, what was purchased, what was tested, and what remains untested."
+            }
+          ],
+          "studentAction": "Choose whether each comment deserves a public reply, then write mature, transparent replies where appropriate.",
+          "outputArtifact": {
+            "id": "audience_comment_queue",
+            "label": "Audience comment decisions and replies",
+            "format": "handled comment queue JSON"
+          },
+          "rubricEvidence": [
+            "Operational Prioritization",
+            "Audience Trust and Disclosure",
+            "Professional Communication"
+          ],
+          "continuity": [
+            "The comment decisions establish how the creator handles audience skepticism before the final post/pivot decision."
+          ],
+          "authenticityCheck": "Beauty creators routinely choose which comments deserve public replies, especially when sponsorship disclosure and audience trust are under scrutiny."
+        },
+        "comments": [
+          {
+            "id": "receiptplease",
+            "username": "@receiptplease",
+            "text": "Was the LumaVeil tint gifted or paid? I could not tell from the caption."
+          },
+          {
+            "id": "spfbase",
+            "username": "@spfbase",
+            "text": "Did you test that base over sunscreen or just on bare skin? Mine pills when I layer SPF."
+          },
+          {
+            "id": "softglam_sam",
+            "username": "@softglam_sam",
+            "text": "Your honest shade notes are why I follow you. Please keep the texture close-ups coming."
+          },
+          {
+            "id": "shadecheck",
+            "username": "@shadecheck",
+            "text": "The finish looked smoother at the start than later. Did it crease or oxidize after a few hours?"
+          },
+          {
+            "id": "truthbomb",
+            "username": "@truthbomb",
+            "text": "Your views are down because every review sounds bought now."
+          },
+          {
+            "id": "brandwatcher",
+            "username": "@brandwatcher",
+            "text": "So was LumaVeil paying you to say it worked or nah?"
+          }
+        ],
+        "next": "scene_07_post_or_pivot",
+        "imageBrief": "A creator laptop screen showing a neutral comment inbox and reply composer for a recently posted LumaVeil beauty GRWM video, with a generic skin tint tube, makeup products, ring light, and phone nearby. Keep the laptop screen mostly clean for coded UI overlays. Do not show any human face, selfie face, profile photo, or face thumbnail anywhere.",
+        "illustration": "/scenes/scene_03_triage.png"
+      },
+      "scene_04_counteroffer": {
+        "id": "scene_04_counteroffer",
+        "type": "free_text",
+        "section": 1,
+        "title": "Draft the Brand Counteroffer",
+        "content": "Jordan's offer is exciting, but the business terms are too broad. Use the campaign brief and Maya's missing-terms warning from View Briefing while you write. Your reply needs to sound professional and collaborative while protecting your work and audience.",
+        "prompt": "Write the email you will send to Jordan. Include deliverables, revised fee or package logic, usage rights, whitelisting, exclusivity, timeline, revision limits, and disclosure.",
+        "minWords": 90,
+        "maxWords": 220,
+        "placeholder": "Hi Jordan, thank you for thinking of me for the GlowKind SPF Skin Tint launch...",
+        "appWindow": "email",
+        "windowTitle": "New Message - GlowKind Counteroffer",
+        "emailHeaders": {
+          "from": "{{playerName}} <you@glowdesk.studio>",
+          "to": "Jordan Blake <partnerships@glowkindbeauty.com>",
+          "subject": "Re: GlowKind SPF Skin Tint launch - paid collab"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "creator business development",
+          "workSurface": "Email compose window",
+          "inputArtifacts": [
+            {
+              "id": "brand_offer",
+              "label": "GlowKind offer and Maya terms note",
+              "whereVisible": "Counteroffer scene setup",
+              "summary": "The brand requested deliverables, usage rights, and whitelisting; Maya flags missing usage window, whitelisting permissions, exclusivity, revisions, and deadline/time-zone details."
+            }
+          ],
+          "studentAction": "Draft a collaborative counteroffer that scopes deliverables, fee logic, rights, whitelisting, exclusivity, timeline, revisions, and disclosure.",
+          "outputArtifact": {
+            "id": "scene_04_counteroffer",
+            "label": "Brand counteroffer email",
+            "format": "email draft"
+          },
+          "rubricEvidence": [
+            "Business Terms and Negotiation",
+            "Professional Communication"
+          ],
+          "continuity": [
+            "Jordan uses the counteroffer as the basis for the following voice call."
+          ],
+          "authenticityCheck": "Paid creator work often turns on clear licensing scope, ad usage, and deadline/revision boundaries."
+        },
+        "next": "scene_05_brand_call",
+        "imageBrief": "An email composer open beside a calculator, media kit, and contract notes; beauty products and a ring light in the background.",
+        "illustration": "/scenes/scene_04_counteroffer.png"
+      },
+      "scene_05_brand_call": {
+        "id": "scene_05_brand_call",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "Brand Partnership Call",
+        "content": "Jordan asks for a quick video call. The brand likes your audience fit, but wants to understand why the rate changes when usage rights and whitelisting are included. Use the support doc beside the meeting window: it has Jordan's ask, Maya's terms checklist, review guardrails, and your sent counteroffer email. Goal: in 3-6 speaking turns, get a workable agreement on revised package/rate logic, paid usage and whitelisting boundaries, and honest disclosure/wear-test language. The call endpoint is Jordan confirming they can take the final scope back to the team.",
+        "npcId": "jordan",
+        "goalPrompt": "Negotiate the GlowKind collaboration. The student has 3-6 speaking turns to get a workable agreement on three topics: rate/package logic, usage rights and whitelisting boundaries, and how they will preserve clear disclosure plus honest wear-test language under same-day pressure. Push politely for broad paid usage, then accept reasonable boundaries if the student explains them clearly. If the student covers those topics, wrap up with: \"That gives me what I need. Send the final scope in writing and I can take it back to the team.\" If they do not cover those topics by the end, keep the close unresolved: \"I still need the final scope in writing before we can confirm those terms.\" Do not open new topics after either close.",
+        "playerGoal": "Achieve this in 3-6 speaking turns: explain why usage/whitelisting changes the rate, set boundaries on paid usage and whitelisting, and preserve paid disclosure plus honest wear-test caveats. Success means Jordan can take a clear final scope back to the team.",
+        "meetingContext": "This is a remote brand video call. The student is an emerging beauty creator with a trusted sensitive-skin audience. GlowKind wants 1 TikTok, 1 Instagram Reel, 3 Story frames, paid usage rights, and whitelisting. The first offer was $650 plus product. The student should preserve honest review language and clear disclosure.",
+        "meetingMode": "remote",
+        "minTurns": 3,
+        "maxTurns": 6,
+        "voiceName": "Puck",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Thanks for jumping on. We really want to move fast on this launch, but I saw your note about separating usage and whitelisting. Can you walk me through what you need changed?"
+          }
+        ],
+        "next": {
+          "branchOn": "scene_05_brand_call",
+          "cases": {
+            "terms_secured": "scene_05b_content_context",
+            "terms_unclear": "scene_05b_terms_unclear_context"
+          },
+          "default": "scene_05b_terms_unclear_context"
+        },
+        "imageBrief": "A laptop video call screen with a brand partnerships manager on one side and a creator's product-testing setup on the other, professional but informal.",
+        "illustration": "/scenes/scene_05_brand_call.png"
+      },
+      "scene_05b_content_context": {
+        "id": "scene_05b_content_context",
+        "type": "briefing",
+        "section": 1,
+        "title": "Maya's Content Planning Note",
+        "briefingMode": "sequential",
+        "content": "After your counteroffer and Jordan's call, the terms and scope are mostly clear enough to plan the content. Maya sends the planning context she held until the business risk was addressed.",
+        "subSteps": [
+          {
+            "slackMessages": [
+              {
+                "sender": "Maya Chen",
+                "role": "Creator ops assistant",
+                "timestamp": "9:31 AM",
+                "content": "Good. Now that the scope is mostly cleaned up, shift into the content plan. Keep using Jordan's launch brief for product facts: SPF 30 skin tint, sensitive-skin friendly positioning, breathable natural coverage, natural-light texture, shade match, several-hour comfort, blush/concealer layering, and oxidation or wear notes. Avoid acne-treatment claims, dermatologist-level benefits, all-day wear beyond what you actually test, or universal shade claims. I attached yesterday's performance snapshot and Renee's comment as the reality check: GlowKind still needs clear product proof, but the audience needs disclosure, close-up evidence, and honest caveats. Build ideas that can do both instead of making the whole day feel like an ad."
+              }
+            ],
+            "metrics": [
+              {
+                "metric": "Drugstore skin tint wear test",
+                "target": "5% save rate",
+                "actual": "8.7% save rate",
+                "status": "on_track"
+              },
+              {
+                "metric": "Polished GRWM from yesterday",
+                "target": "45K views",
+                "actual": "12.4K views",
+                "status": "warning"
+              },
+              {
+                "metric": "Audience comments mentioning disclosure",
+                "target": "Low concern",
+                "actual": "14 comments asking what is paid/gifted",
+                "status": "critical"
+              },
+              {
+                "metric": "Brand email response SLA",
+                "target": "Reply by 10:00 AM",
+                "actual": "Counteroffer sent; call complete",
+                "status": "on_track"
+              }
+            ],
+            "quotes": [
+              {
+                "speaker": "Renee",
+                "role": "Longtime follower",
+                "text": "I trust you because you usually say what you would actually buy. Please do not turn into another PR-only page."
+              }
+            ]
+          }
+        ],
+        "next": "scene_02_content_slate",
+        "imageBrief": "First-person creator desk after a brand call, open laptop with a Slack-style creator-ops message and two attached screenshot cards planned as coded overlays, beauty products and contract notes nearby. Keep the laptop screen clean for UI overlays. Do not show any human face, selfie face, profile photo, or face thumbnail anywhere.",
+        "illustration": "/scenes/scene_05b_content_context.png"
+      },
+      "scene_05b_terms_unclear_context": {
+        "id": "scene_05b_terms_unclear_context",
+        "type": "briefing",
+        "section": 1,
+        "title": "Maya's Content Planning Note",
+        "briefingMode": "sequential",
+        "content": "You did not clearly secure every term you wanted on the call, but the campaign is still moving because the brand has not canceled the offer and the same-day launch clock is still running. Maya frames the next step as conservative content planning while the final scope still needs to be confirmed in writing.",
+        "subSteps": [
+          {
+            "slackMessages": [
+              {
+                "sender": "Maya Chen",
+                "role": "Creator ops assistant",
+                "timestamp": "9:31 AM",
+                "content": "We did not get every term cleanly locked on the call. Keep the content plan conservative: do not assume broad paid usage, open-ended whitelisting, or extra revisions are approved until the final scope is in writing. You can still plan the deliverables because the brief has enough product direction and the deadline is today, but every idea needs a clear disclosure path and honest wear-test caveat. I attached yesterday's performance snapshot and Renee's comment as the audience-trust check."
+              }
+            ],
+            "metrics": [
+              {
+                "metric": "Drugstore skin tint wear test",
+                "target": "5% save rate",
+                "actual": "8.7% save rate",
+                "status": "on_track"
+              },
+              {
+                "metric": "Polished GRWM from yesterday",
+                "target": "45K views",
+                "actual": "12.4K views",
+                "status": "warning"
+              },
+              {
+                "metric": "Audience comments mentioning disclosure",
+                "target": "Low concern",
+                "actual": "14 comments asking what is paid/gifted",
+                "status": "critical"
+              },
+              {
+                "metric": "Brand scope confirmation",
+                "target": "Terms confirmed before filming",
+                "actual": "Needs written follow-up",
+                "status": "warning"
+              }
+            ],
+            "quotes": [
+              {
+                "speaker": "Renee",
+                "role": "Longtime follower",
+                "text": "I trust you because you usually say what you would actually buy. Please do not turn into another PR-only page."
+              }
+            ]
+          }
+        ],
+        "next": "scene_02_content_slate",
+        "imageBrief": "First-person creator desk after a brand call, open laptop with a Slack-style creator-ops message and two attached screenshot cards planned as coded overlays, beauty products and unresolved contract notes nearby. Keep the laptop screen clean for UI overlays. Do not show any human face, selfie face, profile photo, or face thumbnail anywhere.",
+        "illustration": "/scenes/scene_05b_terms_unclear_context.png"
+      },
+      "scene_07_post_or_pivot": {
+        "id": "scene_07_post_or_pivot",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "Post or Pivot",
+        "content": "It is 5:40 PM. Your cut looks good, but the shade oxidized slightly after four hours. The brand prefers the brighter edit from the first check-in. You have one hour before the requested post time.",
+        "isPivot": true,
+        "options": [
+          {
+            "id": "a",
+            "label": "Post the brighter edit and skip the oxidation note.",
+            "body": "You avoid friction with the brand and publish the prettiest version.",
+            "branchFlag": "polished_only"
+          },
+          {
+            "id": "b",
+            "label": "Delay the post until tomorrow with no explanation.",
+            "body": "You protect the review, but leave the brand guessing and miss the deadline.",
+            "branchFlag": "silent_delay"
+          },
+          {
+            "id": "c",
+            "label": "Ask for approval to add a transparent wear-test caption.",
+            "body": "You send Jordan a specific caption update: paid partnership disclosed, four-hour wear note included, final shade check shown in the video.",
+            "branchFlag": "transparent_update"
+          }
+        ],
+        "next": {
+          "branchOn": "scene_07_post_or_pivot",
+          "cases": {
+            "polished_only": "scene_07a_polished_only_consequence",
+            "silent_delay": "scene_07b_silent_delay_consequence",
+            "transparent_update": "scene_07c_transparent_update_consequence"
+          },
+          "default": "scene_07c_transparent_update_consequence"
+        },
+        "imageBrief": "A creator at a desk comparing two video exports on a laptop, one polished and one honest wear-test version, with clock pressure and a brand chat notification visible.",
+        "illustration": "/scenes/scene_07_post_or_pivot.png"
+      },
+      "scene_07a_polished_only_consequence": {
+        "id": "scene_07a_polished_only_consequence",
+        "type": "briefing",
+        "section": 1,
+        "title": "Immediate Consequence",
+        "briefingMode": "simple",
+        "content": "The post goes up on time and the brand likes the clean first-hour edit, but the comments quickly notice the missing oxidation note. You now have a trust problem attached to a paid partnership, which will count against disclosure and professional judgment.",
+        "next": "assessment_gate",
+        "imageBrief": "Phone comment thread under a polished sponsored beauty Reel, several viewers asking why the shade shift was not mentioned, creator desk in tense evening light.",
+        "illustration": "/scenes/scene_07a_polished_only_consequence.png"
+      },
+      "scene_07b_silent_delay_consequence": {
+        "id": "scene_07b_silent_delay_consequence",
+        "type": "briefing",
+        "section": 1,
+        "title": "Immediate Consequence",
+        "briefingMode": "simple",
+        "content": "You avoid posting an incomplete claim, but Jordan has no usable explanation before the launch deadline. The brand relationship takes a hit because the delay protected review integrity without giving the sponsor a workable path.",
+        "next": "assessment_gate",
+        "imageBrief": "Laptop and phone showing an unsent sponsored Reel export, a missed brand deadline notification, and an unanswered message thread with the brand manager.",
+        "illustration": "/scenes/scene_07b_silent_delay_consequence.png"
+      },
+      "scene_07c_transparent_update_consequence": {
+        "id": "scene_07c_transparent_update_consequence",
+        "type": "briefing",
+        "section": 1,
+        "title": "Immediate Consequence",
+        "briefingMode": "simple",
+        "content": "Jordan is not thrilled about changing the caption this late, but the specific wording gives the brand a decision they can approve. The final post keeps the paid disclosure, four-hour wear note, and caveat visible, which protects audience trust while staying close to launch timing.",
+        "next": "assessment_gate",
+        "imageBrief": "Creator reviewing a final sponsored beauty Reel caption with paid partnership disclosure and a wear-test caveat highlighted before posting.",
+        "illustration": "/scenes/scene_07c_transparent_update_consequence.png"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 1,
+        "title": "End of Launch Day",
+        "content": "You handled content strategy, brand negotiation, audience trust, and deadline pressure. Let's see how your creator-business judgment held up.",
+        "next": "final_report",
+        "imageBrief": "End-of-day creator desk with laptop analytics, closed makeup palette, phone charging, invoice draft, and a calmer evening light.",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 1,
+        "title": "Simulation Complete",
+        "content": "Here is your performance report.",
+        "next": null,
+        "imageBrief": "A clean performance report dashboard for a creator business showing content strategy, trust, negotiation, and operations scores.",
+        "illustration": "/scenes/final_report.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 1,
+        "title": "The Day Is Complete",
+        "content": "The simulated day is complete. You have finished the work period; when you are ready, view your assessment.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm end-of-day workplace wrap-up moment with the student stepping back from the finished work, relevant tools or documents settled, and warm late-day light. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      }
+    },
+    "devSkips": [
+      {
+        "label": "Skip to camera shoot",
+        "targetNodeId": "scene_02b_shoot_reel"
+      },
+      {
+        "label": "Skip to counteroffer",
+        "targetNodeId": "scene_04_counteroffer"
+      },
+      {
+        "label": "Skip to grading",
+        "targetNodeId": "assessment_gate"
+      }
+    ]
+  },
+  "npcs": {
+    "jordan": {
+      "id": "jordan",
+      "name": "Jordan Blake",
+      "role": "Brand Partnerships Manager at GlowKind Beauty",
+      "persona": "Jordan is friendly, polished, and metrics-driven. Jordan genuinely likes the creator's audience fit, but is responsible for getting campaign assets quickly and efficiently. Jordan will push for broad paid usage and whitelisting if the creator does not set boundaries, but respects creators who explain the business logic clearly.",
+      "voice": "Professional, upbeat, a little deadline-pressured, willing to negotiate when terms are specific.",
+      "avatar": "/avatars/jordan.png"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Welcome to the Beauty Creator Simulation",
+    "welcomeBody": "Today, you are running a small but real creator business. You will plan content, negotiate a brand deal, handle a live brand conversation, and protect audience trust under deadline pressure.",
+    "steps": [
+      {
+        "label": "Your Role",
+        "content": "You are an emerging-to-mid beauty social media influencer focused on makeup and skincare short-form video across TikTok, Instagram Reels, and YouTube Shorts."
+      },
+      {
+        "label": "The Business",
+        "content": "Your income comes from sponsored posts, affiliate links, gifted collaborations, and repeat brand relationships. You are still hands-on with filming, editing, email, analytics, and invoices."
+      },
+      {
+        "label": "Your Goal",
+        "content": "Make choices that balance sponsor value, audience honesty, platform performance, and your own business boundaries."
+      }
+    ]
+  },
+  "glossary": {
+    "Affiliate link": "A trackable link or code that can pay the creator commission when followers buy.",
+    "Gifted collab": "A product-for-content exchange. If content is required, it is a commercial exchange, not no-strings PR.",
+    "Usage rights": "Permission for a brand to reuse creator content, often in organic social posts or paid ads.",
+    "Whitelisting": "A paid-media arrangement where a brand runs ads through or from the creator's social account.",
+    "Exclusivity": "A period when the creator agrees not to promote competing brands in a defined category.",
+    "Media kit": "A concise package of audience metrics, content examples, past results, rates, and contact details.",
+    "FTC disclosure": "Clear sponsorship or affiliate disclosure, such as saying content is paid, gifted, or commissionable."
+  },
+  "sample_answers": {
+    "sponsored_reel_shoot": "{\n  \"recorded\": true,\n  \"recordedSeconds\": 118,\n  \"selectedBeatIds\": [\"hook\", \"texture_demo\", \"proof_point\", \"trust_caveat\"],\n  \"editCuts\": [\n    {\n      \"id\": \"sample-cut-1\",\n      \"start\": 17.4,\n      \"end\": 19.1\n    },\n    {\n      \"id\": \"sample-cut-2\",\n      \"start\": 64.2,\n      \"end\": 66.8\n    }\n  ],\n  \"recordingNotes\": \"Remember to show natural light, texture, shade shift after four hours, and say this is not a full skincare review yet.\",\n  \"rawTranscript\": \"Paid partnership with GlowKind. I wore the SPF tint in natural light, checked the texture and shade after four hours, and I am showing the part that shifted instead of pretending it stayed perfect. I still need longer wear time before calling this a full skincare review.\",\n  \"editedTranscript\": \"Paid partnership with GlowKind. I wore the SPF tint in natural light, checked the texture and shade after four hours, and I am showing the part that shifted instead of pretending it stayed perfect. I still need longer wear time before calling this a full skincare review.\",\n  \"editedTranscriptManuallyEdited\": false,\n  \"editedTranscriptReviewed\": true,\n  \"transcriptSegments\": [\n    {\n      \"id\": \"sample-transcript-1\",\n      \"start\": 0.6,\n      \"end\": 8.9,\n      \"text\": \"Paid partnership with GlowKind. I wore the SPF tint in natural light.\"\n    },\n    {\n      \"id\": \"sample-transcript-2\",\n      \"start\": 22.4,\n      \"end\": 36.2,\n      \"text\": \"I checked the texture and shade after four hours and I am showing the part that shifted.\"\n    },\n    {\n      \"id\": \"sample-transcript-3\",\n      \"start\": 83.4,\n      \"end\": 94.5,\n      \"text\": \"I still need longer wear time before calling this a full skincare review.\"\n    }\n  ],\n  \"disclosureDetected\": true,\n  \"disclosureSources\": [\"editedTranscript\", \"caption\"],\n  \"finalEditedSeconds\": 113.7,\n  \"caption\": \"Paid partnership with GlowKind. I wore the SPF tint in natural light and included the shade shift I saw after four hours, plus what I still need to test before calling it a full review. Export notes: add full spoken subtitles, keep the paid-partnership disclosure visible at the start, label the natural-light check, and avoid smoothing filters so the wear note stays credible.\"\n}",
+    "audience_comment_queue": "{\n  \"comments\": [\n    {\n      \"id\": \"receiptplease\",\n      \"username\": \"@receiptplease\",\n      \"commentText\": \"Was the LumaVeil tint gifted or paid? I could not tell from the caption.\",\n      \"decision\": \"reply\",\n      \"replyText\": \"LumaVeil sent the tint as gifted PR, but this video was not paid and there was no required post. The concealer and blush were products I bought myself.\",\n      \"handled\": true\n    },\n    {\n      \"id\": \"spfbase\",\n      \"username\": \"@spfbase\",\n      \"commentText\": \"Did you test that base over sunscreen or just on bare skin? Mine pills when I layer SPF.\",\n      \"decision\": \"reply\",\n      \"replyText\": \"I only tested it on my normal base yesterday, not layered over sunscreen yet. I do not want to claim it passes an SPF layering test until I actually film that.\",\n      \"handled\": true\n    },\n    {\n      \"id\": \"softglam_sam\",\n      \"username\": \"@softglam_sam\",\n      \"commentText\": \"Your honest shade notes are why I follow you. Please keep the texture close-ups coming.\",\n      \"decision\": \"reply\",\n      \"replyText\": \"Thank you. The close-up texture shot is exactly what I want to keep doing, especially when PR products look prettier in soft lighting.\",\n      \"handled\": true\n    },\n    {\n      \"id\": \"shadecheck\",\n      \"username\": \"@shadecheck\",\n      \"commentText\": \"The finish looked smoother at the start than later. Did it crease or oxidize after a few hours?\",\n      \"decision\": \"reply\",\n      \"replyText\": \"I saw slight creasing around my nose after about four hours, but I did not test it for a full day. I would call this a first wear note, not a final wear-test verdict.\",\n      \"handled\": true\n    },\n    {\n      \"id\": \"truthbomb\",\n      \"username\": \"@truthbomb\",\n      \"commentText\": \"Your views are down because every review sounds bought now.\",\n      \"decision\": \"skip_public_reply\",\n      \"replyText\": \"\",\n      \"handled\": true\n    },\n    {\n      \"id\": \"brandwatcher\",\n      \"username\": \"@brandwatcher\",\n      \"commentText\": \"So was LumaVeil paying you to say it worked or nah?\",\n      \"decision\": \"reply\",\n      \"replyText\": \"Fair question. This one was gifted PR, not a paid post, and LumaVeil did not approve the review. I still should have made the PR note clearer in the caption.\",\n      \"handled\": true\n    }\n  ]\n}",
+    "scene_04_counteroffer": "Hi Jordan, thank you for thinking of me for the GlowKind SPF Skin Tint launch. I can do 1 TikTok, 1 IG Reel, and 3 Story frames with clear paid-partnership disclosure and one revision round if feedback arrives by 2 PM PT. My organic posting rate for that package is $1,150. Paid usage and whitelisting would be separate: I can include 60 days of paid social usage on TikTok and Instagram for an additional $650, renewable monthly. I cannot agree to open-ended usage or category exclusivity, but I can avoid direct SPF tint competitors for 14 days. I will keep the review honest, including shade/wear notes, because that is why the audience performs for beauty partners."
+  },
+  "rubric": {
+    "simulation_id": "beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "投稿構成",
+            "evidenceSceneIds": [
+              "scene_02_content_slate"
+            ],
+            "rubric_text": "9-10: スポンサー条件、視聴者の信頼、撮影で使える見せ方を踏まえて、投稿の流れと主張を具体化できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "リール撮影編集",
+            "evidenceSceneIds": [
+              "scene_02b_shoot_reel"
+            ],
+            "rubric_text": "9-10: 商品が実際に分かる画、必要な証拠カット、過剰な効果表現の回避、短尺での見せ場をそろえられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "コメント対応",
+            "evidenceSceneIds": [
+              "scene_03_triage"
+            ],
+            "rubric_text": "9-10: 信頼に関わるコメント、規約や安全性に関わるコメント、通常反応を見分け、優先順位と返信方針を決められている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "契約対案",
+            "evidenceSceneIds": [
+              "scene_04_counteroffer"
+            ],
+            "rubric_text": "9-10: ブランド要求に対して、開示、表現の正直さ、修正回数、使用権、締切を守るための具体的な対案を書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "企業通話",
+            "evidenceSceneIds": [
+              "scene_05_brand_call"
+            ],
+            "rubric_text": "9-10: 実際の通話で、譲れる点と譲れない点を説明し、視聴者への誠実さを保ちながら合意できる条件を探れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "投稿可否判断",
+            "evidenceSceneIds": [
+              "scene_07_post_or_pivot"
+            ],
+            "rubric_text": "9-10: 公開前のリスク、視聴者信頼、契約条件、修正可能性を踏まえて、投稿するか止めるかを明確に判断できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

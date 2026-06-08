@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T15:42:04+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "grading",
+  "itemId": "grading",
+  "promptHash": "427766faca9f1028",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/locations/home-office-desk.png"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/IMAGE_PROMPTS.md"
+}

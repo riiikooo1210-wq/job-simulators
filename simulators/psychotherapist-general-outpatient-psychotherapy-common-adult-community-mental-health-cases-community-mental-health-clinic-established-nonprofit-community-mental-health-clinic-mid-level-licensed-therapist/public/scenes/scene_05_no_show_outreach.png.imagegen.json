@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:36:28+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_05_no_show_outreach",
+  "itemId": "scene_05_no_show_outreach",
+  "promptHash": "1d332a29b0290e5e",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/psychotherapist-general-outpatient-psychotherapy-common-adult-community-mental-health-cases-community-mental-health-clinic-established-nonprofit-community-mental-health-clinic-mid-level-licensed-therapist/src/data/scene-config.json"
+}

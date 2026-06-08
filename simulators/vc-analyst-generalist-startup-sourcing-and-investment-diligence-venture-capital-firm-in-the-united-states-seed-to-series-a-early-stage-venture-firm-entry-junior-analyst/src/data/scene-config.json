@@ -1,0 +1,1190 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "Junior early-stage VC analyst work is mostly digital, artifact-heavy, and judgment-heavy: analysts source and screen incomplete startup information, review decks and CRM notes, build market context, talk with founders, and communicate concise recommendations to partners from partial evidence. The role has little physical/procedural work, but it has substantial concrete tool work in spreadsheets, CRM-style notes, market maps, Slack, and diligence notes.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "The accepted role materials emphasize desk-based sourcing, deck review, market mapping, founder conversations, and written recommendations rather than physical workplace procedures. [yt:manual_vc_day_notes]",
+          "O*NET's closest occupation centers on analyzing business/financial data, monitoring industry developments, and preparing oral or written reports. [onet]"
+        ],
+        "simulatorImplication": "Do not add physical_playground scenes. The concrete work should be simulated through realistic digital artifacts and work surfaces."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "The role stack includes CRM notes, spreadsheets, pitch decks, newsletters, Slack, and investment memos. [yt:manual_vc_day_notes]",
+          "O*NET lists spreadsheet, CRM, presentation, email, BI/data tools, and word processing as relevant tools. [onet]"
+        ],
+        "simulatorImplication": "Most active scenes should use visible deal workspaces, spreadsheet-like screens, kanban/market maps, Slack, and Miro-style matrices."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "Analysts must turn ambiguous startup signals into defensible next steps without overstating evidence. [reddit:manual_vc_forum_themes]",
+          "O*NET emphasizes analyzing industry trends, evaluating securities/companies, assessing risk, and recommending investments. [onet]"
+        ],
+        "simulatorImplication": "Tasks should force evidence hierarchy, assumption discipline, market/wedge judgment, and clear recommendation logic."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "The role commonly produces screens, short internal recommendations, and investment memos. [yt:manual_vc_day_notes]",
+          "Forum advice emphasizes shorter memos, explicit assumptions, and precise follow-up questions. [reddit:manual_vc_forum_themes]"
+        ],
+        "simulatorImplication": "Require multiple typed artifacts: a first-pass screen, founder-call prep, partner-ready call debrief notes, and a pipeline Slack update."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Early-stage VC emphasizes founder conversations, relationship-building, and asking clean questions without becoming adversarial. [yt:manual_vc_day_notes]",
+          "O*NET includes conferring with others about financial matters and presenting business-related information. [onet]"
+        ],
+        "simulatorImplication": "Include one high-signal voice founder call and asynchronous partner communication. The call should use the student's prep notes."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "The role rhythm is fragmented across pipeline deadlines, founder calls, partner meetings, Slack, and desk work. [yt:manual_vc_day_notes]",
+          "Forum themes describe many pitches, time pressure, and pressure to form a view quickly. [reddit:manual_vc_forum_themes]"
+        ],
+        "simulatorImplication": "The day should move through time-boxed context switches, but passive waiting should not dominate active play."
+      }
+    },
+    "simulatorPlan": "The upgraded simulator uses one bounded MCQ to model first-signal triage, then multiple constructed-response desk tasks: a spreadsheet-style first-pass screen, a market-map board, founder-call prep, a remote voice founder call, partner-ready call debrief notes, and a pipeline priority matrix. This matches the role's source-derived mix: mostly digital artifact work, judgment, writing, and one meaningful spoken diligence moment.",
+    "activeSceneMixRationale": "Active scenes are weighted toward digital analysis and written artifacts, with one remote voice call and no physical playground. The player repeatedly transforms visible inputs into role-real outputs that later scenes reuse."
+  },
+  "storyline": {
+    "gameTitle": "VC Analyst Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Morning Deal Screen"
+      },
+      {
+        "num": 2,
+        "label": "Founder and Partner Work"
+      },
+      {
+        "num": 3,
+        "label": "Investment Recommendation"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Founder call",
+        "targetNodeId": "founder_call",
+        "prefillKey": "through_founder_prep"
+      },
+      {
+        "label": "Grading",
+        "targetNodeId": "assessment_gate",
+        "prefillKey": "through_priority"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Northstar",
+        "content": "You are Maya Chen, a first-year analyst at Northstar Ventures, a seed-to-Series A firm in San Francisco. Today you need to screen an AI insurance workflow startup, test the claims behind the deck, ask useful founder questions, and send a recommendation that helps partners decide whether to spend another hour on the deal.",
+        "imageBrief": "First-person view of a venture capital analyst's desk in a small San Francisco office. A laptop shows a CRM deal page, a pitch deck thumbnail, a spreadsheet with startup metrics, and a Slack message from a partner. Coffee, notebook, and a city window in the background. Practical, focused startup-investing mood.",
+        "illustration": "/scenes/intro.png",
+        "next": "morning_source_workspace"
+      },
+      "triage_signal": {
+        "id": "triage_signal",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Pick the First Signal",
+        "content": "You have 35 minutes before pipeline. Which signal should you investigate first to protect the quality of your recommendation?",
+        "imageBrief": "Close-up of a pitch deck slide with bold ARR growth claims beside a messy notes page. A countdown to the pipeline meeting is visible in the calendar. The scene should emphasize time pressure and incomplete information.",
+        "illustration": "/scenes/triage_signal.png",
+        "options": [
+          {
+            "id": "logo_slide",
+            "label": "The customer-logo slide, because brand names will impress the partners.",
+            "body": "Logos can matter, but only if they represent paying, relevant customers.",
+            "branchFlag": "logo_first"
+          },
+          {
+            "id": "arr_quality",
+            "label": "Revenue quality: separate recurring software ARR from implementation fees.",
+            "body": "This tests whether the traction supports a venture-scale software story.",
+            "branchFlag": "traction_first"
+          },
+          {
+            "id": "ai_architecture",
+            "label": "The AI architecture slide, because technical novelty is the whole deal.",
+            "body": "Technical novelty helps, but buyer urgency and repeatable adoption matter first.",
+            "branchFlag": "tech_first"
+          },
+          {
+            "id": "round_timing",
+            "label": "Round timing, because a fast round means the firm should move immediately.",
+            "body": "Timing creates pressure, but speed without conviction leads to shallow diligence.",
+            "branchFlag": "fomo_first"
+          }
+        ],
+        "next": {
+          "branchOn": "triage_signal",
+          "cases": {
+            "logo_first": "redirect_logo",
+            "traction_first": "redirect_traction",
+            "tech_first": "redirect_tech",
+            "fomo_first": "redirect_fomo"
+          },
+          "default": "redirect_traction"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "venture diligence",
+          "workSurface": "deal-workspace triage",
+          "inputArtifacts": [
+            {
+              "id": "claimpilot_source_surfaces",
+              "label": "ClaimPilot desktop apps",
+              "whereVisible": "morning_source_workspace.sourceWorkspace",
+              "summary": "Pitch-deck claim, CRM caveats, internal ARR bridge, customer conversion, founder background, and market-map uncertainty."
+            },
+            {
+              "id": "partner_slack_request",
+              "label": "Partner Slack request",
+              "whereVisible": "morning_source_workspace.sourceWorkspace",
+              "summary": "Leo asks for a first signal before pipeline."
+            }
+          ],
+          "studentAction": "Choose the first diligence signal to investigate before pipeline.",
+          "outputArtifact": {
+            "id": "triage_signal_choice",
+            "label": "First-signal decision",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "Signal Triage",
+            "mcSelections.triage_signal",
+            "branchFlags.triage_signal"
+          ],
+          "continuity": [
+            "Each choice routes to an immediate consequence before the shared deck screen."
+          ],
+          "authenticityCheck": "VC analysts must quickly decide which traction or market signal protects recommendation quality before deeper work."
+        }
+      },
+      "redirect_logo": {
+        "id": "redirect_logo",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Logos Without Context",
+        "content": "The logo slide looks polished, but the CRM note tags several logos as unpaid pilots or friendly design partners. You refocus on revenue quality and buyer urgency so the recommendation does not over-credit vanity proof.",
+        "imageBrief": "Pitch deck logo slide overlaid with analyst notes marking unpaid pilot, design partner, and annual contract. The scene should show a polished startup claim being checked carefully.",
+        "illustration": "/scenes/redirect_logo.png",
+        "next": "deck_screen"
+      },
+      "redirect_traction": {
+        "id": "redirect_traction",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Revenue Quality First",
+        "content": "You open the ARR bridge before pipeline. The headline says $1M+, but the useful signal is sharper: $720K is recurring software ARR and $310K is implementation fees. That distinction changes how confidently Northstar can treat traction as repeatable software demand.",
+        "imageBrief": "Spreadsheet-style ARR bridge beside a ClaimPilot pitch deck slide. The recurring software ARR row is cleanly separated from implementation fees. A notebook margin says: recurring, repeatable, buyer pull.",
+        "illustration": "/scenes/redirect_traction.png",
+        "next": "deck_screen"
+      },
+      "redirect_tech": {
+        "id": "redirect_tech",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Novelty Is Not Enough",
+        "content": "The AI diagram is interesting, but it does not answer whether agencies will buy, renew, or expand. You bookmark the technical questions and move back to the evidence partners need first: traction quality, wedge, and market pull.",
+        "imageBrief": "A technical architecture slide with model boxes and data arrows beside a sticky note reading: buyers, renewal, wedge, proof. Analyst laptop in a compact VC office.",
+        "illustration": "/scenes/redirect_tech.png",
+        "next": "deck_screen"
+      },
+      "redirect_fomo": {
+        "id": "redirect_fomo",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Speed Needs a Reason",
+        "content": "The round may be moving, but Leo will not chase every hot deal. You decide to build a clear screen: what is true, what is assumed, and what would justify a second meeting.",
+        "imageBrief": "Calendar invite for pipeline meeting beside a pitch deck email marked urgent. The analyst's notebook says conviction beats FOMO.",
+        "illustration": "/scenes/redirect_fomo.png",
+        "next": "deck_screen"
+      },
+      "deck_screen": {
+        "id": "deck_screen",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Deck Tear-Down",
+        "content": "Your job today: decide whether ClaimPilot deserves a serious second look.",
+        "prompt": "For each fixed lens, write what we know from the sources, what may be misleading or still unknown, and what Leo should take away for fund fit.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "ClaimPilot First-Pass Screen",
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "spreadsheet",
+          "inputArtifacts": [
+            {
+              "id": "pitch_deck",
+              "label": "ClaimPilot seed deck",
+              "whereVisible": "deck_screen.sourceWorkspace.app:documents.file:pitch_deck",
+              "summary": "Pitch deck excerpt with the founder ARR headline, buyer workflow claim, pilot count, annual contracts, and round timing."
+            },
+            {
+              "id": "crm_record",
+              "label": "Northstar CRM record",
+              "whereVisible": "deck_screen.sourceWorkspace.app:documents.file:crm_record",
+              "summary": "CRM diligence notes on pilot/design-partner caveats, founder-market fit, buyer urgency, implementation burden, expansion, churn, and market-wedge questions."
+            },
+            {
+              "id": "arr_bridge",
+              "label": "ARR bridge",
+              "whereVisible": "deck_screen.sourceWorkspace.app:arr.file:arr_bridge",
+              "summary": "Internal finance spreadsheet separating recurring software ARR from one-time implementation fees and showing pilots versus annual contracts."
+            },
+            {
+              "id": "partner_slack_request",
+              "label": "Partner Slack request",
+              "whereVisible": "deck_screen.sourceWorkspace.app:slack",
+              "summary": "Leo asks for fund fit, traction quality, and what Northstar would need to believe."
+            }
+          ],
+          "studentAction": "Fill a structured first-pass screen that separates evidence, concern, and implication for fund fit.",
+          "outputArtifact": {
+            "id": "claimpilot_screen",
+            "label": "ClaimPilot first-pass screen",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.claimpilot_screen"
+          ],
+          "continuity": [
+            "The screen informs market mapping, founder-call prep, and partner debrief notes."
+          ],
+          "authenticityCheck": "VC analysts translate messy deck and CRM information into concise screen rows for partner review."
+        },
+        "definition": {
+          "itemLabel": "Investment lens",
+          "bindingKey": "claimpilot_screen",
+          "rowGuides": [
+            {
+              "title": "Traction quality",
+              "sourceHint": "Look at: Excel ARR bridge + CRM record",
+              "hint": "Signal to check: $720K is software ARR and $310K is implementation fees. Still learn: whether annual contracts renew and pilots convert.",
+              "fieldValues": {
+                "dimension": "Traction quality"
+              }
+            },
+            {
+              "title": "Buyer urgency",
+              "sourceHint": "Look at: pitch deck + CRM open questions",
+              "hint": "Signal to check: agencies dislike manual claim-status follow-up. Still learn: who owns the budget and why they buy now.",
+              "fieldValues": {
+                "dimension": "Buyer urgency"
+              }
+            },
+            {
+              "title": "Founder-market fit",
+              "sourceHint": "Look at: CRM record",
+              "hint": "Strong signal: founder has claims ops experience. Still learn: whether setup and adoption are repeatable.",
+              "fieldValues": {
+                "dimension": "Founder-market fit"
+              }
+            },
+            {
+              "title": "Market wedge / competition",
+              "sourceHint": "Look at: CRM record + pitch deck",
+              "hint": "Signal to check: ClaimPilot targets claims workflow. Still learn: whether this is a standalone wedge or a feature inside agency systems or adjuster portals.",
+              "fieldValues": {
+                "dimension": "Market/wedge"
+              }
+            }
+          ],
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "fields": [
+            {
+              "key": "evidence",
+              "label": "What we know",
+              "placeholder": "Use concrete facts or numbers from the source tabs.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "concern",
+              "label": "What may be misleading / unknown",
+              "placeholder": "Name the caveat, assumption, or diligence question.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "implication",
+              "label": "What Leo should take away",
+              "placeholder": "Explain how this affects whether Northstar should spend more partner time.",
+              "multiline": true,
+              "rows": 3
+            }
+          ]
+        },
+        "next": "market_map",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Drive source files",
+              "files": [
+                {
+                  "id": "pitch_deck",
+                  "name": "ClaimPilot_Seed_Raise.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Pitch deck excerpt",
+                  "assetPath": "/assets/pitch_deck.png",
+                  "assetAlt": "ClaimPilot pitch deck excerpt showing $1M+ ARR, routine claim-status follow-up automation, 18 agency pilots, and 7 annual contracts.",
+                  "sections": [
+                    {
+                      "heading": "Pitch deck excerpt",
+                      "body": "AI claim-status follow-up for independent insurance agencies. Automates routine claim-status follow-up across agency, carrier, and customer touchpoints. Founder headline says $1M+ ARR and fast early agency adoption. Seed round is moving quickly; founder wants a second meeting this week."
+                    }
+                  ],
+                  "category": "Company pitch",
+                  "lookFor": "Use the deck to understand ClaimPilot’s promise, traction story, customer proof, and which claims need verification."
+                },
+                {
+                  "id": "crm_record",
+                  "name": "ClaimPilot CRM record.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "CRM record",
+                  "sections": [
+                    {
+                      "heading": "CRM record",
+                      "body": "Some logo-slide names are pilots or design partners. The record shows 18 pilots, 7 annual contracts, founder Alex Rivera has 8 years in insurance claims operations, and open questions around buyer urgency, implementation burden, expansion repeatability, churn, and whether this is a workflow wedge or a feature in existing agency systems."
+                    }
+                  ],
+                  "category": "Internal context",
+                  "lookFor": "Use the CRM notes to separate what Northstar already knows from what still needs founder or data-room confirmation."
+                },
+                {
+                  "id": "arr_bridge",
+                  "name": "ARR_bridge.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Internal finance",
+                  "previewTitle": "ARR bridge",
+                  "columns": [
+                    "line",
+                    "amount",
+                    "quality"
+                  ],
+                  "rows": [
+                    {
+                      "line": "Software subscription ARR",
+                      "amount": "$720K",
+                      "quality": "recurring software revenue"
+                    },
+                    {
+                      "line": "Implementation fees",
+                      "amount": "$310K",
+                      "quality": "one-time services revenue"
+                    },
+                    {
+                      "line": "Annual contracts",
+                      "amount": "7 agencies",
+                      "quality": "contracted customers"
+                    },
+                    {
+                      "line": "Pilots",
+                      "amount": "18 agencies",
+                      "quality": "not all paid annual contracts"
+                    }
+                  ],
+                  "category": "Revenue quality",
+                  "lookFor": "Use this table to separate recurring software ARR from one-time implementation fees, pilots, and weaker traction signals."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#pipeline",
+              "messages": [
+                {
+                  "id": "leo",
+                  "channel": "slack",
+                  "from": "Leo Martinez",
+                  "timestamp": "8:42 AM",
+                  "body": "Can you take first pass on ClaimPilot before pipeline? Need a crisp view: fund fit, traction quality, and what we would need to believe.",
+                  "channelName": "#pipeline",
+                  "linkedFileIds": [
+                    "pitch_deck",
+                    "crm_record"
+                  ],
+                  "category": "Partner direction",
+                  "lookFor": "Use this Slack message to understand Leo’s ask, the time pressure, and the evidence he wants before pipeline."
+                }
+              ]
+            }
+          ],
+          "continueLabel": "Pick first signal"
+        }
+      },
+      "market_map": {
+        "id": "market_map",
+        "type": "kanban_board",
+        "section": 1,
+        "title": "Market Map Sprint",
+        "content": "Leo's pipeline note leaves one open question before the founder call: what would an insurance agency compare ClaimPilot against if it had to solve this workflow today? The market-map scratchpad lists seven buyer alternatives pulled from the deck, CRM note, and quick desk research: direct and adjacent solutions, incumbent agency systems, generic automation tools, compliance workflow software, and manual staff follow-up. Categorize each alternative so Leo can see whether ClaimPilot owns a distinct claims-workflow wedge or is more likely a feature/substitute inside another system. Use the Criteria tab, choose a category for every alternative, then explain ClaimPilot's wedge.",
+        "appWindow": "kanban",
+        "windowTitle": "Insurance Workflow Market Map",
+        "bindingKey": "market_map_board",
+        "classificationMode": "dropdown",
+        "assignmentTitle": "Buyer alternatives",
+        "rationaleBindingKey": "market_map_rationale",
+        "rationalePrompt": "After sorting the alternatives, write three things: ClaimPilot's category, the buyer pain it targets, and the first alternative you would benchmark against.",
+        "rationalePlaceholder": "Category: ... Buyer pain: ... First alternative to benchmark against: ...",
+        "requireAllCardsMoved": true,
+        "referenceTitle": "Market map criteria",
+        "referenceContent": "What this list is: a market map of solutions and substitutes a buyer may consider. Some entries are direct or adjacent products, some are incumbent systems, and one is the current manual workflow. Leo wants this mixed comparison because the founder call needs to test what ClaimPilot actually replaces and which alternative matters first.\n\nWhy categorize them: the map turns a vague AI-insurance pitch into a sharper question: is ClaimPilot selling a claims workflow product, a feature inside agency systems, a generic automation tool, a compliance workflow, or a replacement for staff time?\n\nHow to classify: use the buyer job and primary system role, not the buzzword.\n\nAgency system of record: core policy/account record or broad agency workflow hub.\n\nClaims workflow: tools that directly handle claim-status follow-up, routing, or adjuster/customer coordination.\n\nHorizontal AI / data automation: general extraction, summarization, or automation that could serve many departments.\n\nCompliance ops: regulatory/checklist workflows rather than claim execution.\n\nManual alternative: spreadsheets, email, phone calls, and staff time that the startup may replace.",
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "kanban",
+          "inputArtifacts": [
+            {
+              "id": "market_criteria",
+              "label": "Market map criteria",
+              "whereVisible": "referenceContent",
+              "summary": "Why the seven buyer alternatives are being compared and definitions for agency systems, claims workflow, horizontal AI/data automation, compliance ops, and manual alternatives."
+            },
+            {
+              "id": "market_alternative_cards",
+              "label": "Buyer alternatives",
+              "whereVisible": "dropdown assignment rows",
+              "summary": "A mixed buyer-alternative set: direct or adjacent solutions, incumbent systems, generic tools, compliance workflow software, and the manual status quo."
+            }
+          ],
+          "studentAction": "Classify each buyer alternative and write why that comparison clarifies ClaimPilot's wedge.",
+          "outputArtifact": {
+            "id": "market_map_board",
+            "label": "Insurance workflow market map",
+            "format": "kanban_board plus rationale"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.market_map_board",
+            "freeTextResponses.market_map_rationale"
+          ],
+          "continuity": [
+            "The wedge rationale feeds founder-call prep and investment recommendation context."
+          ],
+          "authenticityCheck": "Early-stage VC analysts often build quick market maps to test whether a startup is a distinct wedge or a feature inside an incumbent system."
+        },
+        "columns": [
+          {
+            "id": "inbox",
+            "label": "Inbox"
+          },
+          {
+            "id": "agency_systems",
+            "label": "Agency Systems"
+          },
+          {
+            "id": "claims_workflow",
+            "label": "Claims Workflow"
+          },
+          {
+            "id": "horizontal_ai",
+            "label": "Horizontal AI"
+          },
+          {
+            "id": "compliance_ops",
+            "label": "Compliance Ops"
+          },
+          {
+            "id": "manual_alternative",
+            "label": "Manual Alternative"
+          }
+        ],
+        "cards": [
+          {
+            "id": "claimpilot",
+            "text": "ClaimPilot - AI follow-up for independent agency claim workflows",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "agency_crm",
+            "text": "Generic agency CRM - lead and policyholder communication",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "legacy_ams",
+            "text": "Legacy AMS - system of record for policies and accounts",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "doc_ai",
+            "text": "Document AI startup - extracts data from claim forms",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "regtrack",
+            "text": "RegTrack - state-by-state compliance checklist tool",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "adjuster_portal",
+            "text": "Adjuster portal - task routing for claim status updates",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "manual_followup",
+            "text": "Manual spreadsheet/email follow-up by agency staff",
+            "initialColumn": "inbox"
+          }
+        ],
+        "next": "founder_call_prep"
+      },
+      "founder_call_prep": {
+        "id": "founder_call_prep",
+        "type": "free_text",
+        "section": 2,
+        "title": "Founder Call Prep",
+        "content": "Prepare 5-7 specific questions tied to the risks you found in the deck screen and market map.",
+        "prompt": "Write a compact founder-call prep note. Each question should test a specific claim, risk, or assumption, with a brief note on why the answer matters. Use Deck Tear-Down for traction and source-quality questions; use Market Map Sprint for wedge, buyer-alternative, and competition questions.",
+        "placeholder": "Start with the highest-risk question. Keep each question crisp, then add why the answer would change the second-meeting decision...",
+        "minWords": 90,
+        "maxWords": 240,
+        "appWindow": "notion",
+        "windowTitle": "ClaimPilot Founder Call Prep",
+        "appTabs": [
+          {
+            "id": "deck_screen_signals",
+            "label": "Deck Tear-Down",
+            "content": "Traction and source-quality signals from the first-pass screen:\n\n- The $1M+ ARR headline mixes $720K software ARR with $310K implementation fees.\n- ClaimPilot has 18 pilots, but only 7 annual contracts.\n- Several logo-slide names may be pilots or design partners.\n- Alex has 8 years in insurance claims operations.\n- Open risks: renewal evidence, pilot conversion, implementation burden, expansion repeatability, and churn."
+          },
+          {
+            "id": "market_map_signals",
+            "label": "Market Map",
+            "content": "Wedge and buyer-alternative signals from the market map:\n\n- ClaimPilot appears closest to a claims-workflow wedge.\n- Adjacent alternatives include agency systems of record, agency CRM, document AI, adjuster portals, compliance tools, and manual spreadsheet/email follow-up.\n- The call should test what workflow customers replace first, who owns the budget, and why the pain is urgent enough to buy now."
+          },
+          {
+            "id": "call_bar",
+            "label": "Call Bar",
+            "content": "Leo's bar for a useful founder call:\n\n- Ask questions that change the second-meeting decision.\n- Test claims, risks, or assumptions; do not just invite more pitch.\n- Cover the highest-risk areas first: revenue quality, buyer urgency, implementation effort, repeatability, churn/expansion, and competitive wedge.\n- Keep the tone warm and concise."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "notion",
+          "inputArtifacts": [
+            {
+              "id": "deck_screen_signals",
+              "label": "Deck Tear-Down signals",
+              "whereVisible": "founder_call_prep.appTabs.deck_screen_signals",
+              "summary": "Traction quality, ARR composition, pilot/contract caveats, founder-market fit, and repeatability risks."
+            },
+            {
+              "id": "market_map_signals",
+              "label": "Market Map signals",
+              "whereVisible": "founder_call_prep.appTabs.market_map_signals",
+              "summary": "Claims-workflow wedge hypothesis, adjacent alternatives, budget-owner question, and competitive replacement risk."
+            },
+            {
+              "id": "call_bar",
+              "label": "Leo's call bar",
+              "whereVisible": "founder_call_prep.appTabs.call_bar",
+              "summary": "A short rubric for decision-relevant founder-call prep."
+            }
+          ],
+          "studentAction": "Write a compact 5-7 question call plan tied to the deck-screen risks and market-map hypothesis.",
+          "outputArtifact": {
+            "id": "founder_call_prep",
+            "label": "Founder-call question prep",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.founder_call_prep"
+          ],
+          "continuity": [
+            "The prepared questions appear inside the founder call via prepNoteKey."
+          ],
+          "authenticityCheck": "Analysts need concise call plans so they can learn decision-relevant facts during short founder conversations."
+        },
+        "next": "founder_call"
+      },
+      "founder_call": {
+        "id": "founder_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Founder Call with Alex",
+        "content": "Alex Rivera, ClaimPilot's founder, joins a short remote call. Use the 5-7 questions in your founder-call prep note as the call plan. Ask those prepared questions; when Alex's answer is vague or important, you can ask a short follow-up before moving on.",
+        "npcId": "alex",
+        "meetingMode": "remote",
+        "prepNoteKey": "founder_call_prep",
+        "prepNoteTitle": "Your founder-call prep",
+        "prepReferenceTitle": "ClaimPilot facts",
+        "prepReferenceContent": "ClaimPilot automates claim-status follow-up for independent insurance agencies.\n\nKnown before the call:\n- Claimed $1M+ ARR = $720K software ARR plus $310K implementation fees.\n- 18 pilots, 7 annual contracts.\n- Alex spent 8 years in insurance claims operations.\n- Market-map question: claims workflow wedge or feature inside agency systems/adjuster portals?",
+        "sessionNotesKey": "founder_call_notes",
+        "sessionNotesTitle": "Founder-call notes",
+        "sessionNotesPrompt": "Take notes while Alex answers. You will use these notes in the next task, Call Debrief Notes.",
+        "sessionNotesPlaceholder": "Capture confirmed facts, unclear claims, exact follow-ups, and anything Leo will need after the call...",
+        "sessionNotesPlacement": "below_image",
+        "goalPrompt": "You are Alex Rivera, founder of ClaimPilot. You are credible and energetic, but you naturally pitch. If the analyst asks vague questions, give polished but general answers. If they ask specific diligence questions, reveal relevant facts: only $720K is recurring software ARR, seven agencies are on annual contracts, implementations still require founder-led setup, one customer expanded from 10 to 35 seats, churn is unknown because contracts are young, and the strongest buyer pain is reducing manual claim-status follow-up. Do not volunteer all of this at once. Let the analyst work through their prepared questions and answer short follow-ups when they ask them. After the analyst has covered revenue quality, buyer urgency, implementation effort, and expansion or churn, wrap up naturally with a closing line like: 'Happy to send the ARR bridge and a customer reference after this.' Do not open new topics after that wrap-up.",
+        "meetingContext": "The user is playing Maya, a VC analyst. They should work through the founder-call questions they prepared, asking optional follow-ups only when an answer is vague, important, or changes the second-meeting decision. The call should feel professionally warm, not adversarial.",
+        "minTurns": 0,
+        "maxTurns": 10,
+        "voiceName": "Puck",
+        "imageBrief": "Remote video-call view from a VC office laptop. Founder Alex is on screen with a simple insurance workflow dashboard behind him. The analyst's call prep notes and ClaimPilot fact sheet are visible beside the meeting window. The mood is focused, polite, and time-boxed.",
+        "illustration": "/scenes/founder_call.png",
+        "next": "call_debrief",
+        "playerGoal": "Ask the prepared questions from your founder-call prep note. If Alex gives a vague or important answer, ask a short follow-up; otherwise move to the next prepared question. End when you have enough evidence for Leo, with a maximum of 10 turns.",
+        "endpoint": "End once you have enough facts to update the partner on whether the deal deserves a second meeting and what diligence remains.",
+        "successCriteria": "You cover the prepared diligence questions, use follow-ups selectively, separate recurring ARR from services, probe repeatability, and capture concrete follow-up requests.",
+        "deskWorkDesign": {
+          "roleFamily": "venture diligence",
+          "workSurface": "remote founder diligence call",
+          "inputArtifacts": [
+            {
+              "id": "founder_call_prep",
+              "label": "Founder-call question prep",
+              "whereVisible": "founder_call.prepNoteKey",
+              "summary": "Student call-plan note prepared from the Deck Tear-Down and Market Map Sprint."
+            },
+            {
+              "id": "claimpilot_facts",
+              "label": "ClaimPilot facts",
+              "whereVisible": "founder_call.prepReferenceContent",
+              "summary": "Known ARR bridge, pilots/contracts, founder background, and market-map question."
+            }
+          ],
+          "studentAction": "Use the prepared founder-call question list to ask specific diligence questions tied to claims and risks.",
+          "outputArtifact": {
+            "id": "founder_call",
+            "label": "Founder call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "Founder Call Quality"
+          ],
+          "continuity": [
+            "Founder call evidence and typed founder-call notes feed the call debrief sent to Leo."
+          ],
+          "authenticityCheck": "VC analysts routinely pressure-test founder claims through concise diligence calls before recommending next steps."
+        }
+      },
+      "call_debrief": {
+        "id": "call_debrief",
+        "type": "free_text",
+        "section": 2,
+        "title": "Call Debrief Notes",
+        "content": "Turn the founder call into decision-useful notes to send to Leo.",
+        "prompt": "Write a concise call debrief. Include confirmed facts, assumptions or risks, and the implication for whether ClaimPilot deserves a second meeting.",
+        "placeholder": "Confirmed facts:\n- ...\n\nAssumptions / risks:\n- ...\n\nSecond-meeting implication:\n- ...",
+        "minWords": 60,
+        "maxWords": 220,
+        "appWindow": "notion",
+        "windowTitle": "ClaimPilot Call Debrief",
+        "appTabs": [
+          {
+            "id": "founder_call_notes",
+            "label": "Founder Call Notes",
+            "content": "Notes taken during the founder call:\n\n{{freeText.founder_call_notes}}"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "notion",
+          "inputArtifacts": [
+            {
+              "id": "founder_call_transcript",
+              "label": "Founder-call transcript",
+              "whereVisible": "voice meeting transcript and referenceContent",
+              "summary": "The spoken founder-call evidence and revealed facts."
+            },
+            {
+              "id": "founder_call_notes",
+              "label": "Founder-call notes",
+              "whereVisible": "call_debrief.appTabs.founder_call_notes",
+              "summary": "Student notes typed during the founder call."
+            }
+          ],
+          "studentAction": "Write one free-form call debrief for Leo that separates confirmed facts, assumptions or risks, and second-meeting implications.",
+          "outputArtifact": {
+            "id": "call_debrief",
+            "label": "Call debrief notes",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.call_debrief"
+          ],
+          "continuity": [
+            "The debrief goes to Leo and informs the final investment recommendation."
+          ],
+          "authenticityCheck": "VC analysts quickly debrief founder calls into usable evidence for partners rather than forwarding raw enthusiasm."
+        },
+        "next": "lead_priority"
+      },
+      "lead_priority": {
+        "id": "lead_priority",
+        "type": "priority_matrix",
+        "section": 3,
+        "title": "Prioritize the Afternoon Pipeline",
+        "content": "After the ClaimPilot debrief, five fresh afternoon inbound companies compete for the next block of attention. Open the Lead Briefs tab, read the company context, then use Northstar's fund-fit rules below to place each company by fund fit and evidence quality. After you place the companies, explain which new lead you would handle first.\n\nNorthstar rules: prefer seed-to-Series A companies where the firm can own enough of a vertical software, AI workflow, or fintech infrastructure wedge. Specific customer evidence beats hype. Strong companies can still be poor fits if they are too late-stage for the fund.",
+        "windowTitle": "Afternoon Pipeline Priority",
+        "bindingKey": "pipeline_priority",
+        "referenceTitle": "Northstar prioritization rules",
+        "referenceContent": "Fund fit signals:\n- Seed-to-Series A stage.\n- Vertical software, AI workflow tools, or fintech infrastructure.\n- Potential for ownership and fund-return outcome.\n\nEvidence quality signals:\n- Paid customers, retention, expansion, or credible buyer urgency.\n- Warm trusted sources help, but they do not replace customer proof.\n- Hype, logos, and fast round timing are weak signals without specific evidence.",
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "miro plus Slack DM",
+          "inputArtifacts": [
+            {
+              "id": "fund_fit_rules",
+              "label": "Northstar prioritization rules",
+              "whereVisible": "content and referenceContent",
+              "summary": "Fund fit and evidence-quality criteria."
+            },
+            {
+              "id": "pipeline_leads",
+              "label": "Afternoon company briefs",
+              "whereVisible": "Lead Briefs tab and priority matrix items",
+              "summary": "Five fresh inbound companies with enough context to judge fund fit and evidence quality."
+            },
+            {
+              "id": "leo_slack_request",
+              "label": "Leo Slack request",
+              "whereVisible": "lead_priority.slackTab.slackMessages",
+              "summary": "Leo asks which new inbound lead should get attention first and why."
+            }
+          ],
+          "studentAction": "Place companies on a fund-fit/evidence-quality matrix, then send Leo a concise Slack message naming the first new lead to handle and why.",
+          "outputArtifact": {
+            "id": "pipeline_priority",
+            "label": "Afternoon pipeline priority and Leo Slack update",
+            "format": "priority_matrix plus Slack message"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.pipeline_priority",
+            "freeTextResponses.lead_priority_slack"
+          ],
+          "continuity": [
+            "The prioritization feeds a Slack update to Leo about which fresh inbound lead should get the next block of attention."
+          ],
+          "authenticityCheck": "Junior VC analysts constantly choose where to spend scarce partner and analyst time."
+        },
+        "xAxis": {
+          "label": "Evidence Quality",
+          "lowLabel": "Thin / noisy",
+          "highLabel": "Specific proof"
+        },
+        "yAxis": {
+          "label": "Fund Fit",
+          "lowLabel": "Weak fit",
+          "highLabel": "Strong fit"
+        },
+        "items": [
+          {
+            "id": "relaygrid",
+            "label": "RelayGrid"
+          },
+          {
+            "id": "voxbridge",
+            "label": "VoxBridge AI"
+          },
+          {
+            "id": "atlaspermit",
+            "label": "AtlasPermit"
+          },
+          {
+            "id": "harborpay",
+            "label": "HarborPay"
+          },
+          {
+            "id": "auditnest",
+            "label": "AuditNest"
+          }
+        ],
+        "referenceTabs": [
+          {
+            "id": "lead_briefs",
+            "label": "Lead Briefs",
+            "content": "RelayGrid\nRelayGrid builds AI dispatch exception workflow software for regional freight brokers. It is seed-stage and fits Northstar's vertical workflow thesis, but the evidence is mostly a warm operator intro, two unpaid design partners, and a demo built around one broker's manual workflow, so fund fit is plausible while evidence quality is still thin.\n\nVoxBridge AI\nVoxBridge AI is building voice agents for appointment reminders, billing follow-up, and call deflection across several service industries. The market is noisy and the founder has impressive demos, but the company has no paid pilots yet and mostly cites AI category momentum and letters of intent, making the evidence quality thin.\n\nAtlasPermit\nAtlasPermit is a seed-stage workflow platform for solar and HVAC installers managing local permitting packets. A trusted operator intro says the product has 12 paying customers, two expansions, and buyers who cite permit delays as a budgeted bottleneck, giving it both vertical software fit and concrete customer proof.\n\nHarborPay\nHarborPay provides payments reconciliation infrastructure for large logistics brokers and has strong retention, audited revenue, and multiple enterprise references. It is raising a Series C extension at a valuation far beyond Northstar's ownership model, so the company may be excellent while being a poor stage fit for this fund.\n\nAuditNest\nAuditNest offers AI-generated compliance checklists for finance teams at small manufacturers. The prototype is clever, but the buyer is unclear: finance, operations, and outside auditors all seem possible, and the current interest comes from friendly conversations rather than paid customer proof."
+          }
+        ],
+        "slackTab": {
+          "id": "slack",
+          "label": "Slack",
+          "windowTitle": "Leo Martinez",
+          "bindingKey": "lead_priority_slack",
+          "choiceBindingKey": "lead_priority_first_company",
+          "choicePrompt": "Which new inbound lead will you handle first?",
+          "choicePlaceholder": "Select the lead you will handle first...",
+          "choiceOptions": [
+            {
+              "id": "relaygrid",
+              "label": "RelayGrid"
+            },
+            {
+              "id": "voxbridge",
+              "label": "VoxBridge AI"
+            },
+            {
+              "id": "atlaspermit",
+              "label": "AtlasPermit"
+            },
+            {
+              "id": "harborpay",
+              "label": "HarborPay"
+            },
+            {
+              "id": "auditnest",
+              "label": "AuditNest"
+            }
+          ],
+          "reasonBindingKey": "lead_priority_slack_reason",
+          "reasonLabel": "Why this lead first?",
+          "prompt": "Choose the new inbound lead you will handle first, then write Leo a concise reason grounded in Northstar fund fit and evidence quality.",
+          "placeholder": "Type the reason you will send Leo...",
+          "minWords": 35,
+          "maxWords": 120,
+          "slackMessages": [
+            {
+              "sender": "Leo Martinez",
+              "role": "Partner",
+              "timestamp": "2:48 PM",
+              "content": "Once the afternoon matrix is placed, send me which new inbound you would handle first and why. Need the fund-fit and evidence read, not a long memo.",
+              "avatarInitials": "LM"
+            }
+          ]
+        },
+        "next": "assessment_gate"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "End of Analyst Day",
+        "content": "You screened a startup, mapped the market, prepared and ran a founder call, debriefed the evidence, updated a partner, and prioritized deal flow. Time to review how your venture judgment held up.",
+        "imageBrief": "Quiet VC office at dusk. The analyst laptop shows completed diligence notes and a pipeline priority matrix, Slack has gone quiet, and a city skyline is visible beyond the window. The mood is reflective and professional after a busy deal-screening day.",
+        "illustration": "/scenes/assessment_gate.png",
+        "next": "final_report"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as a VC analyst on a seed-stage sourcing and diligence day.",
+        "imageBrief": "A clean final report screen on a VC analyst laptop, with sections for signal triage, market judgment, founder call quality, partner communication, and pipeline prioritization. The office background is calm and warm.",
+        "illustration": "/scenes/assessment_gate.png",
+        "next": null
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Day Is Complete",
+        "content": "After choosing {{freeText.lead_priority_first_company}} as the first new lead to move forward, you spent the rest of the afternoon updating CRM next steps, sending the introducer a confirmation request, writing Leo a short priority rationale, and adding {{freeText.lead_priority_first_company}} to tomorrow's diligence block to close out the day.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm end-of-day workplace wrap-up moment with the student stepping back from the finished work, relevant tools or documents settled, and warm late-day light. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      },
+      "morning_source_workspace": {
+        "id": "morning_source_workspace",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "8:35 AM Source Workspace",
+        "content": "Your job today: decide whether ClaimPilot deserves a serious second look.",
+        "actionLabel": "Pick first signal",
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "morning_source_workspace.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source documents and spreadsheet before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "triage_signal",
+            "deck_screen"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        },
+        "imageBrief": "VC analyst desk with a laptop source workspace showing Drive and Slack app icons. Drive contains the ClaimPilot deck, CRM record, and ARR bridge. Keep all detailed numbers in the coded UI, not the image.",
+        "illustration": "/scenes/morning_source_workspace.png",
+        "next": "triage_signal",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Drive source files",
+              "files": [
+                {
+                  "id": "pitch_deck",
+                  "name": "ClaimPilot_Seed_Raise.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Pitch deck excerpt",
+                  "assetPath": "/assets/pitch_deck.png",
+                  "assetAlt": "ClaimPilot pitch deck excerpt showing $1M+ ARR, routine claim-status follow-up automation, 18 agency pilots, and 7 annual contracts.",
+                  "sections": [
+                    {
+                      "heading": "Pitch deck excerpt",
+                      "body": "AI claim-status follow-up for independent insurance agencies. Automates routine claim-status follow-up across agency, carrier, and customer touchpoints. Founder headline says $1M+ ARR and fast early agency adoption. Seed round is moving quickly; founder wants a second meeting this week."
+                    }
+                  ],
+                  "category": "Company pitch",
+                  "lookFor": "Use the deck to understand ClaimPilot’s promise, traction story, customer proof, and which claims need verification."
+                },
+                {
+                  "id": "crm_record",
+                  "name": "ClaimPilot CRM record.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "CRM record",
+                  "sections": [
+                    {
+                      "heading": "CRM record",
+                      "body": "Some logo-slide names are pilots or design partners. The record shows 18 pilots, 7 annual contracts, founder Alex Rivera has 8 years in insurance claims operations, and open questions around buyer urgency, implementation burden, expansion repeatability, churn, and whether this is a workflow wedge or a feature in existing agency systems."
+                    }
+                  ],
+                  "category": "Internal context",
+                  "lookFor": "Use the CRM notes to separate what Northstar already knows from what still needs founder or data-room confirmation."
+                },
+                {
+                  "id": "arr_bridge",
+                  "name": "ARR_bridge.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Internal finance",
+                  "previewTitle": "ARR bridge",
+                  "columns": [
+                    "line",
+                    "amount",
+                    "quality"
+                  ],
+                  "rows": [
+                    {
+                      "line": "Software subscription ARR",
+                      "amount": "$720K",
+                      "quality": "recurring software revenue"
+                    },
+                    {
+                      "line": "Implementation fees",
+                      "amount": "$310K",
+                      "quality": "one-time services revenue"
+                    },
+                    {
+                      "line": "Annual contracts",
+                      "amount": "7 agencies",
+                      "quality": "contracted customers"
+                    },
+                    {
+                      "line": "Pilots",
+                      "amount": "18 agencies",
+                      "quality": "not all paid annual contracts"
+                    }
+                  ],
+                  "category": "Revenue quality",
+                  "lookFor": "Use this table to separate recurring software ARR from one-time implementation fees, pilots, and weaker traction signals."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#pipeline",
+              "messages": [
+                {
+                  "id": "leo",
+                  "channel": "slack",
+                  "from": "Leo Martinez",
+                  "timestamp": "8:42 AM",
+                  "body": "Can you take first pass on ClaimPilot before pipeline? Need a crisp view: fund fit, traction quality, and what we would need to believe.",
+                  "channelName": "#pipeline",
+                  "linkedFileIds": [
+                    "pitch_deck",
+                    "crm_record"
+                  ],
+                  "category": "Partner direction",
+                  "lookFor": "Use this Slack message to understand Leo’s ask, the time pressure, and the evidence he wants before pipeline."
+                }
+              ]
+            }
+          ],
+          "continueLabel": "Pick first signal"
+        }
+      }
+    }
+  },
+  "npcs": {
+    "alex": {
+      "id": "alex",
+      "name": "Alex Rivera",
+      "role": "Founder and CEO, ClaimPilot",
+      "persona": "Alex is a former claims-operations leader who knows insurance agency pain deeply. He is articulate, energetic, and a little promotional under fundraising pressure. He wants momentum in the seed round, so he naturally frames the company in the strongest possible light. He responds well to specific, respectful questions and becomes vague when the analyst asks broad questions that let him keep pitching.",
+      "voice": "warm, fast, founder-polished"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "VC Analyst: Seed Deal Day",
+    "welcomeBody": "Step into a venture analyst day: screen a startup, test a market, speak with a founder, brief a partner, and write the memo that shapes the firm's next move.",
+    "steps": [
+      {
+        "label": "Screen",
+        "content": "Separate useful investment signal from pitch-deck noise."
+      },
+      {
+        "label": "Test",
+        "content": "Map the market and ask founder questions that change the decision."
+      },
+      {
+        "label": "Recommend",
+        "content": "Communicate a clear point of view without overstating certainty."
+      },
+      {
+        "label": "Prioritize",
+        "content": "Choose where limited investment-team time should go next."
+      }
+    ]
+  },
+  "glossary": {
+    "ARR": "Annual recurring revenue. In startup diligence, analysts check whether ARR is truly recurring software revenue rather than services, pilots, or one-time fees.",
+    "CRM": "Customer relationship management system. VC teams use CRMs to track startup leads, founder interactions, deal status, and follow-ups.",
+    "diligence": "The process of testing whether an investment claim is true enough to support a decision. It can include customer calls, financial analysis, market research, legal review, and reference checks.",
+    "founder-market fit": "Evidence that the founder has unusually strong insight, credibility, or access in the market they are building for.",
+    "fund fit": "How well a startup matches the venture firm's stage, check size, sector focus, ownership target, and return expectations.",
+    "investment committee": "A meeting or process where investors debate whether to invest, continue diligence, or pass.",
+    "market map": "A structured view of the competitive landscape, adjacent categories, buyer alternatives, and where a startup's wedge may fit.",
+    "second meeting": "A follow-up conversation with a founder after an initial screen. For analysts, earning a second meeting usually means the startup has enough signal to justify partner time.",
+    "traction": "Evidence that customers want and use the product, such as paid contracts, retention, expansion, usage, pipeline quality, or strong references.",
+    "wedge": "The narrow initial use case or buyer pain that lets a startup enter a market before expanding into a larger opportunity."
+  },
+  "sample_answers": {
+    "through_founder_prep": {
+      "playerName": "Riko",
+      "mcSelections": {
+        "triage_signal": "arr_quality"
+      },
+      "branchFlags": {
+        "triage_signal": "traction_first"
+      },
+      "freeTextResponses": {
+        "claimpilot_screen": "[{\"dimension\":\"Traction quality\",\"evidence\":\"$720K software ARR plus $310K implementation fees; 7 annual contracts out of 18 pilots.\",\"concern\":\"The $1M+ headline mixes recurring software and implementation revenue; pilots may not convert.\",\"implication\":\"Potentially interesting, but Northstar needs repeatable software demand before treating this as strong traction.\"},{\"dimension\":\"Buyer pain\",\"evidence\":\"Agencies dislike manual claim-status follow-up.\",\"concern\":\"Need to know whether agency owners pay and whether urgency beats existing AMS/manual process.\",\"implication\":\"Could be a strong workflow wedge if the pain is budgeted and frequent.\"},{\"dimension\":\"Founder-market fit\",\"evidence\":\"Alex spent 8 years in insurance claims operations.\",\"concern\":\"Founder insight is strong, but implementation may still depend on founder-led setup.\",\"implication\":\"Credibility helps earn a second meeting, but repeatability risk remains.\"},{\"dimension\":\"Market/wedge\",\"evidence\":\"Adjacent AMS, CRM, document AI, adjuster portals, compliance tools, and manual follow-up all exist.\",\"concern\":\"ClaimPilot could be a feature inside broader agency systems.\",\"implication\":\"Need to test the sharpest buyer alternative and why agencies switch now.\"}]",
+        "market_map_board": "{\"claimpilot\":\"claims_workflow\",\"agency_crm\":\"agency_systems\",\"legacy_ams\":\"agency_systems\",\"doc_ai\":\"horizontal_ai\",\"regtrack\":\"compliance_ops\",\"adjuster_portal\":\"claims_workflow\",\"manual_followup\":\"manual_alternative\"}",
+        "market_map_rationale": "ClaimPilot wedges into claims workflow because the pain is recurring claim-status follow-up, not generic AI. I would compare it first against agency AMS/manual follow-up and adjuster portals to understand what budget and workflow it replaces.",
+        "founder_call_prep": "1. ARR quality: Can you walk me through the $720K software ARR customer by customer: which are annual contracts, paid pilots, or implementation-heavy deployments? Why it matters: it tells us whether traction is recurring software or services/pilot signal.\n2. Pilot conversion and renewal: Of the 18 pilots, what has converted, expanded, renewed, or stalled, and what did you learn from losses? Why it matters: this tests repeatability and churn risk.\n3. Buyer urgency: Who owns budget for claim-status follow-up inside an agency, and what triggers them to buy now instead of tolerating manual staff follow-up? Why it matters: pain needs an urgent budget owner.\n4. Implementation burden: What work do you still do personally to get an agency live, and what will be repeatable without founder involvement? Why it matters: founder-led setup can limit margins and scale.\n5. Competitive wedge: When a customer compares you with AMS, adjuster portals, or spreadsheets/email, what do they choose ClaimPilot to replace first? Why it matters: it clarifies whether this is a standalone workflow wedge or a feature.\n6. Evidence for second meeting: What ARR bridge, customer reference, or usage data can you send after the call? Why it matters: partner time should depend on verifiable proof."
+      }
+    },
+    "through_priority": {
+      "playerName": "Riko",
+      "mcSelections": {
+        "triage_signal": "arr_quality"
+      },
+      "branchFlags": {
+        "triage_signal": "traction_first"
+      },
+      "freeTextResponses": {
+        "call_debrief": "Confirmed facts: $720K is software ARR while $310K is implementation fees; seven agencies are on annual contracts; one customer expanded from 10 to 35 seats; implementations still require founder-led setup.\n\nAssumptions / risks: the $1M+ ARR headline overstates recurring software traction; contracts are young, so churn and renewal are not proven; founder-led implementation may hurt repeatability and gross margin.\n\nSecond-meeting implication: ClaimPilot is worth a focused second meeting only if Alex can send the ARR bridge, contract/cohort detail, implementation timeline, and a customer reference confirming urgent budgeted pain.",
+        "pipeline_priority": "{\"relaygrid\":{\"quadrant\":\"high-low\",\"xPct\":55,\"yPct\":45},\"voxbridge\":{\"quadrant\":\"low-low\",\"xPct\":50,\"yPct\":50},\"atlaspermit\":{\"quadrant\":\"high-high\",\"xPct\":50,\"yPct\":50},\"harborpay\":{\"quadrant\":\"low-high\",\"xPct\":50,\"yPct\":50},\"auditnest\":{\"quadrant\":\"low-low\",\"xPct\":45,\"yPct\":55}}",
+        "lead_priority_first_company": "AtlasPermit",
+        "lead_priority_slack_reason": "It is seed-stage vertical workflow software, so the fund fit is strong, and the evidence is much better than the other fresh leads: 12 paying customers, two expansions, and buyer urgency around permit delays as a budgeted bottleneck. HarborPay looks strong but is too late-stage for Northstar's ownership model, while RelayGrid, VoxBridge, and AuditNest need more proof before partner time.",
+        "lead_priority_slack": "Leo, I would handle AtlasPermit first.\nReason: It is seed-stage vertical workflow software, so the fund fit is strong, and the evidence is much better than the other fresh leads: 12 paying customers, two expansions, and buyer urgency around permit delays as a budgeted bottleneck. HarborPay looks strong but is too late-stage for Northstar's ownership model, while RelayGrid, VoxBridge, and AuditNest need more proof before partner time."
+      }
+    }
+  },
+  "rubric": {
+    "simulation_id": "vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "投資信号整理",
+            "evidenceSceneIds": [
+              "triage_signal"
+            ],
+            "rubric_text": "9-10: 限られた時間で、案件の魅力、リスク、情報不足、次に見るべき材料を見て最初の信号を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "案件分析",
+            "evidenceSceneIds": [
+              "deck_screen"
+            ],
+            "rubric_text": "9-10: デックから市場、顧客、成長、競争、チーム、未検証リスクを事実ベースで整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "市場地図",
+            "evidenceSceneIds": [
+              "market_map"
+            ],
+            "rubric_text": "9-10: 競合や隣接プレイヤーを、顧客、差別化、代替手段、投資上の意味で整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "創業者通話",
+            "evidenceSceneIds": [
+              "founder_call"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の通話で、事業の核心、顧客検証、数字、リスクを聞き取り、誘導や過度な肯定を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "通話後メモ",
+            "evidenceSceneIds": [
+              "call_debrief"
+            ],
+            "rubric_text": "9-10: 通話で分かったこと、まだ分からないこと、投資上の論点、次に確認する材料をメモに整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "案件優先順位",
+            "evidenceSceneIds": [
+              "lead_priority"
+            ],
+            "rubric_text": "9-10: 複数案件を、投資魅力、検証状況、タイミング、リスクで比較し、次に時間を使う順序を決められている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

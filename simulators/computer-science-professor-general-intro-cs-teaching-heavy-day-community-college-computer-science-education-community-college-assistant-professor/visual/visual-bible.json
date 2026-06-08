@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "slug": "computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All scenes should have a warm, natural, and slightly soft lighting style, avoiding harsh shadows or sterile, fluorescent looks.",
+    "The color palette should be grounded in realistic tones, with accents of the fictional Mesa Vista Community College's colors (a warm terracotta and a dusty blue) appearing subtly in branding, posters, or mugs.",
+    "Technology depicted (laptops, monitors, phones) should look like standard, slightly-used institutional hardware from the early 2020s, not brand new or futuristic.",
+    "All user interface elements, like the Canvas LMS or Python IDE, should be clean, generic, and free of any real-world branding."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "jayden": {
+      "id": "jayden",
+      "name": "Jayden Rivera",
+      "role": "CSC 101 Student",
+      "sourcePersona": "Jayden is a first-generation college student taking intro programming while working part-time. They are capable but anxious, and they interpret confusion as a sign they do not belong. They respond well to concrete examples, patient questions, and a specific practice plan, but they shut down if the professor sounds dismissive or vague.",
+      "appearancePrompt": "Jayden is a young man in his late teens with a light brown complexion and dark, slightly wavy hair that often falls into his eyes. He has a lean build and expressive, dark eyes that clearly show his anxiety and sincerity. He often looks tired from balancing work and school, but remains focused during conversations.",
+      "wardrobePrompt": "Jayden wears practical, comfortable clothing, typically a well-worn, dark gray or navy blue hoodie over a plain t-shirt, with jeans and basic sneakers. He is never without his sturdy, black canvas backpack, which looks heavy with books and a laptop.",
+      "mustStayConsistent": [
+        "Hairstyle and color",
+        "Facial features",
+        "Skin tone",
+        "Black canvas backpack"
+      ],
+      "referenceImage": "public/visual-refs/npcs/jayden.png"
+    },
+    "morales": {
+      "id": "morales",
+      "name": "Professor Elena Morales",
+      "role": "Computer Science Department Chair",
+      "sourcePersona": "Professor Morales is practical, student-centered, and protective of faculty time. She values concise evidence, FERPA-aware communication, and support plans that connect classroom patterns to tutoring or advising resources. She is direct but warm, and she trusts faculty who surface problems early.",
+      "appearancePrompt": "Professor Morales is a woman in her late 40s with a warm, olive complexion and dark hair styled in a professional, shoulder-length cut, with a few subtle silver strands at the temples. She has a confident posture and a direct but friendly gaze, conveyed through sharp, intelligent eyes behind stylish, dark-rimmed rectangular glasses.",
+      "wardrobePrompt": "She dresses in professional but comfortable attire, such as a sharp blazer in a solid color (like charcoal or deep blue) over a simple blouse, paired with tailored trousers and practical flat shoes. She wears a simple, modern silver watch as her primary accessory.",
+      "mustStayConsistent": [
+        "Hairstyle and color",
+        "Rectangular eyeglasses",
+        "Professional blazer/blouse attire",
+        "Confident posture"
+      ],
+      "referenceImage": "public/visual-refs/npcs/morales.png"
+    }
+  },
+  "locations": {
+    "computer-lab": {
+      "id": "computer-lab",
+      "name": "CSC 101 Computer Lab",
+      "appearancePrompt": "A well-used but tidy community college computer lab with four rows of desktop computers on long tables facing the front. The room has neutral beige walls, fluorescent lighting (rendered warmly), and a large whiteboard and projector screen at the front. A few informational posters about programming concepts and campus resources are on the side walls.",
+      "stableElements": [
+        "Instructor desk at the front right",
+        "Student desktop computer stations in rows",
+        "Large central whiteboard",
+        "Projector screen above whiteboard",
+        "Layout of door on the left wall",
+        "Wall-mounted clock"
+      ],
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "triage_morning",
+        "redirect_email",
+        "redirect_diagnostic",
+        "redirect_pacing",
+        "redirect_admin",
+        "classroom_reset"
+      ],
+      "referenceImage": "public/visual-refs/locations/computer-lab.png"
+    },
+    "faculty-office": {
+      "id": "faculty-office",
+      "name": "Professor's Office",
+      "appearancePrompt": "A small, functional faculty office with a slightly cluttered but organized feel. It contains a main desk made of light-colored wood with a laptop and monitor, a small round table with two chairs for student meetings, and a tall metal bookshelf filled with computer science textbooks. A medium-sized whiteboard on the wall is covered in faded notes and diagrams.",
+      "stableElements": [
+        "Main desk with computer setup",
+        "Tall metal bookshelf",
+        "Small round meeting table with two chairs",
+        "Wall-mounted whiteboard",
+        "Single window overlooking a campus walkway"
+      ],
+      "sceneIds": [
+        "office_hour",
+        "grading"
+      ],
+      "referenceImage": "public/visual-refs/locations/faculty-office.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "instructor-laptop",
+      "name": "Instructor's Laptop",
+      "appearancePrompt": "A standard, 15-inch institutional laptop in a dark gray, metallic finish. It has a few minor scuffs from daily use and a small, white Mesa Vista Community College asset tag sticker on the corner of the lid. The keyboard is slightly worn.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "triage_morning",
+        "redirect_email",
+        "redirect_diagnostic",
+        "office_hour",
+        "grading"
+      ]
+    },
+    {
+      "id": "coffee-mug",
+      "name": "Professor's Coffee Mug",
+      "appearancePrompt": "A sturdy, 12oz ceramic mug in a dusty blue color. It features the Mesa Vista Community College logo (a stylized mountain range inside a circle) printed in white on one side.",
+      "sceneIds": [
+        "intro",
+        "grading"
+      ]
+    },
+    {
+      "id": "python-ide",
+      "name": "Python Code Editor",
+      "appearancePrompt": "A clean, generic code editor interface with a dark theme (charcoal background). Python syntax is highlighted with standard colors: keywords in a light purple, strings in green, comments in gray, and numbers in light blue. The UI chrome (menus, file tree) is minimal and gray.",
+      "sceneIds": [
+        "intro",
+        "triage_morning",
+        "classroom_reset",
+        "office_hour"
+      ]
+    },
+    {
+      "id": "canvas-lms",
+      "name": "Canvas Learning Management System",
+      "appearancePrompt": "A simplified, generic version of a learning management system interface, inspired by Canvas. It uses a clean layout with a left-hand navigation bar in the college's terracotta brand color. The main content area has a white background with black text, standard blue links, and clear headings. No real logos are present.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "triage_morning",
+        "redirect_email",
+        "grading"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:47:51+00:00",
+  "styleReference": "templates/style-reference.png"
+}

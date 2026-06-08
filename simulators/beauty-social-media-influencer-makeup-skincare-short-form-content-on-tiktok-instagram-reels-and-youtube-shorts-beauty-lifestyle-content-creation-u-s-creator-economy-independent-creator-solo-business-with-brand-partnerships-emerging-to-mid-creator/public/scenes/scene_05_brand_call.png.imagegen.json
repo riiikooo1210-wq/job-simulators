@@ -1,0 +1,15 @@
+{
+  "createdAt": "2026-05-18T14:39:24+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_05_brand_call",
+  "itemId": "scene_05_brand_call",
+  "promptHash": "c920ba2b130ff0a8",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/public/visual-refs/npcs/jordan.png",
+    "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/public/visual-refs/locations/creator-workspace.png",
+    "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/public/visual-refs/locations/brand-manager-office.png"
+  ],
+  "sourceFile": "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/IMAGE_PROMPTS.md"
+}

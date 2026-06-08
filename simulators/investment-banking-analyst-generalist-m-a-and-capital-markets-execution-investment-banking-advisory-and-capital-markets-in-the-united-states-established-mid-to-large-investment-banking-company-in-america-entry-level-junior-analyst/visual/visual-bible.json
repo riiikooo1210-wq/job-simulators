@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "slug": "investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All software UIs (spreadsheets, presentations, messaging apps) must use a consistent, fictional design system and branding. Avoid real software appearances.",
+    "Lighting must be consistent with the time of day indicated in the scene (e.g., bright, cool office light in the morning; warmer desk lamps and dark cityscapes at night).",
+    "The overall aesthetic is modern, clean, and professional, reflecting a high-stakes corporate environment.",
+    "Maintain a first-person perspective for all scenes set at the analyst's desk, showing the desk, monitors, and hands when necessary."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "priya": {
+      "id": "priya",
+      "name": "Priya Shah",
+      "role": "Investment Banking Associate",
+      "sourcePersona": "Priya is a second-year associate who owns day-to-day execution on HarborThread. She is direct, fast, and allergic to vague updates because she has to convert analyst work into client-ready answers. She respects analysts who are precise about what is done, what is not done, and what decision they need. She is under pressure from the VP but is not trying to intimidate the analyst; she wants clean thinking under time pressure.",
+      "appearancePrompt": "Priya is a South Asian woman in her late 20s with a sharp, intelligent presence. She has dark, shoulder-length hair, typically pulled back into a neat, professional ponytail or bun. Her expression is focused and direct, with perceptive, dark brown eyes.",
+      "wardrobePrompt": "Priya's recurring wardrobe consists of a dark, well-tailored blazer (charcoal grey or navy) over a neutral-colored silk shell top. She wears simple, elegant jewelry, such as small gold hoop earrings and a classic, minimalist wristwatch with a leather strap.",
+      "mustStayConsistent": [
+        "Hairstyle (neat ponytail or bun)",
+        "Dark tailored blazer",
+        "Minimalist wristwatch",
+        "Small gold hoop earrings"
+      ],
+      "referenceImage": "public/visual-refs/npcs/priya.png"
+    }
+  },
+  "locations": {
+    "analyst-desk-bullpen": {
+      "id": "analyst-desk-bullpen",
+      "name": "Analyst's Desk in the Bullpen",
+      "appearancePrompt": "A modern, open-plan investment banking bullpen with rows of identical workstations under cool, recessed ceiling lights. The analyst's desk is made of a light wood or white laminate surface and features a large dual-monitor setup. The background shows the blurred forms of other analysts working and large windows revealing a generic but impressive city skyline that changes with the time of day.",
+      "stableElements": [
+        "Dual-monitor setup on an adjustable arm",
+        "Sleek keyboard and mouse",
+        "Dark grey desk mat",
+        "A specific 'banker bag' under the desk",
+        "The general spatial layout of the desk and surrounding bullpen"
+      ],
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "first_move",
+        "redirect_model_first",
+        "redirect_market",
+        "redirect_dataroom",
+        "redirect_rebuild",
+        "briefing_night",
+        "grading"
+      ],
+      "referenceImage": "public/visual-refs/locations/analyst-desk-bullpen.png"
+    },
+    "conference-room-small": {
+      "id": "conference-room-small",
+      "name": "Small Glass Conference Room",
+      "appearancePrompt": "A small, modern meeting room enclosed by floor-to-ceiling glass walls etched with a subtle geometric pattern for partial privacy. The room contains a polished, dark wood conference table that seats six, surrounded by minimalist black leather chairs. A large, wall-mounted screen for video conferencing is at one end, and the lighting is slightly warmer than the main bullpen.",
+      "stableElements": [
+        "Glass walls with etched pattern",
+        "Dark wood conference table",
+        "Black leather chairs",
+        "Large wall-mounted screen",
+        "Centralized speakerphone unit on the table"
+      ],
+      "sceneIds": [
+        "briefing_live_deal",
+        "associate_voice"
+      ],
+      "referenceImage": "public/visual-refs/locations/conference-room-small.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "financial-model-spreadsheet",
+      "name": "Financial Model Spreadsheet",
+      "appearancePrompt": "A complex financial model displayed within a spreadsheet application. It features numerous tabs (e.g., 'Comps', 'DCF', 'EBITDA Bridge'), dense data, and cells color-coded with blue inputs, black formulas, and occasional red highlights for errors or flags. The application has a clean, generic UI, not resembling any specific real-world software.",
+      "sceneIds": [
+        "intro",
+        "first_move",
+        "redirect_model_first",
+        "redirect_market",
+        "redirect_dataroom",
+        "redirect_rebuild",
+        "briefing_night",
+        "grading"
+      ]
+    },
+    {
+      "id": "presentation-deck-software",
+      "name": "Presentation Deck Software",
+      "appearancePrompt": "A presentation software application with a clean, minimalist interface. It displays slides with titles like 'Buyer Overview' and 'Market Growth Story', featuring corporate logos (fictional), charts, and bullet points. Comment bubbles or tracked changes are shown as red or yellow highlights in the margin.",
+      "sceneIds": [
+        "intro",
+        "first_move",
+        "redirect_market",
+        "briefing_night",
+        "grading"
+      ]
+    },
+    {
+      "id": "printed-deck-redlines",
+      "name": "Printed Deck with Red Pen Markups",
+      "appearancePrompt": "A stack of letter-sized paper, bound by a black binder clip, showing printed presentation slides. The pages are covered in handwritten notes, circles, and questions in red ink, indicating feedback from a senior banker.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "briefing_live_deal",
+        "associate_voice",
+        "grading"
+      ]
+    },
+    {
+      "id": "banker-bag",
+      "name": "Banker Bag",
+      "appearancePrompt": "A durable, unstructured canvas tote bag in a neutral navy blue color. It has a simple, fictional investment bank logo (e.g., a stylized 'BR') printed on the side in white. It is typically seen on the floor under the analyst's desk.",
+      "sceneIds": [
+        "intro"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:49:34+00:00",
+  "styleReference": "templates/style-reference.png"
+}

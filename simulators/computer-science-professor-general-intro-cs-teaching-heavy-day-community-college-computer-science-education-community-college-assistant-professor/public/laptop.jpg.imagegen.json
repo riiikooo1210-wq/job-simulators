@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:26:39+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "shared_laptop_work_surface",
+  "itemId": "shared_laptop_work_surface",
+  "promptHash": "61341f907e8cf1f4",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/IMAGE_PROMPTS.md"
+}

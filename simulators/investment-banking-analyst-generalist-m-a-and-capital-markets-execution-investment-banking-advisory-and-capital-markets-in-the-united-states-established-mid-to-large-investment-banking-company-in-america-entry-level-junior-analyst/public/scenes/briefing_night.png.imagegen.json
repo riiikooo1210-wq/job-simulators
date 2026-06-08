@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-18T15:01:29+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "briefing_night",
+  "itemId": "briefing_night",
+  "promptHash": "910f524f266dcdb2",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst/public/visual-refs/npcs/priya.png",
+    "simulators/investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst/public/visual-refs/locations/analyst-desk-bullpen.png"
+  ],
+  "sourceFile": "simulators/investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst/IMAGE_PROMPTS.md"
+}

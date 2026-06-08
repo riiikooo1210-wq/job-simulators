@@ -1,0 +1,1087 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "Sources describe entry-level management consulting as a desk-tool role dominated by gathering information, working with spreadsheets and documents, analyzing messy business data, writing recommendations, and communicating with managers and clients. O*NET emphasizes gathering/organizing information, analyzing data, documenting findings, preparing recommendations, email, phone conversations, face-to-face discussions, and computer work. The manual YouTube notes and Reddit digest emphasize Excel-to-PowerPoint production, manager feedback, client calls with caveats, and fast context switching under ambiguity.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "The work context is indoors, sitting, email, phone, and computer-heavy rather than hands-on physical work. [onet]",
+          "Collected day-in-the-life notes emphasize spreadsheets, slides, Slack, and calls rather than manipulating physical tools. [yt:consulting_day_notes]"
+        ],
+        "simulatorImplication": "No physical_playground scenes are needed; realism should come from concrete digital artifacts and communication surfaces."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET lists working with computers, spreadsheet software, presentation software, email, and business intelligence/data analysis software. [onet]",
+          "The fallback day notes describe checking Slack/email, cleaning spreadsheets, drafting slides, and preparing work products. [yt:consulting_day_notes]",
+          "Public-forum themes describe junior consulting as Excel plus PowerPoint plus communication. [reddit:consulting_excel_slides]"
+        ],
+        "simulatorImplication": "Most active scenes should happen inside realistic work surfaces: source workspace, Notion/doc notes, Miro-style matrix, spreadsheet-style findings, Slack, and slide notes."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET emphasizes making decisions, solving problems, analyzing data, and interpreting information. [onet]",
+          "Consulting notes emphasize structuring ambiguity and choosing what to calculate, clarify, and caveat. [yt:consulting_day_notes]"
+        ],
+        "simulatorImplication": "The player must frame hypotheses, prioritize ambiguous inputs, separate evidence from implication, and decide how much confidence is justified."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET includes documenting findings, preparing recommendations, writing memos, editing documents, and preparing reports. [onet]",
+          "Sources describe hypothesis-led notes, analysis notes, Slack updates, slide headlines, and speaker notes. [yt:consulting_slides_notes] [reddit:consulting_feedback]"
+        ],
+        "simulatorImplication": "The simulator should require typed consultant artifacts rather than reflection-only answers."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "O*NET reports daily phone conversations and frequent discussion with supervisors, teams, and external customers. [onet]",
+          "The client-call notes describe balancing confidence and humility when the client wants certainty from partial data. [yt:consulting_client_call_notes]"
+        ],
+        "simulatorImplication": "Include one remote voice meeting with a client plus asynchronous Slack manager communication."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "The fallback day notes describe checking email, Slack, calendars, project trackers, and working in a permanent draft state. [yt:consulting_day_notes]",
+          "Reddit fallback notes emphasize many shifting small deadlines. [reddit:consulting_workload]"
+        ],
+        "simulatorImplication": "Context switching appears through deadlines, incoming client/manager messages, and triage, but passive waiting should not dominate active play."
+      }
+    },
+    "simulatorPlan": "The active scene mix uses one bounded Slack MCQ, four constructed desk-work artifacts, one all-item priority matrix, and one remote voice meeting. This matches a junior consultant's real day: digital artifacts and analysis dominate; writing is frequent; spoken client communication appears once; physical work is intentionally absent.",
+    "activeSceneMixRationale": "Active scenes are source-workspace review, hypothesis-question pairs, triage matrix, remote client call, findings synthesis, and slide note. MCQ is limited to a first-move pivot with consequences."
+  },
+  "storyline": {
+    "gameTitle": "Entry-Level Consultant Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Frame"
+      },
+      {
+        "num": 2,
+        "label": "Triage"
+      },
+      {
+        "num": 3,
+        "label": "Synthesize"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Triage",
+        "targetNodeId": "data_triage",
+        "prefillKey": "input_triage"
+      },
+      {
+        "label": "Client call",
+        "targetNodeId": "client_call",
+        "prefillKey": "client_files_readout"
+      },
+      {
+        "label": "Slide draft",
+        "targetNodeId": "slide_draft",
+        "prefillKey": "slide_draft"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Aster Lane",
+        "content": "You are an entry-level consultant at Aster Lane Advisory. Today you are supporting HarborMart, a regional grocery chain trying to understand why online pickup orders are late in some stores.",
+        "imageBrief": "First-person view of an entry-level consultant desk in a modern U.S. office. A laptop shows a cream-colored project dashboard titled HarborMart pickup lateness, with tabs for Slack, spreadsheet, and slide draft. A notebook, coffee, and printed KPI excerpt sit in the foreground. The mood is focused and realistic, not glamorous.",
+        "next": "briefing_morning",
+        "illustration": "/scenes/intro.png"
+      },
+      "briefing_morning": {
+        "id": "briefing_morning",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Client Files Arrive",
+        "content": "Your job today: explain what the pickup data can and cannot support.",
+        "imageBrief": "First-person laptop view with a Slack message from Priya on the left, an email from Marcus on the right, and a small cream spreadsheet excerpt at the bottom. The visible headings are HarborMart source workspace, pickup lateness, missing labor records, late pickup definition, and Marcus operations call. A calendar chip shows 8:18 AM and a later 15-minute Marcus call. The screen should contain readable UI shapes but not tiny unreadable text.",
+        "next": "first_move",
+        "illustration": "/scenes/briefing_morning.png",
+        "actionLabel": "Choose first move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Drive source files",
+              "files": [
+                {
+                  "id": "definition_note",
+                  "name": "Late pickup definition note.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Metric definition note",
+                  "sections": [
+                    {
+                      "heading": "Metric definition note",
+                      "body": "East and Central count an order late if it is not ready by the promised pickup time. West counts it late only if the customer arrives and still waits more than five minutes. Cross-region late-rate comparisons are directional until late pickup is normalized."
+                    }
+                  ],
+                  "category": "Metric definition",
+                  "lookFor": "Use this note to catch the regional definition mismatch before comparing pickup performance across stores."
+                },
+                {
+                  "id": "manager_expectations",
+                  "name": "Priya review.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Priya review",
+                  "sections": [
+                    {
+                      "heading": "Priya review",
+                      "body": "Lead with a hypothesis, not a polished blank slide. Keep calculations traceable to source fields. Preserve caveats instead of averaging them away. Ask the client only for inputs that change the answer."
+                    }
+                  ],
+                  "category": "Manager expectations",
+                  "lookFor": "Use this file to understand how Priya wants the client-facing conclusion framed: evidence first, with caveats named clearly."
+                },
+                {
+                  "id": "store_extract",
+                  "name": "HarborMart_store_extract.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "HarborMart analytics",
+                  "previewTitle": "Store-level extract",
+                  "columns": [
+                    "store",
+                    "region",
+                    "orders_day",
+                    "labor_hours",
+                    "orders_per_labor_hour",
+                    "late_pickup_rate",
+                    "late_definition"
+                  ],
+                  "rows": [
+                    {
+                      "store": "HM-014",
+                      "region": "East",
+                      "orders_day": "312",
+                      "labor_hours": "42",
+                      "orders_per_labor_hour": "7.4",
+                      "late_pickup_rate": "18%",
+                      "late_definition": "After promised pickup time"
+                    },
+                    {
+                      "store": "HM-027",
+                      "region": "East",
+                      "orders_day": "286",
+                      "labor_hours": "missing",
+                      "orders_per_labor_hour": "n/a",
+                      "late_pickup_rate": "21%",
+                      "late_definition": "After promised pickup time"
+                    },
+                    {
+                      "store": "HM-033",
+                      "region": "West",
+                      "orders_day": "244",
+                      "labor_hours": "29",
+                      "orders_per_labor_hour": "8.4",
+                      "late_pickup_rate": "24%",
+                      "late_definition": "After customer arrival time"
+                    },
+                    {
+                      "store": "HM-041",
+                      "region": "West",
+                      "orders_day": "198",
+                      "labor_hours": "31",
+                      "orders_per_labor_hour": "6.4",
+                      "late_pickup_rate": "13%",
+                      "late_definition": "After customer arrival time"
+                    },
+                    {
+                      "store": "HM-052",
+                      "region": "Central",
+                      "orders_day": "355",
+                      "labor_hours": "39",
+                      "orders_per_labor_hour": "9.1",
+                      "late_pickup_rate": "31%",
+                      "late_definition": "After promised pickup time"
+                    },
+                    {
+                      "store": "HM-068",
+                      "region": "Central",
+                      "orders_day": "91",
+                      "labor_hours": "22",
+                      "orders_per_labor_hour": "4.1",
+                      "late_pickup_rate": "43%",
+                      "late_definition": "After promised pickup time"
+                    },
+                    {
+                      "store": "HM-079",
+                      "region": "East",
+                      "orders_day": "264",
+                      "labor_hours": "missing",
+                      "orders_per_labor_hour": "n/a",
+                      "late_pickup_rate": "19%",
+                      "late_definition": "After promised pickup time"
+                    }
+                  ],
+                  "category": "Client data",
+                  "lookFor": "Use this table to see what the data can support, where it is incomplete, and which store differences are real enough to mention."
+                }
+              ]
+            },
+            {
+              "id": "email",
+              "label": "Email",
+              "kind": "email",
+              "title": "Email",
+              "messages": [
+                {
+                  "id": "client",
+                  "channel": "email",
+                  "from": "Marcus Bell, Pickup Operations <marcus.bell@harbormart.example>",
+                  "to": "Aster Lane case team",
+                  "timestamp": "8:42 AM",
+                  "body": "Hi team - attaching last week's pickup extract and the short definition note. I run pickup operations here, and our leadership team is asking whether late orders mean we just need more labor in stores. I have 15 minutes later today; before then, can you check what the extract actually supports, flag any definition issues, and tell me what you need from ops or analytics to tighten the answer?",
+                  "subject": "Store pickup extract + definition note",
+                  "linkedFileIds": [
+                    "store_extract",
+                    "definition_note"
+                  ],
+                  "category": "Email request",
+                  "lookFor": "Use this email to identify who is asking, what they need, the deadline, and any attached or linked source material."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#harbormart-case-team",
+              "messages": [
+                {
+                  "id": "priya",
+                  "channel": "slack",
+                  "from": "Priya Shah",
+                  "timestamp": "8:42 AM",
+                  "body": "Morning. Marcus Bell, HarborMart's pickup operations director, sent the extract and can give us 15 minutes later today because leadership wants a fast read on whether this is mainly a labor issue. Before that call, I need a first-cut view on pickup lateness: hypotheses, source fields we trust, and caveats we need visible.",
+                  "channelName": "#harbormart-case-team",
+                  "linkedFileIds": [
+                    "manager_expectations"
+                  ],
+                  "category": "Case-team direction",
+                  "lookFor": "Use this Slack message to understand Priya’s ask, the client timing, and the caveats she expects you to preserve."
+                }
+              ]
+            },
+            {
+              "id": "dashboard",
+              "label": "Dashboard",
+              "kind": "dashboard",
+              "title": "Data quality checks",
+              "rows": [
+                {
+                  "metric": "Stores in extract",
+                  "target": "83",
+                  "actual": "83",
+                  "status": "on_track"
+                },
+                {
+                  "metric": "Missing labor records",
+                  "target": "0",
+                  "actual": "6",
+                  "status": "warning"
+                },
+                {
+                  "metric": "Definition consistency",
+                  "target": "one standard",
+                  "actual": "regional mismatch",
+                  "status": "critical"
+                }
+              ],
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "lookFor": "Use this dashboard to name data-quality caveats before making a client-facing conclusion."
+            }
+          ],
+          "continueLabel": "Choose first move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "briefing_morning.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With Your First Move",
+        "content": "Choose the Slack reply you would send Priya.",
+        "appWindow": "slack",
+        "windowTitle": "#harbormart-core-team",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:24 AM",
+            "avatarInitials": "PS",
+            "content": "Quick check: what are you doing first with the HarborMart workspace? I care less about polish and more about whether your first hour protects the answer."
+          }
+        ],
+        "prompt": "Choose the response you would send.",
+        "options": [
+          {
+            "id": "clean_and_frame",
+            "label": "I will frame 2-3 hypotheses first, then clean only the source fields needed to test them before the Marcus call.",
+            "branchFlag": "analysis_first"
+          },
+          {
+            "id": "start_slides",
+            "label": "I will open the deck and build a polished page shell so we have something client-ready early.",
+            "branchFlag": "polish_first"
+          },
+          {
+            "id": "ask_client_now",
+            "label": "I will send Marcus a full question list now so we are not blocked by missing context.",
+            "branchFlag": "question_dump"
+          },
+          {
+            "id": "read_background",
+            "label": "I will read all the omnichannel background first so I understand HarborMart before touching the extract.",
+            "branchFlag": "background_first"
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "analysis_first": "redirect_analysis",
+            "polish_first": "redirect_polish",
+            "question_dump": "redirect_questions",
+            "background_first": "redirect_background"
+          },
+          "default": "redirect_analysis"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "HarborMart source workspace",
+              "whereVisible": "briefing_morning.referenceContent",
+              "summary": "Manager ask, client email, KPI extract, metric-definition note, and Priya review."
+            }
+          ],
+          "studentAction": "Choose the first Slack response that sets up credible consultant work.",
+          "outputArtifact": {
+            "id": "first_move",
+            "label": "First-move Slack choice",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.first_move",
+            "branchFlags.first_move"
+          ],
+          "continuity": [
+            "The chosen reply appears in the consequence briefing via {{mc.first_move.label}}."
+          ],
+          "authenticityCheck": "Junior consultants often align quickly with their manager before spending the first hour of analysis."
+        },
+        "workSurface": {
+          "kind": "slack_reply",
+          "device": "desktop",
+          "appWindow": "slack",
+          "title": "#harbormart-core-team"
+        }
+      },
+      "redirect_analysis": {
+        "id": "redirect_analysis",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Greenlights the Structure",
+        "content": "Priya reacts to your first move, and the work converges on a source-based case review.",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:24 AM",
+            "avatarInitials": "PS",
+            "content": "Quick check: what are you doing first with the HarborMart workspace? I care less about polish and more about whether your first hour protects the answer."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:25 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:26 AM",
+            "avatarInitials": "PS",
+            "content": "Good. Keep it tight: hypotheses, fields, caveats, then a specific client ask. Capture your read of the workspace as three hypothesis-question pairs."
+          }
+        ],
+        "imageBrief": "Laptop view of a Slack thread where Priya approves a hypothesis-led first move. Beside it, a cream document titled HarborMart client files review is opening with empty headings for business question, trusted fields, caveats, and ask. The image should feel like a focused work transition.",
+        "next": "client_files_readout",
+        "illustration": "/scenes/redirect_analysis.png"
+      },
+      "redirect_polish": {
+        "id": "redirect_polish",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "A Pretty Blank Slide",
+        "content": "Priya reacts to your first move, and the work converges on a source-based case review.",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:24 AM",
+            "avatarInitials": "PS",
+            "content": "Quick check: what are you doing first with the HarborMart workspace? I care less about polish and more about whether your first hour protects the answer."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:25 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:26 AM",
+            "avatarInitials": "PS",
+            "content": "Let's not decorate uncertainty. A clean page shell is fine later, but first I need the structure and source caveats. Capture the workspace read as three hypothesis-question pairs."
+          }
+        ],
+        "imageBrief": "Laptop view with a polished but empty slide titled Pickup performance analysis, next to Priya's Slack correction. Spreadsheet tabs and a source workspace are visible behind the slide. The mood is constructive but urgent.",
+        "next": "client_files_readout",
+        "illustration": "/scenes/redirect_polish.png"
+      },
+      "redirect_questions": {
+        "id": "redirect_questions",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Questions Need a Spine",
+        "content": "Priya reacts to your first move, and the work converges on a source-based case review.",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:24 AM",
+            "avatarInitials": "PS",
+            "content": "Quick check: what are you doing first with the HarborMart workspace? I care less about polish and more about whether your first hour protects the answer."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:25 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:26 AM",
+            "avatarInitials": "PS",
+            "content": "Questions are useful only if they map to the answer. Group them by hypothesis and ask only for inputs that change our recommendation. Start with the workspace read."
+          }
+        ],
+        "imageBrief": "Laptop view of a long client email draft with many scattered questions, while a notebook reorganizes them into hypothesis buckets. Priya's Slack message is visible as a coaching note. The visual should show scattered work becoming structured.",
+        "next": "client_files_readout",
+        "illustration": "/scenes/redirect_questions.png"
+      },
+      "redirect_background": {
+        "id": "redirect_background",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Context Without an Answer",
+        "content": "Priya reacts to your first move, and the work converges on a source-based case review.",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:24 AM",
+            "avatarInitials": "PS",
+            "content": "Quick check: what are you doing first with the HarborMart workspace? I care less about polish and more about whether your first hour protects the answer."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:25 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Priya Shah",
+            "role": "Engagement Manager",
+            "timestamp": "8:26 AM",
+            "avatarInitials": "PS",
+            "content": "Background matters, but we do not have the luxury of boiling the ocean. Pull the facts that affect today's answer and move into the workplan."
+          }
+        ],
+        "imageBrief": "Laptop view with a long background PDF open beside a calendar reminder for the Marcus operations call. A small source workspace card highlights only client question, KPI extract, definitions, and caveats. The composition should show narrowing from broad reading to action.",
+        "next": "client_files_readout",
+        "illustration": "/scenes/redirect_background.png"
+      },
+      "data_triage": {
+        "id": "data_triage",
+        "type": "priority_matrix",
+        "section": 2,
+        "title": "Triage the Input Dump",
+        "content": "At 10:45, new signals arrive. Place every item on the matrix based on urgency and decision impact, then explain which item you would handle first.",
+        "appWindow": "miro",
+        "windowTitle": "HarborMart input triage",
+        "bindingKey": "input_triage",
+        "rationaleBindingKey": "input_triage_rationale",
+        "rationalePrompt": "Which item would you handle first, and what exact action would you take in the first 15 minutes?",
+        "rationalePlaceholder": "I would handle... because... First 15 minutes...",
+        "requireAllItemsPlaced": true,
+        "referenceTitle": "Triage criteria",
+        "referenceContent": "Triage criteria for the 10:45 input dump\n\nHigh decision impact:\n- Could change the recommendation or the confidence level.\n- Affects cross-store or cross-region comparability.\n- Blocks a manager or client from using the analysis.\n\nHigh urgency:\n- Needed before Priya's 3:30 review or today's client touchpoint.\n- Can be clarified quickly with a specific ask.\n\nLower priority:\n- Useful context that can wait until tomorrow.\n- Broad background reading that does not change today's first-cut answer.",
+        "xAxis": {
+          "label": "Urgency",
+          "lowLabel": "Can wait",
+          "highLabel": "Act now"
+        },
+        "yAxis": {
+          "label": "Decision impact",
+          "lowLabel": "Low impact",
+          "highLabel": "High impact"
+        },
+        "items": [
+          {
+            "id": "late_definition",
+            "label": "Two definitions of late pickup"
+          },
+          {
+            "id": "missing_labor",
+            "label": "Missing labor hours for six stores"
+          },
+          {
+            "id": "exec_answer",
+            "label": "Client VP asks for answer today"
+          },
+          {
+            "id": "outlier_store",
+            "label": "HM-068 has 43% late rate"
+          },
+          {
+            "id": "manager_review",
+            "label": "Priya review at 3:30"
+          },
+          {
+            "id": "store_interviews",
+            "label": "Two store managers can talk tomorrow"
+          },
+          {
+            "id": "background_deck",
+            "label": "62-page omnichannel background deck"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "miro",
+          "inputArtifacts": [
+            {
+              "id": "case_brief",
+              "label": "Case brief",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.case_brief",
+              "summary": "Client question, manager expectation, and case goal."
+            },
+            {
+              "id": "kpi_extract",
+              "label": "KPI extract",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.kpi_extract",
+              "summary": "Store-level pickup volume, labor hours, orders per labor hour, late rate, and definitions."
+            },
+            {
+              "id": "metric_definitions",
+              "label": "Metric definitions",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.metric_definitions",
+              "summary": "Regional late-pickup definition mismatch and labor-hour interpretation rules."
+            },
+            {
+              "id": "triage_criteria",
+              "label": "Triage criteria",
+              "whereVisible": "data_triage.referenceContent and scene content",
+              "summary": "Urgency and decision-impact criteria for sorting all inputs."
+            }
+          ],
+          "studentAction": "Place every incoming issue on an urgency/decision-impact matrix and explain the first action.",
+          "outputArtifact": {
+            "id": "input_triage",
+            "label": "Completed triage matrix plus rationale",
+            "format": "priority_matrix"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.input_triage",
+            "freeTextResponses.input_triage_rationale"
+          ],
+          "continuity": [
+            "The triage choices inform the Marcus call and later synthesis."
+          ],
+          "authenticityCheck": "Consulting analysts constantly triage messy inputs under deadline pressure."
+        },
+        "next": "client_call",
+        "workSurface": {
+          "kind": "priority_matrix",
+          "device": "desktop",
+          "appWindow": "miro",
+          "title": "HarborMart input triage"
+        }
+      },
+      "client_call": {
+        "id": "client_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Client Call with HarborMart Ops",
+        "content": "You join a remote 15-minute call with Marcus Bell, HarborMart's operations director. He wants to know whether the answer is simply 'add more labor.'",
+        "npcId": "marcus",
+        "meetingMode": "remote",
+        "playerGoal": "In 3-6 turns, clarify whether labor is the only driver of late pickups, ask for the missing process/context inputs, and keep Marcus aligned on a caveated analysis.",
+        "prepReferenceTitle": "Compact call reference",
+        "prepReferenceContent": "Facts available during the call:\n- Pickup load per labor hour appears directionally related to late pickup rate.\n- Six labor-hour records are missing, including high-volume stores.\n- West uses customer arrival time, while East/Central use promised pickup time.\n- HM-068 is an outlier and needs process context.\n- Priya needs a refreshed, caveated view before her 3:30 review.",
+        "prepNoteKey": "client_files_readout",
+        "prepNoteTitle": "Your three hypothesis-question pairs",
+        "goalPrompt": "You are Marcus Bell, HarborMart's operations director. Start by asking whether the data proves stores just need more labor. Cover exactly these topics: whether the consultant can state the early pattern in plain language, whether they name the late-definition caveat, and whether they ask for the missing labor records or metric definition. If the consultant is specific, share that HarborMart analytics can send the six missing labor records today and that the steering committee currently expects the promised-pickup-time definition. If the consultant over-claims, push back once by asking how they know. After these topics are covered, conclude naturally with: 'Send Priya the caveated view and I'll get analytics moving on the missing fields.' Do not open new topics after that closing line.",
+        "meetingContext": "The user is an entry-level consultant on a remote client call. A strong performance is answer-first, specific, caveated, and action-oriented. The user should not pretend the answer is final and should not blame the client data.",
+        "minTurns": 3,
+        "maxTurns": 6,
+        "voiceName": "Puck",
+        "next": "analysis_findings",
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "remote voice meeting",
+          "inputArtifacts": [
+            {
+              "id": "compact_reference",
+              "label": "Compact call reference",
+              "whereVisible": "client_call.prepReferenceContent",
+              "summary": "Facts needed during the call."
+            },
+            {
+              "id": "hypothesis_questions",
+              "label": "Student hypothesis-question pairs",
+              "whereVisible": "client_call.referenceNotes via prepNoteKey=client_files_readout",
+              "summary": "The player's three hypothesis-question pairs from the client files readout."
+            }
+          ],
+          "studentAction": "Speak with the client and clarify the missing inputs without over-claiming.",
+          "outputArtifact": {
+            "id": "client_call",
+            "label": "Voice transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:client_call:marcus"
+          ],
+          "continuity": [
+            "Information from the call should influence analysis_findings and slide_draft."
+          ],
+          "authenticityCheck": "Client calls with partial data and caveats are a realistic consulting communication moment."
+        },
+        "illustration": "/scenes/client_call.png",
+        "endpoint": "End once you have confirmed the key caveats, one or two process facts, and the next input Marcus can provide before Priya's review.",
+        "successCriteria": "You do not over-claim, you ask about the outlier and missing data, and you turn the client response into usable analysis context."
+      },
+      "analysis_findings": {
+        "id": "analysis_findings",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Synthesize the Store Analysis",
+        "content": "After the call, write three findings for Priya. Use the source notes below.\n\nCurrent analysis notes\n\n- Higher orders per labor hour generally align with higher late pickup rates among stores with usable labor data.\n- The pattern is directionally useful but not final because six labor records are missing.\n- West's lower late rates may be partly definitional because West uses customer arrival time rather than promised pickup time.\n- HM-068 is a process outlier: low order volume, adequate reported labor, but a 43% late rate.\n- Two store managers can provide process context tomorrow.\n\nUseful language:\n- Evidence: what the source data shows.\n- Implication: what it means for HarborMart's operating decision.\n- Caveat/follow-up: what must be normalized, checked, or requested before the team sizes the recommendation.",
+        "prompt": "Write three findings. Each one needs evidence, implication, and caveat or follow-up.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "HarborMart analysis notes",
+        "definition": {
+          "itemLabel": "Finding",
+          "bindingKey": "analysis_findings",
+          "initialCount": 3,
+          "minItems": 3,
+          "maxItems": 3,
+          "fields": [
+            {
+              "key": "finding",
+              "label": "Finding",
+              "placeholder": "Example: High pickup load per labor hour is directionally associated with higher late rates."
+            },
+            {
+              "key": "evidence",
+              "label": "Evidence",
+              "placeholder": "Name the source row, metric, or call fact behind the finding.",
+              "multiline": true,
+              "rows": 2
+            },
+            {
+              "key": "implication",
+              "label": "Implication",
+              "placeholder": "Explain why this matters for HarborMart's operating decision.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "caveat",
+              "label": "Caveat or follow-up",
+              "placeholder": "Name what must be normalized, checked, or requested before this is final.",
+              "multiline": true,
+              "rows": 3
+            }
+          ],
+          "presentation": "vertical_rows"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "spreadsheet",
+          "inputArtifacts": [
+            {
+              "id": "findings_source",
+              "label": "Current analysis notes",
+              "whereVisible": "analysis_findings.content",
+              "summary": "Visible findings source and data caveats."
+            }
+          ],
+          "studentAction": "Convert source data and client-call information into evidence/implication/caveat findings.",
+          "outputArtifact": {
+            "id": "analysis_findings",
+            "label": "Structured findings worksheet",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.analysis_findings"
+          ],
+          "continuity": [
+            "Findings feed slide_draft."
+          ],
+          "authenticityCheck": "Analysts are expected to turn spreadsheet observations into implications and caveats."
+        },
+        "next": "slide_draft",
+        "workSurface": {
+          "kind": "spreadsheet_workbook",
+          "device": "desktop",
+          "appWindow": "spreadsheet",
+          "title": "HarborMart analysis notes"
+        }
+      },
+      "slide_draft": {
+        "id": "slide_draft",
+        "type": "free_text",
+        "section": 3,
+        "title": "Draft the Client-Ready Slide Note",
+        "content": "Turn the analysis into slide language. A topic label is not enough; each slide should say what HarborMart should believe today and what still needs validation.",
+        "prompt": "Create up to five 16:9 slides for Priya. Put text directly on the slide canvas and add speaker notes below each slide.\n\nTips: keep slides sparse, use one message per slide, and put extra detail in speaker notes.",
+        "appWindow": "figma",
+        "windowTitle": "HarborMart pickup lateness - draft deck",
+        "appTabs": [
+          {
+            "id": "slide_inputs",
+            "label": "Slide inputs",
+            "content": "Inputs for the slide deck\n\nClient decision:\n- Where should HarborMart look first to reduce late online pickup orders?\n- What can leadership do before Friday, and what should wait for validation?\n\nEmerging answer:\n- Pickup load per labor hour appears to be a meaningful driver.\n- Regional metric definitions and missing labor records limit the confidence level.\n- HM-068 needs process context because it behaves unlike the labor-intensity story.\n\nSlide ask:\n- Create up to five client-ready slides with speaker notes.\n- Use conclusion-style slide text, not topic labels.\n- Include caveats and next actions where they change what HarborMart should believe or do."
+          },
+          {
+            "id": "findings_source",
+            "label": "Findings",
+            "content": "Current analysis notes\n\n- Higher orders per labor hour generally align with higher late pickup rates among stores with usable labor data.\n- The pattern is directionally useful but not final because six labor records are missing.\n- West's lower late rates may be partly definitional because West uses customer arrival time rather than promised pickup time.\n- HM-068 is a process outlier: low order volume, adequate reported labor, but a 43% late rate.\n- Two store managers can provide process context tomorrow.\n\nUseful language:\n- Evidence: what the source data shows.\n- Implication: what it means for HarborMart's operating decision.\n- Caveat/follow-up: what must be normalized, checked, or requested before the team sizes the recommendation."
+          },
+          {
+            "id": "manager_bar",
+            "label": "Priya review",
+            "content": "Priya's review\n\nA useful analyst work product today should:\n- State the emerging driver in plain business language.\n- Separate evidence, implication, and caveat.\n- Identify the smallest client ask that would improve confidence.\n- Produce slide language that says what HarborMart should believe or do next.\n- Avoid vague process updates like \"still analyzing\" unless paired with the actual next step."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "slide editor",
+          "inputArtifacts": [
+            {
+              "id": "slide_inputs",
+              "label": "Slide inputs",
+              "whereVisible": "slide_draft.appTabs.slide_inputs",
+              "summary": "Client decision, emerging answer, slide ask, and next action."
+            }
+          ],
+          "studentAction": "Draft client-ready slide text and speaker notes.",
+          "outputArtifact": {
+            "id": "slide_draft",
+            "label": "Slide deck and speaker notes",
+            "format": "slide_deck"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.slide_draft"
+          ],
+          "continuity": [
+            "Final graded artifact."
+          ],
+          "authenticityCheck": "Turning analysis into a client-ready slide note is central to junior consulting work."
+        },
+        "next": "assessment_gate",
+        "workSurface": {
+          "kind": "figma_canvas",
+          "device": "desktop",
+          "appWindow": "figma",
+          "title": "HarborMart pickup lateness - draft deck"
+        }
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "End of Consulting Day",
+        "content": "You framed the client question, reviewed a source workspace, triaged messy inputs, handled a client call, synthesized findings, and drafted a slide note. Time to review how consulting-ready your work products were.",
+        "imageBrief": "Consulting desk at dusk with a cream laptop screen showing submitted slide notes and organized spreadsheet tabs. The desk has the HarborMart client files and a notebook with pattern, caveat, ask, next checkpoint. The mood is tired but professionally focused.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as an entry-level consultant on a U.S. management consulting project day.",
+        "imageBrief": "A clean final report screen on a laptop in the same consulting office, with sections for framing, triage, communication, synthesis, and slide-ready storytelling. The desk still shows the HarborMart source workspace and a small Aster Lane notebook. Use the warm cream consulting simulator palette.",
+        "next": null,
+        "illustration": "/scenes/grading.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Case Is Complete",
+        "content": "The simulated case is complete. You have finished the work period; when you are ready, view your assessment.",
+        "illustration": "/scenes/grading.png",
+        "imageBrief": "A calm case wrap-up moment with the relevant work surface settled and the environment quiet after the final handoff. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      },
+      "client_files_readout": {
+        "id": "client_files_readout",
+        "type": "free_text",
+        "section": 1,
+        "title": "Write Three Hypothesis-Question Pairs",
+        "content": "Before the Marcus call, use the source tabs to write three working hypotheses and the question you would ask to test each one. Keep each pair specific to what would change the team's first-cut answer.",
+        "prompt": "Write three hypothesis-question pairs for Marcus based on the source tabs.",
+        "placeholder": "1. Hypothesis: Late pickups may be distorted by inconsistent regional definitions.\n   Question: Which late-pickup definition should we use for the steering committee?\n\n2. Hypothesis: The labor-capacity story may change once missing labor-hour records are included.\n   Question: Can HarborMart send the missing labor-hour records for the six stores today?\n\n3. Hypothesis: HM-068 may be a process outlier rather than a staffing issue.\n   Question: What store-level process context should we know about HM-068 or other outliers?",
+        "minWords": 45,
+        "maxWords": 140,
+        "appWindow": "notion",
+        "windowTitle": "HarborMart client files review",
+        "appTabs": [
+          {
+            "id": "case_brief",
+            "label": "Case brief",
+            "content": "HarborMart is a regional grocery chain with 83 stores in the Midwest and Mid-Atlantic. Aster Lane Advisory is supporting the operations leadership team before a Friday steering committee.\n\nBusiness question:\n- Why are online pickup orders late in some stores?\n- Is the answer mostly labor capacity, process variation, or metric-definition noise?\n- What can the team credibly say today, and what must be validated before Friday?\n\nManager expectation:\n- Lead with a hypothesis, not a polished blank slide.\n- Keep calculations traceable to source fields.\n- Preserve caveats instead of averaging them away.\n- Ask the client only for inputs that change the answer."
+          },
+          {
+            "id": "kpi_extract",
+            "label": "KPI extract",
+            "content": "HarborMart_store_extract.xlsx - first-cut excerpt\n\n| Store | Region | Pickup orders/day | Labor hours/day | Orders per labor hour | Late pickup rate | Late definition |\n| HM-014 | East | 312 | 42 | 7.4 | 18% | After promised pickup time |\n| HM-027 | East | 286 | missing | n/a | 21% | After promised pickup time |\n| HM-033 | West | 244 | 29 | 8.4 | 24% | After customer arrival time |\n| HM-041 | West | 198 | 31 | 6.4 | 13% | After customer arrival time |\n| HM-052 | Central | 355 | 39 | 9.1 | 31% | After promised pickup time |\n| HM-068 | Central | 91 | 22 | 4.1 | 43% | After promised pickup time |\n| HM-079 | East | 264 | missing | n/a | 19% | After promised pickup time |\n\nData quality notes:\n- Labor hours are missing for six stores, including two high-volume stores.\n- East and Central currently use promised pickup time; West uses customer arrival time.\n- Store HM-068 is an outlier: low volume but very high late pickup rate.\n- Two store managers can speak tomorrow, but not before today's manager review."
+          },
+          {
+            "id": "metric_definitions",
+            "label": "Metric definitions",
+            "content": "Metric-definition note from HarborMart analytics\n\nLate pickup rate:\n- East and Central: order is late if it is not ready by the promised pickup time.\n- West: order is late only if the customer arrives and still waits more than five minutes.\n\nLabor hours:\n- Store-reported total labor hours assigned to pickup operations that day.\n- Missing values mean the store did not submit the daily labor code, not that labor was zero.\n\nFirst-cut interpretation rule:\n- Cross-region late-rate comparisons are directional until late pickup is normalized.\n- Labor-intensity cuts are useful, but missing labor records should be excluded or flagged.\n- Outlier stores should not drive the whole recommendation without process context."
+          },
+          {
+            "id": "manager_bar",
+            "label": "Priya review",
+            "content": "Priya's review\n\nA useful analyst work product today should:\n- State the emerging driver in plain business language.\n- Separate evidence, implication, and caveat.\n- Identify the smallest client ask that would improve confidence.\n- Produce slide language that says what HarborMart should believe or do next.\n- Avoid vague process updates like \"still analyzing\" unless paired with the actual next step."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "analyst",
+          "workSurface": "notion",
+          "inputArtifacts": [
+            {
+              "id": "case_brief",
+              "label": "Case brief",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.case_brief",
+              "summary": "Client question, manager expectation, and case goal."
+            },
+            {
+              "id": "kpi_extract",
+              "label": "KPI extract",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.kpi_extract",
+              "summary": "Store-level pickup volume, labor hours, orders per labor hour, late rate, and definitions."
+            },
+            {
+              "id": "metric_definitions",
+              "label": "Metric definitions",
+              "whereVisible": "briefing_morning.referenceContent and case_workspace_review.appTabs.metric_definitions",
+              "summary": "Regional late-pickup definition mismatch and labor-hour interpretation rules."
+            }
+          ],
+          "studentAction": "Read the visible source tabs and write three hypothesis-question pairs for Marcus.",
+          "outputArtifact": {
+            "id": "hypothesis_questions",
+            "label": "Three hypothesis-question pairs",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.client_files_readout"
+          ],
+          "continuity": [
+            "The hypothesis-question pairs guide triage and the Marcus conversation."
+          ],
+          "authenticityCheck": "Junior consultants often pair early hypotheses with specific client questions before a call."
+        },
+        "next": "data_triage",
+        "workSurface": {
+          "kind": "notion_doc",
+          "device": "desktop",
+          "appWindow": "notion",
+          "title": "HarborMart client files review"
+        }
+      }
+    }
+  },
+  "npcs": {
+    "priya": {
+      "id": "priya",
+      "name": "Priya Shah",
+      "role": "Engagement Manager, Aster Lane Advisory",
+      "persona": "Priya is direct, practical, and protective of client credibility. She expects junior consultants to show their logic, not just activity. She pushes for answer-first communication, traceable numbers, and caveats that help rather than paralyze. She is busy before a partner review, but she gives useful coaching when the student makes the work easier to review.",
+      "voice": "concise, candid, coaching-oriented"
+    },
+    "marcus": {
+      "id": "marcus",
+      "name": "Marcus Bell",
+      "role": "Operations Director, HarborMart",
+      "persona": "Marcus runs pickup operations for HarborMart and wants a practical answer quickly. He is not hostile, but he is impatient with consulting process language because executives want a simple labor answer. He respects specificity, plain caveats, and clear next steps. If the consultant overstates the data, he pushes back and asks how they know.",
+      "voice": "busy, practical, mildly impatient"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Entry-Level Consultant: Operations Strategy Day",
+    "welcomeBody": "Aster Lane Advisory helps U.S. companies improve operations, customer experience, and cost performance. You are an entry-level analyst supporting HarborMart, a regional grocery chain whose online pickup orders are running late in some stores.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Aster Lane advises retail, healthcare, and consumer companies on operating problems. In this case, HarborMart needs a first-cut answer before a Friday steering committee."
+      },
+      {
+        "label": "Frame",
+        "content": "Turn an ambiguous client ask into testable hypotheses and a focused workplan."
+      },
+      {
+        "label": "Analyze",
+        "content": "Use visible source data to triage caveats, outliers, and missing fields."
+      },
+      {
+        "label": "Communicate",
+        "content": "Handle a client call, findings synthesis, and slide note without over-claiming."
+      }
+    ]
+  },
+  "glossary": {
+    "answer-first": "A consulting communication style that leads with the conclusion or implication before supporting detail.",
+    "caveat": "A limitation, assumption, or data issue that affects how confidently a conclusion can be used.",
+    "engagement manager": "The consulting manager responsible for day-to-day project delivery, team direction, and client communication.",
+    "KPI": "A key performance indicator: a metric used to track business performance.",
+    "late pickup rate": "The share of online pickup orders that miss the agreed readiness or wait-time standard.",
+    "steering committee": "A senior client meeting where major project findings, decisions, risks, and next steps are reviewed.",
+    "workplan": "The sequence of analyses, interviews, deliverables, and checkpoints the team will use to answer the client question."
+  },
+  "sample_answers": {
+    "client_files_readout": "1. Hypothesis: Regional late-pickup comparisons may be distorted because West uses a different definition than East and Central.\nQuestion: Which late-pickup definition should the team use for the steering committee: promised pickup time, customer-arrival wait time, or another standard?\n\n2. Hypothesis: The labor-capacity story may change once the missing labor-hour records are included.\nQuestion: Can HarborMart send the six missing store labor-hour records today so we can test the labor relationship without treating missing values as zero?\n\n3. Hypothesis: HM-068 may be a process outlier rather than a simple staffing issue.\nQuestion: What store-level process context should we know about HM-068 or other outlier stores before we assume the issue is mainly labor?",
+    "input_triage_rationale": "I would place the late-definition mismatch and missing labor hours in high urgency/high impact because both can change the recommendation before Priya's review. HM-068 is also high impact but slightly less urgent until we can get process context tomorrow. The VP request is urgent but should not force an unsupported answer; I would answer with directional confidence and a specific data ask.",
+    "analysis_findings": "[{\"finding\": \"Stores with higher pickup orders per labor hour generally show higher late pickup rates.\", \"evidence\": \"HM-052 has 9.1 orders per labor hour and 31% late rate, while HM-041 has 6.4 orders per labor hour and 13% late rate.\", \"implication\": \"Labor deployment is likely a useful first lens for HarborMart's improvement plan.\", \"caveat\": \"Six labor records are missing, so the relationship should be treated as directional until the data is complete.\"}, {\"finding\": \"West region late rates are not directly comparable with East/Central rates.\", \"evidence\": \"West defines late pickup after customer arrival, while East/Central use promised pickup time.\", \"implication\": \"The team should normalize definitions before making regional recommendations.\", \"caveat\": \"Marcus needs to confirm which definition leadership expects for Friday.\"}, {\"finding\": \"HM-068 behaves like a process outlier rather than a simple labor-capacity case.\", \"evidence\": \"HM-068 has low pickup volume and 4.1 orders per labor hour, but a 43% late pickup rate.\", \"implication\": \"The team should use store-manager interviews to check staging, handoff, or local execution issues.\", \"caveat\": \"Do not let one outlier dominate the overall labor recommendation without process context.\"}]",
+    "slide_draft": "{\"version\":1,\"activeSlideId\":\"slide_1\",\"slides\":[{\"id\":\"slide_1\",\"speakerNotes\":\"Our first cut suggests stores with heavier pickup volume per labor hour are more likely to miss pickup windows, which points HarborMart toward labor deployment as an initial improvement lever. The finding is directional because six stores are missing labor records and West currently defines late pickup differently from East and Central. Next, normalize the metric definition, collect the missing labor records, and use store-manager interviews to test the HM-068 outlier before Friday.\",\"elements\":[{\"id\":\"text_1\",\"text\":\"Higher pickup load appears to be the first place to look\",\"x\":7,\"y\":9,\"w\":80,\"h\":18,\"fontSize\":30,\"fontWeight\":800},{\"id\":\"text_2\",\"text\":\"Labor intensity is directionally linked to late pickup rates, but metric definitions and missing labor records must be cleaned before sizing the recommendation.\",\"x\":9,\"y\":34,\"w\":76,\"h\":30,\"fontSize\":20,\"fontWeight\":400},{\"id\":\"text_3\",\"text\":\"Next: normalize late-pickup definition, collect six missing labor records, and test HM-068 process context.\",\"x\":9,\"y\":76,\"w\":76,\"h\":12,\"fontSize\":16,\"fontWeight\":600}]}]}"
+  },
+  "rubric": {
+    "simulation_id": "consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の優先判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: 情報が散らばる中で、仮説、分析素材、クライアント確認のどれを先に進めるべきか選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "仮説質問の作成",
+            "evidenceSceneIds": [
+              "client_files_readout"
+            ],
+            "rubric_text": "9-10: 与えられた資料から、検証したい仮説とクライアントに聞くべき質問を具体的に作れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "入力情報の優先順位",
+            "evidenceSceneIds": [
+              "data_triage"
+            ],
+            "rubric_text": "9-10: 使えるデータ、怪しいデータ、すぐ見るべき指標、後回しにできる情報を見分けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "クライアント通話",
+            "evidenceSceneIds": [
+              "client_call"
+            ],
+            "rubric_text": "9-10: 実際の通話で、業務制約、数字の背景、意思決定者が気にする点を聞き取り、根拠なしの断定を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "分析結果整理",
+            "evidenceSceneIds": [
+              "analysis_findings"
+            ],
+            "rubric_text": "9-10: 分析から分かること、分からないこと、示唆、追加確認を分けて、クライアントが使える形にまとめられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "スライドメモ",
+            "evidenceSceneIds": [
+              "slide_draft"
+            ],
+            "rubric_text": "9-10: 結論、根拠、制約、次の検証を一枚の報告に近い形で簡潔に書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

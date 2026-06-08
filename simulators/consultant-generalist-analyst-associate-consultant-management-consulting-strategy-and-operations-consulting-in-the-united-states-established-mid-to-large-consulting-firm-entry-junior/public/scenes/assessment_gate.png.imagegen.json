@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:01:27+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "153fd9e1773e2f3b",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/src/data/scene-config.json"
+}

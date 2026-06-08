@@ -1,0 +1,1460 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "NBA team beat reporting is an in-person deadline job built from repeated arena access, source conversations, observation, note discipline, and fast digital filing. Source material describes reporters attending shootaround and games, talking to coaches and players before and after games, transcribing and organizing interviews, watching injuries and rotations, and writing instant stories after the buzzer. The upgraded simulator therefore mixes physical arena observation, spoken availability, Slack/editor communication, source sorting, and deadline writing rather than treating the role as generic prose composition.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Beat reporters are physically at games, practices, shootarounds, media entrances, courtside areas, and postgame access spaces.",
+          "Courtside and beat reporting source material emphasizes notebook/recorder use, observing player movement, and working from the arena media table."
+        ],
+        "simulatorImplication": "Include a playable arena observation scene where the student inspects visible court/media-row evidence and records a caveated observation before writing."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Reporters work in Slack/editor channels, CMS drafts, live box scores, notes, transcripts, injury reports, and social rumor streams.",
+          "The same-day gamer depends on turning digital and observed inputs into publishable copy under a clock."
+        ],
+        "simulatorImplication": "Use realistic document, Slack, kanban, and CMS-style surfaces with visible source tabs and reference packets."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "The reporter must decide what is newsworthy, what is verified, what needs attribution, and what should be held back.",
+          "Sources emphasize separating observation from confirmed information and choosing a focused angle under deadline."
+        ],
+        "simulatorImplication": "Keep the lead-angle pivot, note classification, and editor recommendation as explicit judgment moments."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "Beat reporters write recaps, follow-up angles, source notes, and deadline stories after interviews and games.",
+          "Source material repeatedly describes writing instant stories right after the buzzer and revising with editor direction."
+        ],
+        "simulatorImplication": "Require a reporting plan, observation note, note rationale, fast gamer, editor update, and final story package."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "major",
+        "sourceEvidence": [
+          "The role involves asking coaches and players concise questions during media availability and scrums.",
+          "Beat reporting depends on source relationships, respectful follow-ups, and extracting usable attribution without leading."
+        ],
+        "simulatorImplication": "Use in-person voice scenes for coach availability and the player scrum, with prep notes visible."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Game-night reporting includes waiting for media doors, watching warmups, monitoring a live game, and reacting to late updates.",
+          "The reporter works across pregame, live game, postgame access, and filing windows."
+        ],
+        "simulatorImplication": "Represent waiting and monitoring through timed source packets, live game notes, and deadline constraints, not passive click-through narration."
+      }
+    },
+    "simulatorPlan": "The active flow starts with a bounded newsroom angle choice, then has the student build a reporting plan from visible source material, perform an in-arena observation, ask coach and player questions in person, capture organized possession timeline notes, sort postgame notes, write a fast gamer, update the editor, and file a final package. The physical scene is intentionally secondary but meaningful; the writing, source sorting, and communication scenes remain the dominant experience.",
+    "activeSceneMixRationale": "Active scenes include one MCQ pivot, one structured reporting plan, one physical playground, one possession timeline, two in-person voice conversations, one note-classification board, two writing tasks, and one Slack editor update. That balance mirrors the source-derived job mix for an entry-level NBA beat reporter."
+  },
+  "storyline": {
+    "gameTitle": "NBA Beat Reporter Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Pregame Reporting"
+      },
+      {
+        "num": 2,
+        "label": "Arena Access and Interviews"
+      },
+      {
+        "num": 3,
+        "label": "Deadline Filing"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Full Court Wire",
+        "content": "You are Jordan Lee, an entry-level NBA beat reporter at Full Court Wire. Tonight you are covering the fictional Harbor City Cyclones from inside the arena: review the assignment sources, choose a verifiable angle, observe Reed in person, ask coach and player questions, sort notes, and file copy your editor can trust on deadline.",
+        "imageBrief": "First-person view from an NBA arena media-row work table before tipoff. A laptop shows a CMS draft, live box score, Slack editor thread, and credential badge for Harbor City Arena; a notebook and recorder sit beside the keyboard while the court glows in the background.",
+        "next": "assignment_brief",
+        "illustration": "/scenes/intro.png"
+      },
+      "assignment_brief": {
+        "id": "assignment_brief",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "4:18 PM Assignment Desk",
+        "content": "It is 4:18 PM in the arena media room. Your first clean gamer is due at 11:10 PM ET. Before you answer Tessa's angle check, review the work surfaces a beat reporter would actually have open: Slack, the official injury report, the arena media schedule, a stats dashboard, the social media feed, and the CMS sidebar.",
+        "actionLabel": "Choose your angle",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:18 PM",
+            "content": "Jordan - tonight's working question is whether Reed's return changes the closing group. Watch warmups, ask Harris about late-game logic, and keep the story tied to what we can verify in the building."
+          },
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:21 PM",
+            "content": "Also: treat social media rumor chatter as unconfirmed unless a team, agent, league, or on-record source gives us something real. Do not make a social rumor the frame."
+          }
+        ],
+        "emails": [
+          {
+            "from": "Harbor City Cyclones PR <media@cyclones.example>",
+            "to": "Credentialed media",
+            "subject": "Official injury report - Harbor City vs. Denver",
+            "content": "Official injury report, 4:05 PM ET update\n\nMalik Reed - Available (returning from right ankle sprain)\nMinutes restriction - None listed\n\nUse the official status only as listed. Further health or readiness claims require direct attribution."
+          },
+          {
+            "from": "Harbor City Arena Media Operations <mediaops@harborcityarena.example>",
+            "to": "Credentialed media",
+            "subject": "Arena media schedule - Cyclones vs. Denver",
+            "content": "5:25 PM - Coach Len Harris pregame availability, interview room riser\n7:10 PM - Tipoff\nPostgame - Baseline scrum opens after locker-room cooling period\nPostgame note - Malik Reed is expected at the baseline scrum if he closes or scores 20+"
+          }
+        ],
+        "metrics": [
+          {
+            "metric": "Clutch defensive rating without Reed",
+            "target": "Under 112.0 is stable late-game defense",
+            "actual": "121.8 across recent close games",
+            "status": "warning"
+          },
+          {
+            "metric": "Closing lineup stability",
+            "target": "Same core group in late possessions",
+            "actual": "Four different closing groups in the last five close games",
+            "status": "warning"
+          },
+          {
+            "metric": "Opponent guard paint pressure",
+            "target": "Keep late drives contained",
+            "actual": "Denver's lead guards average 8.7 fourth-quarter paint touches",
+            "status": "critical"
+          }
+        ],
+        "socialPosts": [
+          {
+            "handle": "@HarborHoopsRumors",
+            "displayName": "Harbor Hoops Rumors",
+            "timestamp": "4:12 PM",
+            "content": "Hearing Reed's return could be connected to bigger guard-market talks. If he closes tonight, watch the front office angle.",
+            "badge": "Fan account",
+            "verification": "Unconfirmed",
+            "engagement": "312 reposts"
+          },
+          {
+            "handle": "@CyclonesFanLab",
+            "displayName": "Cyclones Fan Lab",
+            "timestamp": "4:16 PM",
+            "content": "No official word, but the timeline is interesting: Reed back, scouts in the building, deadline chatter everywhere.",
+            "badge": "Fan account",
+            "verification": "No on-record source",
+            "engagement": "89 replies"
+          }
+        ],
+        "cmsSidebarRules": [
+          {
+            "label": "Health language",
+            "detail": "Do not write that Reed is fully healed, medically cleared, or back to normal unless Reed, team PR, or another on-record source says it.",
+            "severity": "warning"
+          },
+          {
+            "label": "Evidence buckets",
+            "detail": "Keep official status, your own observation, direct quotes, and unverified chatter separate in the draft.",
+            "severity": "rule"
+          },
+          {
+            "label": "Attribution bar",
+            "detail": "Attribute every health or role claim: team PR listed, Harris said, Reed said, or reporter observation.",
+            "severity": "rule"
+          },
+          {
+            "label": "Hold unverified material",
+            "detail": "Do not publish social media rumors or hallway chatter unless an on-record source confirms them.",
+            "severity": "hold"
+          }
+        ],
+        "imageBrief": "Arena media room laptop with Slack assignment messages, official injury report, arena media schedule, stats dashboard, social media feed, CMS sidebar, deadline timer, and live game credential. The basketball court is visible through an open tunnel.",
+        "next": "lead_angle",
+        "illustration": "/scenes/assignment_brief.png"
+      },
+      "lead_angle": {
+        "id": "lead_angle",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With the Lead Angle",
+        "content": "You have 25 minutes before coach availability. Tessa asks what you will report first. Send the reply that best fits the visible assignment sources.",
+        "appWindow": "slack",
+        "windowTitle": "#nba-cyclones",
+        "prompt": "Choose the reply you would send Tessa.",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:27 PM",
+            "content": "What is your working angle before coach availability? Need the one you can actually verify tonight."
+          }
+        ],
+        "imageBrief": "Reporter notebook with three circled possible angles: injury return, closing lineup, trade rumor. A phone shows social posts while an arena clock counts down.",
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Slack message decision inside a cream app window",
+          "inputArtifacts": [
+            {
+              "id": "assignment_sources",
+              "label": "Cyclones game-night work surfaces",
+              "whereVisible": "assignment_brief Slack, injury report, media schedule, stats dashboard, social media feed, and CMS sidebar",
+              "summary": "Editor frame, official Reed status, access schedule, late-game stats, social rumor feed, and CMS attribution rules"
+            }
+          ],
+          "studentAction": "Choose and send the most reportable Slack angle from a finite editor prompt.",
+          "outputArtifact": {
+            "id": "lead_angle_reply",
+            "label": "Slack reply to editor",
+            "format": "multiple-choice message selection"
+          },
+          "rubricEvidence": [
+            "Angle Judgment"
+          ],
+          "continuity": [
+            "The selected reply appears in the redirect scene and sets the reporting plan frame."
+          ],
+          "authenticityCheck": "The scene requires the player to transform visible reporting inputs into a beat-reporter artifact instead of answering from memory."
+        },
+        "options": [
+          {
+            "id": "reed_return",
+            "label": "I will frame it around Reed return and whether his ankle/conditioning changes late-game usage. I can verify with PR status, warmup observation, Coach Harris, and Reed postgame.",
+            "body": "Timely, observable, and tied to both the game result and access.",
+            "branchFlag": "strong_angle"
+          },
+          {
+            "id": "trade_rumor",
+            "label": "I want to lead with the trade rumor because it is moving on fan accounts and will get attention.",
+            "body": "A rumor without sourcing can burn trust and distract from what can be reported tonight.",
+            "branchFlag": "rumor_angle"
+          },
+          {
+            "id": "generic_preview",
+            "label": "I will keep it broad as a general matchup preview so the story stays safe.",
+            "body": "Safe can become bland. The editor needs a specific game-night frame.",
+            "branchFlag": "generic_angle"
+          },
+          {
+            "id": "coach_personality",
+            "label": "I will focus on Coach Harris seeming tense because that could make a colorful column.",
+            "body": "Color helps only if it supports verified news or analysis.",
+            "branchFlag": "color_angle"
+          }
+        ],
+        "next": {
+          "branchOn": "lead_angle",
+          "cases": {
+            "strong_angle": "redirect_strong_angle",
+            "rumor_angle": "redirect_rumor",
+            "generic_angle": "redirect_generic",
+            "color_angle": "redirect_color"
+          },
+          "default": "redirect_strong_angle"
+        },
+        "illustration": "/scenes/lead_angle.png"
+      },
+      "redirect_strong_angle": {
+        "id": "redirect_strong_angle",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Angle Greenlit",
+        "content": "Tessa likes the frame because it can be reported through official status, visible observation, coach availability, and Reed attribution. Now turn the angle into a reporting plan.",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:27 PM",
+            "content": "What is your working angle before coach availability? Need the one you can actually verify tonight."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Reporter",
+            "timestamp": "4:28 PM",
+            "content": "{{mc.lead_angle.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:29 PM",
+            "content": "Good. Build the plan around what you can verify: official status, what you personally observe, what Harris can explain, and what Reed can say on the record."
+          }
+        ],
+        "imageBrief": "Slack thread in an NBA arena media room where the editor greenlights a focused Reed-return and closing-lineup angle.",
+        "next": "reporting_plan",
+        "illustration": "/scenes/lead_angle.png"
+      },
+      "redirect_rumor": {
+        "id": "redirect_rumor",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Rumor Without Grounding",
+        "content": "The rumor gets attention, but nobody with direct knowledge will touch it on the record. Tessa redirects you to protect credibility and report what you can actually prove tonight.",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:27 PM",
+            "content": "What is your working angle before coach availability? Need the one you can actually verify tonight."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Reporter",
+            "timestamp": "4:28 PM",
+            "content": "{{mc.lead_angle.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:29 PM",
+            "content": "Monitor it, but do not make it the gamer. If it is not on record or confirmed, it stays out. Pivot back to Reed usage and the closing lineup."
+          }
+        ],
+        "imageBrief": "Phone screen full of rumor posts beside a reporter notebook marked no confirmation. Editor Slack message says verify before amplifying.",
+        "next": "reporting_plan",
+        "illustration": "/scenes/lead_angle.png"
+      },
+      "redirect_generic": {
+        "id": "redirect_generic",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Too Broad for Deadline",
+        "content": "A broad preview would be accurate but forgettable. Tessa needs you to spend limited access on a sharper question that can survive deadline editing.",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:27 PM",
+            "content": "What is your working angle before coach availability? Need the one you can actually verify tonight."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Reporter",
+            "timestamp": "4:28 PM",
+            "content": "{{mc.lead_angle.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:29 PM",
+            "content": "That is too wide for tonight. Narrow it: what does Reed return change late, and what can you verify before filing?"
+          }
+        ],
+        "imageBrief": "A generic game preview draft fading behind a sharper sticky note: Reed return plus closing lineup.",
+        "next": "reporting_plan",
+        "illustration": "/scenes/lead_angle.png"
+      },
+      "redirect_color": {
+        "id": "redirect_color",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Color Needs a Point",
+        "content": "Coach mood may make the scene vivid, but mood is not the story by itself. Use color only when it supports a verified decision or consequence.",
+        "slackMessages": [
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:27 PM",
+            "content": "What is your working angle before coach availability? Need the one you can actually verify tonight."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Reporter",
+            "timestamp": "4:28 PM",
+            "content": "{{mc.lead_angle.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Tessa Ortiz",
+            "role": "Senior NBA Editor",
+            "timestamp": "4:29 PM",
+            "content": "Color is support, not the frame. Report the Reed/closing question first, then use scene detail if it helps the reader."
+          }
+        ],
+        "imageBrief": "Coach at podium in a tense pregame media room, with reporter notes connecting mood to lineup decisions rather than gossip.",
+        "next": "reporting_plan",
+        "illustration": "/scenes/lead_angle.png"
+      },
+      "reporting_plan": {
+        "id": "reporting_plan",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Pregame Reporting Plan",
+        "content": "Build the plan you will carry into coach availability, warmups, and the postgame scrum. Good beat work starts before the first quote: know what you need, who can answer it, and what you must not overstate.",
+        "prompt": "Fill out four reporting needs for Reed return and the closing-lineup question. Use the assignment sources and be specific about source, question, and risk.",
+        "appWindow": "doc",
+        "windowTitle": "Cyclones Game Night Reporting Plan",
+        "imageBrief": "Document editor with a structured reporting plan, live stats, injury report, and a credentialed reporter notebook at an arena media table.",
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Cream workplace app window with visible source artifacts",
+          "inputArtifacts": [
+            {
+              "id": "assignment_sources",
+              "label": "Cyclones game-night work surfaces",
+              "whereVisible": "briefing drawer",
+              "summary": "Slack editor frame, official injury report, arena media schedule, stats dashboard, social media feed, and CMS sidebar rules"
+            },
+            {
+              "id": "lead_reply",
+              "label": "Your selected editor reply",
+              "whereVisible": "previous Slack branch",
+              "summary": "The reporting frame chosen in lead_angle"
+            }
+          ],
+          "studentAction": "Create four source-aware reporting needs with source, question or verification step, and risk.",
+          "outputArtifact": {
+            "id": "pregame_plan",
+            "label": "Pregame reporting plan rows",
+            "format": "structured entry JSON"
+          },
+          "rubricEvidence": [
+            "Reporting Plan",
+            "Angle Judgment"
+          ],
+          "continuity": [
+            "The plan appears in coach_availability and media_scrum through prepNoteKey."
+          ],
+          "authenticityCheck": "The scene requires the player to transform visible reporting inputs into a beat-reporter artifact instead of answering from memory."
+        },
+        "definition": {
+          "itemLabel": "Reporting Need",
+          "bindingKey": "pregame_plan",
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "fields": [
+            {
+              "key": "need",
+              "label": "What you need to know",
+              "placeholder": "State the reporting gap you need to resolve.",
+              "multiline": false
+            },
+            {
+              "key": "source",
+              "label": "Best source",
+              "placeholder": "Name the source type without guessing the answer.",
+              "multiline": false
+            },
+            {
+              "key": "question",
+              "label": "Question or verification step",
+              "placeholder": "Write a neutral question or verification step.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "risk",
+              "label": "Reporting risk",
+              "placeholder": "Name what could be overstated without stronger evidence.",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "next": "warmup_observation",
+        "illustration": "/scenes/reporting_plan.png"
+      },
+      "warmup_observation": {
+        "id": "warmup_observation",
+        "type": "physical_playground",
+        "section": 2,
+        "title": "Warmup Observation at Media Row",
+        "content": "You are at media row before tipoff. Inspect the source surfaces and record one careful observation about Reed without turning it into a medical conclusion.",
+        "simulatedAction": "Inspect in-arena source surfaces and document a caveated observation before interviews.",
+        "learningGoal": "Separate official status, personal observation, routine access detail, and unverified rumor while physically working from the arena.",
+        "digitalPrimitives": [
+          "inspect_readable_surface",
+          "open_closeup",
+          "type_observation_note"
+        ],
+        "physicalWorkDesign": {
+          "realWorkflowScript": "Arrive at media row, check the credential/deadline context, read the team PR status, watch Reed move during warmups, notice routine trainer contact, monitor rumor feed, and write one observation with a caveat.",
+          "decomposition": {
+            "evidence": [
+              "Team PR injury email",
+              "Reed movement during warmups",
+              "Trainer contact near baseline",
+              "Fan-account rumor feed"
+            ],
+            "objects": [
+              "Credential/deadline card",
+              "Laptop PR email closeup",
+              "Court observation closeup",
+              "Phone rumor feed",
+              "Notebook"
+            ],
+            "targets": [
+              "Media-row work table",
+              "Court baseline",
+              "Notebook observation field"
+            ],
+            "procedure": [
+              "Inspect official status",
+              "Inspect Reed movement",
+              "Inspect trainer contact",
+              "Inspect rumor feed",
+              "Write a caveated observation"
+            ],
+            "stateChanges": [
+              "Inspected surfaces are marked complete and the observation note is stored for grading."
+            ]
+          },
+          "actionClassification": [
+            {
+              "action": "Inspect official team PR status",
+              "classification": "inspect",
+              "primitive": "inspect_readable_surface",
+              "mappingRationale": "The student reads a visible source surface before using it."
+            },
+            {
+              "action": "Record observation and caveat",
+              "classification": "type",
+              "primitive": "type_observation_note",
+              "mappingRationale": "The real job requires observation to become notes, not a hidden click result."
+            }
+          ],
+          "mainSceneRole": "One 16:9 arena/media-row stage with court and work table hotspots.",
+          "popupSceneRoles": [
+            "Readable closeups for PR email, Reed movement, trainer contact, and rumor feed."
+          ],
+          "statePersistence": "Inspected surfaces and the running reporter notes remain in the action log stored under warmup_observation.",
+          "antiButtonAudit": "There is no generic complete-observation button; the player must inspect source surfaces and use the shared notes field in the popups."
+        },
+        "background": {
+          "filename": "public/scenes/warmup_observation.png",
+          "prompt": "Arena media-row view before an NBA game at Harbor City Arena. Foreground has a reporter work table with credential, notebook, phone, and a laptop open to a team PR injury-status email; midground shows Malik Reed warming up near the three-point line; a trainer stands near the baseline; empty lower-bowl seats and court lights fill the background. Leave clear clickable zones for the laptop PR email, phone feed, Reed movement, and trainer check-in.",
+          "coordinateMap": [
+            {
+              "label": "media row work table",
+              "x": 5,
+              "y": 80,
+              "w": 38,
+              "h": 10,
+              "role": "workspace"
+            },
+            {
+              "label": "team PR injury email on laptop",
+              "x": 85,
+              "y": 58,
+              "w": 15,
+              "h": 12,
+              "role": "fixture"
+            },
+            {
+              "label": "phone rumor feed",
+              "x": 72,
+              "y": 68,
+              "w": 9,
+              "h": 15,
+              "role": "fixture"
+            },
+            {
+              "label": "Reed warmup movement",
+              "x": 48,
+              "y": 32,
+              "w": 16,
+              "h": 24,
+              "role": "person"
+            },
+            {
+              "label": "trainer baseline check-in",
+              "x": 66,
+              "y": 34,
+              "w": 13,
+              "h": 20,
+              "role": "person"
+            }
+          ]
+        },
+        "visualAssetsRequired": {
+          "backgrounds": [
+            {
+              "id": "warmup_bg",
+              "displayName": "Arena media-row warmup background",
+              "assetType": "background",
+              "filename": "public/scenes/warmup_observation.png",
+              "prompt": "Arena media-row view before an NBA game at Harbor City Arena. Foreground has a reporter work table with credential, notebook, phone, and a laptop open to a team PR injury-status email; midground shows Malik Reed warming up near the three-point line; a trainer stands near the baseline; empty lower-bowl seats and court lights fill the background. Leave clear clickable zones for the laptop PR email, phone feed, Reed movement, and trainer check-in."
+            }
+          ],
+          "readableSurfaces": [
+            {
+              "id": "injury_report_closeup",
+              "displayName": "Team PR injury email closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/warmup_observation/injury-email-closeup.png",
+              "prompt": "Readable closeup of a laptop email from team PR. Text should include: \"Malik Reed - Available. No minutes limit listed.\" Keep it realistic, like an email open on a reporter laptop at media row, not a printed note."
+            },
+            {
+              "id": "reed_warmup_closeup",
+              "displayName": "Reed movement observation closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/warmup_observation/reed-warmup-closeup.png",
+              "prompt": "Closeup from media row of Malik Reed doing a hard lateral cut during warmups. Show athletic movement and a neutral facial expression, with no answer captions, checkmarks, conclusion labels, or documentation text."
+            },
+            {
+              "id": "trainer_checkin_closeup",
+              "displayName": "Trainer check-in closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/warmup_observation/trainer-checkin-closeup.png",
+              "prompt": "Closeup of Malik Reed briefly speaking with a trainer near the baseline during warmups. Show a routine check-in posture, phones and media nearby, with no answer captions, checkmarks, conclusion labels, or documentation text."
+            },
+            {
+              "id": "rumor_feed_closeup",
+              "displayName": "Fan rumor feed closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/warmup_observation/rumor-feed-closeup.png",
+              "prompt": "Readable phone closeup showing fan-account posts speculating about a Malik Reed trade. Make usernames look fictional and unofficial. Include visible uncertainty such as \"hearing chatter\" and \"unconfirmed\" but no verification badges."
+            }
+          ]
+        },
+        "readableSurfaces": [
+          {
+            "id": "injury_report",
+            "label": "Team PR injury email",
+            "x": 85,
+            "y": 58,
+            "w": 15,
+            "h": 12,
+            "assetId": "injury_report_closeup",
+            "playerInstruction": "Inspect the official team status before you write or ask about the ankle.",
+            "required": true
+          },
+          {
+            "id": "reed_movement",
+            "label": "Reed movement in warmups",
+            "x": 48,
+            "y": 32,
+            "w": 16,
+            "h": 24,
+            "assetId": "reed_warmup_closeup",
+            "readableText": "From media row, Reed goes through lateral slides, a hard right-to-left cut, and corner threes. You do not hear team staff describe his ankle or any limit.",
+            "requiresObservationText": true,
+            "observationPrompt": "Running reporter notes. Add the useful movement detail and preserve the limits of what you can know from watching warmups.",
+            "observationPlaceholder": "Keep concise notes here. Do not turn observation into a medical conclusion.",
+            "expectedObservation": "A strong note says Reed moved through hard lateral cuts during warmups without obvious hesitation, but treats that as reporter observation rather than medical clearance and says Reed/team staff must be attributed for health claims.",
+            "playerInstruction": "Observe movement, then write the note yourself.",
+            "required": true
+          },
+          {
+            "id": "trainer_checkin",
+            "label": "Trainer check-in",
+            "x": 66,
+            "y": 34,
+            "w": 13,
+            "h": 20,
+            "assetId": "trainer_checkin_closeup",
+            "readableText": "You see Reed speak briefly with a trainer near the baseline. The interaction looks routine from media row, but you cannot infer medical meaning.",
+            "playerInstruction": "Inspect the check-in as scene color, not a confirmed diagnosis.",
+            "required": true
+          },
+          {
+            "id": "rumor_feed",
+            "label": "Fan rumor feed",
+            "x": 72,
+            "y": 68,
+            "w": 9,
+            "h": 15,
+            "assetId": "rumor_feed_closeup",
+            "playerInstruction": "Inspect the rumor provenance before deciding whether it belongs in copy.",
+            "required": true
+          }
+        ],
+        "requiredReadableSurfaceIds": [
+          "injury_report",
+          "reed_movement",
+          "trainer_checkin",
+          "rumor_feed"
+        ],
+        "successConditions": [
+          "Inspects official team status before writing.",
+          "Records a caveated observation about Reed movement.",
+          "Recognizes trainer contact as observation/color, not confirmed medical information.",
+          "Treats fan-account rumor as unverified."
+        ],
+        "failureModes": [
+          "Treats warmup observation as official medical clearance.",
+          "Publishes fan rumor or hallway chatter as fact.",
+          "Skips visible source surfaces before writing."
+        ],
+        "gradingEvidence": [
+          "warmup_observation action log",
+          "observation note text"
+        ],
+        "next": "coach_availability",
+        "illustration": "/scenes/warmup_observation.png"
+      },
+      "coach_availability": {
+        "id": "coach_availability",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Coach Harris Availability",
+        "content": "Coach Len Harris is at the interview-room riser before tipoff. Use your plan to ask one or two concise questions about Reed status and late-game lineup logic without making a permanent claim too early.\n\nTake notes in the box below the image while you interview him. You will write the deadline gamer from your own interview notes, transcripts, and the source material you collected in the workplace.",
+        "npcId": "coach",
+        "goalPrompt": "You are Coach Len Harris of the fictional Harbor City Cyclones. Answer like a guarded but professional NBA coach in an in-person media availability. If the reporter asks about Reed status or closing lineup logic with concise, fair wording, say Reed is available and the staff will watch game flow, then give the usable quote: \"Closing groups are situational. Tonight, if that group earns it, we will ride it.\" If the reporter asks rumor or personality questions, redirect to the game. After the reporter has asked two substantive questions or after four user turns, wrap up with a closing line and end the availability; do not ask follow-up questions.",
+        "meetingContext": "The user is playing Jordan, an entry-level NBA beat reporter standing in the arena interview room before tipoff. They prepared a reporting plan and need a coach quote about Reed usage and the closing lineup.",
+        "playerGoal": "In 2-4 turns, ask one or two concise pregame questions about Reed availability and late-game lineup logic without making a permanent medical or rotation claim.",
+        "meetingMode": "in_person",
+        "prepNoteKey": "pregame_plan",
+        "prepNoteTitle": "Your pregame reporting plan",
+        "prepNoteKeys": [
+          {
+            "key": "pregame_plan",
+            "title": "Your pregame reporting plan"
+          },
+          {
+            "key": "warmup_observation",
+            "title": "Your warmup game memo"
+          }
+        ],
+        "noteBindingKey": "coach_availability_interview_notes",
+        "notePrompt": "Coach Harris notes for your gamer",
+        "noteHelper": "Take notes during this availability. You will write the fast gamer from your notes, so capture usable Harris wording, clean paraphrases, and anything that still needs Reed or postgame confirmation.",
+        "notePlaceholder": "Example: Harris said closing groups are situational... / Need Reed later on what he felt closing...",
+        "prepReferenceTitle": "Coach availability reminder",
+        "prepReferenceContent": "Facts available: Team PR lists Reed as available with no minutes limit. Story question: whether Reed return changes late-game usage. Risk: one pregame answer cannot prove a permanent rotation. Avoid the unverified trade rumor.",
+        "minTurns": 2,
+        "maxTurns": 4,
+        "voiceName": "Puck",
+        "imageBrief": "In-person NBA pregame interview room. Coach Len Harris stands at a small riser with team backdrop while reporters hold recorders and phones. First-person reporter perspective, no laptop or video call grid.",
+        "next": "possession_timeline_watch",
+        "illustration": "/scenes/coach_availability.png",
+        "endpoint": "End once you have one attributable coach answer and know what still needs Reed or postgame attribution.",
+        "successCriteria": "You keep the question grounded in the assignment sources, avoid rumor language, and preserve the limits of a pregame answer.",
+        "deskWorkDesign": {
+          "roleFamily": "beat reporting",
+          "workSurface": "in-person coach availability",
+          "inputArtifacts": [
+            {
+              "id": "pregame_plan",
+              "label": "Pregame reporting plan",
+              "whereVisible": "coach_availability support panel",
+              "summary": "Student reporting needs and questions from the prior plan."
+            },
+            {
+              "id": "warmup_game_memo",
+              "label": "Warmup game memo",
+              "whereVisible": "coach_availability support panel",
+              "summary": "Player-written running notes from the warmup observation scene."
+            },
+            {
+              "id": "coach_availability_reference",
+              "label": "Coach availability facts",
+              "whereVisible": "coach_availability.prepReferenceContent",
+              "summary": "Reed official status, story question, and rumor/overclaiming risks."
+            }
+          ],
+          "studentAction": "Ask concise, attributable coach availability questions.",
+          "outputArtifact": {
+            "id": "coach_availability",
+            "label": "Coach availability transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "Reporting Plan",
+            "Availability Question Quality"
+          ],
+          "continuity": [
+            "Coach answer informs possession watching, live note capture, and postgame questions."
+          ],
+          "authenticityCheck": "Beat reporters routinely use short coach availability windows to clarify what can and cannot be reported before a game."
+        }
+      },
+      "possession_timeline_watch": {
+        "id": "possession_timeline_watch",
+        "type": "possession_timeline",
+        "section": 2,
+        "title": "Possession Timeline Watch",
+        "content": "You are back at media row for the final stretch. Watch five decisive possessions as they unfold, decide what is worth writing down, and keep the kind of notebook that helps you ask sharper postgame questions instead of just recapping the box score.",
+        "bindingKey": "possession_timeline_notes",
+        "summaryBindingKey": "possession_timeline_summary",
+        "minNotes": 3,
+        "referenceTitle": "What you know before the final stretch",
+        "referenceContent": "Pregame frame: Malik Reed is returning from an ankle sprain, and Coach Harris said closing groups are situational.\n\nReporting discipline:\n- Note what you can personally observe.\n- Mark what needs Reed or Harris attribution before publishing.\n- Do not treat rumor, body language, or a single possession as a confirmed medical or trade fact.\n- Your notes will feed the postgame scrum and deadline story.",
+        "summaryPrompt": "Based on the possessions you just watched, prepare three concise Reed postgame scrum questions to ask next. If a note still needs Harris, PR, or another source, mark it as a follow-up or verification item rather than a Reed question.",
+        "questionPrompts": [
+          "Reed question 1",
+          "Reed question 2",
+          "Reed question 3"
+        ],
+        "questionPlaceholders": [
+          "Ask Reed about what he personally felt or noticed on a specific late possession.",
+          "Ask Reed about what he understood about his role, minutes, or closing stretch.",
+          "Ask Reed for a usable quote that connects the timeline to tonight's story."
+        ],
+        "followUpPrompt": "Follow-up / verification item (optional)",
+        "followUpPlaceholder": "If this needs Harris, PR, or another source, write the follow-up here instead of making it a Reed question.",
+        "categories": [
+          {
+            "id": "confirmed_fact",
+            "label": "Confirmed fact",
+            "description": "A scoreboard, box-score, or visible play fact you can safely use."
+          },
+          {
+            "id": "ask_reed",
+            "label": "Ask Reed",
+            "description": "Something Reed can explain or attribute after the game."
+          },
+          {
+            "id": "ask_coach",
+            "label": "Ask coach",
+            "description": "A lineup, tactical, or rotation question for Coach Harris."
+          },
+          {
+            "id": "scene_color",
+            "label": "Scene color",
+            "description": "Observed detail that adds texture but should not carry the story alone."
+          },
+          {
+            "id": "hold_verify",
+            "label": "Hold / verify",
+            "description": "Interesting but not publishable without a stronger source."
+          }
+        ],
+        "events": [
+          {
+            "id": "reed_checks_in",
+            "clock": "Q4 6:12",
+            "score": "Cyclones 98, Denver 96",
+            "possession": "Cyclones ball",
+            "headline": "Reed checks back in with the closing group",
+            "description": "Coach Harris points Reed toward the scorer's table. Reed jogs in without an obvious limp, but he glances toward the trainer before the inbound.",
+            "courtFocus": "Reed substitution",
+            "notebookPrompt": "Select a label, then write the note: would you record the substitution, the trainer glance, both, or neither? Keep observation separate from medical conclusion.",
+            "image": "/action-assets/possession_timeline_watch/reed-checks-in.png",
+            "focusX": 18,
+            "focusY": 72
+          },
+          {
+            "id": "denver_high_screen",
+            "clock": "Q4 4:48",
+            "score": "Cyclones 101, Denver 101",
+            "possession": "Denver ball",
+            "headline": "Denver forces Reed through a high screen",
+            "description": "Denver targets Reed on the ball. Reed slides laterally, recovers over the screen, and contests without grabbing at the ankle.",
+            "courtFocus": "Defensive slide",
+            "notebookPrompt": "Select a label, then write the note: this is an eye-test moment. Record what you saw, then decide who needs to confirm how it felt.",
+            "image": "/action-assets/possession_timeline_watch/denver-high-screen.png",
+            "focusX": 62,
+            "focusY": 38
+          },
+          {
+            "id": "bench_run_context",
+            "clock": "Q4 3:31",
+            "score": "Denver 104, Cyclones 103",
+            "possession": "Cyclones timeout",
+            "headline": "Denver's second unit finishes a 13-2 run",
+            "description": "The Cyclones bench looks quiet during the timeout. Harris keeps Reed with the closing group and sends the same five back out.",
+            "courtFocus": "Timeout huddle",
+            "notebookPrompt": "Select a label, then write the note: does this belong as a bench-problem angle, closing-lineup context, or just background?",
+            "image": "/action-assets/possession_timeline_watch/bench-run-context.png",
+            "focusX": 34,
+            "focusY": 20
+          },
+          {
+            "id": "reed_corner_three_assist",
+            "clock": "Q4 1:42",
+            "score": "Cyclones 107, Denver 107",
+            "possession": "Cyclones ball",
+            "headline": "Reed draws help and finds the corner",
+            "description": "Reed turns the corner, pulls a second defender, and passes to the weak-side corner for a three. The arena shifts from anxious to loud.",
+            "courtFocus": "Corner assist",
+            "notebookPrompt": "Select a label, then write the note: this is a usable basketball detail. Decide whether it is a confirmed fact, scene color, or a question for postgame.",
+            "image": "/action-assets/possession_timeline_watch/reed-corner-three-assist.png",
+            "focusX": 78,
+            "focusY": 30
+          },
+          {
+            "id": "rumor_dm_timeout",
+            "clock": "Q4 0:58",
+            "score": "Cyclones 110, Denver 107",
+            "possession": "Dead ball",
+            "headline": "A fan-account DM pushes a trade rumor",
+            "description": "During the stoppage, your phone buzzes with an unsourced fan-account DM claiming another team asked about Reed. No team, agent, league, or on-record source is named.",
+            "courtFocus": "Phone buzz",
+            "notebookPrompt": "Select a label, then write the note: this may be noisy, not news. Decide whether it belongs anywhere in your working notes before the buzzer.",
+            "image": "/action-assets/possession_timeline_watch/rumor-dm-timeout.png",
+            "focusX": 12,
+            "focusY": 84
+          },
+          {
+            "id": "final_high_screen",
+            "clock": "Q4 0:19",
+            "score": "Cyclones 110, Denver 107",
+            "possession": "Denver ball",
+            "headline": "Reed switches onto Denver's final high screen",
+            "description": "Denver hunts a switch. Reed stays in front long enough to force a late pass, and the Cyclones secure the rebound that seals the 112-107 win.",
+            "courtFocus": "Final stop",
+            "notebookPrompt": "Select a label, then write the note: this is likely part of the gamer angle. Note the play cleanly and think about the first Reed question, plus any Harris/PR follow-up.",
+            "image": "/action-assets/possession_timeline_watch/final-high-screen.png",
+            "focusX": 66,
+            "focusY": 48
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Interactive possession timeline from a media-row view",
+          "inputArtifacts": [
+            {
+              "id": "coach_quote",
+              "label": "Pregame coach availability",
+              "whereVisible": "reference card",
+              "summary": "Harris framed closing groups as situational"
+            },
+            {
+              "id": "live_possessions",
+              "label": "Final-stretch possessions",
+              "whereVisible": "interactive court timeline",
+              "summary": "Six late possessions involving Reed, lineup usage, and rumor noise"
+            }
+          ],
+          "studentAction": "Watch late possessions, mark useful notes, classify each note, and draft three Reed scrum questions plus any Harris/PR follow-up or hold-back items.",
+          "outputArtifact": {
+            "id": "possession_timeline_notes",
+            "label": "Media-row possession notes",
+            "format": "timeline notes JSON plus summary"
+          },
+          "rubricEvidence": [
+            "Observation and Note Discipline",
+            "Availability Question Quality"
+          ],
+          "continuity": [
+            "Timeline notes feed the Malik Reed postgame scrum and deadline story."
+          ],
+          "authenticityCheck": "The scene makes the player watch and filter live game events rather than receiving a finished postgame packet."
+        },
+        "next": "media_scrum"
+      },
+      "media_scrum": {
+        "id": "media_scrum",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Malik Reed Postgame Scrum",
+        "content": "After the win, Malik Reed stops near the baseline for a short in-person scrum. You prepared three questions from the possession timeline. Ask for specifics that can support tonight's story without sounding accusatory or leading.\n\nTake notes in the box below the image while you interview Reed. You will write the deadline gamer from your own interview notes, transcripts, and the source material you collected in the workplace.\n\nBefore you step into the scrum:\n- Final: Harbor City Cyclones 112, Denver Altitude 107.\n- Official box score: Malik Reed finished with 24 points, 6 assists, and 2 steals.",
+        "npcId": "malik",
+        "goalPrompt": "You are Malik Reed, veteran guard for the fictional Harbor City Cyclones. You are cooperative but tired of vague injury questions. If the reporter asks broad questions, answer with polished generalities about feeling good and helping the team. If they ask precise, fair questions, reveal these details across separate answers: the ankle felt stable on hard cuts, the training staff removed the minutes limit this morning, halftime trainer check-ins were routine, he expected to close if the defense held, and he does not want the night framed as a personal comeback if the team loses. If the question asks for Harris's tactical reasoning or PR's official status, answer only your personal view and say Harris or PR would own the final confirmation. Do not volunteer everything at once. After the reporter has covered ankle feel, restriction/check-in, and late-game role, wrap up with a closing line and end the scrum; do not continue opening new topics.",
+        "meetingContext": "The user is playing Jordan, an entry-level NBA beat reporter in an in-person postgame arena scrum. They prepared three Reed questions from the possession timeline. They should ask concise, respectful questions that produce usable Reed attribution about injury feel, late-game role, team context, and what Reed can or cannot say.",
+        "playerGoal": "Ask three concise Reed questions. Strong questions use the possession timeline, focus on what Reed personally felt or understood, and avoid Harris-only, PR-only, accusatory, leading, medical, or rumor-based wording.",
+        "meetingMode": "in_person",
+        "prepNoteKeys": [
+          {
+            "key": "possession_timeline_summary",
+            "title": "Your three Reed questions and holds"
+          },
+          {
+            "key": "possession_timeline_notes",
+            "title": "Your possession timeline notes"
+          }
+        ],
+        "noteBindingKey": "media_scrum_interview_notes",
+        "notePrompt": "Malik Reed notes for your gamer",
+        "noteHelper": "Take notes during the scrum. The fast gamer will rely on your Reed notes and transcript, so capture exact wording, what Reed can personally confirm, and anything that still needs Harris, PR, or another source.",
+        "notePlaceholder": "Example: Reed said... / Quote or paraphrase I can use... / Hold: needs Harris or PR...",
+        "minTurns": 3,
+        "maxTurns": 5,
+        "voiceName": "Puck",
+        "imageBrief": "In-person NBA postgame media scrum near the baseline. Reporters hold phones and recorders toward veteran guard Malik Reed in team gear, with court lights, camera operators, and the tunnel behind him. No video call grid or laptop screen.",
+        "next": "fast_gamer",
+        "illustration": "/scenes/media_scrum.png",
+        "endpoint": "End once you have asked about three concise Reed questions, captured at least one usable Reed quote, and flagged any uncertain item as follow-up.",
+        "successCriteria": "You ask Reed for specifics from the timeline, separate what Reed can say from what Harris/PR must attribute, and avoid asking Reed to validate the trade rumor.",
+        "deskWorkDesign": {
+          "roleFamily": "beat reporting",
+          "workSurface": "postgame player scrum",
+          "inputArtifacts": [
+            {
+              "id": "possession_timeline_summary",
+              "label": "Prepared Reed questions",
+              "whereVisible": "media_scrum.prepNoteKeys",
+              "summary": "Student's three Reed questions and optional follow-up from the possession timeline."
+            },
+            {
+              "id": "postgame_reference",
+              "label": "Postgame facts and attribution guardrails",
+              "whereVisible": "media_scrum.content before image",
+              "summary": "Final score and official Reed stat line shown before the scrum."
+            }
+          ],
+          "studentAction": "Ask about three postgame scrum questions that create attributable Reed story material and flag any Harris/PR-only gaps.",
+          "outputArtifact": {
+            "id": "media_scrum",
+            "label": "Postgame scrum transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "Availability Question Quality",
+            "Observation and Note Discipline"
+          ],
+          "continuity": [
+            "Scrum transcript feeds the deadline story."
+          ],
+          "authenticityCheck": "Short postgame scrums are a central beat-reporting moment under deadline pressure."
+        }
+      },
+      "fast_gamer": {
+        "id": "fast_gamer",
+        "type": "free_text",
+        "section": 3,
+        "title": "Write the Fast Gamer",
+        "content": "It is 10:34 PM. Tessa needs the top of the gamer now. Write the article from the reporting you collected: your interview notes, your actual interview transcripts, your warmup and possession notes, and the workplace source packet from the opening assignment. Do not add quotes, medical conclusions, rotation claims, or rumor language that are not supported by those tabs.",
+        "prompt": "Write 120-220 words for the top of the game story based only on your reporting tabs. Include the final score, Reed return, the closing-lineup angle, and one attributed quote or paraphrase only if your notes or transcript support it. Do not include unverified trade chatter.",
+        "placeholder": "HARBOR CITY - Malik Reed's return gave the Cyclones...",
+        "minWords": 120,
+        "maxWords": 220,
+        "appWindow": "doc",
+        "windowTitle": "Cyclones-Altitude Gamer Draft",
+        "appTabs": [
+          {
+            "id": "workplace_packet",
+            "label": "Workplace / Official Facts",
+            "content": "Opening assignment sources\n\nEditor frame: Tessa asked whether Malik Reed's return changes the Cyclones closing group. Keep the story tied to what can be verified in the building.\n\nOfficial injury report: Malik Reed was listed Available, returning from a right ankle sprain. No minutes restriction was listed. Further health or readiness claims require direct attribution.\n\nMedia schedule: Coach Len Harris pregame availability, 7:10 PM tipoff, and postgame baseline scrum. Reed was expected at the scrum if he closed or scored 20+.\n\nStats context: Cyclones late-game defense had been unstable without Reed; the team used four different closing groups in the last five close games; Denver guards create heavy fourth-quarter paint pressure.\n\nOfficial postgame facts\n\nFinal: Harbor City Cyclones 112, Denver Altitude 107.\nOfficial box score: Malik Reed finished with 24 points, 6 assists, and 2 steals.\n\nCMS rules: keep official status, direct quotes, and unverified chatter separate. Attribute health or role claims to team PR, Harris, or Reed. Do not publish social media rumors or hallway chatter without an on-record source."
+          },
+          {
+            "id": "coach_notes",
+            "label": "Coach Notes",
+            "content": "Your Coach Harris availability notes. Use these notes and the transcript for Harris attribution.",
+            "responseKey": "coach_availability_interview_notes",
+            "responseTitle": "Coach Harris notes",
+            "conversationKey": "voice:coach_availability:coach",
+            "conversationTitle": "Coach Harris transcript",
+            "conversationNpcId": "coach",
+            "emptyText": "No Coach Harris notes or transcript are saved yet. Do not invent a Harris quote."
+          },
+          {
+            "id": "reed_notes",
+            "label": "Reed Notes",
+            "content": "Your Malik Reed scrum notes. Use these notes and the transcript for Reed attribution.",
+            "responseKey": "media_scrum_interview_notes",
+            "responseTitle": "Malik Reed notes",
+            "conversationKey": "voice:media_scrum:malik",
+            "conversationTitle": "Malik Reed transcript",
+            "conversationNpcId": "malik",
+            "emptyText": "No Reed notes or transcript are saved yet. Do not invent a Reed quote."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Cream workplace app window with visible source artifacts",
+          "inputArtifacts": [
+            {
+              "id": "workplace_packet",
+              "label": "Workplace and official facts",
+              "whereVisible": "app tab",
+              "summary": "Editor frame, official injury report, media schedule, stats context, final score, Reed official stat line, rumor status, and CMS attribution rules"
+            },
+            {
+              "id": "student_notes",
+              "label": "Player-collected notes",
+              "whereVisible": "app tab",
+              "summary": "Coach Harris interview notes and Malik Reed scrum notes"
+            },
+            {
+              "id": "interview_transcripts",
+              "label": "Player interview transcripts",
+              "whereVisible": "app tab",
+              "summary": "Actual Coach Harris and Malik Reed conversation logs for attribution checks"
+            }
+          ],
+          "studentAction": "Write deadline gamer copy using the player's notes, transcripts, and opening workplace sources.",
+          "outputArtifact": {
+            "id": "fast_gamer",
+            "label": "Fast gamer lead and nut graf",
+            "format": "120-220 word CMS draft"
+          },
+          "rubricEvidence": [
+            "Fast Gamer"
+          ],
+          "continuity": [
+            "The draft becomes the source for editor_slack and final_story."
+          ],
+          "authenticityCheck": "The scene requires the player to transform visible reporting inputs into a beat-reporter artifact instead of answering from memory."
+        },
+        "imageBrief": "CMS document editor on deadline with a partially written NBA game recap, box score, quote notes, and an 11:10 PM deadline timer.",
+        "next": "editor_slack",
+        "illustration": "/scenes/fast_gamer.png"
+      },
+      "editor_slack": {
+        "id": "editor_slack",
+        "type": "slack_thread",
+        "section": 3,
+        "title": "Editor Slack Update",
+        "content": "Tessa has read your fast gamer and sends a Slack follow-up based on what you actually filed. Reply with one concise editor-ready answer about how you would revise the copy using only the reporting already in hand.",
+        "appWindow": "slack",
+        "windowTitle": "#nba-cyclones",
+        "npcId": "tessa",
+        "contextResponseKeys": [
+          {
+            "key": "fast_gamer",
+            "title": "Submitted fast gamer"
+          }
+        ],
+        "aiInitialMessagePrompt": "Write Tessa's first Slack message after reading the submitted fast gamer. Be a sharp, supportive NBA editor: name one specific thing the draft is doing well, name one concrete reporting/copy issue that follows from the actual words in the draft, and ask one focused follow-up the reporter can answer using only reporting already in hand. If you ask for a quote or attribution, include an if-not path, such as: if you did not get that quote, tell me what line you would cut, weaken, or reattribute. If the draft is cautious but light on news, ask how to add the official stat line or turn the safer frame into a stronger lead. Do not assign new reporting, do not ask them to go back to Reed/Harris/PR, and do not reuse a predetermined angle menu. Keep it under 95 words.",
+        "aiInitialMessageFallback": "I read the gamer. The frame is disciplined, but we need the copy sharpened from what you already have: what is the strongest confirmed news angle, and what line would you cut, weaken, or reattribute if you do not have the quote to support it?",
+        "goalPrompt": "Evaluate the reporter's answer to your draft-specific Slack feedback. A strong response is concise, answers the exact follow-up you asked, explains how to revise the filed copy using only current reporting, names what is confirmed, and flags any claim that must be cut, weakened, or reattributed. If the reporter admits they did not get a quote or confirmation, reward the honesty and tell them exactly how to revise the copy without that material. After one player reply, respond with a brief, useful editor acknowledgement and one copy-edit direction. Do not assign new reporting, do not tell them to ask Reed, Harris, PR, or another source later, do not ask another question, and do not literally say 'thread closed.'",
+        "playerGoal": "Reply to Tessa's draft-specific feedback with a concise copy-edit answer using only reporting already in hand.",
+        "maxTurns": 1,
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Slack thread with editor prompt and source continuity",
+          "inputArtifacts": [
+            {
+              "id": "fast_gamer",
+              "label": "Fast gamer draft",
+              "whereVisible": "scene context and prior response",
+              "summary": "Deadline story top"
+            },
+            {
+              "id": "working_notes",
+              "label": "Working notes and hold-back item",
+              "whereVisible": "fast_gamer source packet and prior response",
+              "summary": "Verified facts, quotes, and unverified trade detail"
+            },
+            {
+              "id": "editor_question",
+              "label": "Editor AI feedback prompt",
+              "whereVisible": "Slack thread",
+              "summary": "Tessa reacts to the player's submitted fast gamer and asks a draft-specific follow-up"
+            }
+          ],
+          "studentAction": "Answer Tessa's draft-specific Slack follow-up with confirmed reporting, uncertainty, and a concrete copy revision.",
+          "outputArtifact": {
+            "id": "editor_slack",
+            "label": "Editor Slack update",
+            "format": "AI-evaluated Slack reply"
+          },
+          "rubricEvidence": [
+            "Editor Communication"
+          ],
+          "continuity": [
+            "Editor feedback informs final_story."
+          ],
+          "authenticityCheck": "The scene requires the player to transform visible reporting inputs into a beat-reporter artifact instead of answering from memory."
+        },
+        "imageBrief": "Slack channel for NBA coverage open on the desktop background, with Tessa reacting to the filed fast gamer and asking a draft-specific follow-up.",
+        "next": "final_story"
+      },
+      "final_story": {
+        "id": "final_story",
+        "type": "free_text",
+        "section": 3,
+        "title": "Final Filed Story Package",
+        "content": "Before you leave the arena, file a clean story package Tessa can publish and build from. Use only the notes you recorded and the Tessa Slack history from the previous page.",
+        "prompt": "Write the final filed version of the story. Include a headline and a clear main point, then shape the rest like a publishable article: build on your fast gamer draft, apply Tessa's feedback, and use only what your notes, transcript, or Slack history support. Cut, soften, or reattribute anything you cannot verify.",
+        "placeholder": "Headline: Reed's return steadies Cyclones late...",
+        "minWords": 160,
+        "maxWords": 320,
+        "appWindow": "doc",
+        "windowTitle": "Final Story Package - Harbor City Cyclones",
+        "appTabs": [
+          {
+            "id": "all_player_notes",
+            "label": "Player Notes",
+            "content": "",
+            "layout": "notes",
+            "responseSources": [
+              {
+                "key": "warmup_observation",
+                "title": "Warmup Observation Notes",
+                "responseFormat": "physicalMemo",
+                "emptyText": "No warmup observation note is saved."
+              },
+              {
+                "key": "coach_availability_interview_notes",
+                "title": "Coach Harris Interview Notes",
+                "emptyText": "No Coach Harris interview note is saved."
+              },
+              {
+                "key": "possession_timeline_notes",
+                "title": "Possession Timeline Watch Notes",
+                "responseFormat": "possessionTimelineNotes",
+                "emptyText": "No possession timeline note is saved."
+              },
+              {
+                "key": "media_scrum_interview_notes",
+                "title": "Malik Reed Scrum Notes",
+                "emptyText": "No Malik Reed scrum note is saved."
+              }
+            ]
+          },
+          {
+            "id": "fast_gamer_draft",
+            "label": "Fast Gamer Draft",
+            "content": "Your submitted fast gamer draft. Use this as the working draft Tessa reacted to, then revise only with support from your saved notes and Slack feedback.",
+            "responseKey": "fast_gamer",
+            "responseTitle": "Fast Gamer Draft",
+            "emptyText": "No fast gamer draft is saved yet."
+          },
+          {
+            "id": "tessa_slack_history",
+            "label": "Tessa Slack",
+            "content": "",
+            "layout": "slackHistory",
+            "conversationSources": [
+              {
+                "key": "chat:editor_slack:ai-v3:tessa",
+                "title": "Tessa Slack History",
+                "npcId": "tessa",
+                "emptyText": "No Tessa Slack history is saved yet."
+              }
+            ]
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "in-person sports journalism",
+          "workSurface": "Cream workplace app window with visible source artifacts",
+          "inputArtifacts": [
+            {
+              "id": "all_player_notes",
+              "label": "Player-recorded notes",
+              "whereVisible": "app tab",
+              "summary": "Warmup observation notes, Coach Harris notes, possession timeline notes, and Malik Reed scrum notes"
+            },
+            {
+              "id": "fast_gamer_draft",
+              "label": "Fast gamer draft",
+              "whereVisible": "app tab",
+              "summary": "The player-submitted deadline gamer draft"
+            },
+            {
+              "id": "tessa_slack_history",
+              "label": "Tessa Slack history",
+              "whereVisible": "app tab",
+              "summary": "The editor Slack conversation from the previous page"
+            }
+          ],
+          "studentAction": "Revise the draft into a publishable story with a headline, clear main point, disciplined attribution, and Tessa's feedback reflected in the copy.",
+          "outputArtifact": {
+            "id": "final_story",
+            "label": "Final filed story package",
+            "format": "160-320 word CMS story"
+          },
+          "rubricEvidence": [
+            "Final Story Package"
+          ],
+          "continuity": [
+            "This is the final graded artifact."
+          ],
+          "authenticityCheck": "The scene requires the player to transform visible reporting inputs into a beat-reporter artifact instead of answering from memory."
+        },
+        "imageBrief": "CMS document editor on deadline with a partially written NBA game recap, box score, quote notes, and an 11:10 PM deadline timer.",
+        "next": "assessment_gate",
+        "illustration": "/scenes/fast_gamer.png"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "End of Game Night",
+        "content": "You chose a reportable angle, built a source-aware plan, observed Reed in the arena, asked coach and player questions, kept disciplined notes, wrote on deadline, and advised your editor on the follow-up. Time to review your beat-reporting judgment.",
+        "imageBrief": "A calm end-of-day workplace wrap-up moment with the submitted story complete, relevant notes settled, and no assessment results or score cards visible.",
+        "next": "final_report",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as an entry-level NBA team beat reporter on an in-person game-night assignment.",
+        "next": null,
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Day Is Complete",
+        "content": "The simulated day is complete. You have finished the work period; when you are ready, view your assessment.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm end-of-day workplace wrap-up moment with the student stepping back from the finished work, relevant tools or documents settled, and warm late-day light. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      }
+    },
+    "devSkips": [
+      {
+        "label": "Skip to warmup observation",
+        "targetNodeId": "warmup_observation"
+      },
+      {
+        "label": "Skip to possession watch",
+        "targetNodeId": "possession_timeline_watch"
+      },
+      {
+        "label": "Skip to postgame scrum",
+        "targetNodeId": "media_scrum"
+      },
+      {
+        "label": "Skip to deadline writing",
+        "targetNodeId": "fast_gamer"
+      },
+      {
+        "label": "Skip to final story",
+        "targetNodeId": "final_story"
+      }
+    ]
+  },
+  "npcs": {
+    "malik": {
+      "id": "malik",
+      "name": "Malik Reed",
+      "role": "Veteran guard, Harbor City Cyclones",
+      "persona": "Malik is a respected veteran guard returning from an ankle sprain. He is media-savvy, careful with medical details, and more open when a reporter asks precise, fair questions about the game instead of pushing him toward a dramatic comeback narrative.",
+      "voice": "calm, guarded, professional"
+    },
+    "coach": {
+      "id": "coach",
+      "name": "Len Harris",
+      "role": "Head coach, Harbor City Cyclones",
+      "persona": "Len Harris is a veteran NBA head coach who protects competitive details but respects reporters who ask concise, fair, basketball-specific questions. He avoids rumor, dislikes personality framing, and gives usable quotes when the question is tied to lineup logic or game context.",
+      "voice": "measured, clipped, pragmatic"
+    },
+    "tessa": {
+      "id": "tessa",
+      "name": "Tessa Ortiz",
+      "role": "Senior NBA Editor, Full Court Wire",
+      "persona": "Tessa is a sharp national NBA editor who cares about speed, attribution, and clean story framing. She likes young reporters who are direct about what they know, honest about what they do not know, and disciplined enough to leave unverified material out of copy.",
+      "voice": "direct, precise, newsroom-fast"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "NBA Beat Reporter: Deadline Night",
+    "welcomeBody": "Step into an entry-level NBA beat reporter's game night: frame the story, observe from the arena, ask questions in person, sort messy notes, write fast, and protect accuracy under deadline pressure.",
+    "steps": [
+      {
+        "label": "Frame",
+        "content": "Choose a reportable angle that fits the game, the audience, and what you can verify."
+      },
+      {
+        "label": "Observe",
+        "content": "Use the arena setting to record what you can see while separating observation from official status."
+      },
+      {
+        "label": "Ask",
+        "content": "Use limited coach and player access to ask precise questions that produce usable attribution."
+      },
+      {
+        "label": "File",
+        "content": "Write and communicate clearly enough for an editor to publish on deadline."
+      }
+    ]
+  },
+  "glossary": {
+    "beat": "A recurring reporting assignment focused on one team, league, institution, or topic. A beat reporter develops context, sources, and pattern recognition over time.",
+    "gamer": "A same-day game story or recap, usually filed quickly after the final buzzer and updated with postgame quotes or analysis.",
+    "nut graf": "The paragraph that explains the central point, context, or significance of a story after the lead.",
+    "scrum": "A group interview setting where several reporters ask questions around a player or coach, often with limited time.",
+    "availability": "A scheduled period when players or coaches are available to reporters before or after practice, shootaround, or games.",
+    "on the record": "Information that can be quoted or attributed publicly according to the source identity and terms.",
+    "attribution": "Language that tells readers where information came from, such as a player quote, team announcement, public record, or reporter observation.",
+    "color": "Observed scene detail that adds texture to a story, such as body language, arena atmosphere, or interactions, without replacing verified reporting.",
+    "copy desk": "Editors who review stories for accuracy, grammar, style, clarity, headlines, and publication readiness.",
+    "minutes limit": "A restriction on how much a player is expected or allowed to play, often after injury or during return-to-play management."
+  },
+  "sample_answers": {
+    "pregame_plan": "Need: whether Reed is still on a minutes limit. Source: team PR and Coach Harris. Question: Coach, was Malik cleared without a specific minutes cap tonight, and does that affect whether he can close? Risk: do not infer a medical clearance beyond what the team says. Need: how Reed felt cutting at game speed. Source: Reed. Question: What did you learn about the ankle on the first hard defensive slide or change of direction? Risk: avoid framing it as a full comeback if he says it is routine. Need: closing lineup logic. Source: Coach Harris and box score. Question: What made that closing group fit this matchup? Risk: one game may not mean a permanent rotation change. Need: trade rumor status. Source: editor/team confirmation. Step: hold out unless a direct source confirms something publishable.",
+    "warmup_observation": "Observed Reed moving through hard lateral cuts during warmups without obvious hesitation from media row. Caveat: that is only reporter observation; any health or restriction claim needs Reed, team PR, or staff attribution.",
+    "possession_timeline_summary": "1) Ask Reed how the ankle felt when Denver forced him through the high screen and on the final switch. 2) Ask what he understood about playing the final 6:12. 3) Ask how he read his role in the closing group after the bench run and corner assist. Follow-up / verification: closing group reason needs Harris, and the fan-account trade DM needs a real source.",
+    "possession_timeline_notes": "{\n  \"viewedEventIds\": [\n    \"reed_checks_in\",\n    \"denver_high_screen\",\n    \"bench_run_context\",\n    \"reed_corner_three_assist\",\n    \"rumor_dm_timeout\",\n    \"final_high_screen\"\n  ],\n  \"notes\": {\n    \"reed_checks_in\": {\n      \"categoryId\": \"confirmed_fact\",\n      \"note\": \"Reed checks in for the final stretch at 6:12; trainer glance is observation only, not a medical fact.\"\n    },\n    \"denver_high_screen\": {\n      \"categoryId\": \"ask_reed\",\n      \"note\": \"Reed recovered over a high screen without obvious hesitation; ask him what the first hard cut felt like.\"\n    },\n    \"bench_run_context\": {\n      \"categoryId\": \"ask_coach\",\n      \"note\": \"Harris kept the same five after Denver run; ask whether the closing group was matchup-specific.\"\n    },\n    \"reed_corner_three_assist\": {\n      \"categoryId\": \"confirmed_fact\",\n      \"note\": \"Reed drew help and assisted the corner three during a tied late possession.\"\n    },\n    \"rumor_dm_timeout\": {\n      \"categoryId\": \"hold_verify\",\n      \"note\": \"Fan-account trade DM has no named source and needs verification.\"\n    },\n    \"final_high_screen\": {\n      \"categoryId\": \"confirmed_fact\",\n      \"note\": \"Reed stayed in front on the final high-screen action before the rebound sealed the win.\"\n    }\n  },\n  \"reedQuestions\": [\n    \"How did the ankle feel when Denver forced you through the high screen and on the final switch?\",\n    \"What did you understand about playing the final 6:12?\",\n    \"How did you read your role in the closing group after the bench run and corner assist?\"\n  ],\n  \"followUp\": \"Closing group reason needs Harris, and the fan-account trade DM needs a real source.\",\n  \"summary\": \"1) Ask Reed how the ankle felt when Denver forced him through the high screen and on the final switch.\\n2) Ask what he understood about playing the final 6:12.\\n3) Ask how he read his role in the closing group after the bench run and corner assist.\\nFollow-up / verification: closing group reason needs Harris, and the fan-account trade DM needs a real source.\"\n}",
+    "live_game_note_rationale": "The final-stretch note creates new postgame scrum questions because Reed playing the final 6:12 makes the closing lineup the game angle. The fan-account DM stays out because it has no named or on-record source.",
+    "fast_gamer": "HARBOR CITY - Malik Reed's return did not solve every Cyclones problem, but it gave Harbor City the closing stability it had been missing. Reed scored 24 points and played the final 6:12 of Wednesday's 112-107 win over the Denver Altitude, his first game back after an ankle sprain that had kept the team's late-game rotation unsettled. The team did not list Reed on a minutes limit, and Reed said afterward that the ankle felt stable when he had to cut hard. Coach Len Harris stopped short of declaring a permanent closing group, calling the lineup situational, but the choice to leave Reed on the floor through Denver's final push made the night's clearest statement.",
+    "editor_slack": "I would revise the copy around the closing-stretch usage, not a broad ankle claim. Confirmed: Reed scored 24, had 6 assists and 2 steals, team PR listed him available with no minutes restriction, and Harris said closing groups are situational. If I do not have a Reed ankle quote in my notes, I would cut the line implying Reed commented on the ankle and attribute only availability to team PR.",
+    "final_story": "Headline: Reed return steadies Cyclones late in 112-107 win\n\nHARBOR CITY - Malik Reed's first game back from an ankle sprain gave Harbor City more than a scoring lift. Reed finished with 24 points, 6 assists and 2 steals, but the clearer story was that the Cyclones trusted him through the final 6:12 of a 112-107 win over Denver.\n\nTeam PR had Reed listed as available without a minutes restriction, but the copy should stop short of saying the ankle is fully back unless Reed said that directly. The supported frame is that Harbor City had Reed available late and used him in decisive possessions, including the corner-three setup after Denver cut the lead to 103-101. Coach Len Harris said closing groups are situational, which keeps the lineup question open rather than turning one finish into a permanent rotation claim.",
+    "coach_availability": "Ask: Coach, with Malik available and no minutes limit listed, what will determine whether he can close tonight? Ask: What do you need from that closing group defensively against Denver? Follow-up: Is this a matchup decision or something you are evaluating longer term?",
+    "media_scrum": "Ask: Malik, what was the first play tonight when you felt the ankle had to respond at game speed? Ask: Did the staff give you any cap or check-in point before you could close? Ask: When Coach went back to you late, what did that group give you defensively? Ask: Is there anything about the ankle you still need to manage tomorrow?"
+  },
+  "rubric": {
+    "simulation_id": "journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "記事角度の選択",
+            "evidenceSceneIds": [
+              "lead_angle"
+            ],
+            "rubric_text": "9-10: 噂ではなく、ニュース価値、検証可能性、締切、読者への意味を見て取材の角度を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "取材計画",
+            "evidenceSceneIds": [
+              "reporting_plan"
+            ],
+            "rubric_text": "9-10: この計画タスクだけで、聞く相手、聞く理由、確認したい事実、避けるべき断定を具体化できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "練習観察",
+            "evidenceSceneIds": [
+              "warmup_observation"
+            ],
+            "rubric_text": "9-10: 公式情報、観察事実、噂、医学的断定を分けて記録し、公開できる情報と保留すべき情報を区別できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "監督への質問",
+            "evidenceSceneIds": [
+              "coach_availability"
+            ],
+            "rubric_text": "9-10: 実際の取材で、監督に聞くべき範囲の質問を短く具体的に行い、本人にしか答えにくい内容を混ぜすぎない。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "選手囲み取材",
+            "evidenceSceneIds": [
+              "media_scrum"
+            ],
+            "rubric_text": "9-10: 実際の囲みで、選手に答えやすく、記事に使える発言を引き出す質問をし、圧迫や誘導を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "試合中観察",
+            "evidenceSceneIds": [
+              "possession_timeline_watch"
+            ],
+            "rubric_text": "9-10: 試合中の重要な流れ、観察、数字、使える場面を、速報や最終記事に使える形で整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "速報原稿",
+            "evidenceSceneIds": [
+              "fast_gamer"
+            ],
+            "rubric_text": "9-10: 確認済み事実と取材内容だけで、締切に間に合うリード、要点、帰属のある速報原稿を書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "編集者連絡",
+            "evidenceSceneIds": [
+              "editor_slack"
+            ],
+            "rubric_text": "9-10: 編集者の指摘に対して、何を直すか、何を未確認として避けるか、現在使える根拠を短く返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "最終記事",
+            "evidenceSceneIds": [
+              "final_story"
+            ],
+            "rubric_text": "9-10: 最終記事だけを根拠に、見出し、構成、根拠、引用、未確認情報の扱いが整った記事にできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

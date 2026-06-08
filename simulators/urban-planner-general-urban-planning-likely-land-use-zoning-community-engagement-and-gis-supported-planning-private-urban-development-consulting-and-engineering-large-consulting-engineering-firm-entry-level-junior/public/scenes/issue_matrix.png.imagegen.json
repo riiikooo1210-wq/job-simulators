@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:18:15+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "issue_matrix",
+  "itemId": "issue_matrix",
+  "promptHash": "f9a0f406872fafa8",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior/src/data/scene-config.json"
+}

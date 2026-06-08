@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T15:34:28+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene4_apply_oxygen",
+  "itemId": "nasal-cannula",
+  "promptHash": "27dc435a3a077ce9",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/room-514.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/ACTION_ASSETS.md"
+}

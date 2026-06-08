@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.uv-cache/
+
+# Per-simulator runtime
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.turbo/
+**/.cache/
+**/.env
+**/.env.local
+**/.venv/
+**/__pycache__/
+
+# OS
+.DS_Store
+*.swp
+
+# Editor
+.vscode/
+.idea/

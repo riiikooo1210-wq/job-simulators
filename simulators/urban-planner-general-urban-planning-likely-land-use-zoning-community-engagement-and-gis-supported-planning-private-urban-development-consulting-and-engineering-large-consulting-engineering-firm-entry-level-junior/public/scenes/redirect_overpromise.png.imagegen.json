@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:13:16+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "redirect_overpromise",
+  "itemId": "redirect_overpromise",
+  "promptHash": "98bb285a3a2a1e6a",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior/IMAGE_PROMPTS.md"
+}

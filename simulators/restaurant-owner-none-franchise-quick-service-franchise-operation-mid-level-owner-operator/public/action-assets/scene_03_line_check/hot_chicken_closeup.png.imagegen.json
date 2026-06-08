@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:13:10+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene_03_line_check",
+  "itemId": "hot_chicken_closeup",
+  "promptHash": "f704ea5256eee0c0",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/ACTION_ASSETS.md"
+}

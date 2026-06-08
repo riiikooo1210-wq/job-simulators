@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-19T05:17:14+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene1_assess_pain_redirect",
+  "itemId": "scene1_assess_pain_redirect",
+  "promptHash": "14d2c6c61e4742d4",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/npcs/sarah.png",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/room-512.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/src/data/scene-config.json"
+}

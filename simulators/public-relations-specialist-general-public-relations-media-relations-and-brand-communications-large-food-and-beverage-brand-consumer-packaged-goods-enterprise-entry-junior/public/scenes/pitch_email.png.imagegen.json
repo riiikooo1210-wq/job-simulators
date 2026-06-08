@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:46:25+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "pitch_email",
+  "itemId": "pitch_email",
+  "promptHash": "c46098db51e81838",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/public-relations-specialist-general-public-relations-media-relations-and-brand-communications-large-food-and-beverage-brand-consumer-packaged-goods-enterprise-entry-junior/src/data/scene-config.json"
+}

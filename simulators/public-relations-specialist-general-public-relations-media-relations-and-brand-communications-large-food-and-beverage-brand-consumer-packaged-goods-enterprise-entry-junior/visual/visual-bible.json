@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "slug": "public-relations-specialist-general-public-relations-media-relations-and-brand-communications-large-food-and-beverage-brand-consumer-packaged-goods-enterprise-entry-junior",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "lena_ortiz": {
+      "id": "lena_ortiz",
+      "name": "Lena Ortiz",
+      "role": "Food and Beverage Journalist, The Daily Table",
+      "sourcePersona": "Lena is a skeptical but fair journalist who covers grocery trends, beverage launches, and ingredient transparency. She dislikes hype and irrelevant pitches, but responds well to clear facts, useful context, and honest limits.",
+      "appearancePrompt": "Lena Ortiz, Food and Beverage Journalist, The Daily Table. Use this as the locked character identity: Lena is a skeptical but fair journalist who covers grocery trends, beverage launches, and ingredient transparency. She dislikes hype and irrelevant pitches, but responds well to clear facts, useful context, and honest limits.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/lena_ortiz.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Northstar Foods\nA warm editorial illustration of a large food and beverage company PR desk on launch morning. A laptop shows a Northstar Foods launch calendar for Luma Fizz, with cans of colorful sparkling fruit tea on the desk, press notes, and a headset. No real logos.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "final_report",
+        "intro",
+        "journalist_call",
+        "monitoring_triage",
+        "pitch_email",
+        "redirect_blast_release",
+        "redirect_creative_first",
+        "redirect_source_first",
+        "redirect_wait_for_maya"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    }
+  },
+  "reusableObjects": []
+}

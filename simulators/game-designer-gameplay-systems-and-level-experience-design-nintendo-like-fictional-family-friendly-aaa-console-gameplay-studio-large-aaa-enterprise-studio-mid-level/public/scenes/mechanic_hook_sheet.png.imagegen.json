@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:12:37+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "mechanic_hook_sheet",
+  "itemId": "mechanic_hook_sheet",
+  "promptHash": "0b9a6a87e302dd92",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/game-designer-gameplay-systems-and-level-experience-design-nintendo-like-fictional-family-friendly-aaa-console-gameplay-studio-large-aaa-enterprise-studio-mid-level/src/data/scene-config.json"
+}

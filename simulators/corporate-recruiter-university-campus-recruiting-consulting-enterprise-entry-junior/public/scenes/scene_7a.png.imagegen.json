@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T05:05:01+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_7a",
+  "itemId": "scene_7a",
+  "promptHash": "3c17db86a7ff2a7c",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/npcs/david_chen.png"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

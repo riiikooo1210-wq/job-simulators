@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-18T14:15:17+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_3",
+  "itemId": "scene_3",
+  "promptHash": "d5c3e568ba4417b5",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/npcs/eleanor_vance.png",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/locations/eleanor-office-vcall.png"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/IMAGE_PROMPTS.md"
+}

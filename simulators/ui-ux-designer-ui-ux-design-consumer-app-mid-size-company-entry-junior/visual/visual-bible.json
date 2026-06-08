@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "slug": "ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All visuals should maintain a clean, slightly stylized, but realistic aesthetic suitable for a professional tech environment.",
+    "Lighting should be bright and naturalistic, favoring soft, diffused light sources like windows or modern office fixtures.",
+    "The color palette should be modern and cohesive, using neutral tones with pops of a consistent brand accent color (e.g., sage green)."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "maya": {
+      "id": "maya",
+      "name": "Maya Singh",
+      "role": "Senior Product Designer (Your Manager)",
+      "sourcePersona": "Maya is a sharp, articulate, and methodical designer in her early 30s. She is a strong advocate for the user and prefers to see rough ideas early. She gives feedback by asking probing questions to understand a designer's rationale, rather than just providing solutions. While patient, she is very busy and expects her team members to be proactive and develop autonomy.",
+      "appearancePrompt": "Maya Singh is a South Asian woman in her early 30s with shoulder-length, dark wavy hair and warm brown eyes. She wears stylish, thin-framed glasses that complement her focused and intelligent expression. Her demeanor is calm and approachable, conveying professional confidence.",
+      "wardrobePrompt": "Maya's attire is smart-casual and professional. She often wears solid-colored blouses, tailored sweaters, or simple, elegant dresses. She consistently wears a minimalist silver necklace as a signature accessory.",
+      "mustStayConsistent": [
+        "shoulder-length dark wavy hair",
+        "thin-framed glasses",
+        "minimalist silver necklace"
+      ],
+      "referenceImage": "public/visual-refs/npcs/maya.png"
+    },
+    "ben": {
+      "id": "ben",
+      "name": "Ben Carter",
+      "role": "Product Manager",
+      "sourcePersona": "Ben is an energetic, data-driven, and ambitious PM in his late 20s. He is pragmatic and slightly impatient, always focused on shipping features that will move key business metrics. His performance is judged on speed and hitting quarterly growth targets, so he sometimes prioritizes shipping quickly over achieving design perfection. He's direct and communicates frequently on Slack.",
+      "appearancePrompt": "Ben Carter is a Caucasian man in his late 20s with short, well-kept dark brown hair and a clean-shaven face. He has an energetic and direct gaze, often with a slight, determined smile that reflects his ambitious nature. He has a fit, athletic build.",
+      "wardrobePrompt": "Ben's wardrobe is business-casual with a startup-culture feel. He frequently wears solid-colored or subtly patterned button-down shirts, often with the sleeves rolled up, or a high-quality crewneck sweater over a collared shirt.",
+      "mustStayConsistent": [
+        "short dark brown hair",
+        "clean-shaven",
+        "button-down shirts"
+      ],
+      "referenceImage": "public/visual-refs/npcs/ben.png"
+    },
+    "leo": {
+      "id": "leo",
+      "name": "Leo Chen",
+      "role": "Front-End Engineer",
+      "sourcePersona": "Leo is a thoughtful, detail-oriented engineer in his mid-20s. He is collaborative but pragmatic, with deep knowledge of the existing codebase and Design System. He is the team's reality check on technical feasibility and is wary of 'one-off' designs that create technical debt. He prefers clear, written documentation and asks specific questions about edge cases and interaction specs.",
+      "appearancePrompt": "Leo Chen is an East Asian man in his mid-20s with neat, black hair that is slightly longer on top. He wears modern, dark-rimmed rectangular glasses and has a thoughtful, observant expression. He often appears focused and slightly reserved, reflecting his detail-oriented personality.",
+      "wardrobePrompt": "Leo prefers comfortable and practical clothing. He is most often seen in a dark-colored hoodie (typically gray or navy) over a plain or subtly graphic t-shirt. He consistently wears a simple digital watch on his left wrist.",
+      "mustStayConsistent": [
+        "black hair",
+        "dark-rimmed rectangular glasses",
+        "hoodie",
+        "digital watch"
+      ],
+      "referenceImage": "public/visual-refs/npcs/leo.png"
+    }
+  },
+  "locations": {
+    "home-office-desk": {
+      "id": "home-office-desk",
+      "name": "Player's Home Office Desk",
+      "appearancePrompt": "A clean, modern home office workspace with a warm, wooden desk surface. A window, typically to the right, provides soft, natural light. The background is slightly out of focus, showing a neutral-colored wall with a simple framed poster and a small potted plant on a shelf or windowsill.",
+      "stableElements": [
+        "Wooden desk surface",
+        "Window on the right side",
+        "Framed poster in background",
+        "Small potted plant in background",
+        "Ceramic coffee mug",
+        "Sketchbook/notebook"
+      ],
+      "sceneIds": [
+        "intro",
+        "scene_01_standup",
+        "scene_01b_hifi_redirect",
+        "scene_01b_meeting_redirect",
+        "scene_01b_wait_redirect",
+        "grading",
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/home-office-desk.png"
+    },
+    "wellnest-project-room": {
+      "id": "wellnest-project-room",
+      "name": "WellNest Project Room",
+      "appearancePrompt": "A small, bright meeting room with a central light-wood table and comfortable, modern chairs. One wall is a large whiteboard, often containing sketches and sticky notes. The other walls are glass, offering a slightly blurred view of the main office area. The room has a focused, collaborative feel with warm, even lighting.",
+      "stableElements": [
+        "Light-wood table",
+        "Whiteboard wall",
+        "Glass walls",
+        "Modern chairs"
+      ],
+      "sceneIds": [
+        "scene_03_checkin"
+      ],
+      "referenceImage": "public/visual-refs/locations/wellnest-project-room.png"
+    },
+    "wellnest-office-general": {
+      "id": "wellnest-office-general",
+      "name": "WellNest General Office",
+      "appearancePrompt": "A bright, open-plan tech office with a clean, modern aesthetic. It features polished concrete floors, glass-walled meeting rooms, and clusters of workstations. There are touches of greenery with potted plants, and the overall color palette is light and airy, with accents of a muted sage green.",
+      "stableElements": [
+        "Glass-walled meeting rooms",
+        "Open-plan layout",
+        "Polished concrete floors",
+        "Potted plants"
+      ],
+      "sceneIds": [
+        "scene_04_complications"
+      ],
+      "referenceImage": "public/visual-refs/locations/wellnest-office-general.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "ceramic-mug",
+      "name": "Player's Ceramic Coffee Mug",
+      "appearancePrompt": "A simple, sturdy ceramic mug with a slightly matte finish in a solid, muted color like sage green or charcoal gray. It has a clean, minimalist design with no logos or text.",
+      "sceneIds": [
+        "intro",
+        "scene_01b_hifi_redirect",
+        "scene_01b_wait_redirect",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "sketchbook",
+      "name": "Player's Sketchbook/Notebook",
+      "appearancePrompt": "A spiral-bound notebook or a Moleskine-style sketchbook with a plain black or dark gray cover. When open, it shows off-white paper, sometimes with faint dot grids. It is often seen with a simple pen.",
+      "sceneIds": [
+        "intro",
+        "scene_01_standup",
+        "scene_01b_hifi_redirect",
+        "scene_01b_meeting_redirect",
+        "scene_01b_wait_redirect",
+        "scene_03_checkin",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "player-laptop",
+      "name": "Player's Laptop",
+      "appearancePrompt": "A modern, slim laptop with a minimalist design, similar to a MacBook Pro or Dell XPS, in a silver or dark gray metallic finish. It has a clean, unadorned lid with no visible logos.",
+      "sceneIds": [
+        "scene_01_standup",
+        "scene_01b_wait_redirect",
+        "grading",
+        "final_report"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:52:22+00:00",
+  "styleReference": "templates/style-reference.png"
+}

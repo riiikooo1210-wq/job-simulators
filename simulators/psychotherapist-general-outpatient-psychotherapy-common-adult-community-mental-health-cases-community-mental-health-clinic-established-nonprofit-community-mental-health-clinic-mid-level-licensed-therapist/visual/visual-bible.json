@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "slug": "psychotherapist-general-outpatient-psychotherapy-common-adult-community-mental-health-cases-community-mental-health-clinic-established-nonprofit-community-mental-health-clinic-mid-level-licensed-therapist",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "dr_elena_rivera": {
+      "id": "dr_elena_rivera",
+      "name": "Dr. Elena Rivera",
+      "role": "Clinical Supervisor",
+      "sourcePersona": "Dr. Rivera is calm, direct, and clinically careful. She trusts mid-level therapists to think independently, but she expects concise facts, clear risk formulation, and documentation rationale when safety is involved. She does not shame clinicians for consulting; she sees consultation as part of ethical practice. Under time pressure, she asks pointed questions and closes with concrete next steps.",
+      "appearancePrompt": "Dr. Elena Rivera, Clinical Supervisor. Use this as the locked character identity: Dr. Rivera is calm, direct, and clinically careful. She trusts mid-level therapists to think independently, but she expects concise facts, clear risk formulation, and documentation rationale when safety is involved. She does not shame clinicians for consulting; she sees consultation as part of ethical practice. Under time pressure, she asks pointed questions and closes with concrete next steps.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/dr_elena_rivera.png"
+    },
+    "maya_thompson": {
+      "id": "maya_thompson",
+      "name": "Maya Thompson",
+      "role": "Client",
+      "sourcePersona": "Maya is a 32-year-old client experiencing depression, anxiety, job loss, rent pressure, poor sleep, and shame about needing help. She wants therapy to help but fears that honest answers about hopelessness will make the therapist overreact. She responds well to warmth, specificity, and autonomy-respecting questions. If she feels judged or rushed, she becomes guarded and minimizes.",
+      "appearancePrompt": "Maya Thompson, Client. Use this as the locked character identity: Maya is a 32-year-old client experiencing depression, anxiety, job loss, rent pressure, poor sleep, and shame about needing help. She wants therapy to help but fears that honest answers about hopelessness will make the therapist overreact. She responds well to warmth, specificity, and autonomy-respecting questions. If she feels judged or rushed, she becomes guarded and minimizes.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/maya_thompson.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: A Clinic Day Begins\nFirst-person view entering a warm nonprofit community mental health clinic lobby in the morning. A check-in desk sits at the left with a small Harborview Community Mental Health sign, brochures for depression support and housing resources, and two clients waiting quietly. At the lower edge of the frame, the viewer's hand holds a notebook and clinic badge while facing a hallway of counseling offices.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "final_report",
+        "intro",
+        "scene_01_clear_notes_redirect",
+        "scene_01_take_walkin_redirect"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Create a stable location reference for Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: A Clinic Day Begins\nFirst-person view entering a warm nonprofit community mental health clinic lobby in the morning. A check-in desk sits at the left with a small Harborview Community Mental Health sign, brochures for depression support and housing resources, and two clients waiting quietly. At the lower edge of the frame, the viewer's hand holds a notebook and clinic badge while facing a hallway of counseling offices.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "intro",
+        "scene_01_clear_notes_redirect",
+        "scene_01_review_maya_redirect",
+        "scene_01_take_walkin_redirect",
+        "scene_03_client_session",
+        "scene_06_policy_briefing",
+        "scene_07_supervisor_consult",
+        "section_transition_1_2",
+        "section_transition_2_3"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    }
+  },
+  "reusableObjects": []
+}

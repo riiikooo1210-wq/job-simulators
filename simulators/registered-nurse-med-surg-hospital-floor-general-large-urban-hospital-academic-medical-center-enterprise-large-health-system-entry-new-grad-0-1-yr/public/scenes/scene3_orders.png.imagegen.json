@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-19T05:18:44+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene3_orders",
+  "itemId": "scene3_orders",
+  "promptHash": "073a9382822a36ed",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/src/data/scene-config.json"
+}

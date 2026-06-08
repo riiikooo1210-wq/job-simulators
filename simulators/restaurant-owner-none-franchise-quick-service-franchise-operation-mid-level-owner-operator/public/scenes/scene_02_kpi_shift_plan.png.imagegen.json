@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:01:00+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_02_kpi_shift_plan",
+  "itemId": "scene_02_kpi_shift_plan",
+  "promptHash": "590f0189c97f145b",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/src/data/scene-config.json"
+}

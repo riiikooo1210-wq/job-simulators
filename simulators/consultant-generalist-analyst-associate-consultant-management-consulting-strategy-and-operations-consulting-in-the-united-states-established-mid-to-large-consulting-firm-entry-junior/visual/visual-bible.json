@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "slug": "consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "Maintain a consistent color palette of warm cream (#F5F5DC), charcoal gray (#36454F), deep blue (#003366), and clean white (#FFFFFF) for all UI elements and branding.",
+    "All office environments must reflect a modern, mid-to-large U.S. consulting firm: clean lines, minimalist decor, high-quality but not overly luxurious furniture, and natural light.",
+    "User interface elements for software like Slack, spreadsheets, and slides must use a consistent, realistic generic design system. Avoid any real-world software branding.",
+    "All first-person views from the consultant's perspective should be from a seated position at their desk, creating a consistent point-of-view."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "priya": {
+      "id": "priya",
+      "name": "Priya Shah",
+      "role": "Engagement Manager, Aster Lane Advisory",
+      "sourcePersona": "Priya is direct, practical, and protective of client credibility. She expects junior consultants to show their logic, not just activity. She pushes for answer-first communication, traceable numbers, and caveats that help rather than paralyze. She is busy before a partner review, but she gives useful coaching when the student makes the work easier to review.",
+      "appearancePrompt": "Priya is a South Asian woman in her late 30s with a sharp, intelligent presence. She has dark, shoulder-length hair, often tied back in a neat ponytail, and wears minimalist, rectangular-framed glasses. Her expression is focused and conveys a sense of professional urgency and competence.",
+      "wardrobePrompt": "Priya's wardrobe is business professional and practical. She consistently wears tailored blazers in neutral colors (charcoal, navy) over silk blouses or simple shells. She wears a classic, understated silver watch on her left wrist.",
+      "mustStayConsistent": [
+        "Rectangular-framed glasses",
+        "Shoulder-length dark hair",
+        "Professional, tailored attire",
+        "Silver watch"
+      ],
+      "referenceImage": "public/visual-refs/npcs/priya.png"
+    },
+    "marcus": {
+      "id": "marcus",
+      "name": "Marcus Bell",
+      "role": "Operations Director, HarborMart",
+      "sourcePersona": "Marcus runs pickup operations for HarborMart and wants a practical answer quickly. He is not hostile, but he is impatient with consulting process language because executives want a simple labor answer. He respects specificity, plain caveats, and clear next steps. If the consultant overstates the data, he pushes back and asks how they know.",
+      "appearancePrompt": "Marcus is a Black man in his early 50s with a pragmatic and slightly weary demeanor from managing daily operations. He has a shaved head, a neatly trimmed close-cropped beard with flecks of gray, and expressive, discerning eyes. He often appears slightly stressed, with faint lines of concentration on his forehead.",
+      "wardrobePrompt": "Marcus dresses for a corporate operations environment, not a formal boardroom. He typically wears a dark blue or gray polo shirt with a small, discreet 'HarborMart' logo embroidered on the chest, or a simple button-down shirt with the sleeves rolled up to his forearms.",
+      "mustStayConsistent": [
+        "Shaved head",
+        "Close-cropped beard with gray flecks",
+        "Slightly stressed expression",
+        "Business casual, operations-focused attire (e.g., polo shirt)"
+      ],
+      "referenceImage": "public/visual-refs/npcs/marcus.png"
+    }
+  },
+  "locations": {
+    "consultant-desk": {
+      "id": "consultant-desk",
+      "name": "Aster Lane Consultant's Desk",
+      "appearancePrompt": "A first-person view of a clean, organized desk in a modern open-plan office with large windows providing natural light. The desk surface is a light-colored wood or white laminate. The overall aesthetic is minimalist and professional, belonging to a high-end consulting firm, with a blurred background of other similar workstations.",
+      "stableElements": [
+        "A slim, modern laptop (no logo)",
+        "A secondary widescreen monitor",
+        "A dark blue Aster Lane branded notebook",
+        "A simple white ceramic coffee mug",
+        "A sleek black desk lamp"
+      ],
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "redirect_analysis",
+        "redirect_polish",
+        "redirect_questions",
+        "redirect_background",
+        "grading",
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/consultant-desk.png"
+    },
+    "harbormart-ops-office": {
+      "id": "harbormart-ops-office",
+      "name": "HarborMart Operations Office (Video Call)",
+      "appearancePrompt": "The background for a video call, showing a functional but busy operations office. The space is well-lit with fluorescent lighting and features a large whiteboard covered in logistics flowcharts and KPI metrics. In the background, there are industrial metal shelves with binders and equipment, and a window that might show a glimpse of a warehouse loading bay.",
+      "stableElements": [
+        "Large whiteboard with operational diagrams",
+        "Metal shelving with binders",
+        "A calendar with shipping schedules",
+        "A subtle HarborMart corporate logo on a wall"
+      ],
+      "sceneIds": [
+        "client_call"
+      ],
+      "referenceImage": "public/visual-refs/locations/harbormart-ops-office.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "laptop-consultant",
+      "name": "Consultant's Laptop",
+      "appearancePrompt": "A modern, slim, dark gray laptop with no visible logo. The screen displays various generic software interfaces (chat, slides, spreadsheets) that use a consistent UI theme of warm cream, deep blue, and charcoal gray.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "redirect_analysis",
+        "redirect_polish",
+        "redirect_questions",
+        "redirect_background",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "case-packet-harbormart",
+      "name": "HarborMart Case Packet",
+      "appearancePrompt": "A printed, staple-bound document of about 15 pages on standard white paper. The cover sheet is simple, with the title 'HarborMart: Pickup Lateness Analysis - Source Packet' and a small Aster Lane Advisory mark at the bottom.",
+      "sceneIds": [
+        "intro",
+        "redirect_polish",
+        "redirect_background",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "notebook-consultant",
+      "name": "Consultant's Notebook",
+      "appearancePrompt": "A professional, dark blue, A5-sized notebook with a subtle, debossed Aster Lane Advisory logo in the bottom corner. When open, its pages show neat, handwritten notes, issue trees, and structured lists in black ink.",
+      "sceneIds": [
+        "intro",
+        "redirect_questions",
+        "grading",
+        "final_report"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:48:23+00:00",
+  "styleReference": "templates/style-reference.png"
+}

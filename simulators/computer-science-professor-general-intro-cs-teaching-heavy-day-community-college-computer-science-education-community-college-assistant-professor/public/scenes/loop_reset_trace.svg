@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Trace table whiteboard with student prediction notes">
+  <rect width="1600" height="900" fill="#E8DCC8"/>
+  <rect x="90" y="65" width="1420" height="590" fill="#F7F1E3" stroke="#1E1E1A" stroke-width="5"/>
+  <rect x="135" y="110" width="780" height="475" fill="#FFF9EB" stroke="#1E1E1A" stroke-width="4"/>
+  <text x="170" y="160" fill="#3A6B5E" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900">Trace table</text>
+  <line x1="170" y1="210" x2="870" y2="210" stroke="#1E1E1A" stroke-width="3"/>
+  <line x1="170" y1="280" x2="870" y2="280" stroke="#CDBF94" stroke-width="3"/>
+  <line x1="170" y1="350" x2="870" y2="350" stroke="#CDBF94" stroke-width="3"/>
+  <line x1="170" y1="420" x2="870" y2="420" stroke="#CDBF94" stroke-width="3"/>
+  <line x1="170" y1="490" x2="870" y2="490" stroke="#CDBF94" stroke-width="3"/>
+  <line x1="420" y1="210" x2="420" y2="560" stroke="#1E1E1A" stroke-width="3"/>
+  <line x1="640" y1="210" x2="640" y2="560" stroke="#1E1E1A" stroke-width="3"/>
+  <text x="240" y="252" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">pass</text>
+  <text x="500" y="252" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">i</text>
+  <text x="705" y="252" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">total</text>
+  <text x="260" y="323" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">1</text>
+  <text x="500" y="323" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">0</text>
+  <text x="725" y="323" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">0</text>
+  <text x="260" y="393" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">2</text>
+  <text x="500" y="393" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">1</text>
+  <text x="725" y="393" fill="#1E1E1A" font-family="Menlo, Consolas, monospace" font-size="28">1</text>
+  <text x="170" y="545" fill="#B87D6B" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800">Ask pairs: where does 5 appear?</text>
+  <rect x="985" y="125" width="390" height="110" fill="#F2EBD9" stroke="#B87D6B" stroke-width="4"/>
+  <text x="1015" y="170" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800">Prediction card</text>
+  <text x="1015" y="208" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="24">range(5) includes 5</text>
+  <rect x="985" y="270" width="390" height="110" fill="#F2EBD9" stroke="#B87D6B" stroke-width="4"/>
+  <text x="1015" y="315" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800">Prediction card</text>
+  <text x="1015" y="353" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="24">total changes after loop</text>
+  <rect x="985" y="415" width="390" height="110" fill="#EFE8D2" stroke="#3A6B5E" stroke-width="4"/>
+  <text x="1015" y="460" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="800">Listen for</text>
+  <text x="1015" y="498" fill="#1E1E1A" font-family="Inter, Arial, sans-serif" font-size="24">0, 1, 2, 3, 4</text>
+  <rect x="0" y="700" width="1600" height="200" fill="#D8C99F"/>
+  <rect x="230" y="735" width="180" height="80" fill="#F7F1E3" stroke="#1E1E1A" stroke-width="3"/>
+  <rect x="590" y="735" width="180" height="80" fill="#F7F1E3" stroke="#1E1E1A" stroke-width="3"/>
+  <rect x="950" y="735" width="180" height="80" fill="#F7F1E3" stroke="#1E1E1A" stroke-width="3"/>
+</svg>

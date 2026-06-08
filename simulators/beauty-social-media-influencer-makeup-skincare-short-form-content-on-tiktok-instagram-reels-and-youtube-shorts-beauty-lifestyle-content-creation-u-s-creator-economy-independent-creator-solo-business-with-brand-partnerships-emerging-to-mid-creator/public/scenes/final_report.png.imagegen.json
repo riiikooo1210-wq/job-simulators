@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-18T14:41:19+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "final_report",
+  "itemId": "final_report",
+  "promptHash": "83adcc0a742ef1c5",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/IMAGE_PROMPTS.md"
+}

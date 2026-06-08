@@ -1,0 +1,996 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "The fixed collection describes a community-college CS professor day as teaching-heavy and high-contact: preparing and revising course materials, teaching intro programming, diagnosing student confusion, maintaining Canvas records, holding office hours, grading lab work, advising students, and coordinating with a department chair and tutoring center. O*NET emphasizes classroom teaching, grading, course materials, attendance records, office hours, advising, LMS software, IDEs, email, and face-to-face discussions. The local source notes emphasize a high-contact rhythm, accessible explanations, quick lesson adjustment, supportive feedback, LMS announcements, and student-support triage.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "O*NET lists delivering lectures, moderating classroom discussions, maintaining office hours, and advising students.",
+          "The teaching notes emphasize diagnosing loop confusion while the room is moving, using concrete examples, and handling lab setup friction."
+        ],
+        "simulatorImplication": "Computer-lab teaching remains visually present, but the loop reset itself is brain work: the player should interpret code, student predictions, trace evidence, and quick-check data rather than manipulate classroom objects."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists learning management systems, presentation software, IDEs, spreadsheets, and email as tools.",
+          "The source notes emphasize Canvas inboxes, SpeedGrader, LMS announcements, attendance flags, and tutoring-center coordination."
+        ],
+        "simulatorImplication": "Most active scenes should use concrete digital work surfaces such as Canvas-like source packets, a lesson-planning document, Slack, a kanban triage board, SpeedGrader-style source tabs, and an announcement editor."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists critical thinking, judgment and decision making, organizing and prioritizing work, and evaluating information.",
+          "The intro CS notes emphasize diagnosing misconceptions, choosing accessible examples, and deciding when to slow the class down."
+        ],
+        "simulatorImplication": "The player should diagnose what the student work implies, choose first moves under time pressure, and distinguish class-wide learning issues from individual support cases."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists preparing course materials, evaluating assignments, maintaining records, and communicating by electronic mail.",
+          "The collection emphasizes feedback comments and LMS announcements as teaching artifacts students act on."
+        ],
+        "simulatorImplication": "The simulator must require typed role-specific deliverables: a lesson adjustment, grading feedback, a Slack update, and a Canvas announcement."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists face-to-face discussions, contact with others, instructing, speaking, active listening, coaching, and office hours.",
+          "The advising notes emphasize listening, diagnostic questions, normalizing struggle, and setting a concrete next step."
+        ],
+        "simulatorImplication": "The classroom trace-table reset and the office-hour scene should both use real in-person voice interaction, because teaching and coaching depend on listening and responding to student language."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "The collection describes a day of email, LMS checks, class prep, teaching, office hours, grading, and department coordination.",
+          "The workload notes emphasize repeated context switching between teaching moments and student support."
+        ],
+        "simulatorImplication": "Time pressure and interruptions should frame choices, but active work should stay focused on teaching, support, grading, and communication artifacts."
+      }
+    },
+    "simulatorPlan": "Use a hybrid classroom-and-desk simulation: a bounded morning triage MCQ with distinct consequences, a source-based lesson plan, an in-class opening prediction prompt, an in-person voice trace-table discussion with a live move-on decision, an in-person office-hour voice conversation, a student-support kanban triage board, a one-turn Slack coordination update, SpeedGrader-style feedback writing, and a Canvas announcement deliverable.",
+    "activeSceneMixRationale": "The revised active path has a triage MCQ, an in-class opening prompt, a live classroom voice facilitation scene, one in-person office-hour voice meeting, one kanban sorting task, one Slack communication, and multiple written deliverables. That mix reflects a teaching-heavy community-college professor without forcing a meaningless physical playground into a cognitive teaching moment."
+  },
+  "storyline": {
+    "gameTitle": "Community College CS Professor Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Morning Class"
+      },
+      {
+        "num": 2,
+        "label": "Student Support"
+      },
+      {
+        "num": 3,
+        "label": "End-of-Day Teaching Admin"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Mesa Vista",
+        "content": "You are Dr. Avery Chen, an assistant professor of computer science at Mesa Vista Community College. Today is a teaching-heavy Tuesday in CSC 101: Introduction to Programming. Your job is to help first-time programmers understand loops, support students who are wobbling, and keep the course moving without letting anyone disappear into the cracks.",
+        "imageBrief": "First-person view from an instructor desk in a community college computer lab before class. Rows of student desktops show a Python editor and a Canvas course page, while the front whiteboard says CSC 101 - loops and accumulators. On the instructor desk are a roster, printed Lab 4 submissions, a coffee mug, and a laptop with Canvas open. The mood is practical, warm, and teaching-focused.",
+        "next": "briefing_morning",
+        "illustration": "/scenes/intro.png"
+      },
+      "briefing_morning": {
+        "id": "briefing_morning",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Before the 9:30 Section",
+        "content": "It is 8:42 AM. Your first CSC 101 section starts in 48 minutes. Use the morning source packet to decide what protects learning before students arrive.",
+        "referenceTitle": "Morning source packet",
+        "referenceContent": "60-second CS mini cheat sheet\n- {{range(5)}} gives the values 0, 1, 2, 3, 4. It stops before 5.\n- In Python, only lines with {{indentation}} belong {{inside the loop}} and repeat each pass.\n- An {{accumulator}} is a variable like total or count that stores a growing result.\n- A {{trace table}} is a quick chart of values after each loop pass, used to reveal student thinking.\n\nCanvas Inbox\n8:42 AM\n- Mia: I am locked out of Lab 4 after the lab computer froze. Can I still submit tonight?\n- Luis: Is Lab 4 due tonight or Friday? The module says Friday but the announcement says tonight.\n- Jayden: I attached the Lab 4 screenshot.\n  Attachment: lab4-loop-error.png\n  Python editor screenshot\n  total = 0\n  for n in range(5):\n  total = total + n\n  print(total)\n  IndentationError: expected an indented block after 'for' statement on line 2\n- Ana: Does {{range(5)}} include 5?\n- Marcus: My {{trace table}} goes 0, 1, 2, 3, 4, 5 for {{range(5)}}. Is that right?\n- Priya: Should the loop stop before 5 or run through 5?\n\nLab 4 Pattern\n- 14 of 26 students predicted that {{range(5)}} runs through 5.\n- 9 submissions updated total {{outside the loop}} instead of {{inside the loop}} body.\n- 6 students did not submit the warm-up {{trace table}}.\n\nChair Note\n- Professor Morales needs early attendance flags by noon for students with repeated absences.\n- The 9:30 class has 75 minutes. You planned {{accumulator}}s today, but the first 15 minutes can be adjusted.\n\nTutoring Slots\n- The tutoring center can open two Python help slots this week if you name the topic.",
+        "imageBrief": "Instructor laptop open to a Canvas inbox, a small table of Lab 4 misconception counts, a chair request for attendance flags, and a tutoring-center message. A clock reads 8:42, student monitors are asleep, and a CSC 101 loop warm-up is visible on the projector preview.",
+        "next": "triage_morning",
+        "illustration": "/scenes/briefing_morning.png"
+      },
+      "triage_morning": {
+        "id": "triage_morning",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Pick the First Move",
+        "content": "You cannot do everything before class. Based on the morning source packet, which move best protects student learning right now?",
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "Canvas source packet",
+          "inputArtifacts": [
+            {
+              "id": "morning_source_packet",
+              "label": "Morning source packet",
+              "whereVisible": "briefing_morning.referenceContent",
+              "summary": "Canvas messages, Lab 4 misconception pattern, chair deadline, tutoring slot availability, and class timing."
+            }
+          ],
+          "studentAction": "Choose the first preparation move under time pressure.",
+          "outputArtifact": {
+            "id": "triage_morning",
+            "label": "Morning first-move choice",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.triage_morning",
+            "branchFlags.triage_morning"
+          ],
+          "continuity": [
+            "Each choice routes to a realistic immediate consequence before the shared lesson-planning work."
+          ],
+          "authenticityCheck": "Community-college faculty often decide what to handle before class by weighing class-wide learning impact against administrative urgency."
+        },
+        "imageBrief": "Close-up of a laptop split between Canvas inbox, a Python slide deck, a Lab 4 pattern table, and an attendance spreadsheet. A sticky note says 9:30 class in 48 min. The scene should feel like a realistic instructor triage moment.",
+        "options": [
+          {
+            "id": "answer_all_email",
+            "label": "Answer every student email before opening the lesson plan.",
+            "body": "This may reduce inbox anxiety, but it leaves no time to adjust instruction for the whole class.",
+            "branchFlag": "email_first"
+          },
+          {
+            "id": "adjust_warmup",
+            "label": "Revise the warm-up to reveal loop-boundary misconceptions.",
+            "body": "This gives you evidence from the room before deciding how fast to move into accumulators.",
+            "branchFlag": "diagnostic_first"
+          },
+          {
+            "id": "skip_review",
+            "label": "Stay on the original accumulator lecture so the syllabus does not slip.",
+            "body": "This protects pacing on paper, but it risks building new material on shaky understanding.",
+            "branchFlag": "pace_first"
+          },
+          {
+            "id": "chair_report",
+            "label": "Finish the attendance report for the chair before class.",
+            "body": "This matters by noon, but it is not the best use of the last preparation window.",
+            "branchFlag": "admin_first"
+          }
+        ],
+        "next": {
+          "branchOn": "triage_morning",
+          "cases": {
+            "email_first": "redirect_email",
+            "diagnostic_first": "redirect_diagnostic",
+            "pace_first": "redirect_pacing",
+            "admin_first": "redirect_admin"
+          },
+          "default": "redirect_diagnostic"
+        },
+        "illustration": "/scenes/triage_morning.png"
+      },
+      "redirect_email": {
+        "id": "redirect_email",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Inbox Expands",
+        "content": "You start answering email, but the quick replies are not quick. One student needs lab access, another asks about late work, and a third sends a screenshot with no question attached. At 9:17 you still have not touched the loop warm-up. You close the inbox and decide to make a focused instructional adjustment.",
+        "imageBrief": "Instructor laptop with a growing Canvas inbox and a clock nearing 9:20. The classroom lights are now on and students are starting to appear outside the door.",
+        "next": "lesson_plan",
+        "illustration": "/scenes/redirect_email.png"
+      },
+      "redirect_diagnostic": {
+        "id": "redirect_diagnostic",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "A Useful Diagnostic Window",
+        "content": "You set the inbox aside and spend the next few minutes turning yesterday's pattern into a visible warm-up. The chair report can wait until after class, and a better first 15 minutes will make the rest of the day less reactive.",
+        "imageBrief": "Instructor laptop showing a short loop warm-up and a trace table template, with Canvas minimized in the corner. The classroom projector preview is ready and a few students are arriving.",
+        "next": "lesson_plan",
+        "illustration": "/scenes/redirect_diagnostic.png"
+      },
+      "redirect_pacing": {
+        "id": "redirect_pacing",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Pacing Meets Reality",
+        "content": "You open the original accumulator lecture, but yesterday's lab submissions keep nagging at you. If students cannot predict how many times a loop runs, the accumulator examples will become copying, not understanding. You decide to redesign the first 15 minutes as a diagnostic mini-lesson.",
+        "referenceTitle": "Why pacing needs a reset",
+        "referenceContent": "Yesterday's Lab 4 pattern still matters:\n- 14 of 26 students predicted that `range(5)` runs through 5.\n- 9 submissions updated `total` after the loop instead of inside the loop body.\n- Today's accumulator examples depend on students understanding loop boundaries and per-pass variable updates.\n\nUse this as evidence for a short diagnostic reset before new material.",
+        "imageBrief": "Projected slide titled Accumulators with a notebook beside it showing circled student errors from yesterday's lab. The image should show the tension between syllabus pace and actual understanding.",
+        "next": "lesson_plan",
+        "illustration": "/scenes/redirect_pacing.png"
+      },
+      "redirect_admin": {
+        "id": "redirect_admin",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Report Can Wait",
+        "content": "You open the attendance spreadsheet, then hear students arriving in the hallway. The report is due by noon, but the next 75 minutes will affect whether today's lesson lands. You save the spreadsheet and turn back to the lesson.",
+        "imageBrief": "Attendance spreadsheet open beside the classroom door as students begin entering. A whiteboard with loop examples waits in the background.",
+        "next": "lesson_plan",
+        "illustration": "/scenes/redirect_admin.png"
+      },
+      "lesson_plan": {
+        "id": "lesson_plan",
+        "type": "free_text",
+        "section": 1,
+        "title": "Plan the First 15 Minutes",
+        "content": "Before class, use the source tabs to plan a short reset for yesterday's Lab 4 confusion. Warm-up data shows what students missed, Code example gives the loop to use, What to know gives the CS basics, and Teaching bar shows what a strong plan includes.",
+        "prompt": "Draft a three-part prep note for the first 15 minutes: 1) the diagnostic question or code prompt, 2) the guided practice move, and 3) the evidence you will watch for before moving on. Use the What to know tab if the Python details are new to you.",
+        "placeholder": "1) Diagnostic prompt: ...\n2) Guided practice: ...\n3) Evidence to watch: ...",
+        "minWords": 70,
+        "maxWords": 220,
+        "appWindow": "notion",
+        "windowTitle": "CSC 101 Lesson Prep",
+        "appTabs": [
+          {
+            "id": "warmup_data",
+            "label": "Warm-up data",
+            "content": "Yesterday's Lab 4 pattern\n\n- 14 of 26 students predicted that {{range(5)}} runs through 5.\n- 9 submissions updated total {{outside the loop}} instead of {{inside the loop}} body.\n- 6 students did not submit the {{trace table}} warm-up.\n\nTeaching constraint:\nYou have 15 minutes before today's {{accumulator}} example. The class needs to predict, trace, and explain before you run code."
+          },
+          {
+            "id": "code_example",
+            "label": "Code example",
+            "content": "Projected warm-up candidate\n\n```python\ntotal = 0\nfor i in range(5):\n    total = total + i\nprint(total)\n```\n\nCommon student predictions from yesterday:\n- \"It includes 5, so the loop runs six times.\"\n- \"The total changes after the loop is done.\"\n- \"I just run it and see what happens.\""
+          },
+          {
+            "id": "beginner_hint",
+            "label": "What to know",
+            "content": "Beginner CS facts for this scene\n\n- {{range(5)}} means the loop uses 0, 1, 2, 3, 4. It does not include 5.\n- The indented line total = total + i is {{inside the loop}}, so it repeats once for each value of i.\n- A line with no indentation, like print(total), runs after the loop finishes.\n- An {{accumulator}} is a running total. Here, total grows a little each pass.\n- A {{trace table}} lets students write one row per pass so you can see what they think is happening.\n\nYour professor move is not to solve the code for students. It is to ask for a prediction, make their thinking visible, then decide whether the class is ready to continue."
+          },
+          {
+            "id": "teaching_bar",
+            "label": "Teaching bar",
+            "content": "A strong opening plan should:\n- Ask students to predict before running code.\n- Use a {{trace table}} or similar concrete representation.\n- Name the misconception without shaming students.\n- Include one short guided practice task.\n- Identify evidence that tells you whether the class is ready for {{accumulator}}s."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "notion",
+          "inputArtifacts": [
+            {
+              "id": "warmup_data",
+              "label": "Warm-up data",
+              "whereVisible": "lesson_plan.appTabs.warmup_data",
+              "summary": "Counts of loop-boundary and accumulator misconceptions from Lab 4."
+            },
+            {
+              "id": "code_example",
+              "label": "Code example",
+              "whereVisible": "lesson_plan.appTabs.code_example",
+              "summary": "Python loop and common student predictions."
+            },
+            {
+              "id": "teaching_bar",
+              "label": "Teaching bar",
+              "whereVisible": "lesson_plan.appTabs.teaching_bar",
+              "summary": "Criteria for an effective diagnostic mini-lesson."
+            }
+          ],
+          "studentAction": "Draft a short, source-based mini-lesson plan.",
+          "outputArtifact": {
+            "id": "lesson_plan",
+            "label": "CSC 101 lesson adjustment",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.lesson_plan"
+          ],
+          "continuity": [
+            "The plan informs the classroom reset scene."
+          ],
+          "authenticityCheck": "Faculty routinely revise class openings based on patterns in student work."
+        },
+        "next": "classroom_reset",
+        "illustration": "/scenes/lesson_plan.png"
+      },
+      "classroom_reset": {
+        "id": "classroom_reset",
+        "type": "free_text",
+        "section": 1,
+        "title": "Opening Prediction Prompt",
+        "content": "Class has started. You are standing at the front of the computer lab with the loop projected. In the moment, write the exact prediction prompt you are about to read aloud to students. Keep it short, student-facing, and focused on what they should predict before anyone runs the code.",
+        "prompt": "Write only the prompt you will read aloud. It should help students predict the output and reveal whether they understand {{range(5)}} and when total changes.",
+        "placeholder": "Before we run this code, predict the printed total and write down the values i will take in order. Be ready to explain when total changes.",
+        "minWords": 8,
+        "maxWords": 60,
+        "appWindow": "doc",
+        "windowTitle": "Classroom Opening Move",
+        "appTabs": [
+          {
+            "id": "projected_code",
+            "label": "Projected code",
+            "content": "Students can see this loop on the projector:\n\n```python\ntotal = 0\nfor i in range(5):\n    total = total + i\nprint(total)\n```\n\nYour first move is to ask them to predict before running it."
+          },
+          {
+            "id": "quick_guide",
+            "label": "Quick guide",
+            "content": "Use this if you are not technical:\n\n- {{range(5)}} gives 0, 1, 2, 3, 4. It stops before 5.\n- total starts at 0.\n- The indented total = total + i line runs once for each value of i.\n- The printed total will be 10.\n- A good prompt asks students to predict and explain, not just wait for the answer."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "in-class projected prompt note",
+          "inputArtifacts": [
+            {
+              "id": "projected_loop",
+              "label": "Projected loop",
+              "whereVisible": "classroom_reset.appTabs.projected_code",
+              "summary": "A short Python loop students must reason about before running code."
+            },
+            {
+              "id": "beginner_quick_guide",
+              "label": "Beginner quick guide",
+              "whereVisible": "classroom_reset.appTabs.quick_guide",
+              "summary": "Nontechnical facts about range, loop passes, and total updates."
+            },
+            {
+              "id": "lesson_plan",
+              "label": "Lesson adjustment",
+              "whereVisible": "freeTextResponses.lesson_plan",
+              "summary": "The plan the player drafted in the prior scene."
+            }
+          ],
+          "studentAction": "Write the exact opening prediction prompt they will read aloud to the class.",
+          "outputArtifact": {
+            "id": "classroom_reset",
+            "label": "Opening prediction prompt to read aloud",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.classroom_reset"
+          ],
+          "continuity": [
+            "The prompt appears inside the live classroom voice scene through prepNoteKey so the player can read it aloud."
+          ],
+          "authenticityCheck": "Faculty often improvise the exact wording of an opening prompt in class while still grounding it in the visible code and student evidence."
+        },
+        "next": "loop_reset_trace",
+        "imageBrief": "First-person instructor view in a community college computer lab during class. Students face a projected Python loop while the instructor prepares to read a short prediction prompt aloud. The room should show students, the projector, and a classroom whiteboard rather than an empty prep desk.",
+        "illustration": "/scenes/classroom_reset.png"
+      },
+      "office_hour": {
+        "id": "office_hour",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Office Hours with Jayden",
+        "content": "After class, Jayden lingers by the door and then comes to office hours. They work 25 hours a week, missed one lab, and say, \"I think I am just not a coding person.\" You have about six minutes: diagnose the issue, preserve confidence, and end with Jayden ready to try one concrete loop-practice plan again.",
+        "npcId": "jayden",
+        "playerGoal": "In no more than 7 professor turns, help Jayden name what went wrong, understand one loop idea in plain language using the visible quick guide if needed, and leave saying they can try the trace-table plan again before the next lab.",
+        "goalPrompt": "You are Jayden Rivera, a student in CSC 101 who is discouraged after struggling with loops. This is a bounded six-minute office-hours check-in, so do not keep the conversation going indefinitely. Start anxious and a little embarrassed. If the professor asks what you tried, explain that you copied examples, ran code without predicting output first, and are unsure whether `range(5)` includes 5. A strong professor listens, asks diagnostic questions, explains one idea clearly in beginner language, and gives a concrete next step such as a trace-table practice plan or tutoring slot. Do not become confident too quickly. Once the professor has named your confusion, explained one loop idea in plain language, and offered a concrete next step, close naturally by saying something like, \"Okay, I can try that again before the next lab.\" Aim to reach that closing moment by the seventh professor turn. If the professor is vague, dismissive, or only lectures, stay hesitant and close near the turn limit with a short unsure response.",
+        "meetingContext": "The user is Dr. Avery Chen, an assistant professor holding in-person office hours for an intro CS student. Treat the meeting as a six-minute coaching window with a hard seven-professor-turn endpoint. The professor should not lecture for five minutes. They should ask what Jayden tried, identify the misconception, normalize struggle without lowering standards, explain loop boundaries or tracing in plain language using the visible reference if needed, and end with a specific practice plan or tutoring referral that Jayden can repeat independently.",
+        "meetingMode": "in_person",
+        "prepReferenceTitle": "Jayden context + loop quick guide",
+        "prepReferenceContent": "Jayden Rivera\n- First-generation student in CSC 101; works about 25 hours a week.\n- Missed one lab, sent a screenshot, and says, \"I think I am just not a coding person.\"\n- Likely stuck on whether {{range(5)}} includes 5 and on running code before predicting.\n\nLoop quick guide\n- {{range(5)}} uses 0, 1, 2, 3, 4; 5 is not included.\n- A {{trace table}} is one row per loop pass.\n- Helpful next step: predict, fill the table, then run code to compare.",
+        "minTurns": 3,
+        "maxTurns": 7,
+        "voiceName": "Puck",
+        "imageBrief": "First-person view inside a small community college faculty office. Jayden, a tired but engaged student with a backpack, sits across from the professor near a laptop showing a Python loop and a small trace table on a whiteboard. The setting feels private, respectful, and in-person, not like a video call.",
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "in-person office hours",
+          "inputArtifacts": [
+            {
+              "id": "jayden_context",
+              "label": "Jayden context",
+              "whereVisible": "office_hour.prepReferenceContent",
+              "summary": "Student schedule, missed lab, screenshot, discouragement, and likely loop misconception."
+            }
+          ],
+          "studentAction": "Speak with a discouraged student, diagnose the misconception, and set a concrete next step.",
+          "outputArtifact": {
+            "id": "office_hour",
+            "label": "Office-hour transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:office_hour:jayden"
+          ],
+          "continuity": [
+            "The office-hour coaching contributes to end-of-day grading."
+          ],
+          "authenticityCheck": "Office hours are a core community-college teaching interaction and realistically happen face to face."
+        },
+        "next": "support_matrix",
+        "illustration": "/scenes/office_hour.png"
+      },
+      "support_matrix": {
+        "id": "support_matrix",
+        "type": "kanban_board",
+        "section": 2,
+        "title": "Prioritize Student Support Cases",
+        "content": "It is 1:15 PM. Before your next class, six student-support issues compete for attention. Sort every card using the triage criteria, then explain what you would handle first and why.",
+        "appWindow": "kanban",
+        "windowTitle": "CSC 101 Student Support Board",
+        "bindingKey": "support_triage",
+        "rationaleBindingKey": "support_triage_rationale",
+        "rationalePrompt": "Which case would you handle first, and what would you do in the first 10 minutes?",
+        "rationalePlaceholder": "I would handle ... first because ... In the first 10 minutes I would ...",
+        "referenceTitle": "Support triage criteria",
+        "referenceContent": "Use these criteria while sorting:\n\nAct before next class\n- Access or accommodation issue affects whether a student can complete required work.\n- Class-wide confusion will cause many students to miss the same expectation.\n- A privacy-sensitive or policy-bound issue needs a careful first step today.\n\nHandle today\n- Repeated missing work or disengagement suggests the student may disappear without outreach.\n- Technology access blocks a quiz, lab, or required practice.\n\nSchedule or refer\n- Advising and transfer planning matter, but can usually be scheduled unless a deadline is imminent.\n- Tutoring referrals should name the exact topic students need.\n\nDo not do in public\n- FERPA-sensitive details, academic-integrity concerns, and accommodation details should not be posted in a public or semi-public channel.",
+        "columns": [
+          {
+            "id": "inbox",
+            "label": "Inbox"
+          },
+          {
+            "id": "act_before_next_class",
+            "label": "Act before next class"
+          },
+          {
+            "id": "handle_today",
+            "label": "Handle today"
+          },
+          {
+            "id": "schedule_or_refer",
+            "label": "Schedule or refer"
+          }
+        ],
+        "cards": [
+          {
+            "id": "accessibility",
+            "text": "Accommodation letter: Sam needs a lab extension before tonight's Canvas deadline.",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "missing_labs",
+            "text": "Missing labs: Riley has missed three labs and stopped opening Canvas messages.",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "broken_laptop",
+            "text": "Broken laptop: A student reports their laptop failed before tomorrow's quiz and asks about campus loaners.",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "integrity",
+            "text": "Academic-integrity concern: two submissions look unusually similar, but the evidence is not yet reviewed.",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "transfer",
+            "text": "Transfer advising: A student asks whether CSC 101 counts toward the state university CS pathway.",
+            "initialColumn": "inbox"
+          },
+          {
+            "id": "due_date",
+            "text": "Due-date confusion: multiple students ask whether Lab 4 is due tonight or Friday.",
+            "initialColumn": "inbox"
+          }
+        ],
+        "requireAllCardsMoved": true,
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "kanban",
+          "inputArtifacts": [
+            {
+              "id": "support_criteria",
+              "label": "Support triage criteria",
+              "whereVisible": "support_matrix.referenceContent",
+              "summary": "Urgency, access, learning impact, privacy, and referral criteria."
+            },
+            {
+              "id": "support_cases",
+              "label": "Support case cards",
+              "whereVisible": "support_matrix.cards",
+              "summary": "Six student-support issues with enough detail to classify."
+            }
+          ],
+          "studentAction": "Sort all support cases and explain the first action.",
+          "outputArtifact": {
+            "id": "support_triage",
+            "label": "Completed support triage board plus rationale",
+            "format": "kanban_board"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.support_triage",
+            "freeTextResponses.support_triage_rationale"
+          ],
+          "continuity": [
+            "The triage informs the chair Slack update."
+          ],
+          "authenticityCheck": "Faculty frequently prioritize access, persistence, privacy, and class-wide barriers under limited time."
+        },
+        "next": "chair_slack",
+        "illustration": "/scenes/support_matrix.png"
+      },
+      "chair_slack": {
+        "id": "chair_slack",
+        "type": "slack_thread",
+        "section": 3,
+        "title": "Department Chair Check-in",
+        "content": "Professor Morales, your department chair, posts in the CS faculty Slack channel. Use the separate Tutoring Center note and {{Canvas}} summary before replying with a concise, {{FERPA}}-aware update for the retention meeting.",
+        "appWindow": "slack",
+        "windowTitle": "#cs-faculty",
+        "npcId": "morales",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Avery, quick pulse check before the retention meeting: are we seeing a concept issue in CSC 101 or just a few isolated missing labs?"
+          }
+        ],
+        "referenceTitle": "Context Sources",
+        "referenceContent": "Tutoring Center\nWe can open two extra Python help slots this week if faculty can point us to the specific topic students need.\n\nCanvas Summary\n- 14/26 students predicted `range(5)` includes 5.\n- 9 submissions moved the accumulator update outside the loop.\n- Several students asked whether Lab 4 is due tonight or Friday.",
+        "goalPrompt": "Evaluate the professor's Slack reply. A strong reply is concise, evidence-based, FERPA-aware, and collaborative. It distinguishes the class-wide loop misconception from individual missing-work cases, names the support topic for tutoring, and avoids identifiable student details. After the professor sends one substantive reply, respond once as Professor Morales with a brief acknowledgment and clear close, such as confirming the tutoring topic and thanking them. Do not keep asking follow-up questions unless the reply includes private student details or is too vague to act on; in that case, give one corrective prompt and then close.",
+        "playerGoal": "Reply with a short professional update that helps the chair and tutoring center act.",
+        "maxTurns": 1,
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "chair_message",
+              "label": "Chair message",
+              "whereVisible": "chair_slack.initialMessages",
+              "summary": "Chair asks whether this is a concept issue or isolated missing labs."
+            },
+            {
+              "id": "tutoring_center",
+              "label": "Tutoring Center note",
+              "whereVisible": "chair_slack.referenceContent.Tutoring Center",
+              "summary": "Tutoring center can open slots if given a topic."
+            },
+            {
+              "id": "canvas_summary",
+              "label": "Canvas summary",
+              "whereVisible": "chair_slack.referenceContent.Canvas Summary",
+              "summary": "Loop-boundary and accumulator evidence from CSC 101."
+            }
+          ],
+          "studentAction": "Write a concise, privacy-aware Slack update.",
+          "outputArtifact": {
+            "id": "chair_slack",
+            "label": "Department Slack update",
+            "format": "slack_thread"
+          },
+          "rubricEvidence": [
+            "npcConversations.morales"
+          ],
+          "continuity": [
+            "The Slack update should use the morning evidence and support triage."
+          ],
+          "authenticityCheck": "Department coordination by Slack or email is realistic for teaching-heavy faculty days."
+        },
+        "next": "grading_feedback",
+        "illustration": "/scenes/chair_slack.png"
+      },
+      "grading_feedback": {
+        "id": "grading_feedback",
+        "type": "free_text",
+        "section": 3,
+        "title": "Grade Two Loop Lab Submissions",
+        "content": "You are grading Lab 4 in {{Canvas}} {{SpeedGrader}}. Both students need feedback, but your main job is not to debug from scratch. Use the visible submissions, beginner quick guide, instructor notes, and feedback guide to write comments that help each student try the next move with dignity.",
+        "prompt": "Click each student name, write that student's Assignment Comments feedback, and press Post for that student. You can post Maya and Luis in either order. For each student, use the visible instructor note to name the misconception in student-friendly language, explain a concrete repair, and give one tiny next test or practice step while keeping the tone respectful.",
+        "placeholder": "Maya: ...\n\nLuis: ...",
+        "minWords": 90,
+        "maxWords": 260,
+        "appWindow": "doc",
+        "windowTitle": "Canvas SpeedGrader - Lab 4 Feedback",
+        "appTabs": [
+          {
+            "id": "maya_submission",
+            "label": "Maya code",
+            "content": "Maya R. - Lab 4, Question 2\n\nPrompt: Add the numbers 0 through 4 and print the total.\n\n```python\ntotal = 0\nfor i in range(1, 5):\n    total = total + i\nprint(total)\n```\n\nObserved result: 10\nExpected result: 10 for this exact code.\n\nInstructor note: Maya's code lands on 10, but her explanation says \"range(1, 5) includes 5 and skips 0 because loops start at 1.\" The result is right by coincidence. Her feedback should teach that Python range starts at the first number and stops before the second number, while avoiding language that makes the lucky result feel like failure."
+          },
+          {
+            "id": "luis_submission",
+            "label": "Luis code",
+            "content": "Luis P. - Lab 4, Question 3\n\nPrompt: Count how many scores are at least 70.\n\n```python\nscores = [88, 61, 72, 95]\ncount = 0\nfor score in scores:\n    if score >= 70:\n        passed = True\ncount = count + 1\nprint(count)\n```\n\nObserved result: 1\nExpected result: 3\n\nInstructor note: The counter line count = count + 1 is not indented under the if statement, so it runs once after the loop instead of once for each passing score. The variable passed = True does not increase count. Luis needs a concrete next test, not just \"check indentation.\""
+          },
+          {
+            "id": "beginner_hint",
+            "label": "What to know",
+            "content": "Beginner CS facts for this grading task\n\n- {{range()}} stops before the second number. range(1, 5) uses 1, 2, 3, 4.\n- A {{counter}} is an {{accumulator}} used to count how many times something happens.\n- In Python, {{indentation}} shows what is {{inside the loop}} or inside an if statement.\n- A {{condition}} like score >= 70 is a yes/no test.\n- For feedback, you can rely on the instructor notes. Your work is to translate the issue into a respectful, usable next step for the student."
+          },
+          {
+            "id": "feedback_guide",
+            "label": "Feedback guide",
+            "content": "A useful CSC 101 feedback comment should:\n- Name the misconception, not just the line number.\n- Use student-friendly language.\n- Point to one concrete repair.\n- Give one tiny test the student can run next.\n- Preserve dignity and avoid labels like careless or lazy.\n- Use the visible code and instructor notes instead of assuming hidden expertise."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "Canvas SpeedGrader",
+          "inputArtifacts": [
+            {
+              "id": "maya_submission",
+              "label": "Maya code",
+              "whereVisible": "grading_feedback.appTabs.maya_submission",
+              "summary": "Boundary explanation error around range start/stop behavior."
+            },
+            {
+              "id": "luis_submission",
+              "label": "Luis code",
+              "whereVisible": "grading_feedback.appTabs.luis_submission",
+              "summary": "Accumulator/counter update outside the relevant loop condition."
+            },
+            {
+              "id": "feedback_guide",
+              "label": "Feedback guide",
+              "whereVisible": "grading_feedback.appTabs.feedback_guide",
+              "summary": "Tone and actionability criteria for feedback."
+            }
+          ],
+          "studentAction": "Write student-facing feedback comments based on visible code.",
+          "outputArtifact": {
+            "id": "grading_feedback",
+            "label": "Two Canvas feedback comments",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.grading_feedback"
+          ],
+          "continuity": [
+            "Feedback reinforces the same loop misconceptions surfaced earlier in the day."
+          ],
+          "authenticityCheck": "Programming instructors grade code and write diagnostic comments that students can act on."
+        },
+        "next": "lms_announcement",
+        "illustration": "/scenes/grading_feedback.png"
+      },
+      "lms_announcement": {
+        "id": "lms_announcement",
+        "type": "free_text",
+        "section": 3,
+        "title": "Post the Canvas Announcement",
+        "content": "Before leaving, post a short {{LMS}} announcement for both CSC 101 sections. It should clarify the loop-lab due date, tell students what to review, and invite support without making the class feel scolded.",
+        "prompt": "Write the Canvas announcement you would post tonight. Include the due date clarification, the topic to review, and a concrete support option.",
+        "placeholder": "",
+        "minWords": 60,
+        "maxWords": 180,
+        "appWindow": "email",
+        "windowTitle": "Canvas Announcement",
+        "emailHeaders": {
+          "from": "Dr. Avery Chen",
+          "to": "CSC 101 - both sections",
+          "subject": "Loop Lab 4 due date and practice plan"
+        },
+        "appTabs": [
+          {
+            "id": "announcement_inputs",
+            "label": "Inputs",
+            "content": "Announcement facts to use\n\n- Lab 4 is due Friday at 11:59 PM.\n- Several students saw an older reminder that made the due date look like tonight.\n- Today's warm-up showed confusion about loop boundaries and accumulator updates.\n- Students should review `range()` start/stop behavior and complete one trace table before the next class."
+          },
+          {
+            "id": "support_options",
+            "label": "Support",
+            "content": "Support options\n\n- Tutoring Center can open two Python help slots focused on loops and trace tables.\n- Office hours: Wednesday 11:00 AM-12:30 PM and Thursday 2:00-3:00 PM.\n- Students should bring one specific prediction or trace-table question."
+          },
+          {
+            "id": "tone_bar",
+            "label": "Tone bar",
+            "content": "A strong announcement is:\n- brief\n- warm but unambiguous\n- precise about due date and next action\n- supportive without sounding punitive\n- specific about what to review"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "Canvas announcement editor",
+          "inputArtifacts": [
+            {
+              "id": "announcement_inputs",
+              "label": "Announcement inputs",
+              "whereVisible": "lms_announcement.appTabs.announcement_inputs",
+              "summary": "Due date, misconception topic, and student confusion facts."
+            },
+            {
+              "id": "support_options",
+              "label": "Support options",
+              "whereVisible": "lms_announcement.appTabs.support_options",
+              "summary": "Tutoring and office-hour options."
+            },
+            {
+              "id": "tone_bar",
+              "label": "Tone bar",
+              "whereVisible": "lms_announcement.appTabs.tone_bar",
+              "summary": "Tone and clarity criteria."
+            }
+          ],
+          "studentAction": "Write a student-facing Canvas announcement.",
+          "outputArtifact": {
+            "id": "lms_announcement",
+            "label": "Canvas announcement",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.lms_announcement"
+          ],
+          "continuity": [
+            "The announcement closes the loop on due-date confusion and loop practice."
+          ],
+          "authenticityCheck": "LMS announcements are real teaching artifacts that reduce avoidable confusion."
+        },
+        "next": "assessment_gate",
+        "illustration": "/scenes/lms_announcement.png"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "End of Teaching Day",
+        "content": "You adjusted instruction from student evidence, ran a classroom loop reset, coached Jayden, prioritized support cases, coordinated with the department, wrote grading feedback, and posted the LMS announcement. Time to review how your teaching choices held up.",
+        "imageBrief": "Quiet faculty office at dusk. The laptop shows Canvas submitted, a mug is empty, a whiteboard still has a small trace table, and the hallway outside the office is calm.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as a community college CS professor on a teaching-heavy intro programming day.",
+        "next": null,
+        "illustration": "/scenes/grading.png"
+      },
+      "loop_reset_trace": {
+        "id": "loop_reset_trace",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "Trace-Table Follow-Up",
+        "content": "Class has started. Read your saved Opening Prediction Prompt from the note on the right. As students answer, respond first: name what sounds right, surface any misconception, and ask one quick follow-up if their thinking is unclear. Then guide the room through a trace table in plain language. Before ending, say whether you are ready to move on to {{accumulator}}s or whether the class needs one more tiny trace.",
+        "npcId": "student_group",
+        "playerGoal": "In no more than 8 professor turns: read your opening prompt aloud, listen to the student responses, respond to their thinking, guide the class through the trace table, and make a clear move-on decision based on what students can explain.",
+        "goalPrompt": "You are a small group of CSC 101 students in an intro Python class. The professor will begin by reading their own opening prediction prompt. React only to the prompt the professor actually says; do not assume a fixed prompt. Speak as brief student responses from the room, with a realistic mix of beginner thinking. Some students may think range(5) includes 5, some may know it stops before 5, and some may be confused about whether total changes each pass or after the loop. If the professor asks for trace-table rows, give partial attempts and improve gradually when guided. If the professor is clear, students become more accurate; if the professor lectures or is vague, keep the confusion visible. Near the end, if the professor asks whether the class is ready, give evidence they can use for a move-on decision.",
+        "meetingContext": "The user is Dr. Avery Chen, teaching CSC 101 in person in a community college computer lab. Treat the professor's first spoken turn as the opening prediction prompt, because it varies by player. Students are looking at this projected code: total = 0; for i in range(5): total = total + i; print(total). A strong professor listens to the actual predictions, responds to what students understand or misunderstand, uses a trace table with columns for i and total, checks whether students know range stops before 5, checks whether they see total changing inside the loop, and then decides aloud whether to move on or do one more trace. Keep student turns short enough to feel like a classroom, and do not solve everything before the professor guides the room.",
+        "meetingMode": "in_person",
+        "prepNoteKey": "classroom_reset",
+        "prepNoteTitle": "Your opening prompt - read this first",
+        "prepReferenceTitle": "Trace-table cheat sheet",
+        "prepReferenceContent": "Projected code:\ntotal = 0\nfor i in range(5):\n    total = total + i\nprint(total)\n\nCheat sheet:\n- {{range(5)}} means 0, 1, 2, 3, 4; it stops before 5.\n- total starts at 0.\n- Each loop pass adds i to total.\n- Trace totals after each pass: 0, 1, 3, 6, 10.\n- Ready evidence: students name 0..4 and explain that total changes inside the loop.",
+        "minTurns": 4,
+        "maxTurns": 8,
+        "voiceName": "Puck",
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "in-person classroom voice facilitation",
+          "inputArtifacts": [
+            {
+              "id": "opening_prompt",
+              "label": "Player opening prompt",
+              "whereVisible": "loop_reset_trace.prepNoteKey",
+              "summary": "The exact prompt the player wrote in the prior in-class moment and must read aloud."
+            },
+            {
+              "id": "trace_cheat_sheet",
+              "label": "Trace-table cheat sheet",
+              "whereVisible": "loop_reset_trace.prepReferenceContent",
+              "summary": "Nontechnical guide to range(5), total updates, and readiness evidence."
+            },
+            {
+              "id": "student_responses",
+              "label": "Live student responses",
+              "whereVisible": "npcConversations.voice:loop_reset_trace:student_group",
+              "summary": "Student predictions and trace-table reasoning based on the player's prompt."
+            }
+          ],
+          "studentAction": "Speak with the class: read the opening prompt, respond to student predictions, guide a trace table, and decide whether to move on.",
+          "outputArtifact": {
+            "id": "loop_reset_trace",
+            "label": "Classroom trace-table discussion transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:loop_reset_trace:student_group"
+          ],
+          "continuity": [
+            "The live classroom transcript replaces the old trace-table prep notes and feeds the move-on checkpoint."
+          ],
+          "authenticityCheck": "Trace-table follow-up happens as responsive classroom facilitation, not as a fixed prep document that assumes one specific opening prompt."
+        },
+        "next": "loop_reset_evidence",
+        "imageBrief": "First-person or over-the-shoulder instructor view in a community college computer lab during a live Python discussion. Several students are visible at computers, the projected loop is on the screen, and a trace table with columns i and total is on the whiteboard. The scene should feel like an active in-person class conversation, not a laptop video call or empty prep room.",
+        "illustration": "/scenes/classroom.png"
+      },
+      "loop_reset_evidence": {
+        "id": "loop_reset_evidence",
+        "type": "briefing",
+        "section": 1,
+        "title": "Class Wrap-Up",
+        "briefingMode": "simple",
+        "content": "Class is ending. Students finish the trace table, log out of the lab computers, and start packing up. A few are still comparing the row where range stops before 5. Jayden stays near the front of the room and asks if they can stop by office hours.",
+        "actionLabel": "Head to office hours",
+        "deskWorkDesign": {
+          "roleFamily": "education",
+          "workSurface": "classroom transition after class",
+          "inputArtifacts": [
+            {
+              "id": "class_wrap_up",
+              "label": "Class wrap-up",
+              "whereVisible": "loop_reset_evidence.content",
+              "summary": "Students finish the trace table, log out, and Jayden lingers to ask about office hours."
+            }
+          ],
+          "studentAction": "Read the transition from class into office hours.",
+          "outputArtifact": {
+            "id": "class_wrap_up",
+            "label": "Classroom wrap-up transition",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:loop_reset_trace:student_group"
+          ],
+          "continuity": [
+            "The loop misconception carries into Jayden's later office-hour conversation."
+          ],
+          "authenticityCheck": "Faculty move naturally from class wrap-up into quick student support moments."
+        },
+        "next": "office_hour",
+        "imageBrief": "Community college computer lab as class ends. Students finish the trace table, log out of the lab computers, and pack up. A few students compare the row where range stops before 5, while Jayden lingers near the front of the room to ask about office hours.",
+        "illustration": "/scenes/classroom.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Week Is Complete",
+        "content": "The simulated week is complete. You have finished the work period; when you are ready, view your assessment.",
+        "illustration": "/scenes/grading.png",
+        "imageBrief": "A calm end-of-week workplace wrap-up moment with completed notes, closed work surfaces, and a quiet team environment. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      }
+    },
+    "devSkips": [
+      {
+        "label": "Skip to classroom reset",
+        "targetNodeId": "classroom_reset"
+      },
+      {
+        "label": "Skip to office hours",
+        "targetNodeId": "office_hour"
+      },
+      {
+        "label": "Skip to grading feedback",
+        "targetNodeId": "grading_feedback"
+      }
+    ]
+  },
+  "npcs": {
+    "jayden": {
+      "id": "jayden",
+      "name": "Jayden Rivera",
+      "role": "CSC 101 Student",
+      "persona": "Jayden is a first-generation college student taking intro programming while working part-time. They are capable but anxious, and they interpret confusion as a sign they do not belong. They respond well to concrete examples, patient questions, and a specific practice plan, but they shut down if the professor sounds dismissive or vague.",
+      "voice": "quiet, nervous, sincere"
+    },
+    "morales": {
+      "id": "morales",
+      "name": "Professor Elena Morales",
+      "role": "Computer Science Department Chair",
+      "persona": "Professor Morales is practical, student-centered, and protective of faculty time. She values concise evidence, FERPA-aware communication, and support plans that connect classroom patterns to tutoring or advising resources. She is direct but warm, and she trusts faculty who surface problems early.",
+      "voice": "direct, warm, efficient"
+    },
+    "student_group": {
+      "id": "student_group",
+      "name": "CSC 101 Students",
+      "role": "Intro Programming Class",
+      "persona": "A small in-person class of beginning programming students. They are willing to try, but their answers are uneven: some guess from memory, some confuse loop boundaries, and some do not yet see how an indented update changes total on each pass. They respond well to short questions, trace-table rows, and plain-language checks.",
+      "voice": "varied, tentative, classroom energy"
+    }
+  },
+  "rubric": {
+    "simulation_id": "computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "朝の最初の判断",
+            "evidenceSceneIds": [
+              "triage_morning"
+            ],
+            "rubric_text": "9-10: 授業、学生支援、管理連絡が重なる中で、学習機会とリスクを見て最初の行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "15分授業案",
+            "evidenceSceneIds": [
+              "lesson_plan"
+            ],
+            "rubric_text": "9-10: 導入、誤概念の扱い、練習、確認の流れを、初学者が追える短い授業として設計できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "予測質問の進行",
+            "evidenceSceneIds": [
+              "classroom_reset"
+            ],
+            "rubric_text": "9-10: 学生の予測を引き出し、コードの動きと対応づけ、間違いを学習につなげる問いを組み立てられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "個別相談",
+            "evidenceSceneIds": [
+              "office_hour"
+            ],
+            "rubric_text": "9-10: 実際の相談で、学生の理解と不安を聞き取り、答えを渡しすぎず次の学習行動へ導けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "支援整理",
+            "evidenceSceneIds": [
+              "support_matrix"
+            ],
+            "rubric_text": "9-10: 学生ごとの緊急度、支援の種類、フォロー方法を区別し、現実的な優先順位をつけられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "学科連絡",
+            "evidenceSceneIds": [
+              "chair_slack"
+            ],
+            "rubric_text": "9-10: 学科長への連絡で、問題、影響、必要な判断、こちらの次行動を簡潔に伝えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "採点コメント",
+            "evidenceSceneIds": [
+              "grading_feedback"
+            ],
+            "rubric_text": "9-10: 提出物の事実に基づき、何ができていて何を直すべきかを、学習につながる言葉で返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "学習管理連絡",
+            "evidenceSceneIds": [
+              "lms_announcement"
+            ],
+            "rubric_text": "9-10: 学生に必要な次の行動、期限、支援情報を、混乱を増やさない形で案内できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "追跡表での理解確認",
+            "evidenceSceneIds": [
+              "loop_reset_trace"
+            ],
+            "rubric_text": "9-10: 実際のフォローアップで、学生に実行過程を説明させ、理解の穴を特定し、次の練習に接続できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  },
+  "intro": {
+    "welcomeTitle": "Community College CS Professor: Teaching Day",
+    "welcomeBody": "Step into a teaching-heavy day as an assistant professor guiding intro programming students through loops, classroom diagnosis, office hours, grading, and student-support coordination.",
+    "steps": [
+      {
+        "label": "Diagnose",
+        "content": "Use student evidence to decide how to adjust instruction."
+      },
+      {
+        "label": "Teach",
+        "content": "Run a classroom reset that makes novice thinking visible."
+      },
+      {
+        "label": "Support",
+        "content": "Coach a struggling student and prioritize competing student needs."
+      },
+      {
+        "label": "Communicate",
+        "content": "Write feedback and LMS updates students can act on."
+      }
+    ]
+  },
+  "glossary": {
+    "accumulator": "A variable that is updated repeatedly, often inside a loop, to build a total, count, or result.",
+    "Canvas": "A common learning management system used for assignments, grades, announcements, and course materials.",
+    "condition": "A yes/no test in code, such as score >= 70, that controls whether an action should happen.",
+    "counter": "An accumulator used to count how many times something happens.",
+    "FERPA": "A US student privacy law. In practice, faculty avoid discussing identifiable student details in public or semi-public channels.",
+    "formative assessment": "A low-stakes check used to see what students understand while there is still time to adjust teaching.",
+    "indentation": "Leading spaces at the start of a Python line. Indentation shows which lines belong inside a loop or condition.",
+    "inside the loop": "A code line that is indented under the loop and repeats once for each loop pass.",
+    "LMS": "Learning management system: the course website where students see assignments, announcements, grades, and materials.",
+    "loop": "A programming structure that repeats a set of steps.",
+    "loop boundary": "The start or stop point of a loop, such as whether a range stops before 5 or includes 5.",
+    "office hours": "Scheduled time when students can ask questions, get help, and discuss course progress with an instructor.",
+    "outside the loop": "A code line that is not indented under the loop and runs after the loop finishes.",
+    "range()": "A Python tool that produces a sequence of numbers. The stop number is not included.",
+    "range(5)": "In Python, range(5) produces 0, 1, 2, 3, 4. It stops before 5.",
+    "SpeedGrader": "Canvas's grading view, where instructors review a student's submission and leave comments.",
+    "trace table": "A table used to track variable values step by step as code runs."
+  },
+  "sample_answers": {
+    "lesson_plan": "1) Diagnostic prompt: Project the range(5) loop and ask students to predict the printed total before running it. 2) Guided practice: Have pairs fill a trace table with i and total for each pass, then compare where they thought the loop stopped. 3) Evidence to watch: I will look for whether students name that range(5) produces 0 through 4 and whether they update total on each pass before I move to accumulator examples.",
+    "support_triage_rationale": "I would handle the accommodation letter first because it is urgent, policy-bound, and directly affects access to tonight's lab work. In the first 10 minutes I would confirm the extension requirement, update Canvas if needed, and privately message the student with the plan.",
+    "grading_feedback": "Maya: Your code gives the expected number here, but your explanation shows the loop boundary is still shaky. In Python, range(1, 5) starts at 1 and stops before 5. Test range(0, 5) by writing down each value before you run it. Luis: Your counter update is outside the loop/if block, so it runs once after the loop instead of once per passing score. Move count = count + 1 inside the if block, then test with [88, 61, 72, 95] and predict the count by hand first.",
+    "lms_announcement": "Hi CSC 101, quick clarification: Lab 4 is due Friday at 11:59 PM. Before you continue, please spend 15 minutes reviewing range() start/stop behavior and bring one completed trace table to our next class. The tutoring center will add Python help slots focused on loops, and you can also bring one specific prediction question to office hours.",
+    "classroom_reset": "Before we run this code, predict the printed total and write down the values i will take in order. Be ready to explain when total changes."
+  }
+}

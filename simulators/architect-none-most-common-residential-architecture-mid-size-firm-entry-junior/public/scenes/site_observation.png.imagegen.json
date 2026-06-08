@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-28T02:27:15+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "site_observation",
+  "itemId": "site_observation",
+  "promptHash": "fc967a24fa5eb1d6",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/architect-none-most-common-residential-architecture-mid-size-firm-entry-junior/IMAGE_PROMPTS.md"
+}

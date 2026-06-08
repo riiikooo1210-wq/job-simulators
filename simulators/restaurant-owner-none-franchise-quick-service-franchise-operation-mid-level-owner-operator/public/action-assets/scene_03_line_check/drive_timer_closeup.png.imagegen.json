@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:14:50+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene_03_line_check",
+  "itemId": "drive_timer_closeup",
+  "promptHash": "1d0439cb6fc9c3fd",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/ACTION_ASSETS.md"
+}

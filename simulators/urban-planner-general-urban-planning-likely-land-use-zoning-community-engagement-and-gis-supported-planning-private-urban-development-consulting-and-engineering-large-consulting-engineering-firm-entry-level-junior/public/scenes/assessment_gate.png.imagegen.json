@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:16:40+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "b6483d783fe43a02",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior/IMAGE_PROMPTS.md"
+}

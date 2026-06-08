@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:39:49+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "redirect_blast_release",
+  "itemId": "redirect_blast_release",
+  "promptHash": "e51ec5818d9bfdb9",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/public-relations-specialist-general-public-relations-media-relations-and-brand-communications-large-food-and-beverage-brand-consumer-packaged-goods-enterprise-entry-junior/IMAGE_PROMPTS.md"
+}

@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T14:40:47+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "grading",
+  "itemId": "grading",
+  "promptHash": "eb5168162598d318",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/public/visual-refs/locations/creator-workspace.png"
+  ],
+  "sourceFile": "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/IMAGE_PROMPTS.md"
+}

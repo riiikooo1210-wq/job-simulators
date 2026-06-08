@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:11:29+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "riverbend_workspace",
+  "itemId": "riverbend_workspace",
+  "promptHash": "9b00d81e054f9605",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior/IMAGE_PROMPTS.md"
+}

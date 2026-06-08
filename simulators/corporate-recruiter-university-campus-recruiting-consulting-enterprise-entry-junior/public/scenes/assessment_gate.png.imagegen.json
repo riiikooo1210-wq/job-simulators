@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:04:52+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "312058cc78b4849c",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

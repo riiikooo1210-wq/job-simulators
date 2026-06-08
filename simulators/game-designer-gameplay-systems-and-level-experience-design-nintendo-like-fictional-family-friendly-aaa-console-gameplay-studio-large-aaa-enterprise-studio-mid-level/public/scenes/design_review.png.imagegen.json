@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:10:24+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "design_review",
+  "itemId": "design_review",
+  "promptHash": "a59effceff74e9de",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/game-designer-gameplay-systems-and-level-experience-design-nintendo-like-fictional-family-friendly-aaa-console-gameplay-studio-large-aaa-enterprise-studio-mid-level/IMAGE_PROMPTS.md"
+}

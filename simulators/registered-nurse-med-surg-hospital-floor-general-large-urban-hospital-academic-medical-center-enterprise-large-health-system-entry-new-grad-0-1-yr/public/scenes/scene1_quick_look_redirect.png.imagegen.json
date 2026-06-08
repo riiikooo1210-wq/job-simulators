@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T15:15:03+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene1_quick_look_redirect",
+  "itemId": "scene1_quick_look_redirect",
+  "promptHash": "2f8407942bbb02d6",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/hallway-5-north.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/IMAGE_PROMPTS.md"
+}

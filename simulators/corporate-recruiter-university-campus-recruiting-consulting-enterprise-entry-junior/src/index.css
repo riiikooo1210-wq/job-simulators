@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #6B9EA6;
+}
+
+body {
+  background-color: #6B9EA6;
+  color: #000000;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+.voice-meeting-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 0.625rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.voice-meeting-workspace--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.voice-meeting-window,
+.voice-meeting-reference {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 760px) {
+  .voice-meeting-workspace:not(.voice-meeting-workspace--solo) {
+    grid-template-columns: minmax(0, 1fr) 112px;
+    gap: 0.375rem;
+  }
+}

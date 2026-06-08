@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "slug": "brand-strategist-general-consumer-brand-strategy-for-fashion-brand-common-brand-strategist-work-imagined-by-aspiring-brand-strategists-fictional-fashion-brand-enterprise-global-brand-entry-junior",
+  "createdAt": "2026-05-24T09:41:59+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "elena": {
+      "id": "elena",
+      "name": "Elena Rossi",
+      "role": "North America Merchandising Director",
+      "sourcePersona": "Elena is commercially sharp, practical, and protective of store usefulness. She cares about sell-through, wholesale partner confidence, and whether associates can explain why the product costs more. She is not hostile, but she challenges strategy that feels too abstract or too disconnected from product proof.",
+      "appearancePrompt": "Elena Rossi, North America Merchandising Director. Use this as the locked character identity: Elena is commercially sharp, practical, and protective of store usefulness. She cares about sell-through, wholesale partner confidence, and whether associates can explain why the product costs more. She is not hostile, but she challenges strategy that feels too abstract or too disconnected from product proof.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/elena.png"
+    },
+    "theo": {
+      "id": "theo",
+      "name": "Theo Alvarez",
+      "role": "Creative Director",
+      "sourcePersona": "Theo is visually ambitious, culturally aware, and impatient with strategy that feels timid. He wants the campaign to have energy, but he respects a strategist who can give him a sharper creative problem instead of vague adjectives. He responds well to specific guardrails and a clear tension.",
+      "appearancePrompt": "Theo Alvarez, Creative Director. Use this as the locked character identity: Theo is visually ambitious, culturally aware, and impatient with strategy that feels timid. He wants the campaign to have energy, but he respects a strategist who can give him a sharper creative problem instead of vague adjectives. He responds well to specific guardrails and a clear tension.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/theo.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Aurelia & Co.\nFirst-person view of a junior brand strategist desk at a global fashion brand office. A laptop shows a warm cream dashboard titled Everyday Icons Strategy Sprint with tabs for Brand Brief, Competitor Audit, Audience Notes, and Positioning Brief. Around the laptop are fabric swatches, a notebook with insight arrows, and printed lookbook thumbnails. The scene is stylish but work-focused, with no real brand logos.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "audit_table",
+        "final_report",
+        "intro",
+        "redirect_deck",
+        "redirect_frame",
+        "redirect_survey",
+        "redirect_trend"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Create a stable location reference for Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Aurelia & Co.\nFirst-person view of a junior brand strategist desk at a global fashion brand office. A laptop shows a warm cream dashboard titled Everyday Icons Strategy Sprint with tabs for Brand Brief, Competitor Audit, Audience Notes, and Positioning Brief. Around the laptop are fabric swatches, a notebook with insight arrows, and printed lookbook thumbnails. The scene is stylish but work-focused, with no real brand logos.",
+      "stableElements": [],
+      "sceneIds": [
+        "briefing_packet",
+        "creative_slack",
+        "final_note",
+        "grading",
+        "interview_prep",
+        "intro",
+        "positioning_brief",
+        "redirect_deck",
+        "redirect_frame",
+        "stakeholder_call"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    }
+  },
+  "reusableObjects": []
+}

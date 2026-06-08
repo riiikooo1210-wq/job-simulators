@@ -1,0 +1,15 @@
+{
+  "createdAt": "2026-05-18T15:36:33+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "briefing_1",
+  "itemId": "briefing_1",
+  "promptHash": "c09988e039e07f2f",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/npcs/maya.png",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/npcs/ben.png",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/npcs/leo.png"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/IMAGE_PROMPTS.md"
+}

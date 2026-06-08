@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-27T15:08:05+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene2_assessment",
+  "itemId": "scene2_assessment",
+  "promptHash": "a0e61caf3fbad8e4",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/npcs/sarah.png",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/room-512.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/src/data/scene-config.json"
+}

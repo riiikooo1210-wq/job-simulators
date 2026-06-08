@@ -1,0 +1,1181 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "The collected sources and replacement industry digest show a franchise quick-service restaurant owner-operator working through recurring operating rhythms: KPI review, sales and labor tradeoffs, food cost and waste control, line checks, brand-standard compliance, manager coaching, and next-day operating follow-through. The work is partly physical because the owner must walk the store and inspect visible conditions, but the owner also works through dashboards, schedules, checklists, and timed action boards.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Food safety and manager-accountability sources emphasize active managerial control, line checks, logs, and corrective action.",
+          "QSR operations sources describe store walks, prep-line readiness, drive-thru execution, and visible standards as operating work."
+        ],
+        "simulatorImplication": "Include a physical playground where the player inspects the prep line, reads labels and temperatures, flags issues, and documents corrective observations."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Labor and food-cost guidance stresses sales forecasts, schedule coverage, overtime, waste, prep levels, and POS metrics.",
+          "Franchise sources show brand standards and operating checklists as normal work surfaces."
+        ],
+        "simulatorImplication": "Use dashboard, schedule, manager log, standards reminder, and timed operating-board scenes with visible inputs."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "Operators must balance guest experience, labor cost, food cost, and brand compliance rather than optimizing one number in isolation.",
+          "The role requires deciding what to inspect, delegate, coach, escalate, and document during an ordinary operating day."
+        ],
+        "simulatorImplication": "Core tasks should require prioritization and tradeoff reasoning from realistic store evidence."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Restaurant systems sources emphasize manager logs, checklists, corrective action notes, and daily follow-up.",
+          "Franchise operation requires clear communication with store managers and durable follow-up on brand standards."
+        ],
+        "simulatorImplication": "Require a pre-rush Slack plan to Mina, a coaching prep note, and a tomorrow pre-rush operating board."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Owner-operators coach managers and shift leads to make standards repeatable instead of personally fixing every issue.",
+          "Staffing and accountability sources connect service problems to delegation, training, and manager follow-through."
+        ],
+        "simulatorImplication": "Include an in-person voice coaching conversation with the shift lead."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "The owner monitors a live shift and shifts attention between metrics, people, food safety, guest flow, and brand standards.",
+          "Monitoring becomes valuable only when converted into inspection, coaching, or documented follow-up."
+        ],
+        "simulatorImplication": "Show time pressure and context switching through briefings, but grade active outputs."
+      }
+    },
+    "simulatorPlan": "The active scene mix follows a typical mid-level franchise QSR owner-operator day: one bounded morning prioritization MCQ with consequences, a written KPI and shift plan, a physical prep-line inspection, a coaching prep note, an in-person coaching conversation, and a timed next-day pre-rush operating board. The student produces job-real artifacts and performs visible inspection work rather than only answering abstract management questions.",
+    "activeSceneMixRationale": "The simulator gives the most weight to decision-making, digital artifacts, written documentation, and interpersonal coaching, with one substantial physical line-check scene to reflect the owner walking the store and verifying standards."
+  },
+  "storyline": {
+    "gameTitle": "Restaurant Owner Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Read the Store"
+      },
+      {
+        "num": 2,
+        "label": "Walk the Operation"
+      },
+      {
+        "num": 3,
+        "label": "Coach and Follow Through"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "KPI Plan",
+        "targetNodeId": "scene_02_kpi_shift_plan"
+      },
+      {
+        "label": "Line Check",
+        "targetNodeId": "scene_03_line_check"
+      },
+      {
+        "label": "Coaching Prep",
+        "targetNodeId": "scene_04_coaching_prep"
+      },
+      {
+        "label": "Coaching Conversation",
+        "targetNodeId": "scene_04_shift_lead_coaching"
+      },
+      {
+        "label": "Assessment",
+        "targetNodeId": "assessment_gate"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Harbor Bites Express",
+        "content": "You are the owner-operator of Harbor Bites Express, a fictional quick-service sandwich and bowls franchise in a busy suburban retail plaza. It is a normal Thursday: not a crisis, but the kind of day where labor, speed, food safety, waste, coaching, and franchisor standards all compete for your attention.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "A first-person view from just inside a bright quick-service restaurant before lunch. The counter, menu board, prep line, drive-thru timer screen, and manager station are visible. A tablet on the counter shows Harbor Bites Express daily KPIs on a warm cream dashboard. The store feels active but controlled, with crew members preparing for the lunch rush.",
+        "next": "morning_operating_workspace"
+      },
+      "scene_01_first_twenty_minutes": {
+        "id": "scene_01_first_twenty_minutes",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "Choose Your First 20 Minutes",
+        "content": "You have 20 minutes before lunch prep turns into the rush. What is the best first move?",
+        "isPivot": true,
+        "deskWorkDesign": {
+          "roleFamily": "restaurant operations",
+          "workSurface": "Daily operating workspace",
+          "inputArtifacts": [
+            {
+              "id": "operating_workspace",
+              "label": "Thursday operating workspace",
+              "whereVisible": "morning_operating_workspace.sourceWorkspace",
+              "summary": "Sales, labor, drive-thru time, accuracy, waste, callout, and brand reminder."
+            }
+          ],
+          "studentAction": "Choose the first operating move under pre-rush time pressure.",
+          "outputArtifact": {
+            "id": "first_move_choice",
+            "label": "First 20-minute decision",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.scene_01_first_twenty_minutes"
+          ],
+          "continuity": [
+            "Each choice routes to a realistic consequence before the shared KPI planning task."
+          ],
+          "authenticityCheck": "Owner-operators routinely choose between dashboard review, labor decisions, store walks, and manager follow-up before peak periods."
+        },
+        "options": [
+          {
+            "id": "approve_labor_only",
+            "label": "Approve the extra labor immediately and move on.",
+            "branchFlag": "labor_only"
+          },
+          {
+            "id": "triage_then_walk",
+            "label": "Triage KPIs with Mina, then walk the prep line before the rush.",
+            "branchFlag": "balanced_triage"
+          },
+          {
+            "id": "coach_jordan_first",
+            "label": "Pull Jordan aside immediately for a coaching talk.",
+            "branchFlag": "coach_first"
+          },
+          {
+            "id": "wait_for_lunch",
+            "label": "Wait until after lunch to avoid interrupting the team.",
+            "branchFlag": "wait"
+          }
+        ],
+        "illustration": "/scenes/scene_01_first_twenty_minutes.png",
+        "imageBrief": "A first-person view at a quick-service manager station. A tablet shows the operating workspace, a paper schedule has one highlighted callout, and the prep line is visible through the office doorway. Four sticky notes show possible first moves: approve labor, triage then walk, coach now, wait until after lunch.",
+        "next": {
+          "branchOn": "scene_01_first_twenty_minutes",
+          "cases": {
+            "labor_only": "redirect_labor_only",
+            "balanced_triage": "redirect_balanced_triage",
+            "coach_first": "redirect_coach_first",
+            "wait": "redirect_wait"
+          },
+          "default": "redirect_balanced_triage"
+        }
+      },
+      "redirect_labor_only": {
+        "id": "redirect_labor_only",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Labor Helps, but It Needs Direction",
+        "content": "Mina appreciates the quick answer, but she still needs to know where Maya should be placed and what standard Jordan must protect. Extra labor without a targeted plan can hide waste and speed problems instead of fixing them.",
+        "illustration": "/scenes/redirect_labor_only.png",
+        "imageBrief": "A manager schedule with an added crew member highlighted, but the drive-thru timer and chicken waste note are still visible on the tablet. Mina looks at the owner for clearer direction.",
+        "next": "scene_02_kpi_shift_plan"
+      },
+      "redirect_balanced_triage": {
+        "id": "redirect_balanced_triage",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Right Level of Control",
+        "content": "Mina nods. You are not trying to personally run every station; you are connecting the dashboard, the schedule, and the floor before the lunch rush locks in.",
+        "illustration": "/scenes/redirect_balanced_triage.png",
+        "imageBrief": "The owner and Mina stand between the manager tablet and the prep line, with both the KPI dashboard and food station in view. The mood is calm and focused.",
+        "next": "scene_02_kpi_shift_plan"
+      },
+      "redirect_coach_first": {
+        "id": "redirect_coach_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Coach from Facts, Not Frustration",
+        "content": "Jordan needs coaching, but a better conversation will come after you verify the line, the schedule gap, and the rush plan. Otherwise the coaching risks sounding like a general complaint.",
+        "illustration": "/scenes/redirect_coach_first.png",
+        "imageBrief": "Jordan smiles from near the front counter while the owner looks at an incomplete checklist. A note on the tablet says verify before coaching.",
+        "next": "scene_02_kpi_shift_plan"
+      },
+      "redirect_wait": {
+        "id": "redirect_wait",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Waiting Has a Cost",
+        "content": "The team is busy, but the point of a pre-rush owner walk is to prevent predictable problems. If the line check is late and the drive-thru is already trending slow, waiting until after lunch means you are only documenting the miss.",
+        "illustration": "/scenes/redirect_wait.png",
+        "imageBrief": "A wall clock approaches 11:30 while the prep line gets busier. The operating workspace sits unattended at the manager station, with the drive-thru timer glowing in the background.",
+        "next": "scene_02_kpi_shift_plan"
+      },
+      "scene_02_kpi_shift_plan": {
+        "id": "scene_02_kpi_shift_plan",
+        "type": "free_text",
+        "section": 1,
+        "title": "Write the KPI and Shift Plan",
+        "content": "Send Mina a short Slack update before the rush. Use the same Drive and Calendar sources from the morning workspace; do not optimize one number while ignoring the store. You will use this KPI and shift plan later when coaching Jordan on which floor actions matter.",
+        "appWindow": "slack",
+        "windowTitle": "#lunch-leads - Mina",
+        "workSurface": {
+          "kind": "slack_reply",
+          "device": "desktop",
+          "appWindow": "slack",
+          "title": "#lunch-leads - Mina",
+          "sourceTabs": [
+            {
+              "id": "excel",
+              "label": "Drive",
+              "content": "Harbor Bites #1842 operating workbook\nDaypart: Thursday lunch prep\nWeather: clear; nearby high school early release at 12:30\n\nMetric | Target | Actual | Status\nNet sales | vs last Thursday | $8,940, up 4% | on track\nTransactions | steady | 712, up 6% | on track\nLabor | 29.5%-30.5% | 31.8% | warning\nDrive-thru ticket time | 3:45 | 4:18 | warning\nOrder accuracy | 98.0% | 97.1% | warning\nChicken waste | 10-13 lb | 18.5 lb | critical"
+            },
+            {
+              "id": "calendar",
+              "label": "Calendar",
+              "content": "Thursday lunch schedule\n\nLunch forecast: 11:30-1:30 will be heavy because of school early release at 12:30.\n\nOne crew member called out for 11:00-3:00.\n\nMina asks whether to call in Maya for 11:30-2:00, which will add about $54 in labor."
+            },
+            {
+              "id": "drive",
+              "label": "Drive",
+              "content": "Manager log and safety folder\n\nYesterday manager log:\nJordan is shift lead for lunch. Strong with guests, inconsistent with checklist follow-through. Yesterday: line check completed late; chicken pan label hard to read; drive-thru held at 4+ minutes during 12:00 rush.\n\nBrand / safety reminder:\nRegional brand operations flagged two stores this week for missing hot-hold temperature documentation. Harbor Bites #1842 had no violation, but documentation must be timely and readable."
+            }
+          ]
+        },
+        "prompt": "Send Mina a concise pre-rush plan that connects the KPIs to staffing, station coverage, and what you will verify on the floor. Write it so you can reuse it later to coach the team on why each floor fix matters.",
+        "slackPromptSections": [
+          {
+            "id": "numbers",
+            "label": "Box 1",
+            "question": "What are the numbers telling us?",
+            "helper": "Use the Drive KPI table: traffic, labor, drive-thru time, order accuracy, and chicken waste.",
+            "rows": 2
+          },
+          {
+            "id": "coverage",
+            "label": "Box 2",
+            "question": "Should we call in Maya, and where should she go first?",
+            "helper": "Name the station or task. Do not just say 'extra labor.'",
+            "rows": 2
+          },
+          {
+            "id": "jordan",
+            "label": "Box 3",
+            "question": "What should Jordan own before the rush?",
+            "helper": "Tie Jordan's ownership to checklist follow-through and service readiness.",
+            "rows": 2
+          },
+          {
+            "id": "verify",
+            "label": "Box 4",
+            "question": "What will you verify on the floor?",
+            "helper": "Name the concrete evidence you will inspect before lunch.",
+            "rows": 2
+          }
+        ],
+        "minWords": 170,
+        "deskWorkDesign": {
+          "roleFamily": "restaurant operations",
+          "workSurface": "Slack message to Mina",
+          "inputArtifacts": [
+            {
+              "id": "excel",
+              "label": "Drive KPI table",
+              "whereVisible": "scene_02_kpi_shift_plan.workSurface.sourceTabs.excel and morning_operating_workspace.sourceWorkspace.Drive",
+              "summary": "Sales, labor, service speed, waste, and accuracy KPIs."
+            },
+            {
+              "id": "calendar",
+              "label": "Calendar schedule",
+              "whereVisible": "scene_02_kpi_shift_plan.workSurface.sourceTabs.calendar and morning_operating_workspace.sourceWorkspace.app:schedule",
+              "summary": "Lunch forecast, callout, and Maya coverage option."
+            },
+            {
+              "id": "drive",
+              "label": "Drive manager log and safety reminder",
+              "whereVisible": "scene_02_kpi_shift_plan.workSurface.sourceTabs.drive and morning_operating_workspace.sourceWorkspace.files",
+              "summary": "Jordan follow-through note, late line check, hard-to-read label, and hot-hold documentation reminder."
+            }
+          ],
+          "studentAction": "Send Mina a pre-rush Slack message connecting KPIs to staffing and floor verification.",
+          "outputArtifact": {
+            "id": "scene_02_kpi_shift_plan",
+            "label": "KPI and shift plan",
+            "format": "Slack message"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.scene_02_kpi_shift_plan"
+          ],
+          "continuity": [
+            "The plan informs the line check and later coaching conversation."
+          ],
+          "authenticityCheck": "Mid-level owner-operators turn daily KPIs into manager-facing actions before a rush."
+        },
+        "next": "transition_floor_walk"
+      },
+      "transition_floor_walk": {
+        "id": "transition_floor_walk",
+        "type": "section_transition",
+        "section": 2,
+        "title": "Walk the Operation",
+        "content": "You have a plan. Now you need direct evidence from the restaurant before lunch starts.",
+        "illustration": "/scenes/transition_floor_walk.png",
+        "imageBrief": "A first-person view moving from the manager station toward the prep line. Crew members are stocking containers and a drive-thru headset hangs near the counter.",
+        "next": "scene_03_line_check"
+      },
+      "scene_03_line_check": {
+        "id": "scene_03_line_check",
+        "type": "physical_playground",
+        "section": 2,
+        "title": "Pre-Rush Line Check",
+        "content": "Inspect the prep line before lunch. Use the visible labels, temperatures, and station condition to document what needs correction. Your written observations will become the source notes for coaching Jordan before the rush.",
+        "simulatedAction": "Perform a pre-rush line check for food safety, labeling, prep readiness, and service bottlenecks.",
+        "learningGoal": "Practice turning a store walk into concrete observations and corrective action that can be used in a focused team coaching conversation.",
+        "background": {
+          "filename": "public/scenes/scene_03_line_check.png",
+          "prompt": "A 16:9 first-person view of a quick-service restaurant prep line before lunch. The foreground shows stainless cold wells with labeled food pans, a hot-hold unit, a prep counter with sanitizer bucket, tongs, gloves, a thermometer, and a small drive-thru timer screen in the background. Include clear zones for interactive closeups: chicken hot-hold pan, salsa cold pan, sanitizer bucket, prep-label rail, drive-thru timer. Warm realistic illustrated style, no answer captions.",
+          "coordinateMap": [
+            {
+              "label": "cold well",
+              "role": "workspace",
+              "x": 8,
+              "y": 42,
+              "w": 42,
+              "h": 34
+            },
+            {
+              "label": "hot-hold unit",
+              "role": "workspace",
+              "x": 54,
+              "y": 34,
+              "w": 25,
+              "h": 32
+            },
+            {
+              "label": "sanitizer bucket",
+              "role": "target",
+              "x": 78,
+              "y": 62,
+              "w": 10,
+              "h": 13
+            },
+            {
+              "label": "drive-thru timer",
+              "role": "control",
+              "x": 78,
+              "y": 15,
+              "w": 14,
+              "h": 12
+            },
+            {
+              "label": "empty prep counter",
+              "role": "empty_space",
+              "x": 35,
+              "y": 74,
+              "w": 30,
+              "h": 12
+            }
+          ]
+        },
+        "digitalPrimitives": [
+          "read_label_from_image",
+          "read_monitor_value",
+          "inspect_image",
+          "select_observed_finding",
+          "type_text"
+        ],
+        "physicalWorkDesign": {
+          "realWorkflowScript": "Walk to the prep line, read the hot-hold and cold-well labels, check temperatures against the visible standard, verify sanitizer and utensil readiness, glance at the service timer, then record corrective observations for the shift lead and manager.",
+          "decomposition": {
+            "evidence": [
+              "Hot chicken pan label and temperature display",
+              "Cold salsa pan label and temperature display",
+              "Sanitizer bucket change-time label",
+              "Drive-thru timer reading",
+              "Manager log reminder about late line check"
+            ],
+            "objects": [
+              "hot chicken pan",
+              "salsa pan",
+              "sanitizer bucket",
+              "thermometer display",
+              "drive-thru timer"
+            ],
+            "targets": [
+              "line-check observation note",
+              "corrective action follow-up"
+            ],
+            "procedure": [
+              "Inspect the hot chicken pan",
+              "Inspect the cold salsa pan",
+              "Inspect sanitizer readiness",
+              "Read the drive-thru timer",
+              "Record observations"
+            ],
+            "stateChanges": [
+              "Observed surfaces are marked reviewed",
+              "Corrective observations are captured for grading"
+            ]
+          },
+          "actionClassification": [
+            {
+              "action": "Read line labels and temperatures",
+              "classification": "inspect",
+              "primitive": "read_label_from_image",
+              "mappingRationale": "Success depends on visible label and temperature evidence."
+            },
+            {
+              "action": "Record corrective observations",
+              "classification": "type",
+              "primitive": "type_text",
+              "mappingRationale": "The owner must document what they observed and what should change."
+            }
+          ],
+          "mainSceneRole": "The main scene is the actual restaurant prep line with inspectable food-safety and service evidence.",
+          "popupSceneRoles": [
+            "Readable closeups for labels, temperatures, sanitizer, and timer."
+          ],
+          "statePersistence": "Reviewed surfaces remain marked as inspected; submitted observations persist into grading.",
+          "antiButtonAudit": "No generic complete button substitutes for the inspection; the player must inspect visible surfaces and write observations."
+        },
+        "interactiveObjects": [
+          {
+            "id": "hot_chicken_pan",
+            "label": "hot chicken pan",
+            "x": 74,
+            "y": 50,
+            "w": 15,
+            "h": 12,
+            "assetId": "hot_chicken_closeup",
+            "assetPath": "public/action-assets/scene_03_line_check/hot_chicken_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "read_label_from_image",
+              "inspect_image"
+            ],
+            "readableText": "Grilled chicken | pulled 10:05 | discard 2:05 | hot hold 131 F",
+            "playerInstruction": "Inspect the hot chicken pan label and temperature.",
+            "requiresObservationText": true,
+            "observationPrompt": "What should be corrected or verified?",
+            "observationPlaceholder": "Record the issue and action, if any.",
+            "expectedObservation": "Hot chicken is below the 135 F hot-hold threshold and needs immediate corrective action such as reheating/discarding per policy and documenting the correction.",
+            "required": true
+          },
+          {
+            "id": "salsa_cold_pan",
+            "label": "salsa pan",
+            "x": 8,
+            "y": 62,
+            "w": 14,
+            "h": 11,
+            "assetId": "salsa_closeup",
+            "assetPath": "public/action-assets/scene_03_line_check/salsa_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "read_label_from_image",
+              "inspect_image"
+            ],
+            "readableText": "Fresh salsa | prepped 8:15 | discard 4:15 | cold well 39 F",
+            "playerInstruction": "Inspect the salsa pan label and temperature.",
+            "requiresObservationText": true,
+            "observationPrompt": "What should be corrected or verified?",
+            "observationPlaceholder": "Record the issue and action, if any.",
+            "expectedObservation": "Salsa is labeled and held at an acceptable cold temperature; no correction needed beyond keeping it monitored.",
+            "required": true
+          },
+          {
+            "id": "sanitizer_bucket",
+            "label": "sanitizer bucket",
+            "x": 15,
+            "y": 32,
+            "w": 9,
+            "h": 12,
+            "assetId": "sanitizer_closeup",
+            "assetPath": "public/action-assets/scene_03_line_check/sanitizer_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "inspect_image",
+              "select_observed_finding"
+            ],
+            "readableText": "Sanitizer bucket label says replace every 2 hours; last changed 8:30.",
+            "playerInstruction": "Inspect sanitizer readiness. Current time: 11:25 a.m.",
+            "requiresObservationText": true,
+            "observationPrompt": "What should be corrected or verified?",
+            "observationPlaceholder": "Record the issue and action, if any.",
+            "expectedObservation": "At 11:25 a.m., the sanitizer bucket is overdue because it was last changed at 8:30 and should be replaced, re-tested, and documented before lunch.",
+            "required": true
+          },
+          {
+            "id": "drive_thru_timer",
+            "label": "drive-thru timer",
+            "x": 20,
+            "y": 16,
+            "w": 13,
+            "h": 11,
+            "assetId": "drive_timer_closeup",
+            "assetPath": "public/action-assets/scene_03_line_check/drive_timer_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "read_monitor_value"
+            ],
+            "readableText": "Current average: 4:07 | target: 3:45 | longest car: 5:12",
+            "playerInstruction": "Read the drive-thru timer.",
+            "requiresObservationText": true,
+            "observationPrompt": "What service issue should the shift lead watch?",
+            "observationPlaceholder": "Record the service observation.",
+            "expectedObservation": "Drive-thru is already over target, so the shift lead should assign clear expo/window support and watch bottlenecks before the rush peaks.",
+            "required": true
+          }
+        ],
+        "readableSurfaces": [
+          {
+            "id": "line_check_standard",
+            "label": "line-check standard card",
+            "x": 36,
+            "y": 28,
+            "w": 23,
+            "h": 12,
+            "assetId": "line_check_standard_closeup",
+            "assetPath": "public/action-assets/scene_03_line_check/line_check_standard_closeup.png",
+            "playerInstruction": "Read this standards card before inspecting the line. You will use these numbers and rules to decide whether the hot chicken, salsa, sanitizer, labels, and timer meet the standard. You can come back to this card anytime during the line check.",
+            "readableText": "Line-check standard: hot hold at or above 135 F; cold hold at or below 41 F; sanitizer in range and changed on schedule; labels readable with prep and discard times; pre-rush timer target 3:45.",
+            "required": true
+          }
+        ],
+        "requiredObjectIds": [
+          "hot_chicken_pan",
+          "salsa_cold_pan",
+          "sanitizer_bucket",
+          "drive_thru_timer"
+        ],
+        "requiredReadableSurfaceIds": [
+          "line_check_standard"
+        ],
+        "successConditions": [
+          "The player inspects all required surfaces.",
+          "The player documents the hot-hold issue, acceptable salsa condition, sanitizer replacement/re-test need, and drive-thru timer concern."
+        ],
+        "failureModes": [
+          "Treats the line check as complete without reading the standards card.",
+          "Misses the hot chicken temperature concern.",
+          "Documents only generic cleanliness without corrective action."
+        ],
+        "gradingEvidence": [
+          "actionLog.scene_03_line_check",
+          "observations.scene_03_line_check"
+        ],
+        "visualAssetsRequired": {
+          "backgrounds": [
+            {
+              "id": "scene_03_line_check_bg",
+              "displayName": "Prep line background",
+              "assetType": "background",
+              "filename": "public/scenes/scene_03_line_check.png",
+              "prompt": "Draw a realistic illustrated quick-service prep line before lunch with cold wells, hot-hold unit, sanitizer bucket, prep labels, and drive-thru timer. Leave clear readable zones matching the coordinate map."
+            }
+          ],
+          "readableSurfaces": [
+            {
+              "id": "hot_chicken_closeup",
+              "displayName": "Hot chicken pan closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_line_check/hot_chicken_closeup.png",
+              "prompt": "Readable closeup of a hot-hold pan label for grilled chicken showing pulled 10:05, discard 2:05, and a temperature display reading 131 F. Do not add answer captions, checkmarks, warning labels, conclusions, or completed notes."
+            },
+            {
+              "id": "salsa_closeup",
+              "displayName": "Salsa pan closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_line_check/salsa_closeup.png",
+              "prompt": "Readable closeup of a cold salsa pan label showing prepped 8:15, discard 4:15, and cold well 39 F. Do not add answer captions."
+            },
+            {
+              "id": "sanitizer_closeup",
+              "displayName": "Sanitizer bucket closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_line_check/sanitizer_closeup.png",
+              "prompt": "Readable closeup of a sanitizer bucket with a small label reading last changed 8:30 and replace every 2 hours. Do not show a test strip. Do not add answer captions."
+            },
+            {
+              "id": "drive_timer_closeup",
+              "displayName": "Drive-thru timer closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_line_check/drive_timer_closeup.png",
+              "prompt": "Readable closeup of a quick-service drive-thru timer screen showing Current average 4:07, target 3:45, and longest car 5:12. Do not add answer captions, checkmarks, warning labels, conclusions, or completed notes."
+            },
+            {
+              "id": "line_check_standard_closeup",
+              "displayName": "Line-check standard card closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_line_check/line_check_standard_closeup.png",
+              "prompt": "Readable zoomed-in closeup from the same prep-line scene showing a laminated line-check standard card on or near the prep counter. The card must clearly read: hot hold at or above 135 F; cold hold at or below 41 F; sanitizer in range and changed on schedule; labels readable with prep and discard times; pre-rush timer target 3:45. No white background, no isolated card, no answer captions."
+            }
+          ]
+        },
+        "illustration": "/scenes/scene_03_line_check.png",
+        "imageBrief": "A quick-service prep line with readable food labels, temperature displays, sanitizer bucket, and drive-thru timer. The player should be able to inspect actual surfaces rather than reading a summary.",
+        "next": "transition_coaching"
+      },
+      "transition_coaching": {
+        "id": "transition_coaching",
+        "type": "section_transition",
+        "section": 3,
+        "title": "Turn the Walk Into Follow-Through",
+        "content": "The line check gave you concrete evidence. Now you need to coach Jordan and communicate without turning routine operating issues into drama.",
+        "illustration": "/scenes/transition_coaching.png",
+        "imageBrief": "A quiet corner near the manager station after the line check. The prep line remains visible in the background, and Jordan is finishing a task near the counter.",
+        "next": "scene_04_coaching_prep"
+      },
+      "scene_04_coaching_prep": {
+        "id": "scene_04_coaching_prep",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Prepare the Jordan Coaching Note",
+        "content": "Before you pull Jordan aside, use your own line-check notes and your own KPI plan to create coaching items. Jordan is the lunch shift lead, so focus on operational gaps he can fix before the rush: checklist follow-through, safe holding, sanitizer readiness, labels/documentation, and drive-thru support. Use the KPI plan only to explain why each fix matters; do not recite the whole KPI dashboard to Jordan.",
+        "contextIllustration": "/scenes/scene_04_shift_lead_coaching.png",
+        "appWindow": "doc",
+        "windowTitle": "Jordan Coaching Prep",
+        "workSurface": {
+          "kind": "document_editor",
+          "device": "desktop",
+          "appWindow": "doc",
+          "title": "Jordan Coaching Prep Note",
+          "sourceTabs": [
+            {
+              "id": "jordan_role",
+              "label": "Jordan role",
+              "content": "Jordan Reed is the lunch shift lead. He is strong with guests, but the manager log says his checklist follow-through and pre-rush delegation have been inconsistent.\n\nCoach him on operational ownership, not business strategy. He needs to leave the conversation knowing which floor issues he owns before lunch and why those fixes matter to service, safety, brand standards, and cost control."
+            },
+            {
+              "id": "line_check_facts",
+              "label": "Line-check findings",
+              "content": "Notes you wrote in the line-check playground:\n\n{{response.scene_03_line_check.observations}}\n\nUse these notes as the source for what to raise with Jordan. Do not add issues you did not observe; if your note says salsa is in range, treat it as a working control, not a coaching problem."
+            },
+            {
+              "id": "kpi_standards",
+              "label": "Your KPI plan",
+              "content": "Plan you wrote for Mina earlier:\n\n{{response.scene_02_kpi_shift_plan}}\n\nUse this plan to answer which KPI or operating standard each Jordan action supports. Do not coach Jordan on owner-level dashboard strategy; translate it into floor ownership."
+            }
+          ]
+        },
+        "prompt": "Fill out the coaching note. For each floor issue from the line check, name what Jordan should do before lunch and what KPI or operating standard the fix supports.",
+        "definition": {
+          "itemLabel": "Coaching item",
+          "bindingKey": "scene_04_coaching_prep",
+          "initialCount": 3,
+          "minItems": 3,
+          "maxItems": 3,
+          "presentation": "cards",
+          "fields": [
+            {
+              "key": "floor_issue",
+              "label": "Floor issue to raise with Jordan",
+              "placeholder": "",
+              "multiline": true,
+              "rows": 2
+            },
+            {
+              "key": "jordan_action",
+              "label": "What Jordan should do before lunch",
+              "placeholder": "",
+              "multiline": true,
+              "rows": 2
+            },
+            {
+              "key": "impact",
+              "label": "KPI / standard impact",
+              "placeholder": "",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "deskWorkDesign": {
+          "roleFamily": "restaurant operations",
+          "workSurface": "Structured coaching prep note",
+          "inputArtifacts": [
+            {
+              "id": "jordan_role",
+              "label": "Jordan role",
+              "whereVisible": "scene_04_coaching_prep.workSurface.sourceTabs.jordan_role",
+              "summary": "Jordan is the lunch shift lead and owns pre-rush floor execution, not owner-level KPI strategy."
+            },
+            {
+              "id": "line_check_facts",
+              "label": "Line-check findings",
+              "whereVisible": "scene_04_coaching_prep.workSurface.sourceTabs.line_check_facts",
+              "summary": "The player's own line-check observation notes from the playground."
+            },
+            {
+              "id": "kpi_standards",
+              "label": "Your KPI plan",
+              "whereVisible": "scene_04_coaching_prep.workSurface.sourceTabs.kpi_standards",
+              "summary": "The player's earlier Slack plan to Mina, used to connect Jordan's floor actions to KPIs and operating standards."
+            }
+          ],
+          "studentAction": "Use the player's own line-check notes and KPI plan to map each coaching issue to a Jordan action and the KPI or operating standard it supports.",
+          "outputArtifact": {
+            "id": "scene_04_coaching_prep",
+            "label": "Jordan coaching prep note",
+            "format": "structured coaching note"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.scene_04_coaching_prep"
+          ],
+          "continuity": [
+            "The prep note appears in the Jordan voice meeting as the player's meeting note."
+          ],
+          "authenticityCheck": "Owner-operators often turn a floor walk into a focused shift-lead coaching conversation before the rush."
+        },
+        "next": "scene_04_shift_lead_coaching"
+      },
+      "scene_04_shift_lead_coaching": {
+        "id": "scene_04_shift_lead_coaching",
+        "type": "voice_meeting",
+        "section": 3,
+        "title": "Coach Jordan Before the Rush",
+        "content": "Have a short in-person coaching conversation with Jordan. Use the prep note you just wrote, keep it specific, fair, and operational.",
+        "npcId": "jordan",
+        "meetingMode": "in_person",
+        "presentation": "in_person",
+        "goalPrompt": "You are Jordan Reed, lunch shift lead at Harbor Bites Express. You are friendly and want to do well, but you get defensive if the owner sounds vague or accusatory. You respond well when the owner ties a real floor finding to a concrete action you can own before lunch and explains why it matters to service, safety, brand standards, waste, or labor efficiency. You know the lunch rush is coming and you are worried about being short-staffed. Wrap up the conversation once the owner has named the key line-check issues, linked them to operational impact, you have repeated a clear rush plan, and you have accepted one concrete follow-up commitment. Do not continue asking new questions after that; close with a brief commitment line.",
+        "playerGoal": "Coach Jordan from the line-check findings. Clarify which floor gaps he owns before lunch and connect the fixes to food safety, brand standards, waste, drive-thru time, order accuracy, or labor efficiency.",
+        "endpoint": "End when Jordan has repeated a clear rush plan and accepted one follow-up commitment.",
+        "successCriteria": "The player should cite specific floor observations, avoid vague blame, translate KPI/standard context into Jordan-owned actions, confirm corrective actions, and set a follow-up without taking over the shift.",
+        "meetingContext": "You just inspected the line at 11:25 and found hot chicken at 131 F, sanitizer changed at 8:30 and overdue, salsa in range, and drive-thru timing above target. Jordan is the lunch shift lead.",
+        "prepNoteKey": "scene_04_coaching_prep",
+        "prepNoteTitle": "Your Jordan coaching prep note",
+        "prepReferenceTitle": "Your line-check notes",
+        "prepReferenceContent": "Notes from your line-check playground:\n\n{{response.scene_03_line_check.observations}}",
+        "minTurns": 4,
+        "maxTurns": 8,
+        "voiceName": "alloy",
+        "illustration": "/scenes/scene_04_shift_lead_coaching.png",
+        "imageBrief": "In-person conversation view inside a quick-service restaurant near the manager station. Jordan, a shift lead wearing a Harbor Bites Express cap and headset, stands with the prep line behind them. The owner is facing Jordan from a first-person angle. The scene should show a real workplace coaching moment, not a video call.",
+        "next": "scene_06_daily_action_memo"
+      },
+      "scene_06_daily_action_memo": {
+        "id": "scene_06_daily_action_memo",
+        "type": "kanban_board",
+        "section": 3,
+        "title": "Build Tomorrow's Pre-Rush Operating Board",
+        "content": "The lunch rush is over. Build Mina a tomorrow-morning operating board by dragging every required task into the time window where it belongs. Use the constraint on each card; do not leave required line-check or KPI follow-up unscheduled.",
+        "appWindow": "kanban",
+        "windowTitle": "Tomorrow's Pre-Rush Operating Board",
+        "bindingKey": "scene_06_daily_action_memo",
+        "layout": "timeline",
+        "hideRationale": true,
+        "requireAllCardsMoved": true,
+        "referenceTitle": "Timing constraints",
+        "referenceContent": "Use these rules while scheduling the cards:\n\n- Food-safety corrections and sanitizer re-tests must be complete before the lunch rush, not reviewed afterward.\n- The line check must happen before any correction window, because the correction depends on visible readings and labels.\n- Salsa at 39 F is in range; it should be confirmed, not treated as a defect.\n- Drive-thru staffing must be set before the rush starts; drive-thru results can only be reviewed after the rush.\n- Waste and service metrics should be reviewed after lunch, once there is new data.\n- Mina verification should happen after Jordan-owned fixes are due and before the rush begins.",
+        "columns": [
+          {
+            "id": "unscheduled",
+            "label": "Unscheduled"
+          },
+          {
+            "id": "opening_830",
+            "label": "8:30 Opening setup"
+          },
+          {
+            "id": "pre_rush_1030",
+            "label": "10:30 Pre-rush check"
+          },
+          {
+            "id": "corrections_1100",
+            "label": "11:00 Corrections window"
+          },
+          {
+            "id": "final_setup_1130",
+            "label": "11:30 Final rush setup"
+          },
+          {
+            "id": "rush_1200",
+            "label": "12:00 Lunch rush"
+          },
+          {
+            "id": "review_200",
+            "label": "2:00 Post-lunch review"
+          }
+        ],
+        "cards": [
+          {
+            "id": "confirm_callout_coverage",
+            "text": "Confirm callout coverage and targeted Maya placement",
+            "initialColumn": "unscheduled",
+            "constraint": "Before final station setup; labor is already 31.8%, so extra help must be assigned to a specific rush bottleneck."
+          },
+          {
+            "id": "complete_line_check",
+            "text": "Complete the required line check against the standards card",
+            "initialColumn": "unscheduled",
+            "constraint": "Must happen before corrections; standards include hot hold >=135 F, cold hold <=41 F, sanitizer on schedule, and timer target 3:45."
+          },
+          {
+            "id": "confirm_salsa_control",
+            "text": "Confirm salsa label and 39 F cold-hold reading",
+            "initialColumn": "unscheduled",
+            "constraint": "This is a working control, not a defect; confirm it during the line check and avoid creating unnecessary corrective work."
+          },
+          {
+            "id": "correct_hot_chicken",
+            "text": "Correct and document hot chicken below 135 F",
+            "initialColumn": "unscheduled",
+            "constraint": "Depends on the line check; must be corrected before the lunch rush because today it read 131 F."
+          },
+          {
+            "id": "replace_sanitizer",
+            "text": "Replace, re-test, and document sanitizer bucket",
+            "initialColumn": "unscheduled",
+            "constraint": "Depends on the line check; must be completed before prep-line rush use because today it was overdue at 11:25."
+          },
+          {
+            "id": "mina_verify_jordan",
+            "text": "Mina verifies Jordan checklist completion",
+            "initialColumn": "unscheduled",
+            "constraint": "After Jordan-owned fixes are due and before the rush; if today's coaching left ownership unclear, Mina clarifies it here."
+          },
+          {
+            "id": "assign_drive_thru_support",
+            "text": "Assign drive-thru support and expo/window coverage",
+            "initialColumn": "unscheduled",
+            "constraint": "Before 12:00; drive-thru was 4:07 pre-rush and needs station coverage before tickets pile up."
+          },
+          {
+            "id": "monitor_rush_timer",
+            "text": "Monitor drive-thru timer and station support during lunch",
+            "initialColumn": "unscheduled",
+            "constraint": "During the rush; this is live execution, not a post-lunch report."
+          },
+          {
+            "id": "review_waste_speed",
+            "text": "Review chicken waste and drive-thru results after lunch",
+            "initialColumn": "unscheduled",
+            "constraint": "After lunch only; waste and service results need fresh rush data before Mina can judge whether the fix worked."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "restaurant operations",
+          "workSurface": "Tomorrow pre-rush operating board",
+          "inputArtifacts": [
+            {
+              "id": "timing_constraints",
+              "label": "Timing constraints",
+              "whereVisible": "scene_06_daily_action_memo.referenceContent and task-card constraints",
+              "summary": "Food-safety, staffing, verification, rush execution, and post-lunch review timing rules."
+            },
+            {
+              "id": "line_check_facts",
+              "label": "Line-check findings",
+              "whereVisible": "scene_06_daily_action_memo.cards",
+              "summary": "Hot chicken 131 F, salsa 39 F, overdue sanitizer, drive-thru above target."
+            },
+            {
+              "id": "kpi_facts",
+              "label": "KPI and staffing facts",
+              "whereVisible": "scene_06_daily_action_memo.cards",
+              "summary": "Labor 31.8%, drive-thru slow, chicken waste high, one callout."
+            }
+          ],
+          "studentAction": "Schedule every required next-day operating task into the correct time window using visible constraints.",
+          "outputArtifact": {
+            "id": "scene_06_daily_action_memo",
+            "label": "Tomorrow pre-rush operating board",
+            "format": "kanban_board"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.scene_06_daily_action_memo"
+          ],
+          "continuity": [
+            "The board converts the morning KPIs, line-check findings, and Jordan coaching outcome into tomorrow's timed operating plan."
+          ],
+          "authenticityCheck": "Owner-operators turn daily issues into pre-rush timing, ownership, and verification routines."
+        },
+        "next": "assessment_gate"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Restaurant Operating Day Is Complete",
+        "content": "You have reviewed the numbers, walked the line, coached the shift lead, and scheduled tomorrow's required operating follow-up.",
+        "actionLabel": "View Assessment",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A quiet quick-service restaurant after the lunch rush. The manager tablet shows a clean next-day pre-rush operating board with time slots, line-check follow-up, and post-lunch review notes. The counter is clean and the drive-thru lane is visible through the window.",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment in Progress",
+        "content": "Your operating decisions, notes, line-check observations, conversation, and timed follow-through board are being assessed.",
+        "next": "final_report",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Restaurant Owner Simulation Report",
+        "content": "Review your performance as a franchise quick-service restaurant owner-operator.",
+        "next": null,
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "morning_operating_workspace": {
+        "id": "morning_operating_workspace",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Morning Operating Workspace",
+        "content": "Your job today: choose a lunch plan that protects service, labor, and food safety.",
+        "illustration": "/scenes/morning_operating_workspace.png",
+        "imageBrief": "A cream-colored operations dashboard on a manager tablet, with readable KPI rows: Net sales $8,940, Labor 31.8%, Drive-thru 4:18, Chicken waste 18.5 lb, Order accuracy 97.1%. Beside it is a small manager log note about late line check and hard-to-read chicken label. The restaurant prep area is visible in the background.",
+        "next": "scene_01_first_twenty_minutes",
+        "actionLabel": "Choose first 20 minutes",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "70%",
+            "height": "86%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Drive source files",
+              "files": [
+                {
+                  "id": "pos",
+                  "name": "Harbor Bites #1842 operating workbook.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Harbor Bites #1842 operating workbook",
+                  "columns": [
+                    "metric",
+                    "target",
+                    "actual",
+                    "status"
+                  ],
+                  "rows": [
+                    {
+                      "metric": "Net sales",
+                      "target": "vs last Thursday",
+                      "actual": "$8,940, up 4%",
+                      "status": "on_track"
+                    },
+                    {
+                      "metric": "Transactions",
+                      "target": "steady",
+                      "actual": "712, up 6%",
+                      "status": "on_track"
+                    },
+                    {
+                      "metric": "Labor",
+                      "target": "29.5%-30.5%",
+                      "actual": "31.8%",
+                      "status": "warning"
+                    },
+                    {
+                      "metric": "Drive-thru ticket time",
+                      "target": "3:45",
+                      "actual": "4:18",
+                      "status": "warning"
+                    },
+                    {
+                      "metric": "Order accuracy",
+                      "target": "98.0%",
+                      "actual": "97.1%",
+                      "status": "warning"
+                    },
+                    {
+                      "metric": "Chicken waste",
+                      "target": "10-13 lb",
+                      "actual": "18.5 lb",
+                      "status": "critical"
+                    }
+                  ],
+                  "category": "Operating KPIs",
+                  "lookFor": "Use this table to compare traffic, labor, speed, order accuracy, and waste before choosing a lunch plan."
+                },
+                {
+                  "id": "manager_log",
+                  "name": "Yesterday manager log.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Manager log",
+                  "sections": [
+                    {
+                      "heading": "Manager log",
+                      "body": "Jordan is shift lead for lunch. Strong with guests, inconsistent with checklist follow-through. Yesterday: line check completed late; chicken pan label hard to read; drive-thru held at 4+ minutes during 12:00 rush."
+                    }
+                  ],
+                  "category": "Team context",
+                  "lookFor": "Use this log to understand Jordan’s follow-through risk and which checklist items may need owner attention."
+                },
+                {
+                  "id": "safety_reminder",
+                  "name": "Hot-hold documentation reminder.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Brand / safety reminder",
+                  "sections": [
+                    {
+                      "heading": "Brand / safety reminder",
+                      "body": "Regional brand operations flagged two stores this week for missing hot-hold temperature documentation. Harbor Bites #1842 had no violation, but documentation must be timely and readable."
+                    }
+                  ],
+                  "category": "Food safety",
+                  "lookFor": "Use this reminder to find the documentation and temperature expectations that cannot be skipped during a busy lunch."
+                }
+              ]
+            },
+            {
+              "id": "schedule",
+              "label": "Calendar",
+              "kind": "calendar",
+              "title": "Thursday lunch schedule",
+              "sections": [
+                {
+                  "heading": "Lunch staffing note",
+                  "body": "Lunch forecast: 11:30-1:30 will be heavy because of school early release at 12:30. One crew member called out for 11:00-3:00. Calling in Maya for 11:30-2:00 adds about $54 in labor."
+                }
+              ],
+              "lookFor": "Use this schedule to compare lunch rush timing, the callout, prep windows, and when Jordan can realistically help."
+            }
+          ],
+          "continueLabel": "Choose first 20 minutes"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "morning_operating_workspace.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      }
+    }
+  },
+  "npcs": {
+    "mina": {
+      "id": "mina",
+      "name": "Mina Patel",
+      "role": "General Manager",
+      "persona": "A capable, numbers-oriented general manager who wants clear owner direction before lunch. Mina respects practical plans that balance guest experience, crew morale, labor, and standards."
+    },
+    "jordan": {
+      "id": "jordan",
+      "name": "Jordan Reed",
+      "role": "Lunch Shift Lead",
+      "persona": "A friendly, energetic shift lead who is strong with guests but inconsistent with checklist follow-through. Jordan responds best to specific evidence, respect, and clear ownership."
+    }
+  },
+  "rubric": {
+    "simulation_id": "restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の20分判断",
+            "evidenceSceneIds": [
+              "scene_01_first_twenty_minutes"
+            ],
+            "rubric_text": "9-10: 営業前の限られた時間で、食品安全、提供速度、人員配置、売上影響を見て最初の動きを選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "数値と人員の計画",
+            "evidenceSceneIds": [
+              "scene_02_kpi_shift_plan"
+            ],
+            "rubric_text": "9-10: 売上、提供時間、配置、ボトルネックを踏まえて、今日の運営計画を具体的に書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "ライン確認",
+            "evidenceSceneIds": [
+              "scene_03_line_check"
+            ],
+            "rubric_text": "9-10: 温度不良、許容範囲食品、消毒液交換と再検査、提供時間の懸念を見つけて記録できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "店長補佐への指導",
+            "evidenceSceneIds": [
+              "scene_04_shift_lead_coaching"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の指導で、問題を責めずに共有し、期待行動、確認方法、支援を伝えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "翌日の運営板",
+            "evidenceSceneIds": [
+              "scene_06_daily_action_memo"
+            ],
+            "rubric_text": "9-10: 翌日に向けて、食品安全、配置、仕込み、確認タイミングを実行可能な運営板に整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  },
+  "intro": {
+    "welcomeTitle": "Run a Typical Franchise QSR Operating Day",
+    "welcomeBody": "You will play a mid-level owner-operator of a fictional quick-service franchise unit. Your work is to read the numbers, walk the restaurant, coach people, maintain brand standards, and turn follow-through into a timed operating plan.",
+    "steps": [
+      {
+        "label": "Read",
+        "content": "Start from the daily operating workspace and manager notes."
+      },
+      {
+        "label": "Inspect",
+        "content": "Walk the prep line and record what the evidence shows."
+      },
+      {
+        "label": "Coach",
+        "content": "Use a spoken workplace conversation to turn findings into ownership."
+      },
+      {
+        "label": "Document",
+        "content": "Build tomorrow's pre-rush operating board."
+      }
+    ]
+  },
+  "glossary": {
+    "prime cost": "The combined cost of labor and cost of goods sold; a key restaurant profitability measure.",
+    "labor percentage": "Labor cost as a percentage of sales for a period.",
+    "hot hold": "Holding cooked hot food at a safe required temperature until service.",
+    "cold hold": "Holding cold food at a safe required temperature until service.",
+    "line check": "A manager or owner inspection of prep-line readiness, labels, temperatures, cleanliness, and service setup.",
+    "drive-thru ticket time": "The measured time from order or arrival to handoff for drive-thru guests.",
+    "comp": "A complimentary item or refund used for guest recovery."
+  },
+  "sample_answers": {
+    "scene_02_kpi_shift_plan": "The student should mention that traffic is up, labor is already above target, drive-thru is slow, waste is high, and the callout threatens rush execution. A strong plan may approve Maya for a targeted 11:30-2:00 window if assigned to expo/window or prep recovery, not as vague extra help. It should assign Jordan to checklist completion and drive-thru support, then verify hot-hold, sanitizer, labels, and timer evidence before lunch.",
+    "scene_04_coaching_prep": "A strong coaching prep note should map line-check issues to Jordan-owned actions and impact: hot chicken at 131 F means correct/document hot-hold for food safety, brand standards, and waste; sanitizer overdue at 11:25 after an 8:30 change means replace/re-test/document for food safety and checklist discipline; drive-thru at 4:07 means assign expo/window support for ticket time, accuracy, and labor efficiency. Salsa at 39 F should not be treated as a problem.",
+    "scene_06_daily_action_memo": "Strong board placement: callout coverage at 8:30 opening setup; line check and salsa confirmation at 10:30 pre-rush check; hot chicken correction and sanitizer replacement/re-test at 11:00 corrections window; Mina verification and drive-thru support assignment at 11:30 final rush setup; drive-thru timer monitoring at 12:00 lunch rush; chicken waste and drive-thru results review at 2:00 post-lunch review. Salsa at 39 F should be treated as in range, not as a defect."
+  }
+}

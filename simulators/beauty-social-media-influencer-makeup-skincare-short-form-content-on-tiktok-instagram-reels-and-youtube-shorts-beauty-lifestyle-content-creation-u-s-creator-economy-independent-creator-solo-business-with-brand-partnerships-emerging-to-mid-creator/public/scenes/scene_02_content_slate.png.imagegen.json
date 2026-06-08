@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-19T04:26:09+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_02_content_slate",
+  "itemId": "scene_02_content_slate",
+  "promptHash": "52ae69afd813d2fd",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/beauty-social-media-influencer-makeup-skincare-short-form-content-on-tiktok-instagram-reels-and-youtube-shorts-beauty-lifestyle-content-creation-u-s-creator-economy-independent-creator-solo-business-with-brand-partnerships-emerging-to-mid-creator/src/data/scene-config.json"
+}

@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-27T15:17:21+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "call_debrief",
+  "itemId": "call_debrief",
+  "promptHash": "6cda666044ce6079",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst/public/visual-refs/npcs/leo.png",
+    "simulators/vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst/public/visual-refs/locations/northstar-office.png"
+  ],
+  "sourceFile": "simulators/vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst/src/data/scene-config.json"
+}

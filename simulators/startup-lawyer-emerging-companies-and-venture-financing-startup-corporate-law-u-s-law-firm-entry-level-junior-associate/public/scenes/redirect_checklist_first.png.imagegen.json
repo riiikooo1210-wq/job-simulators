@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-18T14:03:09+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "redirect_checklist_first",
+  "itemId": "redirect_checklist_first",
+  "promptHash": "a24a313cfa1cd600",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/IMAGE_PROMPTS.md"
+}

@@ -1,0 +1,1727 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "For a mid-level wedding planner inside a wedding venue, the source-derived job mix is dominated by timeline/vendor artifact work, client and vendor communication, and judgment under constraints, with meaningful but not dominant physical venue walkthrough work. O*NET is only a broad event-planning proxy; the simulator weights selected venue-side web/blog sources, WeddingWire's responsibility breakdown, and wedding-specific Reddit signals about timelines, vendor coordination, setup, room flips, rain plans, and venue-scope boundaries much more heavily.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Ribby Hall describes venue wedding-day work such as ceremony-room dressing, placing personal touches, seating guests, organizing the processional, and finishing the reception room.",
+          "Easy Weddings describes venue-coordinator logistics, supplier briefing, emotional support, and venue turnaround.",
+          "Reddit wedding-planning discussions repeatedly mention setup, breakdown, decor placement, room flips, pack-up, and day-of execution."
+        ],
+        "simulatorImplication": "Include a physical ballroom setup playground where the player manipulates visible objects and documents observations, rather than narrating setup as a completed task."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Firmly Rooted Events emphasizes email coordination, final-details meetings, venue walkthroughs, rehearsal preparation, vendor calls, and behind-the-scenes planning work.",
+          "WeddingWire describes vendor coordination through calls, emails, contracts, meetings, site walkthroughs, equipment requests, load-in, setup, breakdown, and timeline work.",
+          "Planner-facing Reddit discussions emphasize timelines, spreadsheets, vendor inputs, and consolidating details into one executable schedule."
+        ],
+        "simulatorImplication": "Make the player read a final details workspace, audit a flawed timeline, and compose vendor DM replies in realistic venue work surfaces."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "B Loved Boston frames the wedding day as starting with the timeline before venue arrival and onsite coordination.",
+          "Timeline errors, weather contingencies, venue scope boundaries, and vendor conflicts require prioritization and risk judgment.",
+          "The O*NET event planner proxy emphasizes coordination, judgment, and problem solving across event constraints."
+        ],
+        "simulatorImplication": "Use triage, timeline repair, and meeting decisions that require the player to identify dependencies instead of choosing generic reassuring answers."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "WeddingWire emphasizes wedding-day timeline creation, floor plan ownership, vendor logistics, and service timing.",
+          "Wedding timeline discussions show that incomplete or incorrect documentation creates downstream issues for vendors and clients.",
+          "Coordinator task threads mention spreadsheets, timeline creation, final vendor notes, and setup documentation."
+        ],
+        "simulatorImplication": "Require typed artifacts: a timeline audit, client meeting prep, setup note, and vendor DM replies."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Easy Weddings describes the venue coordinator as balancing logistics, supplier briefing, and emotional support.",
+          "Ribby Hall describes greeting and supporting the couple and bridal party while cueing ceremony flow.",
+          "Wedding coordinators are valued for protecting the couple from logistics and calming stressful expectation gaps.",
+          "Venue planners must explain boundaries between venue support, external planners, and client expectations."
+        ],
+        "simulatorImplication": "Include an in-person voice meeting with the couple where venue laptop document notes stay visible and the player must clarify rain-plan scope without overpromising."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Wedding-day work includes vendor replies, interruptions, and shifting attention between clients, venue staff, and physical setup.",
+          "The selected web/blog sources show constant behind-the-scenes context switching between setup, suppliers, guests, ceremony flow, and reception readiness, but it should not become a passive waiting simulator."
+        ],
+        "simulatorImplication": "Represent interruptions through the final-details workspace and vendor alignment scene, while keeping the playable work active and artifact-based."
+      }
+    },
+    "simulatorPlan": "The active scene mix uses one bounded MCQ with distinct consequence redirects, two structured written artifacts, one physical ballroom setup playground, one in-person voice meeting, and one written vendor DM reply task. This creates the chain of visible input artifact to student action to output artifact to rubric evidence while reflecting the venue wedding planner role.",
+    "activeSceneMixRationale": "The design is not MCQ-dominant: most graded evidence comes from constructed responses, physical setup actions, and spoken communication. Physical work is secondary but concrete because venue planners inspect and correct event spaces."
+  },
+  "storyline": {
+    "gameTitle": "Wedding Planner: Final Details at Willow & Stone",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 0,
+        "label": "Welcome"
+      },
+      {
+        "num": 1,
+        "label": "Final Details Triage"
+      },
+      {
+        "num": 2,
+        "label": "Walkthrough and Client Meeting"
+      },
+      {
+        "num": 3,
+        "label": "Vendor Alignment"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Timeline Audit",
+        "targetNodeId": "scene_02_timeline_audit"
+      },
+      {
+        "label": "Ballroom Setup",
+        "targetNodeId": "scene_03_ballroom_setup"
+      },
+      {
+        "label": "Couple Meeting",
+        "targetNodeId": "scene_05_couple_walkthrough"
+      },
+      {
+        "label": "Vendor Alignment",
+        "targetNodeId": "scene_06_vendor_alignment"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Willow & Stone",
+        "content": "You are a mid-level wedding planner at Willow & Stone Events, a mid-sized wedding venue with a garden ceremony lawn and ballroom reception space. Today you are handling final details for the Rivera-Chen wedding: 120 guests, an outdoor ceremony, indoor reception, vendor handoffs, a possible rain plan, and a couple who needs calm clarity.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "First-person view from a wedding planner's desk at a refined mid-sized wedding venue. A warm cream laptop screen shows the Rivera-Chen final details workspace, a timeline, vendor contact list, rain-plan note, and ballroom setup diagram. Through a window, a garden ceremony lawn and an indoor ballroom doorway are visible. The image should feel polished, operational, and venue-specific.",
+        "next": "briefing_kickoff"
+      },
+      "briefing_kickoff": {
+        "id": "briefing_kickoff",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Final Details Workspace",
+        "content": "Your job today: keep the final wedding plan workable if rain affects setup.",
+        "illustration": "/scenes/briefing_kickoff.png",
+        "imageBrief": "A warm cream venue operations document titled Rivera-Chen final details workspace on a laptop. Visible sections show guest count 120, garden ceremony 4:30 PM, rain-plan trigger 1:30 PM, service aisle policy, timeline concerns, and setup notes. A small message from Maya says: Please triage before the walkthrough.",
+        "next": "scene_01_triage_choice",
+        "actionLabel": "Choose first triage move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Rivera-Chen event folder",
+              "files": [
+                {
+                  "id": "event_overview",
+                  "name": "Event overview.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Event overview",
+                  "sections": [
+                    {
+                      "heading": "Event overview",
+                      "body": "Rivera-Chen wedding at Willow & Stone Events. Guest count: 120. Ceremony on garden lawn at 4:30 PM. Rain backup: ballroom ceremony flip if forecast trigger is met by 1:30 PM. Reception in ballroom, cocktail hour 5:00 PM, dinner service target 6:15 PM, first dance 7:20 PM, speeches before cake."
+                    }
+                  ],
+                  "category": "Event basics",
+                  "lookFor": "Use this file to pin down the event scope: guest count, ceremony and reception locations, rain backup, and the key service milestones."
+                },
+                {
+                  "id": "draft_timeline",
+                  "name": "Draft timeline.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Draft timeline",
+                  "columns": [
+                    "time",
+                    "timeline_item",
+                    "source"
+                  ],
+                  "rows": [
+                    {
+                      "id": "florist_arrival",
+                      "time": "3:00 PM",
+                      "timeline_item": "Florist arrival TBD",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "ceremony_prelude",
+                      "time": "4:00 PM",
+                      "timeline_item": "Ceremony music prelude begins",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "dj_ceremony_start",
+                      "time": "4:00 PM",
+                      "timeline_item": "Ceremony start listed in DJ cue sheet",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "venue_ceremony_start",
+                      "time": "4:30 PM",
+                      "timeline_item": "Ceremony start listed in venue workspace",
+                      "source": "Draft Timeline / Rain Plan Dashboard"
+                    },
+                    {
+                      "id": "cocktail_hour",
+                      "time": "5:00 PM",
+                      "timeline_item": "Cocktail hour begins",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "family_photos",
+                      "time": "5:05-5:40 PM",
+                      "timeline_item": "Family photos listed in garden",
+                      "source": "Draft Timeline / Vendor Notes"
+                    },
+                    {
+                      "id": "ballroom_flip",
+                      "time": "5:30 PM",
+                      "timeline_item": "Ballroom flip complete",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "cake_delivery",
+                      "time": "5:45 PM",
+                      "timeline_item": "Cake delivery",
+                      "source": "Draft Timeline / Venue Policy"
+                    },
+                    {
+                      "id": "dinner_service",
+                      "time": "6:15 PM",
+                      "timeline_item": "Dinner service target",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "first_dance",
+                      "time": "7:20 PM",
+                      "timeline_item": "First dance",
+                      "source": "Draft Timeline / Vendor Notes"
+                    },
+                    {
+                      "id": "speeches",
+                      "time": "TBD",
+                      "timeline_item": "Speeches before cake, exact order TBD",
+                      "source": "Draft Timeline / Vendor Notes"
+                    }
+                  ],
+                  "category": "Timeline",
+                  "lookFor": "Use this table to spot timing conflicts, unclear arrivals, and handoffs that could break if the rain plan or service aisle changes."
+                },
+                {
+                  "id": "vendor_notes",
+                  "name": "Vendor notes.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Venue team",
+                  "previewTitle": "Vendor notes",
+                  "columns": [
+                    "vendor",
+                    "needs"
+                  ],
+                  "rows": [
+                    {
+                      "vendor": "DJ Tessa",
+                      "needs": "final ceremony start, processional names, first dance song, speech order by 2:00 PM"
+                    },
+                    {
+                      "vendor": "Photographer",
+                      "needs": "30 minutes family photos and rain backup location confirmed"
+                    },
+                    {
+                      "vendor": "Catering",
+                      "needs": "east service aisle clear by 5:15 PM"
+                    },
+                    {
+                      "vendor": "Florist Jordan",
+                      "needs": "bins staged only in vendor corner; may arrive close to 3:30 PM"
+                    }
+                  ],
+                  "category": "Vendors",
+                  "lookFor": "Use this file to see vendor arrival needs, setup dependencies, and which questions must be confirmed before the walkthrough."
+                },
+                {
+                  "id": "venue_policy",
+                  "name": "Venue policy - rain and service aisle.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Venue policy",
+                  "sections": [
+                    {
+                      "heading": "Venue policy",
+                      "body": "Rain-plan decision must be communicated to catering, DJ, photo, florist, and the couple before 2:00 PM. Service aisle beside the east wall must stay clear for catering and accessibility. Open flames are not allowed on guest tables."
+                    }
+                  ],
+                  "category": "Venue rules",
+                  "lookFor": "Use this policy to find hard constraints: rain trigger timing, service aisle clearance, cake delivery, photo locations, and staff responsibilities."
+                },
+                {
+                  "id": "client_note",
+                  "name": "Client concerns note.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Client concerns",
+                  "sections": [
+                    {
+                      "heading": "Client concerns",
+                      "body": "Elena worries the indoor rain backup will disappoint family. Marcus wants assurance that vendors have the latest timeline. Both want to avoid family members becoming unpaid coordinators on wedding day."
+                    }
+                  ],
+                  "category": "Client concerns",
+                  "lookFor": "Use this note to understand what the couple is worried about and what they need explained calmly."
+                }
+              ]
+            },
+            {
+              "id": "email",
+              "label": "Email",
+              "kind": "email",
+              "title": "Email",
+              "messages": [
+                {
+                  "id": "client",
+                  "channel": "email",
+                  "from": "Elena Rivera and Marcus Chen",
+                  "timestamp": "8:42 AM",
+                  "body": "Elena is worried that moving indoors will disappoint her family. Marcus wants to know whether vendors have the latest timeline. Please help us understand what is settled before the walkthrough.",
+                  "subject": "Final walkthrough questions",
+                  "linkedFileIds": [
+                    "client_note"
+                  ],
+                  "category": "Email request",
+                  "lookFor": "Use this email to identify who is asking, what they need, the deadline, and any attached or linked source material."
+                }
+              ]
+            },
+            {
+              "id": "weather",
+              "label": "Dashboard",
+              "kind": "dashboard",
+              "title": "Rain Plan Dashboard",
+              "rows": [
+                {
+                  "item": "Rain trigger check",
+                  "time": "1:30 PM",
+                  "owner": "venue planner"
+                },
+                {
+                  "item": "Vendor communication deadline",
+                  "time": "2:00 PM",
+                  "owner": "venue planner"
+                },
+                {
+                  "item": "Garden ceremony start",
+                  "time": "4:30 PM",
+                  "owner": "DJ/photo/catering aligned"
+                }
+              ],
+              "columns": [
+                "item",
+                "time",
+                "owner"
+              ],
+              "lookFor": "Use this dashboard to connect the weather trigger, owner, and setup decision with the timeline before choosing a triage move."
+            }
+          ],
+          "continueLabel": "Choose first triage move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "briefing_kickoff.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      },
+      "scene_01_triage_choice": {
+        "id": "scene_01_triage_choice",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "Choose the First Triage Move",
+        "content": "You have 90 minutes before the couple arrives for the final walkthrough. What is the best first move?",
+        "isPivot": true,
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "Final-details triage",
+          "inputArtifacts": [
+            {
+              "id": "final_details_workspace",
+              "label": "Rivera-Chen final details workspace",
+              "whereVisible": "briefing_kickoff.referenceContent",
+              "summary": "Timeline concerns, venue policy, setup notes, rain-plan trigger, and client concerns."
+            }
+          ],
+          "studentAction": "Choose the first planning move under time pressure.",
+          "outputArtifact": {
+            "id": "triage_choice",
+            "label": "First triage decision",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.scene_01_triage_choice",
+            "branchFlags.scene_01_triage_choice"
+          ],
+          "continuity": [
+            "Each option routes to a distinct immediate consequence before the shared timeline audit."
+          ],
+          "authenticityCheck": "Venue planners often need to decide which dependency to stabilize first before a walkthrough."
+        },
+        "options": [
+          {
+            "id": "timeline_first",
+            "label": "Audit the timeline and dependencies before contacting anyone.",
+            "body": "The timeline is the shared source of truth, so issues and open items should be identified before vendor or client updates.",
+            "branchFlag": "timeline_first"
+          },
+          {
+            "id": "decor_first",
+            "label": "Walk the ballroom first and start moving decor.",
+            "body": "Setup matters, but moving decor before checking the schedule can miss time-sensitive vendor conflicts.",
+            "branchFlag": "decor_first"
+          },
+          {
+            "id": "client_first",
+            "label": "Call Elena first to reassure her about the rain plan.",
+            "body": "Client care matters, but reassurance without a corrected plan can create promises you cannot support.",
+            "branchFlag": "client_first"
+          },
+          {
+            "id": "escalate_first",
+            "label": "Escalate the whole workspace to Maya and wait for direction.",
+            "body": "Maya should know serious risks, but a mid-level planner should first identify the specific concerns and recommendation.",
+            "branchFlag": "escalate_first"
+          }
+        ],
+        "illustration": "/scenes/scene_01_triage_choice.png",
+        "imageBrief": "First-person view of a planner's laptop with the final details workspace on the left and a blank triage note on the right. Four sticky notes on the desk read timeline, decor, client reassurance, and escalate. A calendar chip says Final walkthrough in 90 minutes. The scene should make the evidence visible without feeling like a quiz.",
+        "next": {
+          "branchOn": "scene_01_triage_choice",
+          "cases": {
+            "timeline_first": "redirect_timeline_first",
+            "decor_first": "redirect_decor_first",
+            "client_first": "redirect_client_first",
+            "escalate_first": "redirect_escalate_first"
+          },
+          "default": "redirect_timeline_first"
+        }
+      },
+      "redirect_timeline_first": {
+        "id": "redirect_timeline_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "You Stabilize the Source of Truth",
+        "content": "Good. Maya wants the timeline issues and open items named before anyone sends updates. You open the workspace and start marking concrete corrections.",
+        "illustration": "/scenes/redirect_timeline_first.png",
+        "imageBrief": "Planner desk with the Rivera-Chen timeline highlighted in warm cream. Several dependency lines connect ceremony time, DJ cue list, photographer family photos, cake delivery, dinner service, and rain-plan notification. The mood is focused and under control.",
+        "next": "scene_02_timeline_audit"
+      },
+      "redirect_decor_first": {
+        "id": "redirect_decor_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Room Cannot Answer the Schedule",
+        "content": "The ballroom walkthrough will matter, but the setup team asks which version of the timeline they should follow. You need to repair the schedule dependencies before physical setup choices can stick.",
+        "illustration": "/scenes/redirect_decor_first.png",
+        "imageBrief": "Ballroom doorway with a setup cart waiting, while a staff tablet shows conflicting ceremony and reception times. The decor looks ready but the schedule uncertainty is visible.",
+        "next": "scene_02_timeline_audit"
+      },
+      "redirect_client_first": {
+        "id": "redirect_client_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Reassurance Needs a Plan",
+        "content": "Elena deserves calm communication, but Maya reminds you that vague reassurance will backfire if the DJ, catering, photo, and florist are still on different timelines. First, identify the fixes.",
+        "illustration": "/scenes/redirect_client_first.png",
+        "imageBrief": "A phone draft to Elena sits unsent beside the final details workspace. The message is warm but incomplete, with highlighted missing facts: rain trigger, vendor update, and corrected ceremony time.",
+        "next": "scene_02_timeline_audit"
+      },
+      "redirect_escalate_first": {
+        "id": "redirect_escalate_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Wants a Recommendation",
+        "content": "Maya is available for escalation, but she expects you to bring a specific read: what is wrong, what is unresolved, and what must change. You return to the timeline audit.",
+        "illustration": "/scenes/redirect_escalate_first.png",
+        "imageBrief": "Maya stands near the operations board with a message bubble reading: Bring me the concerns and your recommendation. The Rivera-Chen workspace is open on the planner's tablet.",
+        "next": "scene_02_timeline_audit"
+      },
+      "scene_02_timeline_audit": {
+        "id": "scene_02_timeline_audit",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Audit the Draft Timeline",
+        "content": "Your job today: find timeline risks before vendors arrive.",
+        "appWindow": "doc",
+        "windowTitle": "Rivera-Chen Timeline Audit",
+        "referenceTitle": "Timeline audit source list",
+        "referenceContent": "Review all four task-critical sources: Draft Timeline, Vendor Notes, Venue Policy, and Rain Plan Dashboard.",
+        "definition": {
+          "itemLabel": "Timeline row comment",
+          "bindingKey": "timeline_audit",
+          "minItems": 5,
+          "initialItems": [
+            {
+              "id": "florist_arrival",
+              "time": "3:00 PM",
+              "timeline_item": "Florist arrival TBD",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "ceremony_prelude",
+              "time": "4:00 PM",
+              "timeline_item": "Ceremony music prelude begins",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "dj_ceremony_start",
+              "time": "4:00 PM",
+              "timeline_item": "Ceremony start listed in DJ cue sheet",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "venue_ceremony_start",
+              "time": "4:30 PM",
+              "timeline_item": "Ceremony start listed in venue workspace",
+              "source": "Draft Timeline / Rain Plan Dashboard"
+            },
+            {
+              "id": "cocktail_hour",
+              "time": "5:00 PM",
+              "timeline_item": "Cocktail hour begins",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "family_photos",
+              "time": "5:05-5:40 PM",
+              "timeline_item": "Family photos listed in garden",
+              "source": "Draft Timeline / Vendor Notes"
+            },
+            {
+              "id": "ballroom_flip",
+              "time": "5:30 PM",
+              "timeline_item": "Ballroom flip complete",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "cake_delivery",
+              "time": "5:45 PM",
+              "timeline_item": "Cake delivery",
+              "source": "Draft Timeline / Venue Policy"
+            },
+            {
+              "id": "dinner_service",
+              "time": "6:15 PM",
+              "timeline_item": "Dinner service target",
+              "source": "Draft Timeline"
+            },
+            {
+              "id": "first_dance",
+              "time": "7:20 PM",
+              "timeline_item": "First dance",
+              "source": "Draft Timeline / Vendor Notes"
+            },
+            {
+              "id": "speeches",
+              "time": "TBD",
+              "timeline_item": "Speeches before cake, exact order TBD",
+              "source": "Draft Timeline / Vendor Notes"
+            }
+          ],
+          "fields": [
+            {
+              "key": "status",
+              "label": "Status",
+              "placeholder": "Needs correction, Timing risk, Open item, Missing detail, or Weather dependency"
+            },
+            {
+              "key": "planner_note",
+              "label": "Planner comment",
+              "placeholder": "Name the conflict, risk, missing detail, or open decision in this timeline row.",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 90
+            },
+            {
+              "key": "recommended_fix",
+              "label": "Recommended fix",
+              "placeholder": "Explain the corrected time, sequence, confirmation, or decision needed.",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 100
+            }
+          ],
+          "presentation": "timeline_review"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "Timeline audit document",
+          "inputArtifacts": [
+            {
+              "id": "draft_timeline",
+              "label": "Draft timeline",
+              "whereVisible": "scene_02_timeline_audit Google Drive tab",
+              "summary": "Conflicting ceremony times, rain-dependent family photos, late cake delivery, florist timing, and speech-order open items."
+            },
+            {
+              "id": "vendor_notes",
+              "label": "Vendor notes",
+              "whereVisible": "scene_02_timeline_audit Google Drive tab",
+              "summary": "DJ, photographer, catering, and florist timing needs."
+            },
+            {
+              "id": "venue_policy",
+              "label": "Venue policy",
+              "whereVisible": "scene_02_timeline_audit Google Drive tab",
+              "summary": "Rain-plan communication and service-aisle requirements."
+            },
+            {
+              "id": "rain_plan_dashboard",
+              "label": "Rain Plan Dashboard",
+              "whereVisible": "scene_02_timeline_audit Rain Plan Dashboard tab",
+              "summary": "Rain trigger check, vendor communication deadline, and garden ceremony start."
+            }
+          ],
+          "studentAction": "Review the draft timeline and leave row-level planner comments that name issues, open items, and corrections.",
+          "outputArtifact": {
+            "id": "timeline_audit",
+            "label": "Commented timeline review",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "structuredEntries.timeline_audit"
+          ],
+          "continuity": [
+            "The audit informs the ballroom walkthrough and vendor DM replies."
+          ],
+          "authenticityCheck": "Venue planners convert messy final details into a usable event timeline and vendor communication plan."
+        },
+        "next": "transition_walkthrough",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Rivera-Chen event folder",
+              "files": [
+                {
+                  "id": "draft_timeline",
+                  "name": "Draft timeline.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Draft timeline",
+                  "columns": [
+                    "time",
+                    "timeline_item",
+                    "source"
+                  ],
+                  "rows": [
+                    {
+                      "id": "florist_arrival",
+                      "time": "3:00 PM",
+                      "timeline_item": "Florist arrival TBD",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "ceremony_prelude",
+                      "time": "4:00 PM",
+                      "timeline_item": "Ceremony music prelude begins",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "dj_ceremony_start",
+                      "time": "4:00 PM",
+                      "timeline_item": "Ceremony start listed in DJ cue sheet",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "venue_ceremony_start",
+                      "time": "4:30 PM",
+                      "timeline_item": "Ceremony start listed in venue workspace",
+                      "source": "Draft Timeline / Rain Plan Dashboard"
+                    },
+                    {
+                      "id": "cocktail_hour",
+                      "time": "5:00 PM",
+                      "timeline_item": "Cocktail hour begins",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "family_photos",
+                      "time": "5:05-5:40 PM",
+                      "timeline_item": "Family photos listed in garden",
+                      "source": "Draft Timeline / Vendor Notes"
+                    },
+                    {
+                      "id": "ballroom_flip",
+                      "time": "5:30 PM",
+                      "timeline_item": "Ballroom flip complete",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "cake_delivery",
+                      "time": "5:45 PM",
+                      "timeline_item": "Cake delivery",
+                      "source": "Draft Timeline / Venue Policy"
+                    },
+                    {
+                      "id": "dinner_service",
+                      "time": "6:15 PM",
+                      "timeline_item": "Dinner service target",
+                      "source": "Draft Timeline"
+                    },
+                    {
+                      "id": "first_dance",
+                      "time": "7:20 PM",
+                      "timeline_item": "First dance",
+                      "source": "Draft Timeline / Vendor Notes"
+                    },
+                    {
+                      "id": "speeches",
+                      "time": "TBD",
+                      "timeline_item": "Speeches before cake, exact order TBD",
+                      "source": "Draft Timeline / Vendor Notes"
+                    }
+                  ],
+                  "category": "Timeline",
+                  "lookFor": "Use this table to spot timing conflicts, unclear arrivals, and handoffs that could break if the rain plan or service aisle changes."
+                },
+                {
+                  "id": "vendor_notes",
+                  "name": "Vendor notes.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Venue team",
+                  "previewTitle": "Vendor notes",
+                  "columns": [
+                    "vendor",
+                    "needs"
+                  ],
+                  "rows": [
+                    {
+                      "vendor": "DJ Tessa",
+                      "needs": "final ceremony start, processional names, first dance song, speech order by 2:00 PM"
+                    },
+                    {
+                      "vendor": "Photographer",
+                      "needs": "30 minutes family photos and rain backup location confirmed"
+                    },
+                    {
+                      "vendor": "Catering",
+                      "needs": "east service aisle clear by 5:15 PM"
+                    },
+                    {
+                      "vendor": "Florist Jordan",
+                      "needs": "bins staged only in vendor corner; may arrive close to 3:30 PM"
+                    }
+                  ],
+                  "category": "Vendors",
+                  "lookFor": "Use this file to see vendor arrival needs, setup dependencies, and which questions must be confirmed before the walkthrough."
+                },
+                {
+                  "id": "venue_policy",
+                  "name": "Venue policy - rain and service aisle.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Venue policy",
+                  "sections": [
+                    {
+                      "heading": "Venue policy",
+                      "body": "Rain-plan trigger is checked at 1:30 PM and communicated by 2:00 PM. Service aisle must remain clear. Cake delivery should land before dinner-service staging begins. Venue planner may coordinate venue logistics and vendor access, but should not promise full-service planning items outside the package."
+                    }
+                  ],
+                  "category": "Venue rules",
+                  "lookFor": "Use this policy to find hard constraints: rain trigger timing, service aisle clearance, cake delivery, photo locations, and staff responsibilities."
+                }
+              ]
+            },
+            {
+              "id": "weather",
+              "label": "Dashboard",
+              "kind": "dashboard",
+              "title": "Rain Plan Dashboard",
+              "rows": [
+                {
+                  "item": "Rain trigger check",
+                  "time": "1:30 PM",
+                  "owner": "venue planner"
+                },
+                {
+                  "item": "Vendor communication deadline",
+                  "time": "2:00 PM",
+                  "owner": "venue planner"
+                },
+                {
+                  "item": "Garden ceremony start",
+                  "time": "4:30 PM",
+                  "owner": "DJ/photo/catering aligned"
+                }
+              ],
+              "columns": [
+                "item",
+                "time",
+                "owner"
+              ],
+              "lookFor": "Use this dashboard to connect the weather trigger, owner, and setup decision with the timeline before choosing a triage move."
+            }
+          ]
+        },
+        "workSurface": {
+          "kind": "document_editor",
+          "device": "desktop",
+          "appWindow": "doc",
+          "title": "Rivera-Chen Timeline Audit",
+          "sourceTabs": [
+            {
+              "id": "draft_timeline",
+              "label": "Draft Timeline",
+              "content": "3:00 PM florist arrival TBD. 4:00 PM ceremony music prelude begins. 4:00 PM ceremony start listed in DJ cue sheet. 4:30 PM ceremony start listed in venue workspace. 5:00 PM cocktail hour begins. 5:05-5:40 PM family photos listed in garden. 5:30 PM ballroom flip complete. 5:45 PM cake delivery. 6:15 PM dinner service target. 7:20 PM first dance. Speeches before cake, exact order TBD."
+            },
+            {
+              "id": "vendor_notes",
+              "label": "Vendor Notes",
+              "content": "DJ Tessa needs final ceremony start, processional names, first dance song, and speech order by 2:00 PM. Photographer asks for 30 minutes of family photos and wants rain backup location confirmed. Catering needs east service aisle clear by 5:15 PM. Florist Jordan can stage bins only in vendor corner and may arrive close to 3:30 PM."
+            },
+            {
+              "id": "venue_policy",
+              "label": "Venue Policy",
+              "content": "Rain-plan trigger is checked at 1:30 PM and communicated by 2:00 PM. Service aisle must remain clear. Cake delivery should land before dinner-service staging begins. Venue planner may coordinate venue logistics and vendor access, but should not promise full-service planning items outside the package."
+            },
+            {
+              "id": "rain_plan_dashboard",
+              "label": "Rain Plan Dashboard",
+              "content": "Rain trigger check: 1:30 PM, owner venue planner.\nVendor communication deadline: 2:00 PM, owner venue planner.\nGarden ceremony start: 4:30 PM, owner DJ/photo/catering aligned."
+            }
+          ],
+          "uiAppearance": "Cream document work surface with a draft timeline table and row-level planner comment panel.",
+          "playerExperience": "Read the four source tabs, find the 5 issues / open items in the timeline, and add planner comments with recommended fixes."
+        },
+        "prompt": "There are 5 issues / open items in the draft timeline. For each row that needs attention, add a status, a concrete comment, and a recommended fix."
+      },
+      "transition_walkthrough": {
+        "id": "transition_walkthrough",
+        "type": "section_transition",
+        "section": 1,
+        "title": "Move to the Ballroom",
+        "content": "With the timeline issues and open items named, you head downstairs for the final walkthrough. Now the plan has to survive contact with the physical room.",
+        "actionLabel": "Start Walkthrough",
+        "illustration": "/scenes/transition_walkthrough.png",
+        "imageBrief": "Planner walking from a venue office toward an open ballroom. A clipboard shows the final setup sheet and a tablet shows the timeline audit. Staff are setting tables in the background.",
+        "next": "scene_03_ballroom_setup"
+      },
+      "scene_03_ballroom_setup": {
+        "id": "scene_03_ballroom_setup",
+        "type": "physical_playground",
+        "section": 2,
+        "title": "Inspect the Ballroom Setup",
+        "content": "Compare the ballroom to the setup sheet. Place the guest-flow items, click the florist bins to record that the service aisle is blocked and the florist should move them to the vendor corner, mark the missing family-row signs, and write an objective setup note.",
+        "simulatedAction": "inspect_ballroom_setup_and_correct_guest_flow_items",
+        "learningGoal": "Practice turning a final setup sheet into visible venue corrections while documenting issues for the operations team.",
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "Ballroom setup inspection playground",
+          "inputArtifacts": [
+            {
+              "id": "setup_sheet",
+              "label": "Final setup sheet",
+              "whereVisible": "scene_03_ballroom_setup.readableSurfaces.setup_sheet",
+              "summary": "Guest book/card box placement, family-row signs, service aisle, and florist staging rules."
+            },
+            {
+              "id": "ballroom_visual_evidence",
+              "label": "Ballroom visual evidence",
+              "whereVisible": "scene_03_ballroom_setup.background and interactive objects",
+              "summary": "Side cart items, blocked service aisle, florist bins, and missing reserved-family signs."
+            }
+          ],
+          "studentAction": "Inspect the ballroom, place visible guest-flow objects, flag vendor staging that blocks the service aisle, specify the vendor-corner relocation request, mark a missing-signage issue, and write a setup note.",
+          "outputArtifact": {
+            "id": "scene_03_ballroom_setup",
+            "label": "Corrected setup state and setup note",
+            "format": "physical_playground"
+          },
+          "rubricEvidence": [
+            "action log.scene_03_ballroom_setup",
+            "observationText.setup_note"
+          ],
+          "continuity": [
+            "The setup note feeds the final vendor DM replies."
+          ],
+          "authenticityCheck": "The scene uses a visible setup sheet and room evidence rather than narration or generic completion buttons."
+        },
+        "digitalPrimitives": [
+          "read_document_excerpt",
+          "drag_object_to_target",
+          "annotate_image",
+          "type_text"
+        ],
+        "physicalWorkDesign": {
+          "realWorkflowScript": "Enter the ballroom, read the final setup sheet, place the card box and guest book on the welcome table, flag that florist bins are blocking the east service aisle, specify that the florist should move them to the vendor corner, mark that reserved-family signs are missing from the first two ceremony rows, and write a concise setup note for operations.",
+          "decomposition": {
+            "evidence": [
+              "Final setup sheet says guest book and card box belong on welcome table.",
+              "Florist bins are blocking the east service aisle.",
+              "Reserved-family signs are missing from first two ceremony rows."
+            ],
+            "objects": [
+              "card box",
+              "guest book",
+              "florist bins",
+              "welcome table",
+              "vendor corner",
+              "first two ceremony rows",
+              "setup note field"
+            ],
+            "targets": [
+              "welcome table",
+              "vendor corner",
+              "family row seats",
+              "setup note field"
+            ],
+            "procedure": [
+              "Read setup sheet",
+              "Place card box",
+              "Place guest book",
+              "Flag florist bins: service aisle blocked; ask florist to move to vendor corner",
+              "Mark missing family-row signs",
+              "Write setup note"
+            ],
+            "stateChanges": [
+              "Card box remains on welcome table.",
+              "Guest book remains on welcome table.",
+              "Florist bins remain visible but are flagged with a request for the florist to move them to the approved vendor corner.",
+              "Family-row issue remains marked.",
+              "Setup note is submitted."
+            ]
+          },
+          "actionClassification": [
+            {
+              "action": "read final setup sheet",
+              "classification": "inspect",
+              "primitive": "read_document_excerpt",
+              "mappingRationale": "The player needs the visible setup basis before moving objects."
+            },
+            {
+              "action": "place card box and guest book",
+              "classification": "move",
+              "primitive": "drag_object_to_target",
+              "mappingRationale": "Real placement is modeled as dragging generated object assets to the welcome table."
+            },
+            {
+              "action": "flag florist bins blocking service aisle and request that the florist move them to the vendor corner",
+              "classification": "inspect",
+              "primitive": "annotate_image",
+              "mappingRationale": "The planner should not silently move another vendor's staging property; the player clicks the obstruction and documents the blocked service aisle plus approved relocation destination."
+            },
+            {
+              "action": "mark missing family signs",
+              "classification": "inspect",
+              "primitive": "annotate_image",
+              "mappingRationale": "The player documents a visible setup defect at the affected seating rows."
+            },
+            {
+              "action": "write setup note",
+              "classification": "type",
+              "primitive": "type_text",
+              "mappingRationale": "Observation leads to documentation, as the real job requires."
+            }
+          ],
+          "mainSceneRole": "16:9 ballroom workplace map with realistic tables, service paths, staging zones, and movable setup items.",
+          "popupSceneRoles": [
+            "No hand-level popup is required because the work is room-level placement and documentation."
+          ],
+          "statePersistence": "Placed guest-flow objects remain visible in their corrected locations; the florist staging issue remains marked for follow-up with a vendor-corner relocation request; the family-row mark remains after selection.",
+          "antiButtonAudit": "There is no generic Complete Setup button. The player must place guest-flow objects, flag the blocked vendor staging with the required relocation language, mark the visible defect, and write the note."
+        },
+        "background": {
+          "filename": "public/scenes/scene_03_ballroom_setup.png",
+          "prompt": "First-person 16:9 view of an elegant mid-sized wedding venue ballroom during final setup. Show a welcome table near the entrance on the left, a side cart with a card box and guest book nearby, a sweetheart table at the far center, two front ceremony rows with no reserved family signs, a DJ booth on the right, a cake table, an east service aisle along the right wall, florist bins incorrectly blocking that aisle, and an open vendor corner near the back right. Include readable but not answer-giving setup sheet clipped to the foreground. Coordinate map: setup sheet x3 y5 w31 h24; welcome table x7 y55 w23 h18; side cart x8 y34 w18 h16; family rows x30 y44 w31 h12; service aisle x77 y25 w11 h55; florist bins x78 y58 w12 h15; vendor corner x63 y66 w13 h15; sweetheart table x41 y23 w24 h13.",
+          "coordinateMap": [
+            {
+              "label": "setup sheet",
+              "x": 3,
+              "y": 5,
+              "w": 31,
+              "h": 24,
+              "role": "workspace"
+            },
+            {
+              "label": "welcome table",
+              "x": 7,
+              "y": 55,
+              "w": 23,
+              "h": 18,
+              "role": "target"
+            },
+            {
+              "label": "side cart",
+              "x": 8,
+              "y": 34,
+              "w": 18,
+              "h": 16,
+              "role": "fixture"
+            },
+            {
+              "label": "front family rows",
+              "x": 30,
+              "y": 44,
+              "w": 31,
+              "h": 12,
+              "role": "target"
+            },
+            {
+              "label": "east service aisle",
+              "x": 77,
+              "y": 25,
+              "w": 11,
+              "h": 55,
+              "role": "target"
+            },
+            {
+              "label": "florist bins",
+              "x": 78,
+              "y": 58,
+              "w": 12,
+              "h": 15,
+              "role": "target"
+            },
+            {
+              "label": "vendor corner",
+              "x": 63,
+              "y": 66,
+              "w": 13,
+              "h": 15,
+              "role": "target"
+            },
+            {
+              "label": "sweetheart table",
+              "x": 41,
+              "y": 23,
+              "w": 24,
+              "h": 13,
+              "role": "fixture"
+            }
+          ]
+        },
+        "interactiveObjects": [
+          {
+            "id": "card_box",
+            "label": "card box",
+            "x": 21.75,
+            "y": 34,
+            "w": 4.5,
+            "h": 5,
+            "assetId": "card_box_asset",
+            "assetPath": "public/action-assets/scene_03_ballroom_setup/card_box.png",
+            "interactionRole": "draggable",
+            "primitives": [
+              "drag_object_to_target"
+            ],
+            "required": true
+          },
+          {
+            "id": "guest_book",
+            "label": "guest book",
+            "x": 16.75,
+            "y": 35.25,
+            "w": 4.5,
+            "h": 3.5,
+            "assetId": "guest_book_asset",
+            "assetPath": "public/action-assets/scene_03_ballroom_setup/guest_book.png",
+            "interactionRole": "draggable",
+            "primitives": [
+              "drag_object_to_target"
+            ],
+            "required": true
+          },
+          {
+            "id": "florist_bins",
+            "label": "florist staging bins blocking service aisle",
+            "x": 81,
+            "y": 25,
+            "w": 18,
+            "h": 22.5,
+            "modalAssetId": "florist_bins_service_aisle_closeup",
+            "modalAssetPath": "action-assets/scene_03_ballroom_setup/florist_bins_service_aisle_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "annotate_image"
+            ],
+            "readableText": "The florist bins are staged in the east service aisle, which must stay clear for catering and accessibility by 5:15 PM. Because these are florist materials, document the issue and request that the florist move them to the vendor corner.",
+            "requiresObservationText": true,
+            "observationMinWords": 8,
+            "observationPrompt": "Write the operational note. Include the blocked area, the move request, and the destination.",
+            "observationPlaceholder": "Service aisle blocked by florist bins; ask florist to move them to vendor corner before 5:15 PM...",
+            "expectedObservation": "Service aisle blocked by florist bins; ask the florist to move them to the vendor corner before 5:15 PM.",
+            "required": true
+          },
+          {
+            "id": "family_rows_missing_signs",
+            "label": "mark missing reserved family signs",
+            "x": 36,
+            "y": 47,
+            "w": 31,
+            "h": 12,
+            "modalAssetId": "family_rows_missing_signs_closeup",
+            "modalAssetPath": "public/action-assets/scene_03_ballroom_setup/family_rows_missing_signs_closeup.png",
+            "interactionRole": "readable",
+            "primitives": [
+              "annotate_image"
+            ],
+            "readableText": "The first two ceremony rows are reserved for immediate family, but no reserved-family signs are visible on these seats.",
+            "requiresObservationText": true,
+            "observationMinWords": 1,
+            "observationPrompt": "Write the issue you would note for operations.",
+            "observationPlaceholder": "Missing reserved-family signs on the first two ceremony rows...",
+            "expectedObservation": "First two ceremony rows still need reserved-family signs before doors open.",
+            "required": true
+          }
+        ],
+        "dropTargets": [
+          {
+            "id": "welcome_table",
+            "label": "welcome table",
+            "x": 4,
+            "y": 62,
+            "w": 23,
+            "h": 7,
+            "accepts": [
+              "card_box",
+              "guest_book"
+            ],
+            "detail": "Guest book and card box belong here for guest arrival flow."
+          },
+          {
+            "id": "vendor_corner",
+            "label": "vendor corner",
+            "x": 84,
+            "y": 78,
+            "w": 15,
+            "h": 19,
+            "accepts": [
+              "__observation_only__"
+            ],
+            "detail": "Approved staging corner that does not block catering or accessibility. Use this as the relocation destination in the florist-bin note."
+          }
+        ],
+        "readableSurfaces": [
+          {
+            "id": "setup_sheet",
+            "label": "read final setup sheet",
+            "x": 10,
+            "y": 70,
+            "w": 20,
+            "h": 7,
+            "readableText": "Final setup sheet: welcome table must hold guest book and card box. First two ceremony rows reserved for immediate family. East service aisle must stay clear by 5:15 PM. Florist staging only in vendor corner. No open flames on guest tables.",
+            "playerInstruction": "Zoom in on the final setup sheet before placing or moving items. You can always click this sheet again and come back to review it while you work.",
+            "modalAssetId": "setup_sheet_closeup",
+            "modalAssetPath": "public/action-assets/scene_03_ballroom_setup/setup_sheet_closeup.png",
+            "required": true
+          },
+          {
+            "id": "setup_note",
+            "label": "write setup note",
+            "x": 10,
+            "y": 78,
+            "w": 20,
+            "h": 7,
+            "requiresObservationText": true,
+            "observationMinWords": 0,
+            "observationPrompt": "Write a concise setup note for Maya.",
+            "observationPlaceholder": "Observed...",
+            "expectedObservation": "Card box and guest book moved to welcome table; service aisle blocked by florist bins and the florist should move them to the vendor corner before 5:15 PM; first two ceremony rows still need reserved-family signs before doors open.",
+            "requiresSteps": [
+              "read_setup_sheet",
+              "place_card_box",
+              "place_guest_book",
+              "flag_florist_bins",
+              "mark_family_rows"
+            ],
+            "disabledHint": "Write the setup note after you review the sheet, place the guest-flow items, flag the florist bins with the service-aisle and vendor-corner language, and mark the missing signs.",
+            "required": true
+          }
+        ],
+        "steps": [
+          {
+            "id": "read_setup_sheet",
+            "label": "read setup sheet",
+            "instruction": "Read the final setup sheet before moving items.",
+            "digitalPrimitive": "read_document_excerpt",
+            "successFeedback": "The setup basis is visible."
+          },
+          {
+            "id": "place_card_box",
+            "label": "place card box",
+            "instruction": "Place the card box on the welcome table.",
+            "digitalPrimitive": "drag_object_to_target",
+            "objectIds": [
+              "card_box"
+            ],
+            "targetId": "welcome_table",
+            "requiresSteps": [
+              "read_setup_sheet"
+            ],
+            "successFeedback": "The card box is now where guests will look for it.",
+            "failureHint": "Check the setup sheet: the card box belongs on the welcome table."
+          },
+          {
+            "id": "place_guest_book",
+            "label": "place guest book",
+            "instruction": "Place the guest book on the welcome table.",
+            "digitalPrimitive": "drag_object_to_target",
+            "objectIds": [
+              "guest_book"
+            ],
+            "targetId": "welcome_table",
+            "requiresSteps": [
+              "read_setup_sheet"
+            ],
+            "successFeedback": "The guest book is now paired with the card box.",
+            "failureHint": "Guest-flow items should live together at the welcome table."
+          },
+          {
+            "id": "flag_florist_bins",
+            "label": "flag florist bins",
+            "instruction": "Click the florist bins and write the operational note: service aisle blocked; ask florist to move to vendor corner.",
+            "digitalPrimitive": "annotate_image",
+            "objectIds": [
+              "florist_bins"
+            ],
+            "requiresSteps": [
+              "read_setup_sheet"
+            ],
+            "successFeedback": "The blocked service aisle is documented with the vendor-corner relocation request.",
+            "failureHint": "Check the setup sheet: write that the service aisle is blocked and the florist should move the bins to the vendor corner."
+          },
+          {
+            "id": "mark_family_rows",
+            "label": "mark missing signs",
+            "instruction": "Mark the first two ceremony rows where reserved-family signs are missing.",
+            "digitalPrimitive": "annotate_image",
+            "objectIds": [
+              "family_rows_missing_signs"
+            ],
+            "requiresSteps": [
+              "read_setup_sheet"
+            ],
+            "successFeedback": "The missing family-row signage is documented.",
+            "failureHint": "Look for the first two ceremony rows listed in the setup sheet."
+          }
+        ],
+        "objectState": [
+          {
+            "objectId": "card_box",
+            "x": 0,
+            "y": 53.5,
+            "w": 7,
+            "h": 7,
+            "persistsAfterUse": true,
+            "appearsWhen": [
+              "place_card_box"
+            ]
+          },
+          {
+            "objectId": "guest_book",
+            "x": 7,
+            "y": 52.5,
+            "w": 7,
+            "h": 5,
+            "persistsAfterUse": true,
+            "appearsWhen": [
+              "place_guest_book"
+            ]
+          }
+        ],
+        "stateChange": [
+          {
+            "id": "florist_bins_flag",
+            "label": "florist bins flagged for florist vendor-corner move",
+            "x": 84,
+            "y": 78,
+            "w": 15,
+            "h": 19,
+            "whenStep": "flag_florist_bins"
+          },
+          {
+            "id": "family_row_mark",
+            "label": "family-row issue marked",
+            "x": 36,
+            "y": 47,
+            "w": 31,
+            "h": 12,
+            "whenStep": "mark_family_rows"
+          }
+        ],
+        "completionBehavior": {
+          "footerLabel": "Submit Setup Note",
+          "actionAlreadyPerformedInPopup": false,
+          "forbiddenActionVerbs": [
+            "complete",
+            "done",
+            "fix magically"
+          ]
+        },
+        "verificationFamily": {
+          "family": "venue_setup_inspection",
+          "method": "visible placement plus observation text",
+          "visibleSurfaces": [
+            "setup_sheet",
+            "welcome_table",
+            "service_aisle",
+            "family_rows",
+            "setup_note"
+          ],
+          "successRule": "Correct guest-flow objects are placed, blocked florist staging is flagged with service-aisle and vendor-corner relocation language, family-row defect is marked, and the note names the remaining issue."
+        },
+        "requiredObjectIds": [
+          "card_box",
+          "guest_book",
+          "florist_bins",
+          "family_rows_missing_signs"
+        ],
+        "requiredStepIds": [
+          "read_setup_sheet",
+          "place_card_box",
+          "place_guest_book",
+          "flag_florist_bins",
+          "mark_family_rows"
+        ],
+        "requiredReadableSurfaceIds": [
+          "setup_sheet",
+          "setup_note"
+        ],
+        "successConditions": [
+          "Read setup sheet",
+          "Place card box and guest book on welcome table",
+          "Flag florist bins: service aisle blocked; ask florist to move to vendor corner",
+          "Mark missing reserved-family signs",
+          "Write a concise setup note"
+        ],
+        "failureModes": [
+          "Moves items without reading the setup basis",
+          "Misses blocked florist staging or fails to name the service aisle and vendor-corner relocation request",
+          "Misses family-row signage issue",
+          "Writes vague setup note without remaining action"
+        ],
+        "gradingEvidence": [
+          "action log.scene_03_ballroom_setup",
+          "observationText.setup_note"
+        ],
+        "visualAssetsRequired": {
+          "backgrounds": [
+            {
+              "id": "ballroom_setup_background",
+              "displayName": "Ballroom setup inspection background",
+              "assetType": "background",
+              "filename": "public/scenes/scene_03_ballroom_setup.png",
+              "prompt": "First-person 16:9 view of an elegant mid-sized wedding venue ballroom during final setup with welcome table, side cart, family rows missing reserved signs, DJ booth, cake table, east service aisle blocked by florist bins, and open vendor corner. Include a readable setup sheet area but no answer captions or checkmarks."
+            }
+          ],
+          "interactiveObjects": [
+            {
+              "id": "card_box_asset",
+              "displayName": "Wedding card box",
+              "assetType": "transparent_png",
+              "filename": "public/action-assets/scene_03_ballroom_setup/card_box.png",
+              "prompt": "Transparent PNG of an elegant cream wedding card box with slot, no background, sized for dragging onto a welcome table."
+            },
+            {
+              "id": "guest_book_asset",
+              "displayName": "Guest book",
+              "assetType": "transparent_png",
+              "filename": "public/action-assets/scene_03_ballroom_setup/guest_book.png",
+              "prompt": "Transparent PNG of an open wedding guest book with pen, no background, sized for dragging onto a welcome table."
+            }
+          ],
+          "readableSurfaces": [
+            {
+              "id": "setup_sheet_closeup",
+              "displayName": "Final setup sheet closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_ballroom_setup/setup_sheet_closeup.png",
+              "prompt": "Closeup of a warm cream final ballroom setup sheet for the Rivera-Chen wedding. It should clearly show: welcome table must hold guest book and card box; first two ceremony rows reserved for immediate family; east service aisle must stay clear by 5:15 PM; florist staging only in vendor corner; no open flames on guest tables."
+            },
+            {
+              "id": "family_rows_missing_signs_closeup",
+              "displayName": "Family rows missing reserved signs closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_ballroom_setup/family_rows_missing_signs_closeup.png",
+              "prompt": "Closeup view of the first two ceremony rows in an elegant ballroom. The seats are visibly ready for immediate family but have no reserved-family signs attached. Keep the issue observable without answer captions or checkmarks."
+            },
+            {
+              "id": "florist_bins_service_aisle_closeup",
+              "displayName": "Florist bins blocking service aisle closeup",
+              "assetType": "readable_closeup",
+              "filename": "public/action-assets/scene_03_ballroom_setup/florist_bins_service_aisle_closeup.png",
+              "prompt": "Use the uploaded scene_03_ballroom_setup.png as the reference image. Generate a zoomed-in closeup of the same east service aisle area in the same elegant wedding ballroom, preserving the room layout, warm cream palette, lighting, and first-person inspection perspective. Show the florist staging bins with greenery and wrapped stems visibly blocking the east service aisle, with the open vendor corner still partially visible in the background or off to the side as the appropriate relocation destination. The image should make the obstruction and destination spatially understandable, but include no answer captions, no arrows, no checkmarks, and no added instructional text."
+            }
+          ]
+        },
+        "illustration": "/scenes/scene_03_ballroom_setup.png",
+        "imageBrief": "Ballroom setup inspection scene with visible welcome table, side cart, blocked service aisle, florist bins, and family rows missing reserved signs.",
+        "next": "scene_04_client_prep"
+      },
+      "scene_04_client_prep": {
+        "id": "scene_04_client_prep",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 2,
+        "title": "Review the Walkthrough Document",
+        "content": "Elena and Marcus are about to arrive in the ballroom. Skim the final notes to prepare for the in-person meeting. The same document notes will stay visible during the meeting.",
+        "actionLabel": "Start the Couple Walkthrough",
+        "appWindow": "doc",
+        "windowTitle": "Rivera-Chen Walkthrough Notes",
+        "referenceTitle": "Final walkthrough quick reference",
+        "referenceContent": "Must Clarify Before Ending\n1. Acknowledge Elena's worry that the indoor backup may feel like settling.\n2. Explain that the rain trigger check is 1:30 PM.\n3. Explain that final rain direction and vendor communication must go out by 2:00 PM.\n4. Confirm that the correct ceremony time is 4:30 PM.\n5. Confirm that the DJ cue sheet still needs correction.\n6. Collect at least one missing decision, preferably processional names/order or speech order for the DJ.\n7. Clarify that if the rain trigger is met, the venue team will open and set the indoor ceremony layout, adjust room setup and guest-flow items, coordinate catering timing around the room flip and dinner staging, direct vendor load-in/access paths, keep the service aisle clear, and send the venue-side vendor update by 2:00 PM.\n\nSupporting Notes\n- Cake timing needs confirmation before dinner-service staging.\n- Family-row signs still need placement.\n- Florist bins blocking the east service aisle have been flagged for the florist to move to the vendor corner before 5:15 PM.\n- Marcus wants assurance that vendors have the latest timeline.\n- Both want family members kept out of coordinator duties.\n\nDo Not Promise\n- Vow rewriting.\n- Offsite errands.\n- Changing personal ceremony choices without approval.\n- Replacing external vendor staff.",
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "Venue laptop walkthrough document",
+          "inputArtifacts": [
+            {
+              "id": "walkthrough_doc",
+              "label": "Rivera-Chen walkthrough document",
+              "whereVisible": "scene_04_client_prep.referenceContent",
+              "summary": "Final timing anchors, room and vendor notes, couple concerns, venue scope, and quick questions."
+            }
+          ],
+          "studentAction": "Skim the already-open venue laptop document before the couple arrives.",
+          "outputArtifact": "Reviewed walkthrough document",
+          "continuity": [
+            "The same document notes remain visible inside scene_05_couple_walkthrough."
+          ],
+          "authenticityCheck": "A venue planner is more likely to glance at an already-open final-walkthrough document than draft a new meeting agenda from scratch."
+        },
+        "next": "scene_05_couple_walkthrough"
+      },
+      "scene_05_couple_walkthrough": {
+        "id": "scene_05_couple_walkthrough",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Final Walkthrough with Elena and Marcus",
+        "content": "Elena and Marcus arrive in the ballroom. Use the walkthrough document notes beside the meeting to calm the room, clarify the rain-plan trigger, collect missing decisions, and explain venue scope without making the couple feel abandoned.",
+        "npcId": "elena_marcus",
+        "meetingMode": "in_person",
+        "voiceName": "Kore",
+        "minTurns": 4,
+        "maxTurns": 8,
+        "playerGoal": "In 4-8 turns, validate the couple's concerns, explain the rain-plan decision point, ask for missing processional or speech details, confirm vendor communication timing, and clarify what the venue team will handle.",
+        "endpoint": "End once the couple understands the rain-plan deadline, has given at least one missing decision, and knows the venue team will coordinate room setup, catering timing, and vendor access without promising full-service tasks outside scope.",
+        "successCriteria": "A strong planner is warm, specific, operationally clear, and honest about scope. They avoid vague reassurance, blame, or overpromising.",
+        "prepReferenceTitle": "Walkthrough document notes",
+        "prepReferenceContent": "Must Clarify Before Ending\n1. Acknowledge Elena's worry that the indoor backup may feel like settling.\n2. Explain that the rain trigger check is 1:30 PM.\n3. Explain that final rain direction and vendor communication must go out by 2:00 PM.\n4. Confirm that the correct ceremony time is 4:30 PM.\n5. Confirm that the DJ cue sheet still needs correction.\n6. Collect at least one missing decision, preferably processional names/order or speech order for the DJ.\n7. Clarify that if the rain trigger is met, the venue team will open and set the indoor ceremony layout, adjust room setup and guest-flow items, coordinate catering timing around the room flip and dinner staging, direct vendor load-in/access paths, keep the service aisle clear, and send the venue-side vendor update by 2:00 PM.\n\nSupporting Notes\n- Cake timing needs confirmation before dinner-service staging.\n- Family-row signs still need placement.\n- Florist bins blocking the east service aisle have been flagged for the florist to move to the vendor corner before 5:15 PM.\n- Marcus wants assurance that vendors have the latest timeline.\n- Both want family members kept out of coordinator duties.\n\nDo Not Promise\n- Vow rewriting.\n- Offsite errands.\n- Changing personal ceremony choices without approval.\n- Replacing external vendor staff.",
+        "goalPrompt": "You are Elena Rivera and Marcus Chen, the couple during an in-person final walkthrough at Willow & Stone Events. Elena is anxious that rain backup will disappoint family; Marcus is detail-oriented and asks whether vendors have the latest timeline. Start with Elena saying she is worried the indoor plan will feel like a downgrade, then Marcus asks whether the DJ and photographer know the right times. If the player is vague, press for specifics. If the player overpromises full-service planning outside venue scope, ask whether that is included. If the player asks for missing details, provide at least one concrete decision: processional order starts with grandparents, then parents, then wedding party; speeches should be Marcus's sister first and Elena's father second; family-row reserved signs should say Rivera Family and Chen Family. If the player validates, gives clear timing, asks for missing details, and explains venue responsibilities kindly, become reassured. Close naturally after the key facts are covered by saying: \"Okay, that helps. Please send the updated vendor note after the walkthrough.\" Do not open new topics after that closing line.",
+        "meetingContext": "The player is standing with the couple in the ballroom during a final venue walkthrough. This is an in-person client conversation, not a video call. Keep turns concise, emotionally realistic, and focused on rain-plan timing, vendor updates, missing decisions, and venue-scope boundaries.",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Elena: I know we need a backup plan, but I am worried moving indoors will feel like we settled. Marcus also wants to know whether the DJ and photographer have the latest timeline."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "In-person couple walkthrough",
+          "inputArtifacts": [
+            {
+              "id": "walkthrough_doc_notes",
+              "label": "Walkthrough document notes",
+              "whereVisible": "scene_05_couple_walkthrough.prepReferenceContent",
+              "summary": "Venue laptop document notes reviewed before the couple arrived."
+            }
+          ],
+          "studentAction": "Conduct a spoken in-person walkthrough conversation with the couple.",
+          "outputArtifact": {
+            "id": "scene_05_couple_walkthrough",
+            "label": "Couple walkthrough transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:scene_05_couple_walkthrough:elena_marcus"
+          ],
+          "continuity": [
+            "The couple asks for an updated vendor note, which becomes the final written task."
+          ],
+          "authenticityCheck": "Wedding planners regularly convert anxious client conversations into clear decisions and next steps."
+        },
+        "illustration": "/scenes/scene_05_couple_walkthrough.png",
+        "imageBrief": "In-person first-person or over-the-shoulder view inside an elegant wedding venue ballroom. Elena Rivera and Marcus Chen stand near the welcome table and ballroom floor plan with anxious but attentive expressions. A planner clipboard with compact notes is visible in the foreground. No laptop video-call grid or abstract background.",
+        "next": "transition_vendor"
+      },
+      "transition_vendor": {
+        "id": "transition_vendor",
+        "type": "section_transition",
+        "section": 2,
+        "title": "The Walkthrough Ends",
+        "content": "The couple is steadier, but the day is not ready until the vendor chain has the corrected information. You return to the operations desk to send clear vendor DMs.",
+        "actionLabel": "Send Vendor DMs",
+        "illustration": "/scenes/transition_vendor.png",
+        "imageBrief": "Venue operations desk after a walkthrough. The laptop shows the timeline audit, setup note, and couple prep as small warm cream windows. A vendor contact list is open beside a rain-plan card.",
+        "next": "scene_06_vendor_alignment"
+      },
+      "scene_06_vendor_alignment": {
+        "id": "scene_06_vendor_alignment",
+        "type": "slack_thread",
+        "section": 3,
+        "title": "Send the Vendor DM Replies",
+        "content": "Reply separately in the florist DM and the DJ DM. Use the current source facts below plus each vendor's existing message. Each reply should be operational, calm, and specific enough for that vendor to act.\n\nCurrent source facts\n- Correct ceremony start: 4:30 PM; DJ cue sheet still says 4:00 PM.\n- Rain trigger check: 1:30 PM; rain-plan decision must be sent to catering, DJ, photographer, florist, and the couple by 2:00 PM.\n- East service aisle must stay clear for catering and accessibility by 5:15 PM; florist staging belongs in the vendor corner, not the east wall.\n- Family-row reserved signs still need placement before doors open.\n- The couple wants vendors to have clean, vendor-specific next steps and does not want family pulled into logistics.",
+        "appWindow": "slack",
+        "windowTitle": "Vendor DMs",
+        "npcId": "vendor_channel",
+        "maxTurns": 2,
+        "initialMessages": [
+          {
+            "role": "npc",
+            "npcName": "Jordan Ellis, Florist",
+            "content": "We are loading in close to 3:30. Can we stage extra bins by the east wall for a few minutes?"
+          },
+          {
+            "role": "npc",
+            "npcName": "Tessa Morgan, DJ",
+            "content": "My cue sheet still says ceremony at 4:00. I need final ceremony time, processional names, speeches, and rain-plan timing before I print."
+          }
+        ],
+        "goalPrompt": "Evaluate the player's two separate Slack DM replies to Jordan Ellis and Tessa Morgan. Strong replies tell Jordan the east service aisle must stay clear by 5:15 PM, florist staging belongs in the vendor corner, and the rain-plan decision will be communicated by 2:00 PM after the 1:30 PM trigger check. Strong replies tell Tessa the ceremony starts at 4:30 PM, the rain-plan decision deadline is 2:00 PM, and processional names and speech order still need confirmation. The player should stay calm, specific, and within venue scope. If an AI acknowledgement is requested, give one brief confirmation or correction and end after that single response; do not continue the thread.",
+        "deskWorkDesign": {
+          "roleFamily": "wedding_planning",
+          "workSurface": "Vendor Slack DMs",
+          "inputArtifacts": [
+            {
+              "id": "vendor_messages",
+              "label": "Vendor DM messages",
+              "whereVisible": "scene_06_vendor_alignment.initialMessages",
+              "summary": "Florist staging request and DJ cue conflict."
+            },
+            {
+              "id": "timeline_audit",
+              "label": "Timeline audit",
+              "whereVisible": "structuredEntries.timeline_audit",
+              "summary": "Student's repaired timing and notification list."
+            },
+            {
+              "id": "setup_note",
+              "label": "Ballroom setup note",
+              "whereVisible": "scene_03_ballroom_setup.observationText",
+              "summary": "Guest-flow items placed, florist-bin service aisle blockage flagged for vendor-corner relocation, family signs still needed."
+            },
+            {
+              "id": "couple_walkthrough",
+              "label": "Couple walkthrough transcript",
+              "whereVisible": "scene_05_couple_walkthrough.transcript",
+              "summary": "Client decisions and concerns from the in-person meeting."
+            }
+          ],
+          "studentAction": "Compose one reply in the florist DM and one reply in the DJ DM with timing, constraints, and next steps.",
+          "outputArtifact": {
+            "id": "scene_06_vendor_alignment",
+            "label": "Vendor DM replies",
+            "format": "slack_thread"
+          },
+          "rubricEvidence": [
+            "messageThreads.scene_06_vendor_alignment"
+          ],
+          "continuity": [
+            "This is the final active workplace artifact before the assessment gate."
+          ],
+          "authenticityCheck": "Venue planners often turn messy final details into vendor-specific operational messages."
+        },
+        "next": "assessment_gate",
+        "playerGoal": "Send two separate vendor DM replies: tell Jordan the east service aisle must stay clear and florist staging belongs in the vendor corner, and tell Tessa the ceremony is 4:30 PM, the rain-plan decision deadline is 2:00 PM after the 1:30 PM trigger check, and processional names and speech order still need confirmation. Keep both replies calm, specific, and within venue scope.",
+        "workSurface": {
+          "kind": "slack_reply",
+          "device": "desktop",
+          "appWindow": "slack",
+          "title": "Vendor DMs",
+          "sourceTabs": [
+            {
+              "id": "current_facts",
+              "label": "Current Facts",
+              "content": "Correct ceremony start is 4:30 PM; rain trigger check is 1:30 PM; vendor communication deadline is 2:00 PM; east service aisle must stay clear by 5:15 PM; florist staging belongs in vendor corner; family-row reserved signs still need placement."
+            }
+          ],
+          "uiAppearance": "Cream Slack-style DM workspace with a left direct-message rail for Jordan and Tessa, an active DM thread, and one compose box.",
+          "playerExperience": "Switch between florist and DJ DMs and send one actionable reply in each."
+        }
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Final Walkthrough Period Is Complete",
+        "content": "You triaged the workspace, repaired timeline dependencies, corrected ballroom setup issues, reviewed the walkthrough document, led the couple walkthrough, and sent the vendor DM replies. The work period is complete.",
+        "actionLabel": "View Assessment",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "End-of-period venue operations desk with the Rivera-Chen timeline, setup note, walkthrough document, and vendor DM replies neatly arranged as warm cream windows. Through the doorway, the ballroom looks ready for final checks. The scene should feel complete and calm.",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment in Progress",
+        "content": "Your timeline audit, setup actions, client conversation, and vendor DM replies are being assessed against the wedding planner rubric.",
+        "imageBrief": "A warm cream assessment screen on a venue operations laptop with sections for Timeline Judgment, Venue Setup, Client Communication, Vendor Coordination, and Scope Management. The final details workspace and setup clipboard sit beside the laptop.",
+        "next": "final_report",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Wedding Planner Simulation Report",
+        "content": "Review your strengths and next steps as a venue wedding planner.",
+        "imageBrief": "First-person view of a completed Wedding Planner Simulation Report on a laptop at Willow & Stone Events. The page shows constructive headings for timeline accuracy, venue operations, client care, vendor alignment, and scope judgment.",
+        "next": null,
+        "illustration": "/scenes/assessment_gate.png"
+      }
+    }
+  },
+  "npcs": {
+    "elena_marcus": {
+      "id": "elena_marcus",
+      "name": "Elena Rivera and Marcus Chen",
+      "role": "Wedding couple",
+      "persona": "Elena is warm and anxious about the emotional feel of the wedding, especially the rain backup. Marcus is detail-oriented and wants assurance that vendors have corrected times and clear next steps.",
+      "voice": "Kore",
+      "avatar": "/avatars/elena_marcus.png"
+    },
+    "vendor_channel": {
+      "id": "vendor_channel",
+      "name": "Rivera-Chen Vendor Channel",
+      "role": "Vendor coordination thread",
+      "persona": "The channel represents practical vendor voices: a florist balancing load-in constraints, a DJ needing precise cues, and venue operations watching policy and timing. Responses should reward clear operational detail.",
+      "voice": "Puck",
+      "avatar": "/avatars/vendor_channel.png"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Wedding Planner: Final Details at Willow & Stone",
+    "welcomeBody": "You will step into a mid-level venue wedding planner role. Read the workspace, repair a flawed timeline, inspect the ballroom, speak with the couple, and align vendors before the work period closes.",
+    "steps": [
+      {
+        "label": "Read the workspace",
+        "content": "Use venue policy, timeline details, and vendor notes as your source of truth."
+      },
+      {
+        "label": "Produce real artifacts",
+        "content": "You will write a timeline audit, correct the setup, review a walkthrough document, lead the couple conversation, and send vendor DM replies."
+      },
+      {
+        "label": "Handle people calmly",
+        "content": "Speak with the couple in person and balance empathy with clear venue boundaries."
+      }
+    ]
+  },
+  "glossary": {
+    "BEO": "Banquet Event Order: the venue operations document that translates event details into setup, service, timing, and staffing instructions.",
+    "rain plan": "The backup plan for moving an outdoor ceremony or event segment indoors when weather risk crosses a venue-defined trigger.",
+    "room flip": "A fast changeover of a room from one event setup to another, such as ceremony seating to reception dining.",
+    "service aisle": "A clear path that catering, venue staff, and accessibility traffic need during service.",
+    "processional": "The ordered entrance of wedding party and family members at the start of the ceremony.",
+    "load-in": "The scheduled arrival and setup period for vendors bringing equipment, decor, flowers, rentals, or supplies.",
+    "day-of coordination": "Wedding execution support near the event date, often including timeline ownership, vendor contact, setup oversight, and problem solving.",
+    "venue coordinator": "A venue-side role focused on venue logistics, policies, spaces, food and beverage, and event execution within the venue's contracted scope."
+  },
+  "sample_answers": {
+    "timeline_audit": {
+      "issues_open_items": "DJ cue sheet says 4:00 PM while venue workspace says 4:30 PM; family photos remain in the garden without a rain backup; cake delivery at 5:45 PM conflicts with dinner staging and service access; florist arrival/staging is still open; speeches are TBD even though DJ needs the order by 2:00 PM.",
+      "corrections": "Use 4:30 PM as ceremony start, update DJ by 2:00 PM, set an indoor rain-backup photo location, request cake delivery before dinner staging or confirm approved access, confirm florist arrival and vendor-corner staging, and lock speech order before the DJ prints."
+    }
+  },
+  "rubric": {
+    "simulation_id": "wedding-planner-general-wedding-planning-most-common-responsibilities-wedding-venue-mid-sized-venue-business-mid-level",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の優先判断",
+            "evidenceSceneIds": [
+              "scene_01_triage_choice"
+            ],
+            "rubric_text": "9-10: 当日の制約、ゲスト体験、会場準備、業者連携を見て、最初に対応すべきことを選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "予定表の確認と修正案",
+            "evidenceSceneIds": [
+              "scene_02_timeline_audit"
+            ],
+            "rubric_text": "9-10: 予定表の衝突、抜け、無理な移動、修正案を、当日の運営に使える形で整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "会場設営",
+            "evidenceSceneIds": [
+              "scene_03_ballroom_setup"
+            ],
+            "rubric_text": "9-10: 設営表確認、カード箱と芳名帳の配置、花屋荷物問題、家族席表示不足、導線に関する記録を1つの会場確認として行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "カップル面談",
+            "evidenceSceneIds": [
+              "scene_05_couple_walkthrough"
+            ],
+            "rubric_text": "9-10: 実際の面談で、希望、不安、当日変更の影響、確認すべき合意を聞き取り、安心と現実的な調整を両立できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "業者連絡",
+            "evidenceSceneIds": [
+              "scene_06_vendor_alignment"
+            ],
+            "rubric_text": "9-10: 業者への連絡で、変更内容、理由、期限、相手に求める行動を具体的に伝え、方針のズレを整えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

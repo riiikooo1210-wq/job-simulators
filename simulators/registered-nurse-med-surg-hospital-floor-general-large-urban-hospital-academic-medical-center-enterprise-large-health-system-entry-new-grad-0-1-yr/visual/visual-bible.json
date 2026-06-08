@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "slug": "registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All scenes must maintain a clean, flat, 2D editorial illustration style.",
+    "The color palette should be warm and professional, using muted tones of beige, sage green, and soft blues, with occasional bright accent colors for critical alerts or UI elements.",
+    "Lighting should be consistent with a modern, well-lit hospital environment, primarily using soft, diffuse fluorescent light sources.",
+    "All nursing and physician staff wear standardized, non-branded scrubs. RNs wear navy blue, Resident Physicians wear light blue, and Charge Nurses wear a distinct dark teal."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "priya": {
+      "id": "priya",
+      "name": "Priya Sharma",
+      "role": "Charge Nurse",
+      "sourcePersona": "Priya is a South Asian woman in her late 30s with a calm, authoritative presence. She is efficient, fair, and unflappable. While supportive of new nurses, she expects competence and clear communication. Priya is constantly managing staffing levels and patient flow for the entire unit, so she needs her team to be reliable and to ask for help before a situation becomes a crisis.",
+      "appearancePrompt": "Priya has warm brown skin, dark brown eyes, and high cheekbones. Her black hair is pulled back neatly into a professional bun at the nape of her neck. She has a calm, composed facial expression and a confident posture that reflects her experience and authority.",
+      "wardrobePrompt": "Always wears a specific dark teal, short-sleeved scrub top and matching pants, with a simple silver watch on her left wrist.",
+      "mustStayConsistent": [
+        "Hairstyle (neat bun)",
+        "Scrub color (dark teal)",
+        "Calm demeanor"
+      ],
+      "referenceImage": "public/visual-refs/npcs/priya.png"
+    },
+    "marco": {
+      "id": "marco",
+      "name": "Marco Diaz",
+      "role": "Senior RN",
+      "sourcePersona": "A Filipino man in his 50s, Marco has worked on 5 North for 20 years. He has a gruff exterior and a low tolerance for incompetence, but is highly skilled and secretly proud of his work. He is wary of overconfident new grads but respects those who are willing to learn and value his extensive experience. His communication style is blunt and often filled with nursing jargon.",
+      "appearancePrompt": "Marco has light brown skin, a stocky, solid build, and strong hands from years of clinical work. His short black hair is neatly combed with visible salt-and-pepper graying at the temples. He has a perpetually serious, focused expression and deep-set, observant eyes.",
+      "wardrobePrompt": "Consistently wears charcoal gray scrubs that are clean but well-worn. He often has a pen and a small notepad in his breast pocket.",
+      "mustStayConsistent": [
+        "Salt-and-pepper hair",
+        "Stocky build",
+        "Scrub color (charcoal gray)",
+        "Serious expression"
+      ],
+      "referenceImage": "public/visual-refs/npcs/marco.png"
+    },
+    "ben": {
+      "id": "ben",
+      "name": "Dr. Ben Carter",
+      "role": "Resident Physician",
+      "sourcePersona": "A white man in his late 20s, Dr. Carter is smart, fast-talking, and well-intentioned, but often appears disorganized and overwhelmed. He is juggling a dozen patients across multiple floors and is under immense pressure from his attending physician to have all the data, all the time. He communicates in rapid-fire messages and can be difficult to reach by phone.",
+      "appearancePrompt": "Dr. Carter is a tall, lean man with fair skin and a few freckles across his nose. His light brown hair is often slightly disheveled, and he wears thin, black-framed glasses that sometimes slide down his nose. He has an energetic but slightly frazzled look, with eyes that are constantly scanning his surroundings or a device.",
+      "wardrobePrompt": "Wears standard-issue light blue hospital scrubs, often covered by a slightly wrinkled, knee-length white coat. A stethoscope is always draped around his neck or stuffed into a pocket, and he is never without his hospital-issued smartphone or tablet.",
+      "mustStayConsistent": [
+        "Glasses",
+        "Slightly messy hair",
+        "White coat over light blue scrubs",
+        "Stethoscope"
+      ],
+      "referenceImage": "public/visual-refs/npcs/ben.png"
+    },
+    "sarah": {
+      "id": "sarah",
+      "name": "Sarah Vance",
+      "role": "Patient's Daughter",
+      "sourcePersona": "Sarah is a white woman in her late 50s who is anxious, intelligent, and skeptical of the healthcare system. Deeply devoted to her mother, she feels guilty about her mother's fall and is terrified of making a wrong decision that could cause more harm. She is particularly fearful of her mother developing an addiction to pain medication and questions medical advice based on things she has 'read online'.",
+      "appearancePrompt": "Sarah has a fair complexion with noticeable worry lines around her eyes and mouth. Her shoulder-length, ash-blonde hair is streaked with gray and is usually tied back loosely. She has a tense, protective posture, often with her arms crossed, and her blue eyes are sharp and questioning.",
+      "wardrobePrompt": "Wears practical, conservative civilian clothing suitable for long hospital visits, such as a dark-colored knit sweater over a collared blouse and tailored trousers. She carries a large, organized tote bag containing a notebook, a tablet, and water.",
+      "mustStayConsistent": [
+        "Shoulder-length ash-blonde hair",
+        "Worry lines",
+        "Conservative civilian clothes",
+        "Large tote bag"
+      ],
+      "referenceImage": "public/visual-refs/npcs/sarah.png"
+    },
+    "eleanor": {
+      "id": "eleanor",
+      "name": "Mrs. Eleanor Vance",
+      "role": "Patient in Room 512",
+      "sourcePersona": "Mrs. Vance is an 88-year-old post-op hip-fracture patient. She is tired and in significant pain but alert, polite, and trying to cooperate. She appreciates plain language, reassurance, and knowing what to report after medication. She may ask simple clarifying questions if an explanation is vague or rushed.",
+      "appearancePrompt": "Mrs. Vance is a frail, elderly woman with delicate, translucent skin that shows her veins. Her thin, pure white hair is short and soft, and her pale blue eyes, though tired, are alert and clear. She is thin and her movements are careful due to her pain and recent surgery.",
+      "wardrobePrompt": "Always wears a standard-issue, light blue or pale green patterned hospital gown. She has a hospital ID band on her wrist and may have a light blanket draped over her.",
+      "mustStayConsistent": [
+        "Frail build",
+        "Short white hair",
+        "Hospital gown",
+        "Alert but tired eyes"
+      ],
+      "referenceImage": "public/visual-refs/npcs/eleanor.png"
+    }
+  },
+  "locations": {
+    "nurses-station-5-north": {
+      "id": "nurses-station-5-north",
+      "name": "Nurses' Station (5 North)",
+      "appearancePrompt": "A modern, semi-circular nurses' station with a light-colored laminate countertop and ergonomic chairs. Multiple computer workstations with dual monitors are spaced along the counter, displaying electronic health record software. The area is brightly lit with recessed ceiling lights, and the background includes a wall with patient room numbers, a whiteboard for assignments, and general hospital signage.",
+      "stableElements": [
+        "Semi-circular desk shape",
+        "Dual-monitor computer setups",
+        "Central location of the assignment whiteboard",
+        "Overhead fluorescent lighting fixtures"
+      ],
+      "sceneIds": [
+        "intro",
+        "scene1_prioritization",
+        "scene1_discharge_redirect"
+      ],
+      "referenceImage": "public/visual-refs/locations/nurses-station-5-north.png"
+    },
+    "hallway-5-north": {
+      "id": "hallway-5-north",
+      "name": "Hospital Hallway (5 North)",
+      "appearancePrompt": "A wide, clean hospital corridor with polished linoleum floors and beige walls with a protective chair rail. Doors to patient rooms are evenly spaced along one side, each with a room number and a call light indicator above the frame. The lighting is bright and even, and the hallway contains wall-mounted hand sanitizer dispensers and occasional mobile equipment carts.",
+      "stableElements": [
+        "Polished linoleum floor",
+        "Beige walls with chair rail",
+        "Standardized patient room doors and call lights",
+        "Wall-mounted hand sanitizer dispensers"
+      ],
+      "sceneIds": [
+        "scene1_discharge_redirect",
+        "scene1_quick_look_redirect"
+      ],
+      "referenceImage": "public/visual-refs/locations/hallway-5-north.png"
+    },
+    "med-room-5-north": {
+      "id": "med-room-5-north",
+      "name": "Medication Room (5 North)",
+      "appearancePrompt": "A small, secure room with a counter, a sink, and rows of locked cabinets and drawers for medication storage. The centerpiece is a large, automated medication dispensing cabinet with a touchscreen interface. The room is brightly lit and impeccably clean, with posted safety reminders and charts on the walls.",
+      "stableElements": [
+        "Automated medication dispensing cabinet",
+        "Countertop and sink",
+        "Locked storage cabinets",
+        "Bright, clean environment"
+      ],
+      "sceneIds": [
+        "scene1_meds_redirect"
+      ],
+      "referenceImage": "public/visual-refs/locations/med-room-5-north.png"
+    },
+    "room-512": {
+      "id": "room-512",
+      "name": "Patient Room 512 (Mrs. Vance)",
+      "appearancePrompt": "A private patient room with a large window, decorated in a calming palette of sage green and beige. The room contains a modern, adjustable hospital bed, a bedside table, an overbed table, a vitals monitor on a stand, and an IV pole. A visitor's chair is positioned in the corner, and there is a wall-mounted hand sanitizer dispenser near the door.",
+      "stableElements": [
+        "Hospital bed model",
+        "Bedside table",
+        "Vitals monitor",
+        "IV pole",
+        "Wall-mounted sanitizer dispenser",
+        "Visitor's chair",
+        "Sage green/beige color scheme"
+      ],
+      "sceneIds": [
+        "scene1_assess_pain_redirect",
+        "scene2_assessment",
+        "scene2_conversation",
+        "scene2_med_pass",
+        "scene3_lab_draw",
+        "scene2_explain_meds",
+        "scene2_administer_meds",
+        "scene2_reassessment_reminder",
+        "scene3_explain_draw"
+      ],
+      "referenceImage": "public/visual-refs/locations/room-512.png"
+    },
+    "room-514": {
+      "id": "room-514",
+      "name": "Patient Room 514 (Mr. Jones)",
+      "appearancePrompt": "A private patient room, visually identical in layout and core furnishings to Room 512, maintaining unit consistency. The key difference is the wall-mounted oxygen and suction setup behind the bed, which is a prominent feature. The room has the same calming color palette, window, and standard equipment like the bed, vitals monitor, and IV pole.",
+      "stableElements": [
+        "Identical layout to Room 512",
+        "Prominent wall-mounted oxygen/suction panel",
+        "Hospital bed model",
+        "Vitals monitor",
+        "IV pole",
+        "Wall-mounted sanitizer dispenser"
+      ],
+      "sceneIds": [
+        "scene4_stabilize",
+        "scene4_raise_hob",
+        "scene4_apply_oxygen",
+        "scene4_call_marco"
+      ],
+      "referenceImage": "public/visual-refs/locations/room-514.png"
+    },
+    "commute-home": {
+      "id": "commute-home",
+      "name": "Commute Home View",
+      "appearancePrompt": "The view from a passenger seat looking out a side window of a moving vehicle at night. The scene outside is an abstraction of city life, with streetlights, building lights, and traffic lights blurred into soft bokeh circles. The mood is dark, quiet, and reflective, with the faint, transparent reflection of a tired person's face visible on the glass.",
+      "stableElements": [
+        "Nighttime setting",
+        "Blurred city lights (bokeh)",
+        "View from inside a vehicle",
+        "Faint reflection on the window"
+      ],
+      "sceneIds": [
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/commute-home.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "emr-tablet",
+      "name": "EMR Tablet",
+      "appearancePrompt": "A ruggedized, 10-inch tablet computer in a thick, gray protective case with a handle. The screen displays a fictional, clean, and user-friendly Electronic Medical Record (EMR) interface with a consistent blue and white color scheme. It does not feature any real-world branding.",
+      "sceneIds": [
+        "intro",
+        "scene1_prioritization",
+        "scene2_med_pass",
+        "scene2_reassessment_reminder"
+      ]
+    },
+    {
+      "id": "med-cart",
+      "name": "Rolling Medication Cart",
+      "appearancePrompt": "A waist-high, stainless steel and plastic rolling cart with multiple lockable drawers. The top surface is flat and provides a workspace, often holding a laptop or the EMR tablet. It has a small, raised guard rail to prevent items from falling off and smooth-rolling caster wheels.",
+      "sceneIds": [
+        "scene2_med_pass",
+        "scene2_administer_meds",
+        "scene2_reassessment_reminder"
+      ]
+    },
+    {
+      "id": "vitals-monitor",
+      "name": "Vitals Monitor",
+      "appearancePrompt": "A standard bedside patient monitor with a 12-inch color screen mounted on a rolling stand. It displays numeric readouts for heart rate (HR), blood pressure (BP), oxygen saturation (SpO2), and respiratory rate (RR) in a consistent layout and color code (e.g., SpO2 in blue, HR in green). The monitor casing is a neutral light gray plastic.",
+      "sceneIds": [
+        "scene2_assessment",
+        "scene2_conversation",
+        "scene4_stabilize"
+      ]
+    },
+    {
+      "id": "iv-pole-pump",
+      "name": "IV Pole and Pump",
+      "appearancePrompt": "A tall, stainless steel pole on a weighted base with five caster wheels. It has four hooks at the top for hanging IV bags. Clamped to the pole is a modern infusion pump with a small screen, a numeric keypad, and color-coded status lights. All components are generic and unbranded.",
+      "sceneIds": [
+        "scene2_conversation",
+        "scene2_med_pass",
+        "scene2_administer_meds"
+      ]
+    },
+    {
+      "id": "sanitizer-dispenser",
+      "name": "Wall Sanitizer Dispenser",
+      "appearancePrompt": "A white, plastic, wall-mounted hand sanitizer dispenser. It is an automated, touchless model with a sensor at the bottom. It is always located near the entrance of patient rooms and in other key clinical areas.",
+      "sceneIds": [
+        "scene2_assessment",
+        "scene3_lab_draw",
+        "scene4_stabilize"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:51:21+00:00",
+  "styleReference": "templates/style-reference.png"
+}

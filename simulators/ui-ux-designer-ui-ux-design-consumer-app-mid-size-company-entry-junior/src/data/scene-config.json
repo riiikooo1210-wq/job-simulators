@@ -1,0 +1,339 @@
+{
+  "storyline": {
+    "gameTitle": "UI/UX Designer Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Feature Design Sprint"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to WellNest",
+        "content": "You're a Junior UI/UX Designer, four months into your first role at WellNest, a popular health and wellness app. You're part of the 'Core Experience' squad, working to make the app more engaging. Today, your team is kicking off a new feature, and you'll be leading the design process.",
+        "imageBrief": "First-person view of a bright, modern home office; you are sitting at the desk. The monitor in front of you displays a Figma window — a thin left sidebar shows a layers panel listing 'Home', 'Habits', and 'Profile', and the main canvas shows two mobile-phone artboards side by side: the first labeled 'WellNest Home' contains a vertical stack of three habit cards (water, steps, sleep) each with a circular progress ring and a percentage; the second labeled 'Habit Detail' shows a large flame icon, a '7-day streak' counter beneath it, and a green 'Mark Complete' button near the bottom. Sunlight from a window to the right warms a wooden desk in the foreground holding a half-open sketchbook with rough rectangular boxes drawn on the page, a ceramic coffee mug, and a few colored markers. Calm, creative, focused mood.",
+        "next": "briefing_1",
+        "illustration": "/scenes/intro.png"
+      },
+      "briefing_1": {
+        "id": "briefing_1",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Project Kickoff",
+        "content": "It's 9:30 AM, and you're joining your daily team stand-up via Google Meet. Your Product Manager, Ben, is excited to introduce the squad's next project: **Friend Streaks**.\n\n**The Goal:** Design a feature that lets users share their habit progress with a friend to create mutual accountability and boost retention.\n\n**The Ask:** Ben wants you to start exploring the {{user flow}} and initial screens for this feature. Your first task is to figure out the best way to begin.",
+        "next": "scene_01_standup",
+        "illustration": "/scenes/briefing_1.png"
+      },
+      "scene_01_standup": {
+        "id": "scene_01_standup",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "The Morning Stand-up",
+        "content": "Ben finishes his introduction on the video call. \"User research shows people are more likely to stick with habits if a friend is involved. We need a simple flow where a user can invite a friend, and they can both see each other's daily streak for a specific habit.\"\n\nHe looks at you. \"What's your first step after this meeting?\"",
+        "imageBrief": "First-person view of your home-office workstation. The laptop in front of you shows a Google Meet window: a large speaker tile in the upper area displays Ben (the PM, mid-30s, short dark hair, button-down shirt) mid-sentence with his name 'Ben' overlaid in the lower-left corner; a row of three smaller participant tiles below shows Maya (design manager, longer hair, glasses), Leo (engineer, hoodie), and a 'You' tile that is muted (microphone-off icon visible). The Meet toolbar at the bottom of the window shows mic, camera, and 'Leave call' icons. A spiral notebook with a pen sits to the right of the laptop on the desk; a small potted plant and a framed poster sit in the soft-focus background. Professional, focused atmosphere.",
+        "options": [
+          {
+            "id": "high_fidelity",
+            "label": "Start creating {{high-fidelity mockup}}s in Figma immediately.",
+            "body": "This will show progress quickly and give the team something concrete to react to.",
+            "branchFlag": "high_fidelity"
+          },
+          {
+            "id": "brainstorm",
+            "label": "Schedule a 1-hour brainstorming meeting with the entire team.",
+            "body": "This ensures everyone's ideas are heard before any design work begins.",
+            "branchFlag": "brainstorm"
+          },
+          {
+            "id": "research_sketch",
+            "label": "Do some quick competitive analysis and sketch out a few rough {{user flows}}.",
+            "body": "This helps explore different approaches and define the structure before committing to visuals.",
+            "branchFlag": "research_sketch"
+          },
+          {
+            "id": "wait",
+            "label": "Wait for Maya to assign you a specific task and give you detailed instructions.",
+            "body": "She's the senior designer, so it's best to wait for her direction.",
+            "branchFlag": "wait"
+          }
+        ],
+        "next": {
+          "branchOn": "scene_01_standup",
+          "cases": {
+            "high_fidelity": "scene_01b_hifi_redirect",
+            "brainstorm": "scene_01b_meeting_redirect",
+            "wait": "scene_01b_wait_redirect"
+          },
+          "default": "scene_02_ideation"
+        },
+        "illustration": "/scenes/scene_01_standup.png"
+      },
+      "scene_01b_hifi_redirect": {
+        "id": "scene_01b_hifi_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Taps the Brakes",
+        "content": "You open Figma and get to work on polished screens. About an hour in, a Slack notification pops up. It's Maya:\n\n> \"Hey, those frames are looking nice! But I'm a little worried we're getting ahead of ourselves. We haven't agreed on the actual flow yet — what screens exist, how they connect, what happens in edge cases. Jumping to {{high-fidelity mockup}} this early usually means we end up redoing a lot once the structure gets challenged in review. Can you step back and first map out how this feature works end-to-end? Even just rough bullet points in a doc would be a great start.\"\n\nYou close your polished frames. She's right — you need to nail the structure before the visuals.",
+        "imageBrief": "First-person view of your monitor at a home-office desk. The Figma canvas shows three polished mobile artboards in a row: 'Invite Friend' (a circular avatar placeholder, a search field labeled 'Find a friend', and a green 'Send invite' button at the bottom), 'Friend Streaks Home' (two side-by-side flame counters labeled 'You: 7' and 'Sam: 5' with avatar circles above each), and 'Celebration' (a small confetti illustration above the heading 'Streak unlocked!'). In the lower-right corner of the screen, a Slack notification toast appears with Maya's avatar, the name 'Maya', and a message preview reading 'Hey, those frames are looking nice…'. Your hand rests near the trackpad in the foreground; a sketchbook and a ceramic coffee mug sit on the desk.",
+        "illustration": "/scenes/scene_01b_hifi_redirect.png",
+        "next": "scene_02_ideation"
+      },
+      "scene_01b_meeting_redirect": {
+        "id": "scene_01b_meeting_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Ben Pumps the Brakes",
+        "content": "You draft a calendar invite for a 1-hour ideation session with Ben, Maya, and Leo. A minute later, Ben replies on Slack:\n\n> \"Do we really need a full hour for this? It's a pretty well-scoped feature. I'd rather you do some solo exploration first and bring back rough ideas before pulling everyone into a room. Go sketch for an hour and ping me when you have something — even super rough — to react to.\"\n\nMaya chimes in:\n\n> \"+1. The best brainstorming usually happens after you've done your own thinking first. Start with a rough {{user flow}} and we can align from there.\"\n\nYou cancel the invite and open a blank document.",
+        "imageBrief": "First-person view of your monitor. On the left half of the screen, a Google Calendar event-creation modal is half filled in: the title field reads 'Friend Streaks Ideation', the time picker shows '60 min', and the 'Add guests' field shows three chips reading 'Ben', 'Maya', and 'Leo'. On the right half, a Slack window is stacked beside it, showing two recent messages in a thread: one from Ben (avatar with 'B') reading 'Do we really need a full hour for this?' and one from Maya (avatar with 'M') replying '+1. Best brainstorming happens after solo thinking.' A spiral notebook open to a blank page and a pen sit on the desk in the foreground; a small plant on a windowsill is visible in the soft-focus background. Calm office environment.",
+        "illustration": "/scenes/scene_01b_meeting_redirect.png",
+        "next": "scene_02_ideation"
+      },
+      "scene_01b_wait_redirect": {
+        "id": "scene_01b_wait_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Checks In",
+        "content": "You stay at your desk, expecting Maya to follow up with specific instructions. Thirty minutes pass. Then an hour. No message.\n\nThen your Slack pings:\n\n> \"Hey, I noticed you haven't kicked off the Friend Streaks work yet — everything okay? Just so you know, I'm not going to prescribe a step-by-step for every feature. Part of growing in this role is figuring out the right starting point yourself. If I were you, I'd start by mapping out the {{user flow}} — just bullet points or a rough sketch — and do a quick look at how competitors handle similar features. Bring me something rough in an hour or two. Rough is fine, seriously.\"\n\nYou feel a sting of embarrassment but appreciate the nudge. Time to get started.",
+        "imageBrief": "First-person view of a quiet home-office desk. The laptop screen shows a near-empty Figma canvas with a single blank mobile artboard labeled 'Friend Streaks — Home' centered on a gray background; the left sidebar layers panel is empty except for one entry. In the lower-right corner of the screen, a Slack notification toast glows with Maya's avatar, the name 'Maya', and a preview reading 'Hey, I noticed you haven't kicked off the Friend Streaks work yet — everything okay?'. A round wall clock visible in the soft-focus background reads 11:00. A half-empty ceramic coffee mug and a closed notebook sit on the desk in the foreground. Contemplative mood.",
+        "illustration": "/scenes/scene_01b_wait_redirect.png",
+        "next": "scene_02_ideation"
+      },
+      "scene_02_ideation": {
+        "id": "scene_02_ideation",
+        "type": "free_text",
+        "section": 1,
+        "appWindow": "notion",
+        "windowTitle": "Friend Streaks — User Flow Draft",
+        "title": "Ideation & Sketching",
+        "content": "Time to map out the 'Friend Streaks' user journey. Getting the structure right before committing to visuals will save time and prevent costly redesigns later.",
+        "prompt": "Outline a simple User Flow for the 'Friend Streaks' feature. In a few bullet points or sentences, describe the key steps from the user's perspective. Be sure to cover:\n\n1.  How a user initiates an invitation.\n2.  What the friend sees when they receive the invitation.\n3.  What the screen looks like where they can both see their shared streak.",
+        "placeholder": "e.g., User taps 'Share Streak' button on habit screen -> Selects a friend from their contacts -> Friend receives a push notification -> Taps notification to open the app and accept -> Both users now see a shared streak view with both avatars and streak counts...",
+        "minWords": 30,
+        "next": "scene_03_checkin",
+        "illustration": "/scenes/scene_02_ideation.png"
+      },
+      "scene_03_checkin": {
+        "id": "scene_03_checkin",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "Design Check-in with Maya",
+        "content": "It's 11:30 AM, time for your quick 15-minute in-person design check-in with Maya, your manager. You bring your rough {{user flow}} notes to a small project room so she can see your early thinking before you invest more time in polished screens. She'll ask a few questions to understand your rationale.",
+        "npcId": "maya",
+        "meetingMode": "in_person",
+        "voiceName": "Kore",
+        "playerGoal": "Walk Maya through your User Flow design and be ready to explain the reasoning behind your choices — she'll ask a few probing questions, then wrap up.",
+        "goalPrompt": "{{playerName}} is a junior designer presenting their initial User Flow for a new feature during a quick in-person design check-in. As Maya, their manager, your goal is to assess {{playerName}}'s design rationale in a focused 10–15 minute desk-side/project-room critique. Ask 2–3 probing questions covering: (1) what core user problem the flow solves, (2) at least one edge case or gap they may have missed, and (3) their reasoning behind a key structural choice. Once you have asked these questions and heard their responses, naturally wrap up the conversation — you're busy and this is a quick check-in, not an exhaustive review. Close with something like: 'Good, this gives me a solid sense of where you're headed. Keep refining and document the edge cases when you write it up. Ping me if you get stuck.' Do NOT keep asking new questions after the wrap-up.",
+        "meetingContext": "You're Maya, a Senior Product Designer, sitting with {{playerName}} in a small project room near the design team's desks. You are reviewing {{playerName}}'s initial user flow notes for a 'Friend Streaks' feature. Start by asking them to walk you through the flow. Then probe on one or two specific areas, such as:\n- 'What's the most important user problem you're solving with this feature?'\n- 'What happens if the friend someone invites doesn't have the app installed yet?'\n- 'Why did you structure the invitation step this way?'\nAfter 2–3 exchanges, conclude naturally: 'Okay, I think I have a good read on this. It's a reasonable start — make sure you cover the edge cases in your documentation. Go ahead and keep building on it and flag me if anything's unclear.' End the conversation there.",
+        "maxTurns": 6,
+        "imageBrief": "First-person view from the junior designer's seat in a small, warm project room at WellNest. Maya Singh, a calm senior product designer in her early 30s with glasses and shoulder-length dark hair, sits across the table leaning forward with an attentive but probing expression, one hand near a pen as if ready to annotate. On the table between you are rough printed user-flow notes for 'Friend Streaks', a notebook, sticky notes, and a tablet showing simple boxes-and-arrows; behind Maya are a whiteboard with a few sketched mobile-screen boxes, muted sage sticky notes, and glass walls hinting at the design team's office beyond. The scene should feel like an in-person design critique, with Maya and the physical room as the focal point, not a video call or laptop meeting screen.",
+        "next": "scene_04_complications",
+        "illustration": "/scenes/scene_03_checkin.png"
+      },
+      "scene_04_complications": {
+        "id": "scene_04_complications",
+        "type": "slack_thread",
+        "section": 1,
+        "appWindow": "slack",
+        "windowTitle": "#design-eng · WellNest",
+        "title": "A Request from Ben",
+        "content": "After your chat with Maya, you're refining your approach and thinking through the design. Then a Slack notification from Ben, the PM, pops up.",
+        "npcId": "ben",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Hey {{playerName}}, how's the Friend Streaks design going? I've been doing some competitive research and I'd love to add dynamic animations when a streak updates — like a little celebration effect. I saw a competitor's app do this and it looked super engaging. Can we add something like that?"
+          },
+          {
+            "role": "npc",
+            "npcName": "Leo Chen",
+            "content": "Jumping in here — custom animations like that would be a significant amount of work and could easily push our launch date. We should stick to our standard motion patterns if we want to ship this quarter."
+          }
+        ],
+        "playerGoal": "Reply to Ben with one Slack message — acknowledge his engagement goal, raise Leo's feasibility concern honestly, and propose a path forward.",
+        "goalPrompt": "{{playerName}} is caught between your (Ben's) request for an exciting new animation and the engineer's warning about feasibility. This is a Slack thread, not a meeting — {{playerName}} will send you one reply. After they reply, respond briefly (2–3 sentences max): acknowledge their point, confirm the proposed next step, and close the thread naturally (e.g., 'Makes sense — let's align as a team before we commit to anything. Thanks for flagging.'). Do NOT ask follow-up questions or continue the conversation after that.",
+        "maxTurns": 1,
+        "imageBrief": "A modern office environment with glass walls and other workstations in the background. The central area is clear, ready for the Slack interface to be displayed. The lighting is bright and even, typical of a tech company.",
+        "next": "scene_05_flow_diagram",
+        "illustration": "/scenes/scene_04_complications.png"
+      },
+      "scene_05_flow_diagram": {
+        "id": "scene_05_flow_diagram",
+        "type": "flow_diagram",
+        "section": 1,
+        "appWindow": "figma",
+        "windowTitle": "Friend Streaks Flow.fig",
+        "title": "Map the User Flow",
+        "content": "After a brief team discussion, you all agreed to proceed with a simpler design for the {{MVP}}, saving complex animations for a future iteration. Now it's time to hand off to Leo by mapping the complete {{user flow}}.\n\nLeo needs to understand every screen that needs to be built and how they connect — a clear flow prevents misunderstandings and avoids back-and-forth during development.",
+        "prompt": "Build the User Flow for the Friend Streaks feature. Friend Streaks Home is already placed as the first screen and cannot be removed. Add the remaining screens as nodes, then draw arrows to show how users move between them. Label each arrow with the button, link, or CTA label the user chooses (e.g., 'Send Invite', 'Accept Invite', 'View Shared Streak'). Make sure to cover the happy path and at least one edge case.",
+        "bindingKey": "flow_diagram",
+        "rationalePrompt": "Explain your key design decisions. Why did you structure the flow this way? What edge cases did you consider, and how does your flow handle them?",
+        "rationaleBindingKey": "flow_diagram_rationale",
+        "minNodes": 2,
+        "minEdges": 1,
+        "next": "scene_06_screen_design",
+        "illustration": "/scenes/scene_05_flow_diagram.png"
+      },
+      "scene_06_screen_design": {
+        "id": "scene_06_screen_design",
+        "type": "screen_design_studio",
+        "section": 1,
+        "appWindow": "figma",
+        "windowTitle": "Friend Streaks Mockup.fig",
+        "title": "Design One Screen",
+        "content": "Leo has the structure he needs from your {{user flow}}, but Maya wants you to do one quick screen pass before you wrap up. Build the first page of the Friend Streaks feature as a rough mobile page. This is a place to experience a realistic UI-making task.",
+        "prompt": "Create the first page of the Friend Streaks feature and place every element needed for that screen. Use plain shapes for any custom button, card, or placeholder, then leave a short implementation note about the page state or behavior.",
+        "bindingKey": "screen_mockup",
+        "notesPlaceholder": "e.g., This is the first Friend Streaks page. The main button starts the invite flow, and this note explains the default state Leo should build.",
+        "next": "assessment_gate"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 1,
+        "title": "End of Day",
+        "content": "You've submitted your {{user flow}} and quick screen mockup. Great work today! Let's review your performance.",
+        "imageBrief": "First-person view of your home-office desk at the end of the workday. The laptop in front of you shows a Slack window with one recent message visible in a channel labeled '#friend-streaks' — message text reads 'Final user flow + screen mockup are in Figma. Ready for review.' — and the menu-bar clock in the top-right of the screen reads '6:14 PM'. Below the laptop, a small stack of printed wireframe pages sits beside a closed sketchbook with a pen on top. A ceramic coffee mug sits empty on the right side of the desk. Soft late-afternoon light from a window warms the wooden surface. Quiet, satisfied, slightly tired mood.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 1,
+        "title": "Final Report",
+        "content": "This report summarizes your performance in the WellNest simulation. It's designed to give you feedback on key skills for a UI/UX Designer.",
+        "imageBrief": "First-person view of your home-office desk in the early evening, work finished. The laptop in front of you is closed; on top of it rests a small stack of printed pages — the top page is a coffee-stained printout titled 'Friend Streaks — User Flow' with simple hand-drawn boxes and arrows visible between four labeled screens ('Home', 'Invite Friend', 'Streak View', 'Streak Detail'). A closed sketchbook with a pen lies beside the laptop, and a ceramic coffee mug sits empty to the side. A small desk lamp casts a soft pool of warm light over the wooden surface; the window in the soft-focus background shows fading early-evening light. Quiet, reflective, end-of-day mood.",
+        "next": null,
+        "illustration": "/scenes/final_report.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 1,
+        "title": "The Project Is Complete",
+        "content": "The simulated project is complete. You have finished the flowchart and one quick screen mockup; when you are ready, view your assessment.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm project wrap-up moment with completed artifacts visible on a work surface and the student stepping back from the final deliverable. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      }
+    }
+  },
+  "npcs": {
+    "maya": {
+      "id": "maya",
+      "name": "Maya Singh",
+      "role": "Senior Product Designer (Your Manager)",
+      "persona": "Maya is a sharp, articulate, and methodical designer in her early 30s. She is a strong advocate for the user and prefers to see rough ideas early. She gives feedback by asking probing questions to understand a designer's rationale, rather than just providing solutions. While patient, she is very busy and expects her team members to be proactive and develop autonomy.",
+      "voice": "calm and articulate"
+    },
+    "ben": {
+      "id": "ben",
+      "name": "Ben Carter",
+      "role": "Product Manager",
+      "persona": "Ben is an energetic, data-driven, and ambitious PM in his late 20s. He is pragmatic and slightly impatient, always focused on shipping features that will move key business metrics. His performance is judged on speed and hitting quarterly growth targets, so he sometimes prioritizes shipping quickly over achieving design perfection. He's direct and communicates frequently on Slack.",
+      "voice": "direct and fast-paced"
+    },
+    "leo": {
+      "id": "leo",
+      "name": "Leo Chen",
+      "role": "Front-End Engineer",
+      "persona": "Leo is a thoughtful, detail-oriented engineer in his mid-20s. He is collaborative but pragmatic, with deep knowledge of the existing codebase and Design System. He is the team's reality check on technical feasibility and is wary of 'one-off' designs that create technical debt. He prefers clear, written documentation and asks specific questions about edge cases and interaction specs.",
+      "voice": "pragmatic and detail-oriented"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "UI/UX Designer Simulation: WellNest",
+    "welcomeBody": "Welcome to WellNest! You're a Junior UI/UX Designer, four months into your first full-time role. Today, you'll tackle a new feature from start to finish, navigating team dynamics and design challenges along the way.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "WellNest is a consumer mobile app for building healthy daily habits. Users set goals across hydration, movement, and sleep, then keep them going with circular progress rings on a 'Home' dashboard and day-counter streaks (the iconic flame on each habit). The audience skews 25–40-year-olds who want lightweight accountability without a coach or gym membership. Your 'Core Experience' squad owns the parts users touch every day — the home screen, habit cards, and streak mechanics — and is currently focused on retention by making daily check-ins feel social and rewarding."
+      },
+      {
+        "label": "Your Role",
+        "content": "As a Junior UI/UX Designer, you'll be responsible for translating ideas into {{user flows}}, {{wireframes}}, and mockups. Your manager, Maya, will expect you to explain your design decisions clearly."
+      },
+      {
+        "label": "Your Team",
+        "content": "You work on the Core Experience squad with Ben, a data-driven Product Manager, and Leo, a detail-oriented Engineer. You'll need to balance their different perspectives to get your designs built."
+      },
+      {
+        "label": "Your Challenge",
+        "content": "Your team is kicking off a new 'Friend Streaks' feature. You'll take the lead on the initial design, from ideation and critique to stakeholder management and final engineering {{handoff}}."
+      }
+    ]
+  },
+  "glossary": {
+    "design system": "A collection of reusable components (like buttons, icons, and menus) and standards that allow teams to design and build products faster and more consistently.",
+    "handoff": "The process of passing finalized designs to the engineering team for development. This often includes documentation, specs, and assets.",
+    "high-fidelity mockup": "A detailed, static representation of a design that closely resembles the final product's visual appearance.",
+    "user flow": "A diagram that maps out the complete path a user takes when using a product to accomplish a task.",
+    "wireframe": "A low-fidelity, simplified outline of a screen's layout. It focuses on structure and functionality, not visual design.",
+    "MVP": "The version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort."
+  },
+  "sample_answers": {},
+  "rubric": {
+    "simulation_id": "ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "朝会での判断",
+            "evidenceSceneIds": [
+              "scene_01_standup"
+            ],
+            "rubric_text": "9-10: 曖昧な依頼、期限、ユーザー課題、チームの依存関係を見て、最初に進めるべき設計行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "発想と下書き",
+            "evidenceSceneIds": [
+              "scene_02_ideation"
+            ],
+            "rubric_text": "9-10: ユーザー課題に対して、複数の案、判断理由、捨てる案、次に確認すべきことを具体的に下書きできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "設計確認通話",
+            "evidenceSceneIds": [
+              "scene_03_checkin"
+            ],
+            "rubric_text": "9-10: 実際の通話で、目的、制約、懸念、次に作るものを確認し、相手のフィードバックを設計判断に変えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "設計上の問題対応",
+            "evidenceSceneIds": [
+              "scene_04_complications"
+            ],
+            "rubric_text": "9-10: 追加の制約や懸念に対して、何を変え、何を守り、誰に確認するかを具体的に返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "利用者の流れ図",
+            "evidenceSceneIds": [
+              "scene_05_flow_diagram"
+            ],
+            "rubric_text": "9-10: ユーザーの入口、判断点、主要行動、失敗時の戻り先を、画面設計に使える流れとして整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "画面案",
+            "evidenceSceneIds": [
+              "scene_06_screen_design"
+            ],
+            "rubric_text": "9-10: 一画面の目的、情報階層、主要操作、状態、ユーザーの迷いを減らす配置を具体的に設計できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "slug": "urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior",
+  "createdAt": "2026-05-24T12:15:38+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "jordan_ellis": {
+      "id": "jordan_ellis",
+      "name": "Jordan Ellis",
+      "role": "Current Planner, City of Eastbank",
+      "sourcePersona": "Jordan is a practical municipal planner who can clarify process, code expectations, and common staff concerns. They are helpful but careful not to promise approval or negotiate final conditions during a pre-application call.",
+      "appearancePrompt": "Jordan Ellis, Current Planner, City of Eastbank. Use this as the locked character identity: Jordan is a practical municipal planner who can clarify process, code expectations, and common staff concerns. They are helpful but careful not to promise approval or negotiate final conditions during a pre-application call.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/jordan_ellis.png"
+    }
+  },
+  "locations": {
+    "consulting-office": {
+      "id": "consulting-office",
+      "name": "Consulting Office",
+      "appearancePrompt": "Create a stable location reference for Consulting Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to VerdantWorks\nFirst-person view of a modern planning and engineering consulting office. A laptop on a warm cream desk shows a project dashboard titled Riverbend Yard Feasibility Sprint with tabs for Client Brief, Zoning, Parcel Map, Comment Log, Meeting Prep, and Client Email. Printed parcel maps, zoning sticky notes, and a 3:30 PM pre-application call reminder sit nearby. The tone is professional, practical, and deadline-driven.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "intro"
+      ],
+      "referenceImage": "public/visual-refs/locations/consulting-office.png"
+    },
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to VerdantWorks\nFirst-person view of a modern planning and engineering consulting office. A laptop on a warm cream desk shows a project dashboard titled Riverbend Yard Feasibility Sprint with tabs for Client Brief, Zoning, Parcel Map, Comment Log, Meeting Prep, and Client Email. Printed parcel maps, zoning sticky notes, and a 3:30 PM pre-application call reminder sit nearby. The tone is professional, practical, and deadline-driven.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "first_move",
+        "intro",
+        "redirect_wait_for_data"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Create a stable location reference for Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to VerdantWorks\nFirst-person view of a modern planning and engineering consulting office. A laptop on a warm cream desk shows a project dashboard titled Riverbend Yard Feasibility Sprint with tabs for Client Brief, Zoning, Parcel Map, Comment Log, Meeting Prep, and Client Email. Printed parcel maps, zoning sticky notes, and a 3:30 PM pre-application call reminder sit nearby. The tone is professional, practical, and deadline-driven.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "city_call",
+        "intro"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    }
+  },
+  "reusableObjects": []
+}

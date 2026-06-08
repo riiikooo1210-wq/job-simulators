@@ -1,0 +1,678 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "Enterprise ecommerce customer support representative work is phone-centered and manual-driven. O*NET emphasizes daily telephone conversations, complaint handling, computer use, policy-bounded refunds or adjustments, escalation, time pressure, and angry customers. The collected videos and Reddit threads reinforce the loop this simulator now uses: review the shared support manual and relevant policy article, take the inbound call, learn the customer's concrete case after verification/lookup, apply policy in real time, reset, and repeat across normal and edge cases.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "O*NET describes an indoor, computer-heavy role with continual use of hands on computer controls.",
+          "The WFH call-center videos show headset/computer use rather than physical package handling."
+        ],
+        "simulatorImplication": "No physical playground is needed. The concrete workplace action is reading manuals and using them during phone calls."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists contact-center software, CRM, email, documents, and internal messaging tools.",
+          "The logistics CSR source describes reviewing emails/orders, using order tracking, and updating logs."
+        ],
+        "simulatorImplication": "Each prep scene uses a sourceInbox-style common support manual plus the relevant policy article, not a customer-specific case packet. The calls keep the same reference visible while customer details emerge live."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET includes obtaining and examining relevant information, assessing complaint validity, and referring unresolved grievances.",
+          "Reddit sources emphasize shipped-order misconceptions, refund authority limits, and Trust/Risk style red flags."
+        ],
+        "simulatorImplication": "Assessment focuses on whether the student applies the manual correctly in a normal call, a late-delivery edge case, and a refund-risk edge case."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "O*NET includes records and documentation, while Reddit mentions ACW and wrap time.",
+          "The user explicitly requested no student-written prep and a call-focused simulator."
+        ],
+        "simulatorImplication": "Written artifacts are intentionally removed. The student's constructed-response evidence is spoken call performance."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET reports telephone conversations every day for customer service representatives.",
+          "The Indeed customer service video emphasizes level voice, empathy, and focusing on one client during busy moments."
+        ],
+        "simulatorImplication": "Three voice meetings are the core active scenes and the primary grading evidence."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "YouTube call-center videos describe system setup, call blocks, breaks, and fatigue.",
+          "Reddit sources describe short gaps between calls and the need to reset after difficult callers."
+        ],
+        "simulatorImplication": "Context switching is represented by the repeated prep -> call rhythm."
+      }
+    },
+    "simulatorPlan": "Build a compact inbound call-center simulator at fictional Mercury Market. Before each call, the student reads the shared support manual plus the relevant policy article. They do not see customer-specific facts until the call connects and they verify/look up the account. The sequence repeats three times: normal order-status call, late-delivery supervisor/refund call, and high-value refund Trust/Risk edge case. There are no student-written prep artifacts.",
+    "activeSceneMixRationale": "The active scenes are three voice calls, each preceded by visible manual prep. This intentionally deviates from the broader workflow pattern at the user's request and better matches the desired training objective: assess manual use, call control, empathy, and edge-case judgment."
+  },
+  "storyline": {
+    "gameTitle": "Mercury Market Support Calls",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Normal Call"
+      },
+      {
+        "num": 2,
+        "label": "Delivery Edge Case"
+      },
+      {
+        "num": 3,
+        "label": "Refund Risk Edge Case"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Jump to normal call",
+        "targetNodeId": "call_order_status"
+      },
+      {
+        "label": "Jump to late delivery call",
+        "targetNodeId": "call_late_delivery"
+      },
+      {
+        "label": "Jump to refund risk call",
+        "targetNodeId": "call_risk_refund"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Mercury Market Support",
+        "content": "You are a junior Customer Support Representative on Mercury Market's general inbound calls queue. Before each call, read the shared support manual and the relevant policy article. The customer's specific case details appear only after the call connects and you verify/look up the account. You are assessed on how well you apply the manual, not on writing prep notes.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "Warm illustrated contact-center desk for a fictional ecommerce marketplace. A headset, white desktop computer (monitor with matching white keyboard), queue timer, and manual binder sit on a tidy desk. The monitor UI is cream-colored and generic with no real company logos or readable private data. Do not include readable customer statements, issue categories, case facts, policy outcomes, answer cues, scores, or anything that tells the player what a caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "next": "prep_order_status"
+      },
+      "prep_order_status": {
+        "id": "prep_order_status",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Prep 1: Shared Manual + Order-Status Policy",
+        "content": "The IVR category suggests a routine order-status question. Read the shared call-flow manual and the order-status policy article before you answer. You do not know the customer or order yet; those details become known only after you answer, verify the caller, and look up the account.",
+        "actionLabel": "Open Manual",
+        "illustration": "/scenes/prep.png",
+        "imageBrief": "Ecommerce support desk with a white desktop computer: a monitor showing a generic source inbox and a matching white keyboard in front of it. A small printed quick-reference manual and ready headset sit nearby. Screen text is rendered by the simulator, so keep image text generic and unreadable. Do not include readable customer statements, issue categories, case facts, policy outcomes, answer cues, scores, or anything that tells the player what a caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "sourceInbox": {
+          "entryMessage": {
+            "channel": "slack",
+            "from": "Talia Brooks",
+            "channelName": "#tier1-general-calls",
+            "timestamp": "9:00 AM",
+            "body": "Next inbound call is likely a routine order-status question based on the IVR category. You do not know the customer yet. Review the shared verification flow and order-status policy before you answer.",
+            "linkLabel": "Open order-status policy"
+          },
+          "startOpen": true,
+          "folder": {
+            "name": "Shared Manual - Order Status",
+            "path": "Mercury Support / Knowledge Base / Order Status",
+            "updatedLabel": "Current policy",
+            "files": [
+              {
+                "id": "shared_call_flow",
+                "name": "Shared manual - Inbound call flow.txt",
+                "kind": "text",
+                "previewTitle": "Shared inbound call flow",
+                "sections": [
+                  {
+                    "heading": "Required flow",
+                    "body": "Greet the caller. Verify identity before sharing account or order details. Ask what happened and what outcome the caller wants. Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call. Acknowledge the impact before explaining policy. State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes. Close by summarizing the next step and follow-up path."
+                  },
+                  {
+                    "heading": "Tone and escalation",
+                    "body": "Use plain language. Be specific without overexplaining. Do not guess what the carrier will do, promise exact timing, promise refunds, or imply supervisor/lead callbacks change policy outcomes unless the policy article says so. Do not blame the carrier or accuse the customer. If a supervisor, lead, investigation, credit, refund, trace, or Trust/Risk review is relevant, use the timeframe and limits in the policy article. If the caller yells or insults, set a respectful boundary and do not match their tone."
+                  }
+                ]
+              },
+              {
+                "id": "order_status_manual",
+                "name": "Policy article - Standard order-status calls.pdf",
+                "kind": "pdf",
+                "previewTitle": "Standard order-status policy",
+                "sections": [
+                  {
+                    "heading": "Order status rules",
+                    "body": "After verification and CRM lookup, state the current tracking exactly. If an order is out for delivery, say it is out for delivery today and no exception is currently reported. Do not guarantee an exact delivery time unless the carrier provides one."
+                  },
+                  {
+                    "heading": "Customer options",
+                    "body": "Offer to help the customer enable SMS/email delivery notifications from the order details page. Explain that order status is in the Mercury app under Account > Orders > select the order > Track package; Delivery updates on that same order page controls SMS/email notifications. If there is no exception and the delivery window has not passed, no refund or carrier trace is needed."
+                  }
+                ]
+              }
+            ]
+          },
+          "requiredFileIds": [
+            "shared_call_flow",
+            "order_status_manual"
+          ],
+          "continueLabel": "Answer Inbound Call"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "source inbox manual",
+          "inputArtifacts": [
+            {
+              "id": "order_status_reference",
+              "label": "Shared manual and order-status policy",
+              "whereVisible": "prep_order_status.sourceInbox",
+              "summary": "Shared inbound call flow and order-status policy article, with no customer-specific case details."
+            }
+          ],
+          "studentAction": "Read the complete manual before the call.",
+          "outputArtifact": {
+            "id": "manual_readiness_1",
+            "label": "Manual read before normal call",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for call_order_status"
+          ],
+          "continuity": [
+            "The same manual and policy article appear during the inbound order-status call."
+          ],
+          "authenticityCheck": "Inbound support reps use a shared manual and policy article first; customer-specific details are learned after verification/lookup."
+        },
+        "next": "call_order_status"
+      },
+      "call_order_status": {
+        "id": "call_order_status",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "Call 1: Order-Status Inbound Call",
+        "content": "An inbound order-status call connects. You do not know the caller's specific order yet; verify, ask what they need, and use the CRM lookup during the call.",
+        "npcId": "mia_lopez",
+        "meetingMode": "remote",
+        "voiceName": "Aoede",
+        "playerGoal": "In 3-4 turns, verify the caller, ask for or look up the order, explain the tracking status learned during the call without guessing, offer delivery notifications with the app path, and close clearly.",
+        "prepReferenceTitle": "Shared manual + order-status policy",
+        "prepReferenceContent": "Shared call flow:\n- Greet the caller.\n- Verify identity before sharing account or order details.\n- Ask what happened and what outcome the caller wants.\n- Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call.\n- Acknowledge the impact before explaining policy.\n- State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes.\n- Close by summarizing the next step and follow-up path.\n- Do not guess, overpromise, blame the carrier, or accuse the customer. Use the policy article for exact limits, timeframes, and escalation rules.\n\nOrder-status policy:\n- State current tracking exactly after lookup.\n- Do not guarantee an exact delivery time unless carrier provides one.\n- Offer SMS/email delivery notifications from the order details page.\n- Explain the app path: Account > Orders > select order > Track package. Delivery updates on that order page controls SMS/email notifications.\n- If there is no exception and the delivery window has not passed, no refund or carrier trace is needed.",
+        "goalPrompt": "You are Mia Lopez, a friendly but rushed Mercury Market customer. Start by saying you need help with an order status and ask whether you have to stay home. You do not know what the agent can see until they verify and look it up. If the student asks to verify, provide your name and order number: Mia Lopez, order MM-18472, stainless-steel lunch container set. When the student has verified you and says they are checking, searching, or opening the CRM/order record, make the lookup visible as a neutral simulation aside: 'CRM lookup result: promised delivery today by 8 PM; tracking is out for delivery since 7:48 AM; no carrier exception.' Then continue as Mia. If the student states that accurately without guaranteeing a time, become reassured and ask how to get notifications or where to check it in the app. If the student guesses a precise delivery time or skips verification, ask how they know that. Do not ask about policies, products, shipping mechanics, refunds, carrier actions, or app features outside the shared order-status manual and the CRM facts above. After the student offers notifications, gives the app path, and confirms the status, close by saying you will watch for the update.",
+        "meetingContext": "Normal inbound ecommerce order-status call. The student sees only the shared manual and policy article; customer-specific details emerge after verification and lookup during the call.",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Hi, this is Mia. I just need to know if my lunch containers are actually coming today. Do I need to stay home for this?"
+          }
+        ],
+        "minTurns": 3,
+        "maxTurns": 4,
+        "endpoint": "End once the student has verified the caller/order, learned the tracking status during the call, explained it without guessing, offered notifications/app status path, and closed the call.",
+        "successCriteria": "Strong performance uses the manual, avoids unsupported exact timing, solves the routine need with the app/status path, and closes warmly.",
+        "illustration": "/scenes/call.png",
+        "imageBrief": "Remote phone support view from the agent's desk. A headset microphone is visible, with a cream call interface, neutral support-manual sidebar, and CRM lookup area on a white desktop monitor, plus a matching white keyboard on the desk. Use a small generic caller avatar/audio waveform rather than a video grid. Keep all interface text generic or unreadable; do not include readable customer statements, issue categories, case facts, policy outcomes, answer cues, scores, or anything that tells the player what the caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "remote voice customer call",
+          "inputArtifacts": [
+            {
+              "id": "order_status_reference",
+              "label": "Shared manual and order-status policy",
+              "whereVisible": "call_order_status.prepReferenceContent",
+              "summary": "Shared call flow and standard order-status policy; customer-specific details are learned during the call."
+            }
+          ],
+          "studentAction": "Handle a normal inbound order-status call using the visible manual and live customer/CRM details.",
+          "outputArtifact": {
+            "id": "call_order_status",
+            "label": "Normal order-status call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "transcript.call_order_status"
+          ],
+          "continuity": [
+            "The next prep starts after the normal call is complete."
+          ],
+          "authenticityCheck": "Routine order-status calls are common in ecommerce support and test clarity, verification, and efficiency."
+        },
+        "next": "prep_late_delivery"
+      },
+      "prep_late_delivery": {
+        "id": "prep_late_delivery",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 2,
+        "title": "Prep 2: Late Delivery and Supervisor Request Manual",
+        "content": "The IVR category suggests a late-delivery or refund request. Read the shared call-flow manual and the late-delivery/refund policy article before you answer, especially the carrier handoff, courtesy credit, carrier trace, and supervisor callback boundaries. You do not know the customer or order yet; those details become known only after you answer, verify the caller, and look up the account.",
+        "actionLabel": "Open Manual",
+        "illustration": "/scenes/prep.png",
+        "imageBrief": "Contact-center desk with a slightly more urgent but generic queue card and a neutral support manual open on a white desktop monitor. A headset and a plain sticky note with unreadable reminder marks sit beside the matching white keyboard. Keep all readable text generic or unreadable; do not include customer statements, issue categories, case facts, policy outcomes, answer cues, scores, step-by-step response instructions, or anything that tells the player what the caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "sourceInbox": {
+          "entryMessage": {
+            "channel": "slack",
+            "from": "Talia Brooks",
+            "channelName": "#tier1-general-calls",
+            "timestamp": "9:17 AM",
+            "body": "Next inbound category is late delivery/refund. You do not know the customer yet. Review carrier handoff, courtesy credit, carrier trace, and supervisor callback rules before you answer.",
+            "linkLabel": "Open late-delivery policy"
+          },
+          "startOpen": true,
+          "folder": {
+            "name": "Shared Manual - Late Delivery and Refund Requests",
+            "path": "Mercury Support / Knowledge Base / Late Delivery",
+            "updatedLabel": "Current policy",
+            "files": [
+              {
+                "id": "shared_call_flow",
+                "name": "Shared manual - Inbound call flow.txt",
+                "kind": "text",
+                "previewTitle": "Shared inbound call flow",
+                "sections": [
+                  {
+                    "heading": "Required flow",
+                    "body": "Greet the caller. Verify identity before sharing account or order details. Ask what happened and what outcome the caller wants. Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call. Acknowledge the impact before explaining policy. State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes. Close by summarizing the next step and follow-up path."
+                  },
+                  {
+                    "heading": "Tone and escalation",
+                    "body": "Use plain language. Be specific without overexplaining. Do not guess what the carrier will do, promise exact timing, promise refunds, or imply supervisor/lead callbacks change policy outcomes unless the policy article says so. Do not blame the carrier or accuse the customer. If a supervisor, lead, investigation, credit, refund, trace, or Trust/Risk review is relevant, use the timeframe and limits in the policy article. If the caller yells or insults, set a respectful boundary and do not match their tone."
+                  }
+                ]
+              },
+              {
+                "id": "late_delivery_manual",
+                "name": "Policy article - Late delivery and supervisor requests.pdf",
+                "kind": "pdf",
+                "previewTitle": "Late-delivery manual",
+                "sections": [
+                  {
+                    "heading": "Carrier handoff",
+                    "body": "Once an order is in carrier possession, Tier 1 cannot guarantee same-day delivery, cancel the shipment, or redirect the package. Explain what the current scan shows in plain language. Customer-facing wording: Mercury can monitor for the next carrier scan and can start a carrier trace if there is no new scan 24 hours after the promised window or if tracking shows exception/damage."
+                  },
+                  {
+                    "heading": "Allowed options",
+                    "body": "For verified Mercury Plus customers with a late package still in transit, Tier 1 may offer up to a $10 courtesy credit. A carrier trace becomes available if there is no new scan 24 hours after the promised window or if tracking shows exception/damage. Full refund before delivery is not authorized unless the package is lost, damaged, returned to sender, or Trust/Risk approves."
+                  },
+                  {
+                    "heading": "Supervisor boundary",
+                    "body": "If the customer asks for a supervisor, offer a supervisor callback within 2 business hours and document the reason on the current case. Do not say a supervisor will give a different outcome; say the supervisor will review the same order record, current scans, and available options."
+                  }
+                ]
+              }
+            ]
+          },
+          "requiredFileIds": [
+            "shared_call_flow",
+            "late_delivery_manual"
+          ],
+          "continueLabel": "Answer Inbound Call"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "source inbox manual",
+          "inputArtifacts": [
+            {
+              "id": "late_delivery_reference",
+              "label": "Shared manual and late-delivery policy",
+              "whereVisible": "prep_late_delivery.sourceInbox",
+              "summary": "Shared inbound call flow plus late-delivery/refund policy, with no customer-specific case details."
+            }
+          ],
+          "studentAction": "Read the late-delivery manual before the call.",
+          "outputArtifact": {
+            "id": "manual_readiness_2",
+            "label": "Manual read before delivery edge call",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for call_late_delivery"
+          ],
+          "continuity": [
+            "The same manual and policy article appear during the late-delivery voice call."
+          ],
+          "authenticityCheck": "Support edge cases are handled by applying approved policy language under pressure."
+        },
+        "next": "call_late_delivery"
+      },
+      "call_late_delivery": {
+        "id": "call_late_delivery",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Call 2: Late-Delivery Inbound Call",
+        "content": "A late-delivery inbound call connects. You do not know the specific order yet; verify, listen for the customer's context, and use CRM lookup during the call.",
+        "npcId": "renee_walker",
+        "meetingMode": "remote",
+        "voiceName": "Kore",
+        "playerGoal": "In 4-6 turns, verify the caller, learn the late-delivery situation during the call, acknowledge the missed birthday-gift expectation, explain carrier handoff, offer only authorized options, and set a supervisor callback boundary if needed.",
+        "prepReferenceTitle": "Shared manual + late-delivery policy",
+        "prepReferenceContent": "Shared call flow:\n- Greet the caller.\n- Verify identity before sharing account or order details.\n- Ask what happened and what outcome the caller wants.\n- Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call.\n- Acknowledge the impact before explaining policy.\n- State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes.\n- Close by summarizing the next step and follow-up path.\n- Do not guess, overpromise, blame the carrier, or accuse the customer. Use the policy article for exact limits, timeframes, and escalation rules.\n\nLate-delivery policy:\n- Once an order is in carrier possession, Tier 1 cannot guarantee same-day delivery, cancel the shipment, or redirect the package.\n- Explain the current scan in plain language: Mercury can monitor for the next carrier scan and can start a carrier trace if there is no new scan 24 hours after the promised window or if tracking shows exception/damage.\n- For verified Mercury Plus customers with a late package still in transit, Tier 1 may offer up to a $10 courtesy credit.\n- Full refund before delivery is not authorized unless the package is lost, damaged, returned to sender, or Trust/Risk approves.\n- If supervisor requested, offer callback within 2 business hours; do not imply a different outcome. The supervisor reviews the same order record, current scans, and available options.",
+        "goalPrompt": "You are Renee Walker, a frustrated Mercury Plus customer. Start angry but not abusive: say the package was for your nephew's birthday and ask whether Mercury is refunding you or getting a supervisor. If the student asks to verify, provide your name and order number: Renee Walker, order MM-73918, NovaBuds Kids Headphones, blue. When the student has verified you and says they are checking, searching, or opening the CRM/order record, make the lookup visible as a neutral simulation aside: 'CRM lookup result: Mercury Plus customer; promised delivery yesterday by 9 PM; tracking is in transit with carrier; departed regional sort facility 6:12 AM today; no final-mile scan yet; prior chat yesterday said tracking was still on time and no refund or credit was promised.' Then continue as Renee. If the student acknowledges the disappointment and explains carrier handoff plainly, soften slightly and ask what they can actually do. If the student promises a full refund, exact delivery, or blames the carrier, push back and ask for a supervisor. If the student offers only policy language without empathy, say it sounds scripted. Do not ask about policies, products, shipping mechanics, refunds, credits, or supervisor options outside the shared late-delivery manual and the CRM facts above. After 4-6 student turns, close with either 'Okay, I will watch for the scan and callback' if handled well, or 'I still need a supervisor to call me' if not.",
+        "meetingContext": "Late-delivery inbound ecommerce support call with refund and supervisor pressure. The student sees only the shared manual and policy article; Renee's specific order details emerge after verification and lookup during the call.",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "This is Renee. I have been waiting since yesterday. Those headphones were a birthday gift, and now the birthday is over. Are you refunding me or getting me a supervisor?"
+          }
+        ],
+        "minTurns": 4,
+        "maxTurns": 6,
+        "endpoint": "End after the student has verified the caller, learned the order facts during the call, addressed empathy, carrier handoff, authorized credit/trace options, and supervisor callback boundary.",
+        "successCriteria": "Strong performance uses the manual, stays empathetic, avoids impossible delivery or refund promises, and sets a concrete follow-up.",
+        "illustration": "/scenes/call.png",
+        "imageBrief": "Remote phone support scene with a generic active customer-call interface. A white desktop monitor shows a cream call panel, a neutral support-manual sidebar, and a CRM lookup area that is blank or populated only with generic placeholder blocks. A matching white keyboard and the headset are visible in foreground; no video grid or real logos. Keep all interface text generic or unreadable; do not include customer statements, issue categories, case facts, policy outcomes, answer cues, scores, step-by-step response instructions, or anything that tells the player what the caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "remote voice customer call",
+          "inputArtifacts": [
+            {
+              "id": "late_delivery_reference",
+              "label": "Shared manual and late-delivery policy",
+              "whereVisible": "call_late_delivery.prepReferenceContent",
+              "summary": "Shared call flow and late-delivery/refund policy; customer-specific details are learned during the call."
+            }
+          ],
+          "studentAction": "Handle an inbound late-delivery complaint using the visible manual and live customer/CRM details.",
+          "outputArtifact": {
+            "id": "call_late_delivery",
+            "label": "Late-delivery call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "transcript.call_late_delivery"
+          ],
+          "continuity": [
+            "The next prep begins after the delivery edge call."
+          ],
+          "authenticityCheck": "Late-delivery/refund/supervisor pressure is a realistic ecommerce call-center edge case."
+        },
+        "next": "prep_risk_refund"
+      },
+      "prep_risk_refund": {
+        "id": "prep_risk_refund",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 3,
+        "title": "Prep 3: High-Value Refund Risk Manual",
+        "content": "The IVR category suggests a high-value refund or item-not-received request. Read the shared call-flow manual and the high-value refund/Trust-Risk policy article before you answer, especially neutral language, delivery-proof handling, Trust/Risk routing, and refund authority boundaries. You do not know the specific customer, delivery proof, or risk signals yet; those details become known only after you answer, verify the caller, and look up the account.",
+        "actionLabel": "Open Manual",
+        "illustration": "/scenes/prep.png",
+        "imageBrief": "Contact-center desk with a white desktop computer (monitor with matching white keyboard) showing a generic incoming support case in a cream CRM. A neutral support manual is visible as coded UI in the simulator; image text should be generic and unreadable. Mood is serious but controlled. Do not include readable customer statements, issue categories, case facts, policy outcomes, answer cues, scores, sensitive category labels, step-by-step response instructions, or anything that tells the player what the caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "sourceInbox": {
+          "entryMessage": {
+            "channel": "slack",
+            "from": "Nisha Rao",
+            "channelName": "#qa-support",
+            "timestamp": "9:46 AM",
+            "body": "Next inbound category is high-value refund / item-not-received. You do not know the customer yet. Review neutral language, delivery-proof handling, Trust/Risk routing, and boundary rules before you answer.",
+            "linkLabel": "Open high-value refund policy"
+          },
+          "startOpen": true,
+          "folder": {
+            "name": "Shared Manual - High-Value Refund and Trust-Risk Review",
+            "path": "Mercury Support / Knowledge Base / High-Value Refund",
+            "updatedLabel": "Current policy",
+            "files": [
+              {
+                "id": "shared_call_flow",
+                "name": "Shared manual - Inbound call flow.txt",
+                "kind": "text",
+                "previewTitle": "Shared inbound call flow",
+                "sections": [
+                  {
+                    "heading": "Required flow",
+                    "body": "Greet the caller. Verify identity before sharing account or order details. Ask what happened and what outcome the caller wants. Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call. Acknowledge the impact before explaining policy. State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes. Close by summarizing the next step and follow-up path."
+                  },
+                  {
+                    "heading": "Tone and escalation",
+                    "body": "Use plain language. Be specific without overexplaining. Do not guess what the carrier will do, promise exact timing, promise refunds, or imply supervisor/lead callbacks change policy outcomes unless the policy article says so. Do not blame the carrier or accuse the customer. If a supervisor, lead, investigation, credit, refund, trace, or Trust/Risk review is relevant, use the timeframe and limits in the policy article. If the caller yells or insults, set a respectful boundary and do not match their tone."
+                  }
+                ]
+              },
+              {
+                "id": "risk_manual",
+                "name": "Policy article - High-value refund and Trust-Risk review.pdf",
+                "kind": "pdf",
+                "previewTitle": "High-value refund risk manual",
+                "sections": [
+                  {
+                    "heading": "Required flow",
+                    "body": "Verify identity. Acknowledge concern. State confirmed delivery facts neutrally. Delivery proof means a delivered scan plus supporting details such as delivery photo or GPS address match. Ask whether the customer checked safe locations, household members, building/front desk, and alternate delivery spots if relevant. Offer to open a delivery investigation and Trust/Risk review. Do not accuse the customer of fraud."
+                  },
+                  {
+                    "heading": "Authority limits",
+                    "body": "Tier 1 cannot approve immediate refund for a high-value item when delivery proof exists and risk signals are present. For this policy, high value includes electronics or marketplace orders of $250 or more. Risk signals may include recent high-value refund patterns, account age, or prior abusive-contact warnings; these are internal and must not be revealed unless the customer raises prior cases first. Case must route to Trust/Risk. Give a review window of 24-48 hours. Case status location: Mercury app under Account > Help Center > Cases > Delivery investigation, with updates by email/app notification."
+                  },
+                  {
+                    "heading": "Boundary script",
+                    "body": "If customer yells or insults: 'I want to help, but I need us to keep the conversation respectful. If the language continues, I may need to end the call and have a lead follow up.' Repeat once if needed, then offer a lead callback within 1 business day. The callback reviews the process and next steps; it does not authorize a Tier 1 refund override."
+                  }
+                ]
+              }
+            ]
+          },
+          "requiredFileIds": [
+            "shared_call_flow",
+            "risk_manual"
+          ],
+          "continueLabel": "Answer Inbound Call"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "source inbox manual",
+          "inputArtifacts": [
+            {
+              "id": "risk_refund_reference",
+              "label": "Shared manual and high-value refund policy",
+              "whereVisible": "prep_risk_refund.sourceInbox",
+              "summary": "Shared inbound call flow plus high-value refund/Trust-Risk policy, with no customer-specific case details."
+            }
+          ],
+          "studentAction": "Read the high-value refund manual before the call.",
+          "outputArtifact": {
+            "id": "manual_readiness_3",
+            "label": "Manual read before refund risk call",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for call_risk_refund"
+          ],
+          "continuity": [
+            "The same manual and policy article appear during the high-value refund voice call."
+          ],
+          "authenticityCheck": "High-value refund pressure tests policy compliance, neutral language, and escalation judgment."
+        },
+        "next": "call_risk_refund"
+      },
+      "call_risk_refund": {
+        "id": "call_risk_refund",
+        "type": "voice_meeting",
+        "section": 3,
+        "title": "Call 3: High-Value Refund Inbound Call",
+        "content": "A high-value refund inbound call connects. You do not know the caller's account details yet; verify, listen, and use CRM lookup before discussing any refund decision.",
+        "npcId": "marcus_reed",
+        "meetingMode": "remote",
+        "voiceName": "Orus",
+        "playerGoal": "In 4-6 turns, verify the caller, acknowledge the missing-package concern, learn the delivery/risk facts during the call, state confirmed delivery facts neutrally, collect missing information, route to Trust/Risk review with the status path, and set boundaries if he becomes abusive.",
+        "prepReferenceTitle": "Shared manual + high-value refund policy",
+        "prepReferenceContent": "Shared call flow:\n- Greet the caller.\n- Verify identity before sharing account or order details.\n- Ask what happened and what outcome the caller wants.\n- Search CRM by order number, phone, email, or account name; after verification, say you are checking the record and use only the lookup facts returned during the call.\n- Acknowledge the impact before explaining policy.\n- State confirmed facts neutrally from CRM, tracking, delivery proof, or account notes.\n- Close by summarizing the next step and follow-up path.\n- Do not guess, overpromise, blame the carrier, or accuse the customer. Use the policy article for exact limits, timeframes, and escalation rules.\n\nHigh-value refund / Trust-Risk policy:\n- Tier 1 cannot approve immediate refund for a high-value item when delivery proof exists and risk signals are present. High value includes electronics or marketplace orders of $250 or more.\n- Delivery proof means a delivered scan plus supporting details such as delivery photo or GPS address match.\n- Route qualifying cases to Trust/Risk review and give a review window of 24-48 hours.\n- Case status location: Mercury app under Account > Help Center > Cases > Delivery investigation, with updates by email/app notification.\n- Do not reveal internal risk score, account age, prior refund pattern, or abusive-contact warning unless the customer raises prior cases first.\n- Ask whether the customer checked safe locations, household members, building/front desk, or alternate delivery spots if relevant.\n- If yelling/insults continue, use a respectful-boundary warning and offer a lead callback within 1 business day. The callback reviews process/next steps; it does not authorize a Tier 1 refund override.",
+        "goalPrompt": "You are Marcus Reed, an angry Mercury Market customer. Start by demanding an immediate refund for a tablet that your account says was delivered but you say was not there. If the student asks to verify, provide your name and order number: Marcus Reed, order MM-88019, 10-inch tablet, $419. When the student has verified you and says they are checking, searching, or opening the CRM/order record, make the lookup visible as a neutral simulation aside: 'CRM lookup result for agent: delivered yesterday 6:38 PM; delivery photo shows package at front door; GPS scan matches account address; account opened 38 days ago; two prior high-value refunds in 28 days; prior warning for abusive language.' Then continue as Marcus. These internal risk signals are visible to the agent after lookup but should not be revealed to you in the student's customer-facing explanation. If the student acknowledges the concern and neutrally explains delivery proof plus Trust/Risk review, push once by saying you should not have to wait. If the student accuses you of fraud, reveals internal risk signals, or approves an immediate refund, react strongly. If the student sets a respectful boundary when you become insulting, reduce the intensity and ask when you will hear back. Do not ask about policies, products, delivery proof standards, fraud rules, refunds, reviews, or lead callbacks outside the shared high-value refund manual and the CRM facts above. After 4-6 student turns, close by either accepting the review window reluctantly or demanding a lead callback if the student mishandles the boundary.",
+        "meetingContext": "High-value refund inbound edge case. The student sees only the shared manual and policy article before the call; Marcus's specific account, delivery proof, and risk signals emerge after verification and lookup during the call.",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "This is Marcus. Your site says my tablet was delivered, but it was not there. I want my $419 refunded right now."
+          }
+        ],
+        "minTurns": 4,
+        "maxTurns": 6,
+        "endpoint": "End after the student has verified identity, learned the delivery/risk facts during the call, stated delivery facts neutrally, explained Trust/Risk review, given the 24-48 hour window/status path, and handled any abusive pressure with boundaries.",
+        "successCriteria": "Strong performance uses the manual, avoids accusation, refuses unauthorized refund, routes to Trust/Risk, and maintains calm boundaries.",
+        "illustration": "/scenes/call.png",
+        "imageBrief": "Remote phone support scene with a generic active customer call open on a cream call interface displayed on a white desktop monitor, with a matching white keyboard on the desk. The headset, neutral support-manual sidebar, and CRM lookup area are visible as generic UI elements that are blank or populated only with placeholder blocks. No real logos and no readable sensitive data in the image itself. Do not include customer statements, issue categories, case facts, policy outcomes, answer cues, scores, sensitive category labels, step-by-step response instructions, or anything that tells the player what the caller will say. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "deskWorkDesign": {
+          "roleFamily": "customer_success",
+          "workSurface": "remote voice customer call",
+          "inputArtifacts": [
+            {
+              "id": "risk_refund_reference",
+              "label": "Shared manual and high-value refund policy",
+              "whereVisible": "call_risk_refund.prepReferenceContent",
+              "summary": "Shared call flow and high-value refund/Trust-Risk policy; customer-specific details are learned during the call."
+            }
+          ],
+          "studentAction": "Handle a high-value refund inbound edge case using the visible manual and live customer/CRM details.",
+          "outputArtifact": {
+            "id": "call_risk_refund",
+            "label": "Refund risk call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "transcript.call_risk_refund"
+          ],
+          "continuity": [
+            "Final assessed call before the assessment gate."
+          ],
+          "authenticityCheck": "Suspicious or policy-sensitive refund calls require neutral language, escalation discipline, and boundary setting."
+        },
+        "next": "assessment_gate"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Shift Is Complete",
+        "content": "The simulated support shift is complete. You handled three customer calls: one normal order-status call, one late-delivery supervisor/refund call, and one high-value refund risk call. When you are ready, view your assessment.",
+        "actionLabel": "View Assessment",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "End of support block desk scene with three completed but unlabeled call tabs represented on a cream interface on a white desktop monitor. A headset is set down beside the matching white keyboard and the manual binder is closed. No scores, call topics, customer statements, case facts, policy outcomes, or answer cues visible. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment",
+        "content": "Your three calls are ready for review. The assessment evaluates manual use, normal-call efficiency, delivery-edge-case handling, Trust/Risk escalation judgment, empathy, and boundary setting.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "Assessment-ready white desktop monitor showing submitted call transcripts as generic unlabeled tabs and neutral review blocks. A matching white keyboard sits on the support desk. Warm cream palette; no score, call topic, customer statement, case fact, policy outcome, answer cue, or sensitive category label visible. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "next": "final_report"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as a junior Customer Support Representative at Mercury Market.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "Clean final report view on a white desktop monitor at an ecommerce support desk, with a matching white keyboard in front. Report sections are represented as generic unreadable UI blocks with neutral labels only. No real logos, scores, call topics, customer statements, case facts, policy outcomes, answer cues, or sensitive category labels visible. Do not show a laptop; the computer casing should read as clean white/warm off-white within the muted palette.",
+        "next": null
+      }
+    }
+  },
+  "npcs": {
+    "mia_lopez": {
+      "id": "mia_lopez",
+      "name": "Mia Lopez",
+      "role": "Mercury Market customer",
+      "persona": "Mia is friendly, practical, and in a hurry. She has a routine order-status question and appreciates concise, specific help without overexplaining.",
+      "voice": "Warm, quick, and mildly rushed.",
+      "avatar": "ML"
+    },
+    "renee_walker": {
+      "id": "renee_walker",
+      "name": "Renee Walker",
+      "role": "Mercury Plus customer",
+      "persona": "Renee is frustrated because a birthday gift missed the promised delivery window. She starts impatient and wants a refund or supervisor, but responds to clear verification, a human apology, plain-language status, and a concrete next step.",
+      "voice": "Tense, direct, protective of her family, but willing to listen if the agent is specific and honest.",
+      "avatar": "RW"
+    },
+    "marcus_reed": {
+      "id": "marcus_reed",
+      "name": "Marcus Reed",
+      "role": "Mercury Market customer",
+      "persona": "Marcus is angry and forceful. He wants an immediate high-value refund and may interrupt, but he becomes more manageable if the agent stays neutral, explains the review process, and sets respectful boundaries.",
+      "voice": "Pressuring, skeptical, and sharp under frustration.",
+      "avatar": "MR"
+    },
+    "talia_brooks": {
+      "id": "talia_brooks",
+      "name": "Talia Brooks",
+      "role": "Tier 1 Team Lead",
+      "persona": "Talia is a calm contact-center lead who cares about clean ownership, policy discipline, and protecting agents from avoidable escalations.",
+      "voice": "Calm, concise, coaching-oriented.",
+      "avatar": "TB"
+    },
+    "nisha_rao": {
+      "id": "nisha_rao",
+      "name": "Nisha Rao",
+      "role": "Quality Analyst",
+      "persona": "Nisha reviews calls for accuracy, tone, policy use, and escalation discipline. She is fair but expects agents to use the manual exactly when risk is high.",
+      "voice": "Precise, fair, detail-oriented.",
+      "avatar": "NR"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Welcome to Mercury Market Support",
+    "welcomeBody": "This simulator is three prep-and-call reps. Read each manual, then handle the customer call. Your score comes from live call performance.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Mercury Market is a fictional large ecommerce marketplace with national delivery, third-party sellers, and a high-volume support organization."
+      },
+      {
+        "label": "Your Role",
+        "content": "You answer general inbound customer calls about orders, delivery, refunds, accounts, and policies while using the shared support manual and relevant policy article."
+      },
+      {
+        "label": "Your Goal",
+        "content": "Use the manual accurately, speak with empathy, solve the normal case efficiently, and route edge cases without overpromising."
+      }
+    ]
+  },
+  "glossary": {
+    "AHT": "Average handle time, the tracked length of a customer interaction including talk time and sometimes hold or wrap time.",
+    "ACW": "After-call work, the short period after a call when the agent finishes notes, codes, and follow-up tasks.",
+    "carrier handoff": "The point when an order has left the marketplace or warehouse and is controlled by a shipping carrier.",
+    "appeasement credit": "A limited courtesy credit offered under policy to repair customer trust without pretending the company can change delivery facts.",
+    "CRM": "Customer relationship management system where agents view customer/order history and record interaction notes.",
+    "trust/risk": "The team that reviews suspicious, abusive, fraudulent, or policy-sensitive account activity.",
+    "supervisor callback": "A scheduled lead or manager follow-up when a live transfer is not available or not required. In this simulator, late-delivery supervisor callbacks are within 2 business hours and abusive-call lead callbacks are within 1 business day."
+  },
+  "sample_answers": {},
+  "rubric": {
+    "simulation_id": "customer-support-representative-general-calls-ecommerce-marketplace-enterprise-junior-1st-3rd-year",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "注文状況通話",
+            "evidenceSceneIds": [
+              "call_order_status"
+            ],
+            "rubric_text": "9-10: 実際の通話で、本人確認、注文状況の確認、手順に沿った説明、解決策の提示を落ち着いて行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "遅配送通話",
+            "evidenceSceneIds": [
+              "call_late_delivery"
+            ],
+            "rubric_text": "9-10: 実際の通話で、共感、規定説明、選択肢提示、できない約束の線引きを両立できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "高額返金通話",
+            "evidenceSceneIds": [
+              "call_risk_refund"
+            ],
+            "rubric_text": "9-10: 実際の通話で、共感しつつ不正や高額リスクを見抜き、規定とエスカレーション境界を守れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

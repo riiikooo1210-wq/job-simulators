@@ -1,0 +1,10 @@
+{
+  "createdAt": "2026-05-28T02:49:26+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_03_research_prep",
+  "itemId": "scene_03_research_prep",
+  "promptHash": "3b8d533605cea5dd",
+  "references": [],
+  "sourceFile": "simulators/product-manager-general-consumer-product-manager-the-most-common-pm-role-aspiring-pms-imagine-social-trip-planning-app-for-friend-groups-growth-stage-mid-level/src/data/scene-config.json"
+}

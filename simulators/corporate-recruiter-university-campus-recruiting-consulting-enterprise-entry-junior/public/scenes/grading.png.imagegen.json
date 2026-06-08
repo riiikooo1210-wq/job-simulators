@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-18T14:54:32+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "grading",
+  "itemId": "grading",
+  "promptHash": "2fba69f6dd005327",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/IMAGE_PROMPTS.md"
+}

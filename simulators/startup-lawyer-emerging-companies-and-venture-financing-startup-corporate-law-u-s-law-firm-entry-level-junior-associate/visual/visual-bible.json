@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "slug": "startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "The point-of-view is always first-person from the junior associate's perspective. We never see the associate's face or body.",
+    "Lighting is consistently bright and professional, mimicking a modern, well-lit corporate law office. Avoid dramatic shadows or moody lighting.",
+    "The color palette is professional and muted, centered on blues, grays, creams, and whites, with a specific, consistent red used for markups and alerts.",
+    "All on-screen user interfaces (dashboards, email clients, Slack) share a consistent, clean, and minimalist design language with a cream (#FFF8E7) and dark gray theme."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "arjun": {
+      "id": "arjun",
+      "name": "Arjun Rao",
+      "role": "Founder and CEO, LumenLoop",
+      "sourcePersona": "Arjun is a smart startup founder who wants momentum and dislikes procedural delays. He respects clear, practical explanations but gets impatient with legal jargon. He needs the associate to explain the closing consequence without sounding like the law firm is inventing friction.",
+      "appearancePrompt": "Arjun Rao is a man in his early 30s with South Asian heritage. He has short, neat black hair, a well-groomed short beard, and wears modern, dark-rimmed glasses. He has an energetic and focused expression, often looking directly at the camera as if making a point during a video call.",
+      "wardrobePrompt": "Arjun typically wears high-quality, dark-colored crewneck sweaters or a stylish, unbranded quarter-zip over a collared shirt. He does not wear a tie or a full suit, projecting a modern tech founder aesthetic.",
+      "mustStayConsistent": [
+        "short black hair",
+        "short beard",
+        "dark-rimmed glasses",
+        "tech founder wardrobe"
+      ],
+      "referenceImage": "public/visual-refs/npcs/arjun.png"
+    },
+    "maya": {
+      "id": "maya",
+      "name": "Maya Chen",
+      "role": "Senior Associate, Emerging Companies",
+      "sourcePersona": "Maya is a precise senior associate who coaches through clean edits. She values organized issue spotting, client-ready drafting, caveat discipline, and juniors who make review easier. She is supportive but direct when a junior overclaims or sends unstructured questions.",
+      "appearancePrompt": "Maya Chen is a woman in her late 30s with East Asian heritage. She has a sharp, professional appearance with her black hair styled in a clean, shoulder-length bob. Her expression is calm, intelligent, and composed, reflecting her exacting nature.",
+      "wardrobePrompt": "Maya wears professional, minimalist business attire, such as a tailored dark blazer over a silk shell top or a simple, elegant sheath dress. Her jewelry is understated, like small pearl earrings or a delicate silver necklace.",
+      "mustStayConsistent": [
+        "shoulder-length bob hairstyle",
+        "minimalist professional attire",
+        "composed expression"
+      ],
+      "referenceImage": "public/visual-refs/npcs/maya.png"
+    }
+  },
+  "locations": {
+    "junior-associate-desk": {
+      "id": "junior-associate-desk",
+      "name": "Junior Associate's Desk",
+      "appearancePrompt": "A clean, modern law firm desk with a light wood or high-quality white laminate surface. The background is a professional, slightly out-of-focus office environment with large windows and subtle architectural details. The overall aesthetic is bright, organized, and high-end but not ostentatious.",
+      "stableElements": [
+        "A silver or space gray laptop (always the same model)",
+        "A specific model of desk phone",
+        "A neat stack of legal pads",
+        "A white ceramic mug with a generic, minimalist law firm logo (e.g., 'NSL')",
+        "A precise red pen"
+      ],
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "redirect_checklist_first",
+        "redirect_questions",
+        "redirect_polish",
+        "redirect_overclaim",
+        "grading",
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/junior-associate-desk.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "lumenloop-checklist",
+      "name": "LumenLoop Closing Checklist",
+      "appearancePrompt": "A spreadsheet with a cream-colored header bar (#FFF8E7) and black text. The firm's generic logo ('NSL') is in the top-left corner. Columns are consistently labeled: 'Condition', 'Evidence', 'Owner/Status', 'Consequence', and 'Next Action'. The font is a clean, professional sans-serif.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning",
+        "redirect_checklist_first",
+        "redirect_questions",
+        "redirect_polish",
+        "redirect_overclaim",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "lumenloop-dashboard",
+      "name": "LumenLoop Matter Dashboard",
+      "appearancePrompt": "A web-based dashboard UI on a laptop screen with a cream-colored background (#FFF8E7) and dark gray text. The main title is 'LumenLoop Seed Financing'. It features a consistent navigation structure with tabs or links for 'Data Room', 'Closing Checklist', 'Cap Table', 'Slack', and 'Email'.",
+      "sceneIds": [
+        "intro",
+        "briefing_morning"
+      ]
+    },
+    {
+      "id": "red-pen",
+      "name": "Precise Red Pen",
+      "appearancePrompt": "A fine-tipped, felt or gel ink pen with a vibrant red ink. The pen itself has a sleek, minimalist silver or black barrel. It is used for making precise annotations and markups on printed documents.",
+      "sceneIds": [
+        "intro"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:51:47+00:00",
+  "styleReference": "templates/style-reference.png"
+}

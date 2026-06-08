@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "slug": "restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "camila": {
+      "id": "camila",
+      "name": "Camila Torres",
+      "role": "Franchise Business Consultant",
+      "sourcePersona": "A practical regional franchise consultant who cares about brand standards, food safety documentation, and operational follow-through. She is helpful when owners are specific and accountable.",
+      "appearancePrompt": "Camila Torres, Franchise Business Consultant. Use this as the locked character identity: A practical regional franchise consultant who cares about brand standards, food safety documentation, and operational follow-through. She is helpful when owners are specific and accountable.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/camila.png"
+    },
+    "jordan": {
+      "id": "jordan",
+      "name": "Jordan Reed",
+      "role": "Lunch Shift Lead",
+      "sourcePersona": "A friendly, energetic shift lead who is strong with guests but inconsistent with checklist follow-through. Jordan responds best to specific evidence, respect, and clear ownership.",
+      "appearancePrompt": "Jordan Reed, Lunch Shift Lead. Use this as the locked character identity: A friendly, energetic shift lead who is strong with guests but inconsistent with checklist follow-through. Jordan responds best to specific evidence, respect, and clear ownership.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/jordan.png"
+    },
+    "mina": {
+      "id": "mina",
+      "name": "Mina Patel",
+      "role": "General Manager",
+      "sourcePersona": "A capable, numbers-oriented general manager who wants clear owner direction before lunch. Mina respects practical plans that balance guest experience, crew morale, labor, and standards.",
+      "appearancePrompt": "Mina Patel, General Manager. Use this as the locked character identity: A capable, numbers-oriented general manager who wants clear owner direction before lunch. Mina respects practical plans that balance guest experience, crew morale, labor, and standards.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/mina.png"
+    }
+  },
+  "locations": {
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Create a stable location reference for Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Choose Your First 20 Minutes\nA first-person view at a quick-service manager station. A tablet shows the operating packet, a paper schedule has one highlighted callout, and the prep line is visible through the office doorway. Four sticky notes show possible first moves: approve labor, triage then walk, coach now, wait until after lunch.",
+      "stableElements": [],
+      "sceneIds": [
+        "scene_01_first_twenty_minutes"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    },
+    "primary-workplace": {
+      "id": "primary-workplace",
+      "name": "Primary Workplace",
+      "appearancePrompt": "Create a stable location reference for Primary Workplace. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Pre-Rush Line Check\nA quick-service prep line with readable food labels, temperature displays, sanitizer bucket, and drive-thru timer. The player should be able to inspect actual surfaces rather than reading a summary.\nA 16:9 first-person view of a quick-service restaurant prep line before lunch. The foreground shows stainless cold wells with labeled food pans, a hot-hold unit, a prep counter with sanitizer bucket, tongs, gloves, a thermometer, and a small drive-thru timer screen in the background. Include clear zones for interactive closeups: chicken hot-hold pan, salsa cold pan, sanitizer bucket, prep-label rail, drive-thru timer. Warm realistic illustrated style, no answer captions.",
+      "stableElements": [],
+      "sceneIds": [
+        "scene_03_line_check",
+        "scene_04_shift_lead_coaching"
+      ],
+      "referenceImage": "public/visual-refs/locations/primary-workplace.png"
+    }
+  },
+  "reusableObjects": []
+}

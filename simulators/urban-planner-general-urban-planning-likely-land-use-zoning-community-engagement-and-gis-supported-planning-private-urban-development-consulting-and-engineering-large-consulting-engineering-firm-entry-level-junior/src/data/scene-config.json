@@ -1,0 +1,890 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "The collected sources show entry-level urban planning in a large private consulting and engineering firm as a desk-centered, artifact-heavy role. The junior planner reads zoning and site workspaces, checks regulatory and environmental constraints, prepares maps or map-based summaries, coordinates with engineers and city staff, supports pre-application meetings, and writes client-ready notes. The work is not freeform city design; it is evidence-based planning judgment under legal, technical, community, and client constraints.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "O*NET includes field investigations and site inspections, but also reports daily email, indoor work, computer use, documentation, meetings, and public communication. [onet]",
+          "Day-in-the-life sources describe most planning time at a computer, reviewing projects, answering emails, and preparing for meetings. [yt:Ew6MAOUhRfI]"
+        ],
+        "simulatorImplication": "No physical_playground is needed for this junior consulting day. Site reality appears through map and parcel artifacts rather than hand manipulation."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists GIS, maps, reports, databases, spreadsheets, email, presentation, and document tools for planners. [onet]",
+          "Private-sector Reddit discussions emphasize entitlement research, zoning checks, submittal packages, municipal comment responses, and polished client deliverables. [reddit:j0fpgs] [reddit:197qj02]"
+        ],
+        "simulatorImplication": "Most active scenes occur inside realistic planning workspace, document/prep, voice-call, and follow-up tracker surfaces."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET emphasizes evaluating compliance, analyzing data, determining effects of regulatory limitations, assessing feasibility, and recommending approval, denial, or conditions. [onet]",
+          "Planner sources stress that planners advise and synthesize constraints rather than make final political decisions. [yt:Ew6MAOUhRfI] [reddit:195iijq]"
+        ],
+        "simulatorImplication": "The central graded tasks require issue spotting, uncertainty handling, entitlement-risk prioritization, and defensible recommendations."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists narrative reports, maps, statistics, charts, records, reports, and written memos. [onet]",
+          "Entry-level planning advice repeatedly highlights writing, communication, attention to detail, and asking good questions. [reddit:10sbwur] [reddit:q8z5y1]"
+        ],
+        "simulatorImplication": "The player must draft a constraints scan, call-prep questions, and a pre-app follow-up tracker."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "O*NET shows frequent face-to-face/team discussions, telephone conversations, public contact, and communication outside the organization. [onet]",
+          "Day-in-the-life sources describe pre-application meetings, coordination with departments, public speaking, and responding to questions. [yt:Ew6MAOUhRfI] [yt:L6f_MYAelMg]"
+        ],
+        "simulatorImplication": "Include a remote voice meeting with a city planner because the private consultant must ask targeted questions and communicate uncertainty professionally."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Planner Reddit threads describe fragmented days of email, urgent comments, meetings, and switching between analysis and communication. [reddit:1pgbk0r] [reddit:xpy1u1]",
+          "Consulting-firm work adds client deadlines, billable pressure, and parallel technical coordination. [reddit:197qj02]"
+        ],
+        "simulatorImplication": "Use incoming Slack, a same-day call, and an end-of-day client deadline to create context switching while keeping active work central."
+      }
+    },
+    "simulatorPlan": "The active scene mix includes one bounded Slack multiple-choice decision with consequence redirects, one structured planning constraints scan, one written city-staff call-prep task, one spoken pre-application call, and one structured pre-app follow-up tracker. This mirrors the sources: digital artifacts, analysis, written documentation, and communication dominate; physical site work is represented through map/photo evidence rather than in-field manipulation.",
+    "activeSceneMixRationale": "Active scenes are first-move Slack choice, constraints scan, call prep, city planner voice meeting, and pre-app follow-up tracker. MCQ is limited and each choice has a consequence scene before converging. Four scenes require constructed professional work in the student's own words or actions."
+  },
+  "storyline": {
+    "gameTitle": "Urban Planner Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Read the Workspace"
+      },
+      {
+        "num": 2,
+        "label": "Prepare the Staff Call"
+      },
+      {
+        "num": 3,
+        "label": "Track Staff Follow-Ups"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Constraints Scan",
+        "targetNodeId": "constraints_scan",
+        "prefillKey": "constraints_scan_dev"
+      },
+      {
+        "label": "City Call",
+        "targetNodeId": "city_call",
+        "prefillKey": "city_call_dev"
+      },
+      {
+        "label": "Follow-Up Tracker",
+        "targetNodeId": "pre_app_follow_up_tracker",
+        "prefillKey": "pre_app_follow_up_tracker_dev"
+      },
+      {
+        "label": "Assessment",
+        "targetNodeId": "assessment_gate"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to VerdantWorks",
+        "content": "You are a junior urban planner at VerdantWorks, a large planning, engineering, and environmental consulting firm. Today you are supporting Riverbend Yard, a fictional mixed-use redevelopment concept for Harbor & Pine Development.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "First-person view of a modern planning and engineering consulting office. A laptop on a warm cream desk shows a project dashboard titled Riverbend Yard Feasibility Sprint with tabs for Client Brief, Zoning, Parcel Map, Comment Log, Meeting Prep, and Client Email. Printed parcel maps, zoning sticky notes, and a 3:30 PM pre-application call reminder sit nearby. The tone is professional, practical, and deadline-driven.",
+        "next": "riverbend_workspace"
+      },
+      "riverbend_workspace": {
+        "id": "riverbend_workspace",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Riverbend Yard Source Workspace",
+        "content": "Your job today: review a proposal to build apartments, shops, and a public riverwalk on this site.",
+        "illustration": "/scenes/riverbend_workspace.png",
+        "imageBrief": "Urban planning desk with a laptop source workspace showing Email and Drive app icons. Printed zoning map and trace paper are nearby. The simulator renders the source text, so the laptop should show only generic unreadable panels.",
+        "next": "first_move",
+        "actionLabel": "Choose first move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Riverbend Yard source files",
+              "files": [
+                {
+                  "id": "client_concept",
+                  "name": "Client concept.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "category": "Client goals",
+                  "previewTitle": "Client concept",
+                  "sections": [
+                    {
+                      "heading": "Client concept",
+                      "body": "6.8-acre former warehouse parcel near Eastbank Station. Concept: 220 apartments over 18,000 sq ft ground-floor retail, public riverwalk segment, small plaza along east edge. Client wants reduced parking because the site is transit-adjacent."
+                    }
+                  ],
+                  "lookFor": "Use this source to understand what the client wants to build. Start by spotting the positive planning story: the site is near transit, reuses a vacant warehouse parcel, adds a public riverwalk, and includes ground-floor retail."
+                },
+                {
+                  "id": "zoning_excerpt",
+                  "name": "I-MU zoning excerpt.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "category": "City rules",
+                  "previewTitle": "Zoning excerpt",
+                  "sections": [
+                    {
+                      "heading": "Zoning excerpt",
+                      "body": "Existing district: I-MU Industrial Mixed Use. Residential use requires a Conditional Use Permit, meaning the city must review and approve it under specific findings. Base height limit is 55 ft; up to 75 ft may be considered with public-benefit bonus. Active ground-floor frontage required along Main Street. Parking reductions may be considered with an approved TDM plan, which is a plan to reduce car trips or parking demand. Flood overlay review required before final site plan approval."
+                    }
+                  ],
+                  "lookFor": "Use this source to check whether housing is allowed on this site, how tall the building could be, whether parking can be reduced, and whether flood-risk review is required."
+                },
+                {
+                  "id": "site_surroundings",
+                  "name": "Site surroundings map.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "category": "Site and surroundings",
+                  "previewTitle": "Site surroundings map",
+                  "sections": [
+                    {
+                      "heading": "Site edges and overlays",
+                      "body": "West edge: two-story residential neighborhood. North edge: Main Street bus corridor and Eastbank Station 0.3 miles away. East edge: riverfront habitat buffer and mapped flood overlay. South edge: service alley shared with light industrial users."
+                    }
+                  ],
+                  "lookFor": "Use this source to understand what sits next to each edge of the site. Separating the residential edge, transit edge, river/flood edge, and service edge makes it easier to predict which planning issues may come up."
+                },
+                {
+                  "id": "city_comments",
+                  "name": "City comment log.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "City staff",
+                  "category": "Concerns and review asks",
+                  "previewTitle": "City comments",
+                  "columns": [
+                    "department",
+                    "ask"
+                  ],
+                  "rows": [
+                    {
+                      "department": "Planning",
+                      "ask": "conditional-use narrative and comprehensive plan consistency"
+                    },
+                    {
+                      "department": "Transportation",
+                      "ask": "trip-generation memo and parking-reduction justification"
+                    },
+                    {
+                      "department": "Environmental",
+                      "ask": "floodplain boundary, stormwater assumptions, habitat buffer"
+                    },
+                    {
+                      "department": "Housing",
+                      "ask": "affordable units or fee-in-lieu discussion"
+                    },
+                    {
+                      "department": "Engagement",
+                      "ask": "early neighborhood meeting before formal submittal"
+                    }
+                  ],
+                  "lookFor": "Use this table to see what each city department wants clarified. Planning focuses on the approval story, Transportation on traffic and parking, Environmental on flood and stormwater issues, Housing on housing policy, and Engagement on the neighborhood meeting."
+                },
+                {
+                  "id": "community_input",
+                  "name": "Community input sample.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "category": "Concerns and review asks",
+                  "previewTitle": "Community input sample",
+                  "sections": [
+                    {
+                      "heading": "Community input sample",
+                      "body": "Support: riverwalk access, cleanup of vacant warehouse site, retail near transit. Concerns: traffic spillover, 75 ft height near homes, displacement pressure, private-feeling public space."
+                    }
+                  ],
+                  "lookFor": "Use this source to understand what neighbors support and what they worry about. Capture both sides: the project benefits and the concerns about traffic, height, displacement pressure, and whether the public space will feel truly public."
+                }
+              ]
+            },
+            {
+              "id": "email",
+              "label": "Email",
+              "kind": "email",
+              "title": "Email",
+              "messages": [
+                {
+                  "id": "client",
+                  "channel": "email",
+                  "from": "Harbor & Pine Development",
+                  "timestamp": "8:42 AM",
+                  "body": "Read first: This email tells you what has to be delivered today and when it is due. By 5:00 PM, the team needs a pre-app follow-up tracker for the Riverbend Yard concept.\n\nRequest: clearly organize the entitlement path, parking question, flood review, community concerns, recommended next steps and open questions.",
+                  "subject": "Riverbend Yard feasibility materials",
+                  "linkedFileIds": [
+                    "client_concept",
+                    "zoning_excerpt"
+                  ],
+                  "category": "Email request",
+                  "lookFor": "Use this email to identify who is asking, what they need, the deadline, and any attached or linked source material."
+                }
+              ]
+            }
+          ],
+          "continueLabel": "Choose first move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "riverbend_workspace.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With Your First Move",
+        "content": "Priya asks what you will do first to turn the Riverbend materials into a useful feasibility scan for the pre-application call and post-call memo. Choose the Slack reply you would send.",
+        "appWindow": "slack",
+        "windowTitle": "#riverbend-yard",
+        "slackMessages": [
+          {
+            "sender": "Priya Nair",
+            "role": "Project Manager",
+            "timestamp": "8:31 AM",
+            "avatarInitials": "PN",
+            "content": "To turn the Riverbend materials into a useful feasibility scan for Harbor & Pine, what are you doing first? I want planning judgment, not a huge undigested note dump."
+          }
+        ],
+        "prompt": "Choose the response you would send.",
+        "options": [
+          {
+            "id": "design_pitch",
+            "label": "I will sketch a more attractive site concept so the client sees a positive direction.",
+            "branchFlag": "design_first"
+          },
+          {
+            "id": "constraint_scan",
+            "label": "I will map the client concept against zoning, site constraints, city comments, and missing facts.",
+            "branchFlag": "constraints_first"
+          },
+          {
+            "id": "approval_assurance",
+            "label": "I will tell the client the concept should be approvable if they add the riverwalk.",
+            "branchFlag": "overpromise"
+          },
+          {
+            "id": "more_data",
+            "label": "I will ask everyone for more data before writing anything.",
+            "branchFlag": "wait_for_data"
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "design_first": "redirect_design_first",
+            "constraints_first": "redirect_constraints_first",
+            "overpromise": "redirect_overpromise",
+            "wait_for_data": "redirect_wait_for_data"
+          },
+          "default": "redirect_constraints_first"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "urban planning consulting",
+          "workSurface": "Slack thread",
+          "inputArtifacts": [
+            {
+              "id": "riverbend_workspace",
+              "label": "Riverbend Yard feasibility workspace",
+              "whereVisible": "riverbend_workspace.sourceWorkspace",
+              "summary": "Client concept, zoning excerpt, site/map facts, city comments, community concerns, and internal dependencies."
+            }
+          ],
+          "studentAction": "Choose a first move that protects evidence-based planning analysis under deadline pressure.",
+          "outputArtifact": {
+            "id": "first_move_choice",
+            "label": "First-move Slack response",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.first_move",
+            "branchFlags.first_move"
+          ],
+          "continuity": [
+            "Every choice routes to an immediate PM consequence before the shared constraints scan."
+          ],
+          "authenticityCheck": "Junior planners often need to decide how to turn a messy workspace into a useful first artifact before a meeting."
+        }
+      },
+      "redirect_design_first": {
+        "id": "redirect_design_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Priya Refocuses the Work",
+        "content": "Priya appreciates creative thinking, but a prettier concept is premature. The client needs to know which parts of the concept are supported, which parts are risky, and what the city needs to clarify.",
+        "illustration": "/scenes/redirect_design_first.png",
+        "imageBrief": "A project manager points to a planning workspace on a conference table. A colorful concept sketch is set aside while the zoning excerpt and city comment log are centered. A sticky note says Evidence before concept polish.",
+        "next": "constraints_scan"
+      },
+      "redirect_constraints_first": {
+        "id": "redirect_constraints_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Right Starting Point",
+        "content": "Priya agrees. A concise constraints scan will help the team ask better questions and avoid promising more than the record supports.",
+        "illustration": "/scenes/redirect_constraints_first.png",
+        "imageBrief": "A laptop shows a planning scan template with headings Evidence, Constraint, Missing Fact, and Next Question. Priya's Slack reply says Good - keep it evidence-based and client-readable.",
+        "next": "constraints_scan"
+      },
+      "redirect_overpromise": {
+        "id": "redirect_overpromise",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Do Not Promise Approval",
+        "content": "Priya stops you before anything goes to the client. A riverwalk helps the story, but residential use, height, parking, flood review, and community concerns still need analysis and city feedback.",
+        "illustration": "/scenes/redirect_overpromise.png",
+        "imageBrief": "A cautionary project dashboard with a red-marked draft sentence saying should be approvable. Beside it are unresolved cards for conditional use, height bonus, parking reduction, flood overlay, and neighborhood meeting.",
+        "next": "constraints_scan"
+      },
+      "redirect_wait_for_data": {
+        "id": "redirect_wait_for_data",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Do Something Useful With What You Have",
+        "content": "More information will help, but the workspace is enough to create a first-pass scan. Priya asks you to separate known evidence from unknowns instead of freezing.",
+        "illustration": "/scenes/redirect_wait_for_data.png",
+        "imageBrief": "A desk with the workspace open, several question marks on sticky notes, and a clock showing the city call approaching. The visual emphasizes incomplete but usable information.",
+        "next": "constraints_scan"
+      },
+      "constraints_scan": {
+        "id": "constraints_scan",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Build the Constraints Scan",
+        "content": "Turn the workspace into a concise planning scan Priya can review. Do not solve the project. Identify the strongest opportunity, the key constraints, the missing information, and the questions that should go to city staff.",
+        "appWindow": "notion",
+        "windowTitle": "Riverbend Yard - First-Pass Planning Scan",
+        "referenceTitle": "Source workspace excerpt",
+        "referenceContent": "Use these facts from the workspace: residential requires a Conditional Use Permit in I-MU; 55 ft base height and 75 ft possible with public-benefit bonus; active frontage on Main Street; parking reduction possible with a Transportation Demand Management plan; flood overlay review required; city asks for traffic memo, stormwater/floodplain clarification, affordable housing discussion, and early neighborhood meeting; community supports riverwalk cleanup but worries about traffic, height, displacement, and private-feeling public space.",
+        "defaultAppTabId": "workspace",
+        "editorTabLabel": "Scan Draft",
+        "appTabs": [
+          {
+            "id": "workspace",
+            "label": "Workspace",
+            "content": "Riverbend Yard source workspace: client ask, concept, zoning, site surroundings, city comments, and community input.",
+            "sourceWorkspaceNodeId": "riverbend_workspace"
+          }
+        ],
+        "definition": {
+          "itemLabel": "Planning scan item",
+          "bindingKey": "constraints_scan",
+          "initialCount": 1,
+          "minItems": 1,
+          "maxItems": 1,
+          "fields": [
+            {
+              "key": "opportunity",
+              "label": "Best-supported opportunity",
+              "placeholder": "Name the strongest planning opportunity and cite workspace evidence.",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 70
+            },
+            {
+              "key": "constraints",
+              "label": "Key constraints",
+              "placeholder": "List 3-5 constraints tied to zoning, site, technical review, or community concerns.",
+              "multiline": true,
+              "rows": 5,
+              "maxWords": 120
+            },
+            {
+              "key": "missing_info",
+              "label": "Missing information",
+              "placeholder": "What facts are not yet known but matter for entitlement risk?",
+              "multiline": true,
+              "rows": 4,
+              "maxWords": 90
+            },
+            {
+              "key": "city_questions",
+              "label": "Questions for city staff",
+              "placeholder": "Draft targeted, non-leading questions for Eastbank planning staff.",
+              "multiline": true,
+              "rows": 5,
+              "maxWords": 120
+            }
+          ]
+        },
+        "deskWorkDesign": {
+          "roleFamily": "urban planning consulting",
+          "workSurface": "Notion-style planning scan",
+          "inputArtifacts": [
+            {
+              "id": "client_ask",
+              "label": "Client feasibility ask",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.email.client",
+              "summary": "Due date, client deliverable, and the four issue areas the team must organize."
+            },
+            {
+              "id": "client_concept",
+              "label": "Client concept",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.drive.files.client_concept",
+              "summary": "Site size, program, riverwalk/plaza/retail concept, transit-adjacent parking premise, and opportunity cues."
+            },
+            {
+              "id": "zoning_excerpt",
+              "label": "I-MU zoning excerpt",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.drive.files.zoning_excerpt",
+              "summary": "Conditional Use Permit requirement, height limits/bonus, active frontage, TDM parking reduction, and flood overlay review."
+            },
+            {
+              "id": "site_surroundings",
+              "label": "Site surroundings map",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.drive.files.site_surroundings",
+              "summary": "Residential, transit, river/flood, and service edges surrounding the site."
+            },
+            {
+              "id": "city_comments",
+              "label": "City comment log",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.drive.files.city_comments",
+              "summary": "Planning, transportation, environmental, housing, and engagement review asks."
+            },
+            {
+              "id": "community_input",
+              "label": "Community input sample",
+              "whereVisible": "constraints_scan.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace.drive.files.community_input",
+              "summary": "Support for cleanup/riverwalk/retail and concerns about traffic, height, displacement, and public-space feel."
+            }
+          ],
+          "studentAction": "Synthesize a first-pass planning constraints scan from visible source facts.",
+          "outputArtifact": {
+            "id": "constraints_scan",
+            "label": "First-pass planning scan",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.constraints_scan"
+          ],
+          "continuity": [
+            "The scan informs city-staff call prep and the pre-app follow-up tracker."
+          ],
+          "authenticityCheck": "Junior planners commonly turn workspaces into reviewable issue notes for project managers."
+        },
+        "next": "call_prep",
+        "prompt": "Fill the planning scan with source-backed notes Priya can review: opportunity, constraints, missing information, and targeted city questions."
+      },
+      "call_prep": {
+        "id": "call_prep",
+        "type": "free_text",
+        "section": 2,
+        "title": "Prepare the City Staff Call",
+        "content": "At 3:30 PM you will speak with Jordan Ellis, a Current Planner in the Eastbank Current Planning division, about the Riverbend Yard mixed-use concept. Your goal is to clarify how city staff will review the project, what materials they expect in a formal submittal, which concerns Priya should assign to the technical leads, and what remains unresolved. You are not asking Jordan to approve the concept on this call.",
+        "appWindow": "doc",
+        "windowTitle": "Pre-Application Call Prep",
+        "prompt": "Prepare 5-7 questions for Jordan Ellis at Eastbank Current Planning. Write questions that help you confirm the review path and next-step evidence for Riverbend Yard: residential CUP findings, floodplain/stormwater submittal expectations, parking/TDM support, height/public-benefit review, affordable housing or engagement expectations, and follow-up items.",
+        "minWords": 90,
+        "maxWords": 180,
+        "placeholder": "Draft questions for Jordan Ellis that clarify review process, submittal expectations, staff concerns, and follow-up items without overpromising the client concept.",
+        "appTabs": [
+          {
+            "id": "workspace",
+            "label": "Workspace",
+            "content": "Riverbend Yard source workspace: client ask, concept, zoning, site surroundings, city comments, and community input. Use these original files to fact-check your call questions.",
+            "sourceWorkspaceNodeId": "riverbend_workspace"
+          },
+          {
+            "id": "scan",
+            "label": "Your Scan",
+            "content": "Your completed constraints scan appears here. Use it as the working basis for the call: convert the opportunity, constraints, missing information, and city questions into neutral staff questions.",
+            "responseReference": {
+              "bindingKey": "constraints_scan",
+              "title": "Your Constraints Scan",
+              "emptyLabel": "Complete Build the Constraints Scan first; your scan will appear here for call prep.",
+              "fieldLabels": {
+                "opportunity": "Best-supported opportunity",
+                "constraints": "Key constraints",
+                "missing_info": "Missing information",
+                "city_questions": "Questions for city staff"
+              }
+            }
+          },
+          {
+            "id": "guardrails",
+            "label": "Meeting Guardrails",
+            "content": "Audience: Jordan Ellis, Current Planner, City of Eastbank. Meeting purpose: clarify review process, formal submittal expectations, likely staff concerns, and follow-up items for Riverbend Yard. Good questions ask what evidence or materials staff will need. Bad questions ask whether the city will approve the project."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "urban planning consulting",
+          "workSurface": "Doc editor with reference tabs",
+          "inputArtifacts": [
+            {
+              "id": "workspace_tab",
+              "label": "Workspace",
+              "whereVisible": "call_prep.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace",
+              "summary": "Original Riverbend Yard workspace remains available while preparing staff questions."
+            },
+            {
+              "id": "scan_tab",
+              "label": "Your scan",
+              "whereVisible": "call_prep.appTabs.scan.responseReference.constraints_scan",
+              "summary": "The player's completed constraints scan appears as a reference tab for call preparation."
+            },
+            {
+              "id": "guardrails_tab",
+              "label": "Meeting guardrails",
+              "whereVisible": "call_prep.appTabs.guardrails",
+              "summary": "How to ask city staff questions professionally."
+            }
+          ],
+          "studentAction": "Draft targeted pre-application questions for Jordan Ellis, Eastbank Current Planning, to clarify review process, submittal expectations, staff concerns, and follow-up items.",
+          "outputArtifact": {
+            "id": "call_prep",
+            "label": "Pre-application call questions",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.call_prep"
+          ],
+          "continuity": [
+            "The voice meeting surfaces this prep note through prepNoteKey, so the student can ask the questions they drafted."
+          ],
+          "authenticityCheck": "Preparing clear, non-leading questions before a pre-application call with municipal planning staff is common consulting planning work."
+        },
+        "next": "city_call",
+        "defaultAppTabId": "workspace"
+      },
+      "city_call": {
+        "id": "city_call",
+        "type": "voice_meeting",
+        "section": 3,
+        "title": "Pre-Application Call with Eastbank Planning",
+        "content": "You join a remote pre-application call with Jordan Ellis, a city planner in Eastbank's Current Planning division. Use your prep note to clarify process and risks without asking for a premature approval.",
+        "npcId": "jordan_ellis",
+        "goalPrompt": "You are Jordan Ellis, a municipal current planner. Respond as city staff in a pre-application call. You can clarify process, submittal expectations, and common concerns, but you cannot promise approval. If the student overclaims or asks for approval, redirect them to standards, process, and needed evidence. Mention that floodplain review, conditional use findings, parking reduction support, and early neighborhood engagement are important. End the conversation after the student has asked targeted questions across the major topics and summarized next steps, or after the maximum turn count, by saying that staff will look for those materials in the formal submittal.",
+        "playerGoal": "Ask targeted planning questions, capture staff concerns, and maintain a professional advisory tone.",
+        "endpoint": "You have enough to brief Priya on staff review path, required submittal materials, priority concerns, follow-up items, and unresolved questions.",
+        "successCriteria": "Strong performance asks specific questions about conditional use findings, flood/stormwater review, height/public benefit, parking/TDM evidence, affordable housing expectations, and neighborhood engagement. The student should not ask for or claim approval, should summarize follow-up items, and should stay neutral and concise.",
+        "meetingContext": "Remote pre-application call for Riverbend Yard, a mixed-use redevelopment concept in Eastbank's I-MU district.",
+        "meetingMode": "remote",
+        "presentation": "remote",
+        "prepReferenceTitle": "Compact call context",
+        "prepReferenceContent": "City staff can discuss process and submittal expectations, not approve the concept on the call. Key topics: Conditional Use Permit for residential in I-MU; 55 ft base height and possible 75 ft public-benefit bonus; parking reduction with TDM; flood overlay and riverfront habitat buffer; affordable housing discussion; early neighborhood meeting.",
+        "prepNoteKey": "call_prep",
+        "prepNoteTitle": "Your prepared questions",
+        "minTurns": 4,
+        "maxTurns": 8,
+        "voiceName": "alloy",
+        "deskWorkDesign": {
+          "roleFamily": "urban planning consulting",
+          "workSurface": "Remote city-staff voice meeting",
+          "inputArtifacts": [
+            {
+              "id": "call_context",
+              "label": "Compact call context",
+              "whereVisible": "city_call.prepReferenceContent",
+              "summary": "Process and topic reminder for the city call."
+            },
+            {
+              "id": "student_prep",
+              "label": "Your prepared questions",
+              "whereVisible": "city_call.prepNoteKey",
+              "summary": "Questions drafted in the prior scene."
+            }
+          ],
+          "studentAction": "Conduct a spoken pre-application call with city planning staff.",
+          "outputArtifact": {
+            "id": "city_call_notes",
+            "label": "City-staff call notes",
+            "format": "free_text_notes"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:city_call:jordan_ellis",
+            "freeTextResponses.city_call_notes"
+          ],
+          "continuity": [
+            "The student writes call notes during the meeting; the pre-app follow-up tracker uses those notes in its City Call Notes tab."
+          ],
+          "authenticityCheck": "Urban planners routinely coordinate with city staff, applicants, and consultants through pre-application meetings."
+        },
+        "illustration": "/scenes/city_call.png",
+        "imageBrief": "A realistic remote meeting interface on a warm cream laptop screen. Jordan Ellis, a municipal planner, appears in a video tile with a city planning office background and a small Eastbank zoning map behind them. A side panel shows the student's prepared questions and compact call context. The interface should be professional and readable.",
+        "next": "pre_app_follow_up_tracker"
+      },
+      "pre_app_follow_up_tracker": {
+        "id": "pre_app_follow_up_tracker",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Write the Pre-App Follow-Up Tracker",
+        "content": "After the pre-application call, Priya wants an internal Pre-App Follow-Up Tracker she can use to brief the technical leads. Convert the city call guidance into staff concerns, team next steps, and unresolved questions.",
+        "appWindow": "doc",
+        "windowTitle": "Riverbend Yard - Pre-App Follow-Up Tracker",
+        "defaultAppTabId": "city_call_notes",
+        "editorTabLabel": "Follow-Up Tracker",
+        "prompt": "Prepare 4-6 follow-up tracker rows. Group the call into major issue areas; do not make one row for every question unless a question produced a separate workstream. For each row, capture what staff raised, what the project team should prepare or change next, and what question remains open.",
+        "definition": {
+          "itemLabel": "Follow-up item",
+          "bindingKey": "pre_app_follow_up_tracker",
+          "initialCount": 5,
+          "minItems": 4,
+          "maxItems": 6,
+          "presentation": "comment_queue",
+          "fields": [
+            {
+              "key": "department",
+              "label": "Department / topic",
+              "placeholder": "Planning / Transportation / Environmental / Housing / Engagement"
+            },
+            {
+              "key": "staff_comment",
+              "label": "Staff comment or concern",
+              "placeholder": "What did staff ask the team to address?",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "team_next_step",
+              "label": "Team next step",
+              "placeholder": "What should the project team prepare, revise, or add to the submittal package?",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "open_question",
+              "label": "Open question",
+              "placeholder": "What remains unresolved after the call?",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "appTabs": [
+          {
+            "id": "city_call_notes",
+            "label": "City Call Notes",
+            "content": "Use your call notes from the Eastbank pre-application call. Focus on staff guidance, required submittal materials, follow-up items, and unresolved questions.",
+            "responseReference": {
+              "bindingKey": "city_call_notes",
+              "title": "Your City Call Notes",
+              "emptyLabel": "Take notes during the Pre-Application Call with Eastbank Planning. Your notes will appear here and should drive the follow-up tracker."
+            }
+          },
+          {
+            "id": "workspace",
+            "label": "Workspace",
+            "content": "Original Riverbend Yard source workspace for checking source facts while filling the tracker.",
+            "sourceWorkspaceNodeId": "riverbend_workspace"
+          },
+          {
+            "id": "tracker_format",
+            "label": "Tracker Format",
+            "content": "Write as internal planning follow-up tracker rows, not a client sales email. Keep each row evidence-based: staff concern, team next step, and one open question if unresolved. Do not turn staff guidance into approval. Do not hide technical dependencies."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "urban planning consulting",
+          "workSurface": "Doc editor with call-notes and workspace tabs",
+          "inputArtifacts": [
+            {
+              "id": "city_call_notes",
+              "label": "City call notes",
+              "whereVisible": "pre_app_follow_up_tracker.appTabs.city_call_notes.responseReference.city_call_notes",
+              "summary": "Student-authored notes taken during the Eastbank pre-application call."
+            },
+            {
+              "id": "riverbend_workspace",
+              "label": "Source workspace",
+              "whereVisible": "pre_app_follow_up_tracker.appTabs.workspace.sourceWorkspaceNodeId.riverbend_workspace",
+              "summary": "Original email and documents remain visible for source-checking tracker entries."
+            },
+            {
+              "id": "tracker_format",
+              "label": "Tracker format guide",
+              "whereVisible": "pre_app_follow_up_tracker.appTabs.tracker_format",
+              "summary": "How to structure follow-up items for Priya and technical leads."
+            }
+          ],
+          "studentAction": "Translate city-staff call guidance into a pre-app follow-up tracker with staff concerns, team next steps, and open questions.",
+          "outputArtifact": {
+            "id": "pre_app_follow_up_tracker",
+            "label": "Pre-App Follow-Up Tracker",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.pre_app_follow_up_tracker",
+            "freeTextResponses.city_call_notes"
+          ],
+          "continuity": [
+            "This scene consumes the student-authored city-call notes and becomes the final assessed planning artifact."
+          ],
+          "authenticityCheck": "After pre-application meetings, planning consultants often convert staff guidance into follow-up trackers and work plans for the applicant team."
+        },
+        "next": "assessment_gate"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Planning Feasibility Sprint Is Complete",
+        "content": "The simulated project is complete. You have completed the Riverbend Yard planning scan, city-staff call prep, pre-application call, and pre-app follow-up tracker. Priya has enough to brief the technical leads on follow-up items and open questions.",
+        "illustration": "/scenes/final_report.png",
+        "imageBrief": "End-of-day consulting office desk with the Riverbend Yard workspace, completed call notes, and a pre-app follow-up tracker on the laptop. The tracker lists staff guidance, team next steps and open questions. The screen has a simple button area reading View Assessment.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment in Progress",
+        "content": "Your planning work products are being assessed.",
+        "next": "final_report",
+        "illustration": "/scenes/final_report.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Urban Planner Simulation Report",
+        "content": "Review your strengths and growth areas as a junior urban planner.",
+        "next": null,
+        "illustration": "/scenes/final_report.png"
+      }
+    }
+  },
+  "npcs": {
+    "jordan_ellis": {
+      "id": "jordan_ellis",
+      "name": "Jordan Ellis",
+      "role": "Current Planner, City of Eastbank",
+      "persona": "Jordan is a practical municipal planner who can clarify process, code expectations, and common staff concerns. They are helpful but careful not to promise approval or negotiate final conditions during a pre-application call.",
+      "voice": "alloy",
+      "avatar": "JE"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Urban Planner Simulation",
+    "welcomeBody": "Spend a day as a junior planner at a large consulting and engineering firm. You will review a redevelopment workspace, prepare for a city pre-application call, speak with staff, and turn the call into a pre-app follow-up tracker.",
+    "steps": [
+      {
+        "label": "Read the workspace",
+        "content": "Ground every recommendation in the visible client brief, zoning excerpt, map facts, city comments, and community input."
+      },
+      {
+        "label": "Create planning work",
+        "content": "Draft a constraints scan, prepare city-staff questions, and write a pre-app follow-up tracker."
+      },
+      {
+        "label": "Communicate carefully",
+        "content": "Ask specific questions and convert staff guidance into next steps without promising outcomes the planner cannot control."
+      }
+    ]
+  },
+  "glossary": {
+    "conditional use permit": "A discretionary approval that allows a use under specified conditions when the zoning district does not permit it by right.",
+    "entitlement": "The set of approvals, permits, and conditions needed before a development project can proceed.",
+    "transportation demand management": "Strategies that reduce vehicle trips or parking demand, such as transit incentives, bike facilities, unbundled parking, or shared parking.",
+    "flood overlay": "A mapped regulatory area where additional review or standards apply because of flood risk.",
+    "active frontage": "Ground-floor building frontage designed to create pedestrian activity, often through retail, entrances, windows, or public-facing uses.",
+    "public-benefit bonus": "A zoning incentive that may allow additional height, density, or flexibility in exchange for a defined public benefit.",
+    "pre-application meeting": "An early meeting with agency staff to discuss process, submittal expectations, and likely issues before a formal application."
+  },
+  "sample_answers": {
+    "constraints_scan": {
+      "opportunity": "The strongest opportunity is a transit-adjacent mixed-use redevelopment that could clean up a vacant warehouse site, add active Main Street retail, and deliver a public riverwalk segment.",
+      "constraints": "Residential requires a Conditional Use Permit; 75 ft height depends on a public-benefit bonus; flood overlay and riverfront buffer need review; parking reduction needs a TDM basis; community concerns include traffic, height near homes, displacement, and public-space access.",
+      "missing_info": "We need the exact floodplain boundary, stormwater assumptions, proposed parking count/TDM commitments, affordable housing expectations, public-benefit criteria, and neighborhood meeting scope.",
+      "city_questions": "Ask what findings matter most for the conditional use, what evidence supports a parking reduction, when floodplain review should start, what qualifies for the height bonus, and what format staff expects for early neighborhood engagement."
+    },
+    "call_prep": "1. For residential in I-MU, which conditional-use findings should the narrative address most directly? 2. What flood overlay and habitat buffer materials should be submitted before formal site plan review? 3. What level of trip-generation memo and TDM detail is expected for a parking reduction? 4. What public-benefit standards would staff use to evaluate height above 55 ft? 5. Should affordable housing be addressed as units, fee-in-lieu, or a policy discussion at this stage? 6. What neighborhood meeting format and notice area would staff recommend before formal submittal?",
+    "pre_app_follow_up_tracker": "[{\"department\":\"Planning / Entitlements\",\"staff_comment\":\"Residential in I-MU needs a Conditional Use Permit narrative; staff can discuss findings but cannot signal approval at pre-app.\",\"team_next_step\":\"Prepare a CUP findings outline tied to transit adjacency, adaptive reuse/site cleanup, active frontage, and compatibility with nearby residential edges.\",\"open_question\":\"Which local findings should be emphasized most in the formal narrative?\"},{\"department\":\"Environmental / Floodplain\",\"staff_comment\":\"Flood overlay, riverfront buffer, and stormwater assumptions need early technical confirmation before formal site plan review.\",\"team_next_step\":\"Flag floodplain boundary, buffer treatment, and stormwater strategy as critical due diligence items, not resolved feasibility facts.\",\"open_question\":\"What submittal exhibits should be included for the first formal review package?\"},{\"department\":\"Transportation / Parking\",\"staff_comment\":\"Parking reduction is possible only with support such as trip generation, transit context, shared parking, and TDM commitments.\",\"team_next_step\":\"Frame the reduced parking concept as feasible for study with a TDM package, not as an entitlement assumption.\",\"open_question\":\"What TDM measures and parking analysis detail will staff expect?\"},{\"department\":\"Urban Design / Public Benefit\",\"staff_comment\":\"Height above 55 ft needs a clear public-benefit case; active Main Street frontage remains a core standard.\",\"team_next_step\":\"Tie any height request to riverwalk access, public plaza, site cleanup, and active ground-floor uses; revise massing narrative to address transition near homes.\",\"open_question\":\"Which benefits are strongest under Eastbank review practice?\"},{\"department\":\"Housing / Engagement\",\"staff_comment\":\"Affordable housing approach and early neighborhood engagement should be addressed before formal submittal.\",\"team_next_step\":\"Add a tracker row separating housing options from required approvals and recommend a neighborhood meeting before filing.\",\"open_question\":\"What notice radius and meeting format does staff recommend?\"}]",
+    "city_call_notes": "Jordan said staff will look for a CUP findings narrative for residential in I-MU, early floodplain and stormwater exhibits, TDM support for any parking reduction, a clear public-benefit rationale if height above 55 ft is requested, and an engagement plan before formal submittal. Needed follow-up: confirm flood boundary and stormwater assumptions, prepare trip generation/TDM support, and clarify affordable housing plus neighborhood meeting expectations."
+  },
+  "rubric": {
+    "simulation_id": "urban-planner-general-urban-planning-likely-land-use-zoning-community-engagement-and-gis-supported-planning-private-urban-development-consulting-and-engineering-large-consulting-engineering-firm-entry-level-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: 制約調査、自治体確認、依頼者期待の調整が重なる中で、最初に取るべき行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "制約調査",
+            "evidenceSceneIds": [
+              "constraints_scan"
+            ],
+            "rubric_text": "9-10: 用途地域、手続き、周辺条件、確認待ち事項を、事実と推測を分けて整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "自治体通話",
+            "evidenceSceneIds": [
+              "city_call"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の通話で、自治体に確認すべき制約、手続き、未確定事項を聞き取り、断定を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "追跡表",
+            "evidenceSceneIds": [
+              "pre_app_follow_up_tracker"
+            ],
+            "rubric_text": "9-10: 通話後に残る確認事項、担当者、期限、依頼者に伝えるべきリスクを追跡表にまとめられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

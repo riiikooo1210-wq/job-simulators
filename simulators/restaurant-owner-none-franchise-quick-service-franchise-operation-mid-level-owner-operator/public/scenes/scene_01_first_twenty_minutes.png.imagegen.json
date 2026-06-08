@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:50:02+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_01_first_twenty_minutes",
+  "itemId": "scene_01_first_twenty_minutes",
+  "promptHash": "df9ddabda2569d7f",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/IMAGE_PROMPTS.md"
+}

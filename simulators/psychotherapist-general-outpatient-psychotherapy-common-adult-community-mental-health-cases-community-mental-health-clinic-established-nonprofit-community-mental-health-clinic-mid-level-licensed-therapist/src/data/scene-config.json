@@ -1,0 +1,937 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "This psychotherapist role is dominated by spoken clinical work, clinical judgment, and written documentation. O*NET describes assessment, counseling, treatment planning, risk assessment, documentation, reports, and consultation as core tasks, while the YouTube and Reddit sources repeatedly show community mental health days built around client sessions, team discussion, notes, no-shows, caseload pressure, risk/safety planning, and care coordination.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "O*NET reports daily face-to-face discussions and indoor clinic work, but the core tasks are interviewing, counseling, documenting, planning, and consulting rather than manipulating equipment.",
+          "The selected sources describe in-person and office/community presence, but not recurring concrete object manipulation as a major part of outpatient psychotherapy."
+        ],
+        "simulatorImplication": "Use in-person voice scenes to represent physical clinic presence. Do not add a physical playground unless the work requires manipulating concrete clinical objects."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists documenting patient information, writing reports, maintaining paperwork, email, EHR/medical software, and office tools as job-relevant.",
+          "YouTube and Reddit sources emphasize progress notes, assessments due, documentation deadlines, and EHR-style record keeping."
+        ],
+        "simulatorImplication": "Use CareBridge EHR-style work windows, source tabs, structured forms, secure messages, and email compose surfaces for the student's work."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET names risk assessment, diagnosis/conceptualization, treatment planning, decision-making, and evaluating compliance with standards.",
+          "Reddit safety-plan and ethics threads emphasize risk reasoning, consultation, confidentiality, and documentation rationale."
+        ],
+        "simulatorImplication": "Ask the student to prioritize, plan a session from case evidence, assess risk, reason about no-show barriers, and justify follow-up/coordination steps."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists progress notes, treatment plans, reports, and required paperwork.",
+          "Reddit progress-note threads stress concise medical-necessity language, privacy judgment, intervention, response, risk, and plan."
+        ],
+        "simulatorImplication": "Require the student to write a session plan, DAP progress note, privacy-safe no-show voicemail, attendance follow-up plan, and minimum-necessary reconnection message."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET reports daily face-to-face discussions, constant contact with others, counseling clients, and consultation with other professionals.",
+          "Community mental health videos describe therapeutic listening, safety planning, team meetings, supervision, and client-centered support."
+        ],
+        "simulatorImplication": "Include realistic spoken tasks: one therapy session with the client, one privacy-safe no-show voicemail, and one care-team coordination conversation about no-show follow-up."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Reddit threads describe no-shows, cancellations, high caseloads, productivity targets, and schedule gaps as recurring context.",
+          "Day-in-the-life sources describe checking which clients and paperwork are due before starting the day."
+        ],
+        "simulatorImplication": "Represent no-show and productivity pressure as interruptions that require the student to document, coordinate, and return to clinical priorities."
+      }
+    },
+    "simulatorPlan": "The active scenes roughly mirror the source-derived mix: one in-person therapy scene, one spoken no-show voicemail, one care-team coordination conversation, three digital/written artifact scenes for EHR preparation, notes, and follow-up planning, plus one bounded prioritization decision with realistic consequences. Physical/object manipulation is intentionally minor because outpatient psychotherapy's concrete work is primarily conversation and clinical documentation.",
+    "activeSceneMixRationale": "Active scenes are scene_01_morning_priority, scene_02_case_prep, scene_03_client_session, scene_04_progress_note, scene_05_no_show_outreach, scene_07_supervisor_consult, and scene_08_safety_plan. The simulator avoids MCQ dominance and maps every constructed-response task to rubric evidence."
+  },
+  "storyline": {
+    "gameTitle": "Psychotherapist Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Morning Clinical Priorities"
+      },
+      {
+        "num": 2,
+        "label": "Documentation and Clinic Flow"
+      },
+      {
+        "num": 3,
+        "label": "No-Show Follow-Up and Reconnection"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "A Clinic Day Begins",
+        "content": "You are a mid-level licensed therapist at Harborview {{community mental health}}. The clinic serves adults who need accessible therapy, case management, and psychiatric support. Your day will move between client care, {{EHR}} documentation, supervision, no-shows, and care coordination.",
+        "illustration": "/scenes/intro.png",
+        "imageBrief": "First-person view entering a warm nonprofit community mental health clinic lobby in the morning. A check-in desk sits at the left with a small Harborview Community Mental Health sign, brochures for depression support and housing resources, and two clients waiting quietly. At the lower edge of the frame, the viewer's hand holds a notebook and clinic badge while facing a hallway of counseling offices.",
+        "next": "scene_01_morning_priority"
+      },
+      "scene_01_morning_priority": {
+        "id": "scene_01_morning_priority",
+        "type": "multiple_choice",
+        "section": 1,
+        "title": "Morning Huddle: What Comes First?",
+        "appWindow": "slack",
+        "windowTitle": "#clinic-huddle",
+        "content": "At 8:35 AM, the clinic huddle lands in the secure team channel. Your 10:00 AM client, Maya Thompson, has new risk cues in the {{EHR}}. You also have two {{progress note}} deadlines and a walk-in request waiting at front desk.",
+        "slackMessages": [
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:35 AM",
+            "content": "Morning team. Maya Thompson's update shows higher PHQ-9 and housing stress. Please review before her 10:00 session.",
+            "avatarInitials": "ER"
+          },
+          {
+            "sender": "Alex Kim",
+            "role": "Front Desk Coordinator",
+            "timestamp": "8:36 AM",
+            "content": "Also flagging: Jordan Lee has missed two of the last three appointments, and we have a walk-in asking for a same-day slot.",
+            "avatarInitials": "AK"
+          }
+        ],
+        "prompt": "Choose the response you'd send to Dr. Rivera and Alex.",
+        "isPivot": true,
+        "options": [
+          {
+            "id": "review_maya",
+            "label": "I will review Maya's CareBridge chart first, then protect time for the notes and the walk-in decision after I know her risk picture.",
+            "branchFlag": "review_maya"
+          },
+          {
+            "id": "clear_notes",
+            "label": "I will clear the two overdue notes first so the compliance queue is clean before I look at Maya.",
+            "branchFlag": "clear_notes"
+          },
+          {
+            "id": "take_walkin",
+            "label": "I can take the walk-in first since Maya is not scheduled until 10:00.",
+            "branchFlag": "take_walkin"
+          },
+          {
+            "id": "ask_huddle",
+            "label": "Can we huddle for five minutes before I choose? I want a quick read on the walk-in and Maya's update.",
+            "branchFlag": "ask_huddle"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "clinical desk coordination",
+          "workSurface": "secure clinic Slack-style huddle thread",
+          "inputArtifacts": [
+            {
+              "id": "huddle_messages",
+              "label": "clinic huddle messages",
+              "whereVisible": "slackMessages",
+              "summary": "Supervisor flags Maya's risk update; front desk flags a walk-in and Jordan's attendance pattern."
+            }
+          ],
+          "studentAction": "Choose the morning prioritization message to send.",
+          "outputArtifact": "mc.scene_01_morning_priority",
+          "rubricEvidence": [
+            "Clinical prioritization under clinic pressure"
+          ],
+          "continuity": [
+            "All choices converge to Maya case review after a realistic consequence."
+          ],
+          "authenticityCheck": "Bounded prioritization fits a short huddle moment; deeper work happens in later constructed-response scenes."
+        },
+        "next": {
+          "branchOn": "scene_01_morning_priority",
+          "cases": {
+            "review_maya": "scene_01_review_maya_redirect",
+            "clear_notes": "scene_01_clear_notes_redirect",
+            "take_walkin": "scene_01_take_walkin_redirect",
+            "ask_huddle": "scene_01_ask_huddle_redirect"
+          },
+          "default": "scene_01_review_maya_redirect"
+        },
+        "workSurface": {
+          "kind": "slack_reply",
+          "device": "desktop",
+          "appWindow": "slack",
+          "title": "#clinic-huddle"
+        }
+      },
+      "scene_01_review_maya_redirect": {
+        "id": "scene_01_review_maya_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "You Protect the Risk Review",
+        "content": "Dr. Rivera reacts with a thumbs-up. Maya is not necessarily in crisis, but the known risk cues make preparation the safest first move. You open CareBridge before the day starts pulling you in five directions.",
+        "slackMessages": [
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:35 AM",
+            "content": "Morning team. Maya Thompson's update shows higher PHQ-9 and housing stress. Please review before her 10:00 session.",
+            "avatarInitials": "ER"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Therapist",
+            "timestamp": "8:37 AM",
+            "content": "{{mc.scene_01_morning_priority.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:38 AM",
+            "content": "Good. Review first, then decide what can wait. Bring me in if the risk picture gets fuzzy.",
+            "avatarInitials": "ER"
+          }
+        ],
+        "illustration": "/scenes/scene_01_review_maya_redirect.png",
+        "imageBrief": "A therapist's workstation inside a warm clinic office. A laptop shows a cream-toned secure message thread with Dr. Rivera's reply, and a CareBridge EHR tab labeled Maya Thompson is open in the background. A paper schedule beside the laptop shows 10:00 AM circled.",
+        "next": "scene_02_case_prep"
+      },
+      "scene_01_clear_notes_redirect": {
+        "id": "scene_01_clear_notes_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Documentation Matters, But Risk Leads",
+        "content": "Dr. Rivera agrees that documentation cannot be ignored, but she redirects you. Notes are important; a session with new risk cues needs review before Maya arrives. You block a later note window and open the CareBridge chart now.",
+        "slackMessages": [
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:35 AM",
+            "content": "Morning team. Maya Thompson's update shows higher PHQ-9 and housing stress. Please review before her 10:00 session.",
+            "avatarInitials": "ER"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Therapist",
+            "timestamp": "8:37 AM",
+            "content": "{{mc.scene_01_morning_priority.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:38 AM",
+            "content": "Keep the notes on your radar, but do not walk into Maya cold. Review the risk update first.",
+            "avatarInitials": "ER"
+          }
+        ],
+        "illustration": "/scenes/scene_01_clear_notes_redirect.png",
+        "imageBrief": "First-person view at a clinic office desk with two sticky notes labeled Notes due by 5 PM beside an open CareBridge chart for Maya Thompson. The laptop shows the Maya chart in focus while a generic note queue is minimized in the background. A supervisor message is visible on the cream-toned screen, and the viewer's hand rests near the trackpad.",
+        "next": "scene_02_case_prep"
+      },
+      "scene_01_take_walkin_redirect": {
+        "id": "scene_01_take_walkin_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Walk-In Can Be Triaged",
+        "content": "Alex can keep the walk-in in the front-desk triage process while you review Maya. Taking the walk-in immediately would leave a scheduled client with known risk cues underprepared. You ask Alex to collect basic intake information and open Maya's chart.",
+        "slackMessages": [
+          {
+            "sender": "Alex Kim",
+            "role": "Front Desk Coordinator",
+            "timestamp": "8:36 AM",
+            "content": "Also flagging: Jordan Lee has missed two of the last three appointments, and we have a walk-in asking for a same-day slot.",
+            "avatarInitials": "AK"
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "Therapist",
+            "timestamp": "8:37 AM",
+            "content": "{{mc.scene_01_morning_priority.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Alex Kim",
+            "role": "Front Desk Coordinator",
+            "timestamp": "8:38 AM",
+            "content": "I can gather basic info and check the same-day list. Please review Maya before 10.",
+            "avatarInitials": "AK"
+          }
+        ],
+        "illustration": "/scenes/scene_01_take_walkin_redirect.png",
+        "imageBrief": "First-person hallway view toward the Harborview front desk. Alex speaks calmly to a walk-in client near the check-in counter while the counseling-office hallway continues to the right. A laptop on a side desk shows Maya's chart open, visually contrasting front-desk triage with scheduled risk preparation.",
+        "next": "scene_02_case_prep"
+      },
+      "scene_01_ask_huddle_redirect": {
+        "id": "scene_01_ask_huddle_redirect",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "A Quick Huddle Narrows the Priority",
+        "content": "A short huddle helps: the walk-in is stable enough for front-desk triage, the notes are due by end of day, and Maya's session is the clearest clinical risk. You leave the huddle with the same next step: review Maya before she arrives.",
+        "slackMessages": [
+          {
+            "sender": "{{playerName}}",
+            "role": "Therapist",
+            "timestamp": "8:37 AM",
+            "content": "{{mc.scene_01_morning_priority.label}}",
+            "avatarInitials": "{{playerInitial}}"
+          },
+          {
+            "sender": "Dr. Elena Rivera",
+            "role": "Clinical Supervisor",
+            "timestamp": "8:42 AM",
+            "content": "Good use of consultation. Now convert that into action: Maya first, documentation window next.",
+            "avatarInitials": "ER"
+          }
+        ],
+        "illustration": "/scenes/scene_01_ask_huddle_redirect.png",
+        "imageBrief": "First-person view inside a small clinic consultation room. Dr. Rivera and Alex stand by a wall schedule while the viewer's notebook appears at the bottom edge of the frame. The whiteboard shows three items: Maya 10:00, walk-in triage, notes by 5 PM, and Dr. Rivera points to Maya's item as the immediate priority.",
+        "next": "scene_02_case_prep"
+      },
+      "scene_02_case_prep": {
+        "id": "scene_02_case_prep",
+        "type": "free_text",
+        "section": 1,
+        "title": "Prepare Maya's Session Plan",
+        "appWindow": "notion",
+        "windowTitle": "CareBridge | Maya Thompson - Session Prep",
+        "content": "Before Maya arrives, use the CareBridge chart to prepare a focused plan. The goal is not to script the whole session. Identify the highest-value questions and prompts you want available when she sits down.",
+        "prompt": "Write 3-5 session questions or prompts for Maya. Cover rapport, current symptoms/functioning, risk and safety, protective factors, and one collaborative next step.",
+        "minWords": 45,
+        "maxWords": 180,
+        "placeholder": "1. [rapport/current concern prompt]\n2. [symptom and functioning prompt]\n3. [direct safety/risk prompt]\n4. [protective factors or supports prompt]\n5. [collaborative next-step prompt]",
+        "appTabs": [
+          {
+            "id": "case_packet",
+            "label": "Maya CareBridge chart",
+            "content": "**Maya Thompson, 32**\nPresenting concerns: depression and anxiety symptoms after job loss, unstable housing, poor sleep, missed meals, and isolation.\nRecent measures: {{phq-9}} 17, {{gad-7}} 13. PHQ-9 item 9 marked 'several days.'\nLast session: Maya said, 'I am tired of feeling like every bill is a cliff.' She denied plan or intent at that time and agreed to a coping list.\nAttendance: arrived late twice, attended consistently once case management helped with bus passes.\nSupport: younger sister Danielle texts daily; Maya is embarrassed to ask for help.\nClinical reminder: ask directly about suicidal thoughts, plan, intent, access to means, protective factors, and near-term follow-up when risk cues are present."
+          },
+          {
+            "id": "clinic_frame",
+            "label": "Clinic risk reminder",
+            "content": "Risk review before session should distinguish passive thoughts, active thoughts, plan, intent, access to means, recent behavior, substance use, protective factors, and willingness to collaborate on a plan. Document what was asked and what the client answered."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "outpatient psychotherapy",
+          "workSurface": "CareBridge EHR prep note with CareBridge chart and clinic risk reminder tabs",
+          "inputArtifacts": [
+            {
+              "id": "maya_case_packet",
+              "label": "Maya CareBridge chart",
+              "whereVisible": "appTabs.case_packet",
+              "summary": "Symptoms, measures, prior denial of plan/intent, attendance pattern, support, and risk reminder."
+            },
+            {
+              "id": "risk_reminder",
+              "label": "clinic risk reminder",
+              "whereVisible": "appTabs.clinic_frame",
+              "summary": "Domains to assess when risk cues appear."
+            }
+          ],
+          "studentAction": "Draft a brief session plan with concrete prompts.",
+          "outputArtifact": {
+            "id": "scene_02_case_prep",
+            "label": "session prep note",
+            "format": "numbered prompts"
+          },
+          "rubricEvidence": [
+            "Session planning and risk-informed questions"
+          ],
+          "continuity": [
+            "The prep note appears in Maya's in-person session using prepNoteKey."
+          ],
+          "authenticityCheck": "Therapists prepare from chart data and risk cues before a session rather than improvising from memory."
+        },
+        "next": "scene_03_client_session",
+        "workSurface": {
+          "kind": "notion_doc",
+          "device": "desktop",
+          "appWindow": "notion",
+          "title": "CareBridge | Maya Thompson - Session Prep"
+        }
+      },
+      "scene_03_client_session": {
+        "id": "scene_03_client_session",
+        "type": "voice_meeting",
+        "section": 1,
+        "title": "In-Person Session with Maya",
+        "content": "Maya arrives at 10:00 and sits near the edge of the couch. She says, 'I almost canceled. I do not want this to become a whole crisis thing.' Use your prep note to build alliance, assess safety directly, and collaborate on a realistic next step. Keep concise session notes in the note pad while you listen; after Maya leaves, you will use them to write a DAP progress note.",
+        "npcId": "maya_thompson",
+        "goalPrompt": "You are Maya Thompson, a 32-year-old client at a community mental health clinic. Start guarded and worried that being honest will make the therapist overreact. If the therapist is warm, specific, and nonjudgmental, explain that losing work and fearing eviction have made you feel trapped. If asked directly about safety, say you sometimes think it would be easier not to wake up, but you deny a plan or intent. If asked about means, say you have no firearm and no stockpile of medication. If asked about supports, mention your sister Danielle and that you are embarrassed but willing to text her. If the therapist collaborates on coping and follow-up, agree to a safety plan and a check-in call this week. After discussing current stressors, safety, supports, and next steps, naturally conclude with: 'Okay, I can try that until we talk again.' Do not introduce new major topics after that closing.",
+        "meetingMode": "in_person",
+        "meetingContext": "Maya's chart shows depression and anxiety symptoms, PHQ-9 17 with item 9 marked several days, GAD-7 13, recent job loss, housing stress, poor sleep, and sister Danielle as a possible support. Maya denied plan or intent at the last visit. The student's prep note should be visible during the meeting.",
+        "prepReferenceTitle": "Compact case cues",
+        "prepReferenceContent": "Maya Thompson, 32. PHQ-9 17 with item 9 marked several days; GAD-7 13. Current stressors: job loss, rent pressure, poor sleep, isolation. Prior session: denied plan or intent, agreed to coping list. Known support: sister Danielle texts daily.",
+        "prepNoteKey": "scene_02_case_prep",
+        "prepNoteTitle": "Your session prep",
+        "sessionNotesKey": "scene_03_client_session_notes",
+        "sessionNotesTitle": "Session notes for DAP",
+        "sessionNotesPrompt": "Jot only the clinically relevant facts you will need for the DAP progress note: presentation, risk answers, interventions, client response, supports, and follow-up.",
+        "sessionNotesPlaceholder": "Presentation:\nRisk answers:\nInterventions/response:\nSupports:\nPlan/follow-up:",
+        "voiceName": "Aoede",
+        "minTurns": 4,
+        "maxTurns": 10,
+        "illustration": "/scenes/scene_03_client_session.png",
+        "imageBrief": "An in-person counseling office at Harborview, viewed from the therapist's chair over a small coffee table. Maya Thompson, a tired 32-year-old woman in a worn green jacket, sits on a couch with tense posture but attentive eyes. A small side table holds tissues and a water cup, and a discreet framed poster about coping skills is visible on the wall. The room feels private, warm, and realistic, with no laptop or video-call grid as the main visual.",
+        "next": "section_transition_1_2",
+        "playerGoal": "In 4-10 turns, build alliance with Maya, ask directly about safety, clarify plan/intent/means/supports, collaborate on a realistic next step, and keep brief notes for the DAP progress note afterward.",
+        "endpoint": "End once Maya has discussed current stressors, safety details, supports, and a short-term coping/follow-up plan.",
+        "successCriteria": "You are warm and direct, assess risk without overreacting, identify Danielle and clinic supports, and leave Maya willing to try the plan.",
+        "deskWorkDesign": {
+          "roleFamily": "psychotherapy",
+          "workSurface": "in-person therapy session",
+          "inputArtifacts": [
+            {
+              "id": "session_prep",
+              "label": "Student session prep",
+              "whereVisible": "scene_03_client_session.prepNoteKey",
+              "summary": "Prompts prepared from Maya's CareBridge chart."
+            },
+            {
+              "id": "case_cues",
+              "label": "Compact case cues",
+              "whereVisible": "scene_03_client_session.prepReferenceContent",
+              "summary": "PHQ/GAD scores, current stressors, prior denial of plan/intent, and known support."
+            },
+            {
+              "id": "session_notes",
+              "label": "Student session notes",
+              "whereVisible": "scene_03_client_session.sessionNotesKey",
+              "summary": "Brief notes the student takes during the in-person session for later DAP documentation."
+            }
+          ],
+          "studentAction": "Conduct a client session with alliance-building and direct risk assessment.",
+          "outputArtifact": {
+            "id": "scene_03_client_session",
+            "label": "Client-session transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "Session planning and risk-informed questions",
+            "Therapeutic alliance with clinically appropriate risk assessment"
+          ],
+          "continuity": [
+            "Student notes from the session feed the progress note, supervisor consult, safety plan, and care coordination."
+          ],
+          "authenticityCheck": "Outpatient therapists must combine rapport, safety assessment, collaboration, documentation, and follow-up planning."
+        }
+      },
+      "section_transition_1_2": {
+        "id": "section_transition_1_2",
+        "type": "section_transition",
+        "section": 1,
+        "title": "Section 2: Documentation and Clinic Flow",
+        "content": "Maya leaves with a tentative plan. Before the day moves on, the clinical work has to become a useful, privacy-conscious record.",
+        "illustration": "/scenes/section_transition_1_2.png",
+        "imageBrief": "A quiet counseling office after a client session. The couch is empty, tissues and a water cup remain on the table, and the therapist's notebook is open beside a laptop showing a cream-toned CareBridge EHR note draft. The mood is calm but focused, showing the shift from session to documentation.",
+        "next": "scene_04_progress_note"
+      },
+      "scene_04_progress_note": {
+        "id": "scene_04_progress_note",
+        "type": "free_text",
+        "section": 2,
+        "title": "Write the Progress Note",
+        "appWindow": "doc",
+        "windowTitle": "CareBridge EHR | Maya Thompson - Progress Note",
+        "content": "CareBridge opens the {{progress note}} template. Write a concise {{DAP note}}. Use your in-session notes and the documentation standard. Document risk and plan without turning the session into a detailed personal transcript.",
+        "prompt": "Draft Maya's DAP progress note for today's session. Use your session notes as a memory aid, then include data, assessment, plan, risk findings, intervention/client response, and follow-up.",
+        "minWords": 90,
+        "maxWords": 260,
+        "placeholder": "D: [clinically relevant data, intervention, client response, and risk answers]\nA: [risk formulation and clinical rationale]\nP: [safety planning, follow-up, coordination, and next appointment]",
+        "appTabs": [
+          {
+            "id": "student_session_notes",
+            "label": "Your session notes",
+            "content": "**Your in-session notes**\n{{freeText.scene_03_client_session_notes}}\n\nUse these as your memory aid. If this area is blank, return to Maya's session and jot the clinically relevant details before drafting. The final DAP note should still be concise, clinically relevant, and privacy-conscious."
+          },
+          {
+            "id": "documentation_standard",
+            "label": "Documentation standard",
+            "content": "**DAP note expectations**\nData: clinically relevant observations, client report, interventions, and risk answers.\nAssessment: clinical interpretation and current risk level with rationale.\nPlan: follow-up, safety plan, referrals/coordination, and next appointment.\nPrivacy: avoid vivid personal details unless necessary for risk, treatment, or continuity."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "clinical documentation",
+          "workSurface": "CareBridge EHR progress note editor",
+          "inputArtifacts": [
+            {
+              "id": "student_session_notes",
+              "label": "student session notes",
+              "whereVisible": "appTabs.student_session_notes",
+              "summary": "The notes the student took during Maya's in-person session."
+            },
+            {
+              "id": "documentation_standard",
+              "label": "DAP documentation standard",
+              "whereVisible": "appTabs.documentation_standard",
+              "summary": "Data, assessment, plan, and privacy requirements."
+            }
+          ],
+          "studentAction": "Draft a clinically useful progress note.",
+          "outputArtifact": {
+            "id": "scene_04_progress_note",
+            "label": "Maya progress note",
+            "format": "DAP note"
+          },
+          "rubricEvidence": [
+            "Progress note quality and privacy judgment",
+            "Therapeutic alliance with clinically appropriate risk assessment"
+          ],
+          "continuity": [
+            "The note facts inform the later supervisor consult and safety plan."
+          ],
+          "authenticityCheck": "Progress notes in CMH must support continuity, medical necessity, and privacy."
+        },
+        "next": "scene_05_no_show_outreach",
+        "workSurface": {
+          "kind": "document_editor",
+          "device": "desktop",
+          "appWindow": "doc",
+          "title": "CareBridge EHR | Maya Thompson - Progress Note"
+        }
+      },
+      "scene_05_no_show_outreach": {
+        "id": "scene_05_no_show_outreach",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Leave a No-Show Voicemail",
+        "content": "At 11:15, Alex messages that Jordan Lee has not arrived for an 11:00 appointment. You call Jordan's registered mobile from the clinic line; it goes to voicemail, and the greeting does not confirm who will hear it. You may jot talking points, but you must say the voicemail out loud: warm, brief, privacy-safe, and clear about how to reconnect.",
+        "npcId": "jordan_voicemail",
+        "goalPrompt": "Leave one brief voicemail for Jordan after the missed appointment. Identify yourself and Harborview, ask Jordan to call the clinic back, give the callback number, and invite scheduling or next steps. Protect privacy: do not say therapy, mental health, diagnosis, no-show, SI/HI, attendance history, or transportation barrier. The voicemail inbox does not respond; the task ends after the student speaks one complete message and clicks End voicemail.",
+        "playerGoal": "Say the voicemail out loud. You may write optional talking points first, but the graded artifact is the spoken voicemail transcript.",
+        "endpoint": "End once you have left one 15-25 second privacy-safe voicemail.",
+        "successCriteria": "The voicemail is warm, brief, neutral, and practical: caller/clinic, callback number, scheduling or next-step invitation, no blame, and no sensitive clinical disclosure.",
+        "meetingContext": "Jordan did not arrive for the 11:00 appointment. The registered mobile went to voicemail, and the greeting does not confirm who will hear it. The clinic permits generic voicemail. The safest message avoids clinical details and only asks for a callback.",
+        "meetingMode": "voicemail",
+        "voiceName": "Kore",
+        "minTurns": 1,
+        "maxTurns": 1,
+        "voicemailNumber": "(555) 0148",
+        "voicemailGreeting": "The call forwards to voicemail. The greeting says only: \"You've reached this number. Leave a message.\"",
+        "voicemailDraftKey": "scene_05_no_show_outreach_draft",
+        "voicemailDraftTitle": "Optional talking points",
+        "voicemailDraftPrompt": "Optional: jot a short callback message before you speak. The final grade uses what you actually say in the voicemail transcript.",
+        "voicemailDraftPlaceholder": "",
+        "prepReferenceTitle": "Jordan contact snapshot",
+        "prepReferenceContent": "**Jordan Lee**\nScheduled: 11:00 AM individual therapy today.\nAttendance: attended 2 of last 5 appointments; missed last week's appointment; reached by phone afterward and said bus fare was the barrier.\nContact permissions: phone outreach is allowed; generic voicemail is allowed; SMS is limited to clinic-approved reminder templates; portal messages are rarely read.\nCurrent call: registered mobile went to voicemail; greeting says only, \"You've reached this number.\"\nPrivacy cue: leave only neutral callback and scheduling language. Do not mention therapy, mental health, diagnosis, risk, no-show status, or attendance pattern.\nRisk in last completed session: denied SI/HI, requested help with anxiety and work stress.\nClinic policy: after 15 minutes, attempt phone outreach if clinically appropriate, document the attempt, notify scheduling if follow-up is needed, and consider case-management barrier support.",
+        "deskWorkDesign": {
+          "roleFamily": "clinic flow and phone outreach",
+          "workSurface": "phone voicemail screen with optional talking-points note",
+          "inputArtifacts": [
+            {
+              "id": "attendance_snapshot",
+              "label": "Jordan contact snapshot",
+              "whereVisible": "scene_05_no_show_outreach.prepReferenceContent",
+              "summary": "Appointment time, contact permissions, voicemail privacy cue, attendance pattern, known transportation barrier, last known risk, and policy."
+            }
+          ],
+          "studentAction": "Optionally draft talking points, then speak a privacy-safe voicemail for Jordan after the no-show call.",
+          "outputArtifact": {
+            "id": "scene_05_no_show_outreach",
+            "label": "privacy-safe no-show voicemail transcript",
+            "format": "spoken voicemail transcript"
+          },
+          "rubricEvidence": [
+            "No-show/outreach workflow"
+          ],
+          "continuity": [
+            "Demonstrates how a schedule gap becomes humane, privacy-conscious reconnection rather than dead time."
+          ],
+          "authenticityCheck": "No-shows are common in CMH and require humane outreach that protects confidentiality, not blame."
+        },
+        "next": "section_transition_2_3"
+      },
+      "section_transition_2_3": {
+        "id": "section_transition_2_3",
+        "type": "section_transition",
+        "section": 2,
+        "title": "Section 3: No-Show Follow-Up and Reconnection",
+        "content": "The voicemail is left, but Jordan's repeated missed appointments point to more than a calendar problem. Turn the no-show into a privacy-aware reconnection plan that addresses barriers and keeps the care team aligned.",
+        "next": "scene_06_policy_briefing"
+      },
+      "scene_06_policy_briefing": {
+        "id": "scene_06_policy_briefing",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 3,
+        "title": "Review the Attendance Follow-Up Guide",
+        "content": "Before the in-person meeting with Alex Kim, Harborview's front desk coordinator, review the coordination guide for this exact handoff. The voicemail is already done. Now you are preparing what to ask Alex, who manages the scheduling queue, neutral front-desk notes, reminder permissions, and routing to case management. Use the guide to decide what Alex needs from you and what operational details Alex can add before you build Jordan's formal follow-up plan.",
+        "actionLabel": "Meet with Alex",
+        "appWindow": "doc",
+        "windowTitle": "Harborview Attendance and Reconnection Guide",
+        "referenceTitle": "Harborview Attendance and Reconnection Guide",
+        "referenceContent": "**Purpose of the Alex meeting**\n- Use the meeting to turn the missed appointment into front-desk actions Alex can carry out today.\n- Alex can add operational details: scheduling/callback options, neutral note wording, reminder limits, case-management routing, and what should come back to the therapist.\n\n**What Alex needs from you**\n- Outreach status: Jordan missed the 11:00 appointment and a generic voicemail was left from the clinic line.\n- Privacy boundary: front desk can discuss callback and scheduling, not therapy content, diagnosis, risk history, or blame.\n- Barrier context: Jordan previously named bus fare as a reason for missing, so transportation support may be relevant.\n- Clinical boundary: recent risk was denied; escalate only if new risk cues appear or planned outreach fails.\n\n**What to ask Alex**\n- What scheduling or callback path can you offer Jordan today?\n- What neutral scheduling note should you enter?\n- Can transportation support be routed to case management today?\n- Are short messages allowed here, or only approved templates after scheduling?\n- What client response should be sent back to me or a supervisor immediately?\n\n**After the meeting**\n- Use Alex's operational answers to build the formal CareBridge follow-up plan.",
+        "noteWindow": {
+          "title": "Prep Notes",
+          "bindingKey": "scene_06_policy_briefing",
+          "instructions": "Visible in Alex meeting.",
+          "placeholder": "Ask Alex: scheduling/callback option, neutral note wording, case-management route for bus fare, reminder limits, escalation back to therapist."
+        },
+        "deskWorkDesign": {
+          "roleFamily": "clinic flow and care coordination",
+          "workSurface": "attendance guide beside meeting prep notes",
+          "inputArtifacts": [
+            {
+              "id": "attendance_reconnection_guide",
+              "label": "Harborview Attendance and Reconnection Guide",
+              "whereVisible": "scene_06_policy_briefing.referenceContent",
+              "summary": "Clinic guidance for no-show documentation, privacy-safe outreach, barrier support, and escalation."
+            }
+          ],
+          "studentAction": "Review the clinic guide and draft concise notes for the in-person meeting with Alex.",
+          "outputArtifact": {
+            "id": "scene_06_policy_briefing",
+            "label": "Alex meeting prep notes",
+            "format": "brief meeting notes"
+          },
+          "rubricEvidence": [
+            "Reconnection consult and barrier reasoning"
+          ],
+          "continuity": [
+            "The prep notes appear in the in-person meeting with Alex via prepNoteKey."
+          ],
+          "authenticityCheck": "Therapists often translate clinic policy and client context into short operational notes before coordinating attendance follow-up with front desk or case management."
+        },
+        "next": "scene_07_supervisor_consult"
+      },
+      "scene_07_supervisor_consult": {
+        "id": "scene_07_supervisor_consult",
+        "type": "voice_meeting",
+        "section": 3,
+        "title": "Coordinate the Reconnection Plan with Alex",
+        "content": "Alex Kim, Harborview's front desk coordinator, has the scheduling queue open. Meet with Alex in person to give the privacy-safe clinical context Alex needs, then ask Alex for the operational pieces you cannot decide alone: today's scheduling/callback path, neutral front-desk note wording, reminder limits, case-management routing for transportation support, and what should escalate back to you. Those details will feed the formal follow-up plan next.",
+        "npcId": "alex_kim",
+        "goalPrompt": "You are Alex Kim, Harborview front desk coordinator, in a quick in-person meeting with the therapist after Jordan Lee missed an appointment and the therapist left a generic voicemail. Start by adding operational information, not just asking for instructions: \"I have Jordan's scheduling row open. I can enter a neutral note, offer a callback or next available appointment if Jordan reaches us, use only approved reminder templates, and route transportation support to case management today. What do you want me to document, and what should come back to you?\" During the meeting, ask for any missing clinical boundaries: whether the voicemail was left, what privacy-safe wording front desk can use, whether the bus-fare barrier should go to case management, what scheduling option to offer, and when to escalate back to the therapist. If the therapist is clear and privacy-aware, confirm with concrete added details: \"Got it. I will document: missed 11:00, generic voicemail left, offer callback or next available scheduling path, route transportation support to case management, and send it back to you if Jordan mentions safety concerns, urgent clinical needs, or we still cannot reach them after the planned outreach.\" If the therapist blames Jordan, asks you to disclose therapy details, or gives no concrete next step, push back once with a privacy or workflow question. Close after the operational handoff is clear.",
+        "meetingMode": "in_person",
+        "imageBrief": "First-person view at Harborview's front desk workstation. Alex Kim stands beside a shared scheduling monitor with Jordan Lee's neutral appointment row visible, while the therapist's small prep notebook is open in the foreground. The scene feels like a quick private in-person coordination meeting, with no client clinical details displayed.",
+        "illustration": "/scenes/scene_07_supervisor_consult.png",
+        "meetingTitle": "In-person meeting - Alex Kim",
+        "startLabel": "Start meeting",
+        "endLabel": "End meeting",
+        "interactionLabel": "meeting",
+        "inPersonImagePlacement": "inline",
+        "meetingContext": "Jordan missed the 11:00 appointment. The registered mobile went to voicemail with an unidentified greeting. A privacy-safe voicemail was left. Jordan has attended 2 of the last 5 appointments and previously named bus fare as the reason for missing. Phone outreach is allowed; generic voicemail is allowed; SMS must use approved reminders; portal messages are rarely read.",
+        "prepNoteKey": "scene_06_policy_briefing",
+        "prepNoteTitle": "Your prep notes",
+        "sessionNotesKey": "scene_07_alex_meeting_notes",
+        "sessionNotesTitle": "Alex meeting notes",
+        "sessionNotesPrompt": "Take notes while Alex gives operational details. You will use these notes in the next task, where you actually build Jordan's follow-up plan.",
+        "sessionNotesPlaceholder": "Scheduling/callback option; neutral scheduling note wording; case-management route for transportation support; reminder limits; what should come back to you.",
+        "sessionNotesPlacement": "below_image",
+        "voiceName": "Puck",
+        "minTurns": 3,
+        "maxTurns": 6,
+        "next": "scene_08_safety_plan",
+        "playerGoal": "Give Alex the privacy-safe clinical context and capture Alex's operational details: scheduling/callback option, neutral note wording, case-management route, reminder limits, and escalation-back threshold.",
+        "endpoint": "End once Alex has confirmed what front desk will document, what scheduling path to offer, how transportation support will be routed, and what should return to you.",
+        "successCriteria": "You are concise, nonjudgmental, privacy-aware, and operational: you give Alex minimum necessary context and leave with concrete front-desk/case-management details for the follow-up plan.",
+        "deskWorkDesign": {
+          "roleFamily": "clinic flow and care coordination",
+          "workSurface": "in-person scheduling coordination meeting",
+          "inputArtifacts": [
+            {
+              "id": "alex_meeting_prep_notes",
+              "label": "Your prep notes",
+              "whereVisible": "scene_07_supervisor_consult.prepNoteKey",
+              "summary": "Student's meeting prep notes drafted while reviewing the attendance and reconnection guide."
+            }
+          ],
+          "studentAction": "Coordinate a practical, privacy-aware reconnection plan with front desk.",
+          "outputArtifact": {
+            "id": "scene_07_supervisor_consult",
+            "label": "care-team coordination transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "Reconnection consult and barrier reasoning"
+          ],
+          "continuity": [
+            "The in-person meeting feeds the structured follow-up plan."
+          ],
+          "authenticityCheck": "Front desk and clinicians often coordinate after no-shows so outreach, scheduling, documentation, and barrier support stay aligned."
+        }
+      },
+      "scene_08_safety_plan": {
+        "id": "scene_08_safety_plan",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Build Jordan's Follow-Up Plan",
+        "appWindow": "notion",
+        "windowTitle": "CareBridge | Jordan Lee - Follow-Up Plan",
+        "content": "Use Jordan facts and the notes you took during the Alex meeting to create a follow-up plan that supports reconnection without overreacting or blaming the client.",
+        "prompt": "Complete the follow-up plan fields. Make the plan specific to Jordan's attendance pattern, privacy limits, likely transportation barrier, and the operational details you captured from Alex.",
+        "referenceTitle": "Jordan facts and your Alex meeting notes",
+        "referenceContent": "**Jordan follow-up facts**\n- Jordan Lee missed the 11:00 AM individual therapy appointment.\n- The registered mobile went to voicemail; the greeting did not confirm who hears it.\n- A privacy-safe voicemail was left from the clinic line.\n- Attendance pattern: attended 2 of last 5 appointments and missed last week's appointment.\n- After last week's missed appointment, Jordan said bus fare was the barrier.\n- Contact permissions: phone outreach is allowed; generic voicemail is allowed; SMS must use clinic-approved reminder templates; portal messages are rarely read.\n- Last completed session: Jordan denied SI/HI and requested help with anxiety and work stress.\n\n**Your Alex meeting notes**\n{{freeText.scene_07_alex_meeting_notes}}\n\n**Plan criteria**\nInclude outreach status, likely barrier support, next contact channel, scheduling plan, documentation, and when to escalate clinically.",
+        "definition": {
+          "itemLabel": "follow-up plan",
+          "bindingKey": "jordan_followup_plan",
+          "initialCount": 1,
+          "minItems": 1,
+          "maxItems": 1,
+          "fields": [
+            {
+              "key": "outreach_summary",
+              "label": "Outreach status",
+              "placeholder": "Summarize the missed appointment and privacy-safe voicemail attempt.",
+              "multiline": true,
+              "rows": 2,
+              "maxWords": 60
+            },
+            {
+              "key": "barrier_support",
+              "label": "Barrier support",
+              "placeholder": "Name the likely barrier and what support should be offered.",
+              "multiline": true,
+              "rows": 2,
+              "maxWords": 70
+            },
+            {
+              "key": "next_contact",
+              "label": "Next contact channel",
+              "placeholder": "Choose allowed outreach channels and privacy limits.",
+              "multiline": true,
+              "rows": 2,
+              "maxWords": 80
+            },
+            {
+              "key": "scheduling_plan",
+              "label": "Scheduling plan",
+              "placeholder": "State the scheduling option, owner, and timing.",
+              "multiline": true,
+              "rows": 2,
+              "maxWords": 80
+            },
+            {
+              "key": "documentation_escalation",
+              "label": "Documentation and escalation",
+              "placeholder": "State what to document and what would trigger clinical escalation.",
+              "multiline": true,
+              "rows": 3,
+              "maxWords": 100
+            }
+          ],
+          "presentation": "cards"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "clinic flow and care coordination",
+          "workSurface": "CareBridge structured attendance follow-up plan",
+          "inputArtifacts": [
+            {
+              "id": "jordan_facts_followup_criteria",
+              "label": "Jordan facts and follow-up criteria",
+              "whereVisible": "referenceContent",
+              "summary": "Jordan attendance pattern, contact permissions, transportation barrier, last known risk, and plan criteria."
+            },
+            {
+              "id": "alex_meeting_notes",
+              "label": "Your Alex meeting notes",
+              "whereVisible": "referenceContent",
+              "summary": "Student's notes from the in-person Alex meeting about scheduling, neutral documentation, case-management routing, reminders, and escalation-back threshold."
+            }
+          ],
+          "studentAction": "Complete a client-specific no-show follow-up plan.",
+          "outputArtifact": {
+            "id": "jordan_followup_plan",
+            "label": "Jordan follow-up plan",
+            "format": "structured EHR form"
+          },
+          "rubricEvidence": [
+            "No-show follow-up plan quality",
+            "Reconnection consult and barrier reasoning"
+          ],
+          "continuity": [
+            "Uses the voicemail outcome and the student's Alex meeting notes to create a practical reconnection plan."
+          ],
+          "authenticityCheck": "No-show follow-up in community mental health often requires barrier support, scheduling coordination, and careful privacy-aware documentation."
+        },
+        "next": "assessment_gate",
+        "workSurface": {
+          "kind": "notion_doc",
+          "device": "desktop",
+          "appWindow": "notion",
+          "title": "CareBridge | Jordan Lee - Follow-Up Plan"
+        }
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Day Is Complete",
+        "content": "The simulated clinic day is complete. You reviewed risk, met with Maya, documented care, handled Jordan's no-show, met with Alex, and built a reconnection plan. When you are ready, view your assessment.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm end-of-day Harborview clinic scene. The therapist's office is tidy, the CareBridge EHR on the laptop shows saved notes and a Jordan follow-up task, and warm evening light comes through the blinds. No scores or assessment results are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment in Progress",
+        "content": "Your simulated clinic day is complete. Your responses, notes, plans, and meeting transcripts are being reviewed.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A neutral assessment-processing image with a cream-toned report interface reviewing anonymized artifacts: session prep, progress note, no-show voicemail, Alex meeting notes, and Jordan follow-up plan. The screen shows generic placeholders for criteria, not final scores.",
+        "next": "final_report"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Simulation Complete",
+        "content": "Here is your performance report for the psychotherapist simulation.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A polished final report on a tablet resting on a therapist's desk with a small plant, notebook, and closed EHR folder nearby. The report uses warm cream surfaces and muted green section headers, conveying thoughtful clinical feedback without showing specific scores in the image.",
+        "next": null
+      }
+    },
+    "devSkips": [
+      {
+        "label": "Maya session",
+        "targetNodeId": "scene_03_client_session"
+      },
+      {
+        "label": "Jordan follow-up",
+        "targetNodeId": "scene_07_supervisor_consult"
+      },
+      {
+        "label": "Assessment gate",
+        "targetNodeId": "assessment_gate"
+      }
+    ]
+  },
+  "npcs": {
+    "dr_elena_rivera": {
+      "id": "dr_elena_rivera",
+      "name": "Dr. Elena Rivera",
+      "role": "Clinical Supervisor",
+      "persona": "Dr. Rivera is calm, direct, and clinically careful. She trusts mid-level therapists to think independently, but she expects concise facts, clear risk formulation, and documentation rationale when safety is involved. She does not shame clinicians for consulting; she sees consultation as part of ethical practice. Under time pressure, she asks pointed questions and closes with concrete next steps.",
+      "voice": "Warm, concise, supervisor-like, with a steady clinical tone."
+    },
+    "maya_thompson": {
+      "id": "maya_thompson",
+      "name": "Maya Thompson",
+      "role": "Client",
+      "persona": "Maya is a 32-year-old client experiencing depression, anxiety, job loss, rent pressure, poor sleep, and shame about needing help. She wants therapy to help but fears that honest answers about hopelessness will make the therapist overreact. She responds well to warmth, specificity, and autonomy-respecting questions. If she feels judged or rushed, she becomes guarded and minimizes.",
+      "voice": "Tired, cautious, plainspoken, and increasingly open when treated with respect."
+    },
+    "jordan_voicemail": {
+      "id": "jordan_voicemail",
+      "name": "Jordan Lee",
+      "role": "Client voicemail inbox",
+      "persona": "This is not Jordan speaking live. It is a silent voicemail inbox for a client phone number with an unidentified greeting. The system should not answer questions, role-play Jordan, or add any content beyond capturing the student's spoken voicemail transcript.",
+      "voice": "Silent voicemail recorder; no spoken response."
+    },
+    "alex_kim": {
+      "id": "alex_kim",
+      "name": "Alex Kim",
+      "role": "Front Desk Coordinator",
+      "persona": "Alex is practical, warm, and protective of client privacy. They manage scheduling, outreach notes, reminder permissions, and front-desk triage. They appreciate concise instructions that distinguish scheduling work from clinical judgment.",
+      "voice": "Brisk, warm, operational, and privacy-aware."
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Welcome to Harborview Community Mental Health",
+    "welcomeBody": "Harborview is a nonprofit outpatient clinic where adults receive therapy, case management, psychiatric support, and crisis-sensitive follow-up regardless of their ability to pay privately. You are a mid-level licensed therapist managing a realistic clinic day with client care, documentation, supervision, no-shows, and coordination.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Harborview Community Mental Health serves adults facing depression, anxiety, trauma histories, housing instability, and limited access to private care. The clinic combines psychotherapy, case management, psychiatric services, and community-resource navigation."
+      },
+      {
+        "label": "Your Role",
+        "content": "You are a mid-level licensed therapist. You conduct sessions, assess risk, document care in CareBridge, consult supervision when needed, and coordinate with case managers while protecting confidentiality."
+      },
+      {
+        "label": "Your Goal",
+        "content": "Complete a clinic day by prioritizing risk, preparing for a client session, conducting an in-person therapy conversation, writing clinical documentation, handling a no-show, planning follow-up, and coordinating reconnection support."
+      }
+    ]
+  },
+  "glossary": {
+    "community mental health": "Publicly oriented mental health care often delivered through clinics or agencies that serve clients with complex needs, limited resources, or public insurance.",
+    "EHR": "Electronic health record, the digital system clinicians use to document care, review client information, and coordinate treatment.",
+    "progress note": "A clinical note written after a service that records relevant client presentation, interventions, response, risk, and plan.",
+    "DAP note": "A common note format: Data, Assessment, and Plan.",
+    "safety plan": "A collaborative plan that identifies warning signs, coping steps, supports, crisis resources, means-safety considerations, and follow-up.",
+    "passive suicidal ideation": "Thoughts about death or not wanting to live without a current plan or intent to act.",
+    "protective factors": "People, reasons, beliefs, responsibilities, or supports that reduce risk or help a client stay safe.",
+    "minimum necessary": "A privacy principle: share only the information needed for a legitimate care or coordination purpose.",
+    "care coordination": "Communication and planning across clinicians, case managers, and services so the client receives connected support.",
+    "no-show": "A scheduled appointment the client does not attend and does not cancel in advance.",
+    "clinical supervision": "A structured consultation relationship where a supervisor supports clinical judgment, ethics, safety, and skill development.",
+    "phq-9": "A nine-item screening measure commonly used to assess depression severity and suicidal-thought item responses.",
+    "gad-7": "A seven-item screening measure commonly used to assess anxiety severity."
+  },
+  "sample_answers": {
+    "scene_02_case_prep": "1. Maya, before we get into problem-solving, what has felt most urgent since we last met?\n2. When the thought of not wanting to wake up shows up, do you have any thoughts of harming yourself, a plan, intent, or access to means?\n3. What has helped you get through nights when rent stress feels worst?\n4. Who could you contact this week if things spike, and how comfortable would you be texting Danielle?\n5. What is one step we can make realistic before our next appointment?",
+    "scene_04_progress_note": "D: Client attended scheduled individual therapy, presented tired and guarded, and discussed job loss, rent pressure, poor sleep, isolation, and shame asking for help. Therapist used reflective listening, direct risk assessment, and collaborative problem solving. Client endorsed intermittent passive thoughts of not wanting to wake up; denied current plan, intent, firearm access, or medication stockpile. Protective factors include sister Danielle, desire to stay housed, willingness for follow-up, and willingness to text support.\nA: Depression/anxiety symptoms remain elevated with situational stressors. Current risk assessed as low to moderate outpatient risk due to passive SI without plan/intent/means and presence of protective factors, with need for safety plan and close follow-up.\nP: Complete safety plan today, consult supervisor, coordinate housing support with case manager with client awareness, therapist check-in call this week, next therapy appointment scheduled.",
+    "scene_05_no_show_outreach": "Hi Jordan, this is Sam calling from Harborview. Please call the clinic back at 555-0148 when you have a chance. We can help with scheduling or next steps, and we are here until 5 today. Take care.",
+    "scene_05_no_show_outreach_draft": "Hi Jordan, this is Sam calling from Harborview. Please call the clinic back at 555-0148 when you have a chance. We can help with scheduling or next steps.",
+    "scene_07_alex_meeting_notes": "Alex can enter a neutral scheduling note: missed 11:00, generic voicemail left. Offer callback or next available appointment if Jordan reaches the clinic. Route transportation support to case management today. SMS only through approved reminder templates; portal is low-yield. Send back to therapist/supervisor if Jordan mentions safety concerns, urgent clinical need, or cannot be reached after planned outreach.",
+    "jordan_followup_plan": "[{\"outreach_summary\":\"Jordan missed the 11:00 appointment and a generic voicemail was left on the registered mobile without clinical details because the greeting did not identify the listener.\",\"barrier_support\":\"Prior missed appointment was linked to bus fare, so Alex will route a transportation-support request to the case-management queue for bus-pass or access-barrier review.\",\"next_contact\":\"Use allowed phone outreach and callback/scheduling language only. SMS should use approved reminder templates only; portal messages are low-yield for Jordan.\",\"scheduling_plan\":\"Alex should enter a neutral scheduling note and offer a callback or next available appointment path if Jordan reaches the clinic.\",\"documentation_escalation\":\"Document missed 11:00, generic voicemail left, neutral scheduling path, and case-management route. Escalate back to therapist/supervisor if Jordan mentions safety concerns, asks for urgent clinical help, or cannot be reached after planned outreach.\"}]"
+  },
+  "rubric": {
+    "simulation_id": "psychotherapist-general-outpatient-psychotherapy-common-adult-community-mental-health-cases-community-mental-health-clinic-established-nonprofit-community-mental-health-clinic-mid-level-licensed-therapist",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "朝の臨床優先判断",
+            "evidenceSceneIds": [
+              "scene_01_morning_priority"
+            ],
+            "rubric_text": "9-10: 複数ケースのリスク、継続性、連絡必要性を見て、最初に対応すべき臨床行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "本人面接",
+            "evidenceSceneIds": [
+              "scene_03_client_session"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の面接で、危険確認、感情の反映、協働的な安全確認、境界を保った応答ができている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "記録",
+            "evidenceSceneIds": [
+              "scene_04_progress_note"
+            ],
+            "rubric_text": "9-10: 面接で得た事実、リスク評価、介入、計画を、主観的な推測と分けて記録できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "留守電",
+            "evidenceSceneIds": [
+              "scene_05_no_show_outreach"
+            ],
+            "rubric_text": "9-10: 実際の留守電で、守秘を守り、心配と次の連絡手段を簡潔に伝え、過度な情報を残さない。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "再接続相談",
+            "evidenceSceneIds": [
+              "scene_07_supervisor_consult"
+            ],
+            "rubric_text": "9-10: 実際の相談で、ケース状況、リスク、倫理的配慮、次に取る連絡方針を整理して話せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "追跡計画",
+            "evidenceSceneIds": [
+              "scene_08_safety_plan"
+            ],
+            "rubric_text": "9-10: フォローアップ対象、確認内容、期限、エスカレーション条件、記録方法を具体的に組めている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

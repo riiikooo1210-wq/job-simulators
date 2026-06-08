@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "slug": "product-manager-general-consumer-product-manager-the-most-common-pm-role-aspiring-pms-imagine-social-trip-planning-app-for-friend-groups-growth-stage-mid-level",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "manual-pm-image-regeneration-guardrails",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All PM simulator scene images must be original illustrations of Roamly spaces and people, not copies of the shared style-reference subject, room, furniture, composition, or people.",
+    "Use only ordinary adult coworkers and users, roughly age 25-45. Do not depict elderly people, wheelchairs, mobility aids, prosthetic limbs, casts, crutches, medical devices, or visible disability aids.",
+    "Use a laptop as the only computing device in every PM scene. Do not depict external monitors, desktop monitor stands, tablets, iPads, phones, or video-call devices outside the laptop.",
+    "Keep every app window, notification, modal, and UI element fully inside the visible laptop screen. Nothing may spill beyond the screen edge.",
+    "Do not put student answers, typed Slack replies, PRD drafts, interview questions, completed rationales, correct card placements, highlighted winners, recommendations, coaching slogans, or sample responses in any image.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "leo": {
+      "id": "leo",
+      "name": "Leo Kim",
+      "role": "Engineering Manager",
+      "sourcePersona": "Leo is practical, capacity-constrained, and protective of his team's focus. He is not anti-product, but he reacts badly to vague scope or surprise commitments. He cares about hidden complexity, analytics quality, notification-service risk, and whether the PM can separate a learning prototype from a full build. When the student is clear, he becomes a strong partner.",
+      "appearancePrompt": "Leo Kim, Engineering Manager, ordinary adult in his mid-30s with short black hair, rectangular glasses, medium warm beige skin tone, average build, and a practical sage button-down over a cream tee. Keep the same face, hair, glasses, build, and wardrobe family across scenes. No mobility aids, prosthetics, medical devices, or elderly presentation.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/leo.png"
+    },
+    "nina": {
+      "id": "nina",
+      "name": "Nina Brooks",
+      "role": "Roamly user and trip organizer",
+      "sourcePersona": "Nina is a busy but generous Roamly user who often organizes friend trips. She is not a product expert and speaks in concrete stories rather than frameworks. She liked saving places in Roamly, but her group still drifted into text messages when budget, dates, and final choices got awkward. She is open to helpful prompts, but she dislikes anything that makes her sound bossy to friends.",
+      "appearancePrompt": "Nina Brooks, Roamly user and trip organizer, ordinary adult in her late 20s or early 30s with shoulder-length dark brown hair, warm medium skin tone, friendly alert expression, average build, and a muted terracotta cardigan over a cream top. Keep the same face, hair, build, and wardrobe family across scenes. No mobility aids, prosthetics, medical devices, or elderly presentation.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/nina.png"
+    }
+  },
+  "locations": {
+    "conference-room": {
+      "id": "conference-room",
+      "name": "Conference Room",
+      "appearancePrompt": "Original Roamly small conference room with a warm cream wall, one whiteboard, a round-corner rectangular table, a few sage chairs, sticky notes, and a laptop as the only device. Fresh room layout that does not copy the style reference. No monitors, tablets, phones, wheelchairs, mobility aids, prosthetics, or elderly people.",
+      "stableElements": [],
+      "sceneIds": [
+        "redirect_solution_first"
+      ],
+      "referenceImage": "public/visual-refs/locations/conference-room.png"
+    },
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Original Roamly PM desk area with a laptop centered on a tidy desk, notebook, muted sticky notes, product-source papers, a small plant, and a bright product office in the background. Fresh desk and office layout that does not copy the style reference. No external monitors, tablets, phones, wheelchairs, mobility aids, prosthetics, or elderly people.",
+      "stableElements": [],
+      "sceneIds": [
+        "briefing_kickoff",
+        "final_report",
+        "intro",
+        "redirect_data_first",
+        "scene_01_first_move"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Original Roamly growth-stage product office with warm cream walls, muted sage accents, a trip-planning whiteboard, ordinary adult coworkers, and laptops only. Fresh architecture, furniture, and people that do not copy the style reference. No monitors, tablets, phones, wheelchairs, mobility aids, prosthetics, or elderly people.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "intro"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    },
+    "primary-workplace": {
+      "id": "primary-workplace",
+      "name": "Primary Workplace",
+      "appearancePrompt": "Original first-person PM laptop setup for a remote user interview. The laptop screen contains the meeting UI and compact reference panel; the desk has a notebook and neutral PM notes. Fresh setting that does not copy the style reference. No external monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, or elderly person.",
+      "stableElements": [],
+      "sceneIds": [
+        "scene_04_user_call"
+      ],
+      "referenceImage": "public/visual-refs/locations/primary-workplace.png"
+    }
+  },
+  "reusableObjects": []
+}

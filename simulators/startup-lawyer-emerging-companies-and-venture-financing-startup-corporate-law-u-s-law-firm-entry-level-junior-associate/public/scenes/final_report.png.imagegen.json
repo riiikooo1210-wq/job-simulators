@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T05:25:47+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "final_report",
+  "itemId": "final_report",
+  "promptHash": "2d08ead0149fc1eb",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/public/visual-refs/locations/junior-associate-desk.png"
+  ],
+  "sourceFile": "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/IMAGE_PROMPTS.md"
+}

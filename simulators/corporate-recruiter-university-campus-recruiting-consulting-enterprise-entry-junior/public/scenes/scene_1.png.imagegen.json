@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T04:58:07+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_1",
+  "itemId": "scene_1",
+  "promptHash": "0412fd9e8d6d0936",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/public/visual-refs/npcs/eleanor_vance.png"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

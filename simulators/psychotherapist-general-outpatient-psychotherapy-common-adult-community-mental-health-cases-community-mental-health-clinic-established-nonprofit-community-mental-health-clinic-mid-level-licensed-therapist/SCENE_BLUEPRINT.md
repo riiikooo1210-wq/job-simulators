@@ -1,0 +1,37 @@
+# Scene Blueprint — psychotherapist-general-outpatient-psychotherapy-common-adult-community-mental-health-cases-community-mental-health-clinic-established-nonprofit-community-mental-health-clinic-mid-level-licensed-therapist
+
+Use this as the Phase 2 approval artifact before scaffolding. It shows the practical chain that reduces manual repair: visible input artifact → student action → output artifact → rubric evidence.
+
+## Work Mix
+
+- Summary: This psychotherapist role is dominated by spoken clinical work, clinical judgment, and written documentation. O*NET describes assessment, counseling, treatment planning, risk assessment, documentation, reports, and consultation as core tasks, while the YouTube and Reddit sources repeatedly show community mental health days built around client sessions, team discussion, notes, no-shows, caseload pressure, risk/safety planning, and care coordination.
+- `physicalProceduralTool`: minor — Use in-person voice scenes to represent physical clinic presence. Do not add a physical playground unless the work requires manipulating concrete clinical objects.
+- `digitalToolArtifactWork`: major — Use CareBridge EHR-style work windows, source tabs, structured forms, secure messages, and email compose surfaces for the student's work.
+- `cognitiveAnalysisDecision`: major — Ask the student to prioritize, plan a session from case evidence, assess risk, reason about no-show barriers, and justify follow-up/coordination steps.
+- `writtenDocumentationArtifact`: major — Require the student to write a session plan, DAP progress note, privacy-safe no-show voicemail, attendance follow-up plan, and minimum-necessary reconnection message.
+- `spokenInterpersonalCommunication`: dominant — Include realistic spoken tasks: one therapy session with the client, one privacy-safe no-show voicemail, and one care-team coordination conversation about no-show follow-up.
+- `passiveMonitoringWaitingContextSwitching`: secondary — Represent no-show and productivity pressure as interruptions that require the student to document, coordinate, and return to clinical priorities.
+
+## Scene Table
+
+| Scene | Type / Surface | Visible Inputs | Student Action | Output Artifact | Rubric Evidence | Next |
+| --- | --- | --- | --- | --- | --- | --- |
+| `intro`<br>A Clinic Day Begins | `intro` | — | — | — | not explicitly mapped | scene_01_morning_priority |
+| `scene_01_morning_priority`<br>Morning Huddle: What Comes First? | `multiple_choice` / `slack_reply` | clinic huddle messages (slackMessages) | Choose the morning prioritization message to send. | mc.scene_01_morning_priority | Clinical prioritization under clinic pressure | branch: review_maya->scene_01_review_maya_redirect, clear_notes->scene_01_clear_notes_redirect, take_walkin->scene_01_take_walkin_redirect, ask_huddle->scene_01_ask_huddle_redirect |
+| `scene_01_review_maya_redirect`<br>You Protect the Risk Review | `briefing` | — | — | — | not explicitly mapped | scene_02_case_prep |
+| `scene_01_clear_notes_redirect`<br>Documentation Matters, But Risk Leads | `briefing` | — | — | — | not explicitly mapped | scene_02_case_prep |
+| `scene_01_take_walkin_redirect`<br>The Walk-In Can Be Triaged | `briefing` | — | — | — | not explicitly mapped | scene_02_case_prep |
+| `scene_01_ask_huddle_redirect`<br>A Quick Huddle Narrows the Priority | `briefing` | — | — | — | not explicitly mapped | scene_02_case_prep |
+| `scene_02_case_prep`<br>Prepare Maya's Session Plan | `free_text` / `notion_doc` | tab: Maya CareBridge chart, tab: Clinic risk reminder, Maya CareBridge chart (appTabs.case_packet), clinic risk reminder (appTabs.clinic_frame) | Draft a brief session plan with concrete prompts. | session prep note | Clinical prioritization under clinic pressure, Session planning and risk-informed questions | scene_03_client_session |
+| `scene_03_client_session`<br>In-Person Session with Maya | `voice_meeting` | Compact case cues, prep note from `scene_02_case_prep`, Student session prep (scene_03_client_session.prepNoteKey), Compact case cues (scene_03_client_session.prepReferenceContent), Student session notes (scene_03_client_session.sessionNotesKey) | Conduct a client session with alliance-building and direct risk assessment. | Client-session transcript | Session planning and risk-informed questions, Therapeutic alliance with clinically appropriate risk assessment | section_transition_1_2 |
+| `section_transition_1_2`<br>Section 2: Documentation and Clinic Flow | `section_transition` | — | — | — | not explicitly mapped | scene_04_progress_note |
+| `scene_04_progress_note`<br>Write the Progress Note | `free_text` / `document_editor` | tab: Your session notes, tab: Documentation standard, student session notes (appTabs.student_session_notes), DAP documentation standard (appTabs.documentation_standard) | Draft a clinically useful progress note. | Maya progress note | Progress note quality and privacy judgment | scene_05_no_show_outreach |
+| `scene_05_no_show_outreach`<br>Leave a No-Show Voicemail | `voice_meeting` | Jordan contact snapshot, Jordan contact snapshot (scene_05_no_show_outreach.prepReferenceContent) | Optionally draft talking points, then speak a privacy-safe voicemail for Jordan after the no-show call. | privacy-safe no-show voicemail transcript | No-show/outreach workflow | section_transition_2_3 |
+| `section_transition_2_3`<br>Section 3: No-Show Follow-Up and Reconnection | `section_transition` | — | — | — | not explicitly mapped | scene_06_policy_briefing |
+| `scene_06_policy_briefing`<br>Review the Attendance Follow-Up Guide | `briefing` / `doc` | Harborview Attendance and Reconnection Guide, Harborview Attendance and Reconnection Guide (scene_06_policy_briefing.referenceContent) | Review the clinic guide and draft concise notes for the in-person meeting with Alex. | Alex meeting prep notes | not explicitly mapped | scene_07_supervisor_consult |
+| `scene_07_supervisor_consult`<br>Coordinate the Reconnection Plan with Alex | `voice_meeting` | Jordan follow-up cues, prep note from `scene_06_policy_briefing`, Jordan follow-up cues (scene_07_supervisor_consult.prepReferenceContent), Attendance and reconnection guide (prior scene scene_06_policy_briefing) | Coordinate a practical, privacy-aware reconnection plan with front desk. | care-team coordination transcript | Reconnection consult and barrier reasoning | scene_08_safety_plan |
+| `scene_08_safety_plan`<br>Build Jordan's Follow-Up Plan | `structured_entry` / `notion_doc` | Jordan facts and follow-up criteria, Jordan facts and follow-up criteria (referenceContent) | Complete a client-specific no-show follow-up plan. | Jordan follow-up plan | No-show follow-up plan quality | scene_09_coordination_email |
+| `scene_09_coordination_email`<br>Coordinate Jordan's Follow-Up | `free_text` / `email_compose` | tab: Follow-up inputs, tab: Privacy guardrails, follow-up inputs (appTabs.followup_inputs), minimum necessary guidance (appTabs.privacy_guardrails) | Write a secure follow-up coordination message. | secure Jordan follow-up message | Minimum-necessary follow-up coordination | assessment_gate |
+| `assessment_gate`<br>The Day Is Complete | `section_transition` | — | — | — | not explicitly mapped | grading |
+| `grading`<br>Assessment in Progress | `grading` | — | — | — | not explicitly mapped | final_report |
+| `final_report`<br>Simulation Complete | `final_report` | — | — | — | not explicitly mapped | null |

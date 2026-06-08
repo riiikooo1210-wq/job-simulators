@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "slug": "journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All scenes should be rendered from a first-person perspective, making the user feel like the reporter.",
+    "The overall color palette should be grounded and realistic, reflecting the typical lighting of an NBA arena: bright court lights contrasting with dimmer ambient spaces.",
+    "Maintain a consistent time of day progression, from late afternoon pre-game to late-night post-deadline.",
+    "The Harbor City Cyclones team colors are navy blue, silver, and bright orange. These colors should appear consistently on branding, backdrops, and uniforms."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "malik": {
+      "id": "malik",
+      "name": "Malik Reed",
+      "role": "Veteran guard, Harbor City Cyclones",
+      "sourcePersona": "Malik is a respected veteran guard returning from an ankle sprain. He is media-savvy, careful with medical details, and more open when a reporter asks precise, fair questions about the game instead of pushing him toward a dramatic comeback narrative.",
+      "appearancePrompt": "Malik is a Black man in his mid-30s with a strong, athletic build. He has a short, well-maintained haircut and a neatly trimmed full beard. His expression is typically calm and focused, conveying a sense of professional composure even when surrounded by media.",
+      "wardrobePrompt": "During the postgame scrum, he wears official Harbor City Cyclones postgame gear: a navy blue sleeveless practice jersey with orange and silver trim over a white compression shirt, and matching team shorts. He has a white towel draped over his shoulders.",
+      "mustStayConsistent": [
+        "Hairstyle and beard",
+        "Athletic physique",
+        "Calm and focused demeanor"
+      ],
+      "referenceImage": "public/visual-refs/npcs/malik.png"
+    },
+    "coach": {
+      "id": "coach",
+      "name": "Len Harris",
+      "role": "Head coach, Harbor City Cyclones",
+      "sourcePersona": "Len Harris is a veteran NBA head coach who protects competitive details but respects reporters who ask concise, fair, basketball-specific questions. He avoids rumor, dislikes personality framing, and gives usable quotes when the question is tied to lineup logic or game context.",
+      "appearancePrompt": "Len is a white man in his late 50s with a lean, intense build. He has short, salt-and-pepper hair that is slightly receding and sharp, focused eyes behind thin, rectangular-framed glasses. His face is lined with the stress of his profession, and he often has a pragmatic, no-nonsense expression.",
+      "wardrobePrompt": "He consistently wears a navy blue Harbor City Cyclones quarter-zip pullover with the team logo on the chest, over a collared shirt.",
+      "mustStayConsistent": [
+        "Rectangular glasses",
+        "Salt-and-pepper hair",
+        "Team-branded quarter-zip pullover"
+      ],
+      "referenceImage": "public/visual-refs/npcs/coach.png"
+    },
+    "tessa": {
+      "id": "tessa",
+      "name": "Tessa Ortiz",
+      "role": "Senior NBA Editor, Full Court Wire",
+      "sourcePersona": "Tessa is a sharp national NBA editor who cares about speed, attribution, and clean story framing. She likes young reporters who are direct about what they know, honest about what they do not know, and disciplined enough to leave unverified material out of copy.",
+      "appearancePrompt": "Tessa is a Latina woman in her early 40s with a sharp, intelligent presence. She has dark, shoulder-length hair, often pulled back into a practical but stylish ponytail. Her expression is alert and direct, conveying efficiency and a constant focus on the next deadline. She appears via Slack messages, so her avatar is a professional headshot reflecting this description.",
+      "wardrobePrompt": "Her Slack avatar shows her in professional newsroom attire: a simple, dark-colored blouse or a smart blazer. She does not appear in-person in the simulation.",
+      "mustStayConsistent": [
+        "Professional headshot avatar",
+        "Sharp, intelligent expression",
+        "Dark hair pulled back"
+      ],
+      "referenceImage": "public/visual-refs/npcs/tessa.png"
+    }
+  },
+  "locations": {
+    "arena-media-row": {
+      "id": "arena-media-row",
+      "name": "Harbor City Arena - Media Row Workstation",
+      "appearancePrompt": "The player's primary workspace is a cramped spot at a long press table on an elevated row overlooking the basketball court. The view is slightly off-center from the mid-court line, providing a clear but angled perspective of the game action. The lighting is a mix of the bright court lights and the dimmer ambient light of the arena seating bowl.",
+      "stableElements": [
+        "Dark laminate table surface",
+        "A power strip taped to the table",
+        "A small 'Full Court Wire' media credential placard",
+        "The specific model of laptop and notebook used by the player",
+        "A simple, padded folding chair"
+      ],
+        "sceneIds": [
+        "intro",
+        "warmup_observation",
+        "possession_timeline_watch",
+        "final_story"
+      ],
+      "referenceImage": "public/visual-refs/locations/arena-media-row.png"
+    },
+    "arena-media-room": {
+      "id": "arena-media-room",
+      "name": "Harbor City Arena - Media Room",
+      "appearancePrompt": "A functional, somewhat sterile workspace for journalists located in the arena's interior, away from the court. It features rows of long tables with power outlets, harsh overhead fluorescent lighting, and several wall-mounted TVs showing sports news. A large open tunnel provides a partial view of the brightly lit court in the distance.",
+      "stableElements": [
+        "Wall-mounted TVs (always on, showing a generic sports network)",
+        "A large 'Harbor City Arena Media' sign on the wall",
+        "The style of the long tables and basic office chairs",
+        "A coffee and snack station in a corner"
+      ],
+      "sceneIds": [
+        "assignment_brief",
+        "redirect_strong_angle",
+        "editor_slack",
+        "grading"
+      ],
+      "referenceImage": "public/visual-refs/locations/arena-media-room.png"
+    },
+    "pregame-interview-room": {
+      "id": "pregame-interview-room",
+      "name": "Harbor City Arena - Pregame Interview Room",
+      "appearancePrompt": "A small, designated room for pregame press conferences, brightly and harshly lit for cameras. A small podium stands against a vinyl backdrop banner featuring a repeating pattern of the 'Harbor City Cyclones' team logo and a generic league logo. The room is usually crowded with reporters standing close together, holding recorders and phones.",
+      "stableElements": [
+        "The podium",
+        "The specific team/league backdrop banner",
+        "The harsh overhead lighting fixtures"
+      ],
+      "sceneIds": [
+        "coach_availability",
+        "redirect_color"
+      ],
+      "referenceImage": "public/visual-refs/locations/pregame-interview-room.png"
+    },
+    "postgame-scrum-area": {
+      "id": "postgame-scrum-area",
+      "name": "Harbor City Arena - Postgame Scrum Area",
+      "appearancePrompt": "An informal media availability area on the arena floor near the tunnel to the locker room. The background is the brightly lit, polished court, empty seats, and hanging arena lights. There is no formal podium; reporters crowd around the player in a semi-circle.",
+      "stableElements": [
+        "The specific location on the court near the home team's tunnel",
+        "The polished hardwood floor with team logos",
+        "The bright overhead arena lighting"
+      ],
+      "sceneIds": [
+        "media_scrum"
+      ],
+      "referenceImage": "public/visual-refs/locations/postgame-scrum-area.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "player-laptop",
+      "name": "Player's Laptop",
+      "appearancePrompt": "A modern 14-inch laptop with a dark gray aluminum body. It has a single, non-descript sticker of a city skyline silhouette on the lid. The screen display changes based on the scene, showing a CMS, Slack, box scores, or notes.",
+      "sceneIds": [
+        "intro",
+        "assignment_brief",
+        "possession_timeline_watch",
+        "fast_gamer",
+        "editor_slack",
+        "final_story",
+        "grading"
+      ]
+    },
+    {
+      "id": "player-notebook",
+      "name": "Reporter's Notebook",
+      "appearancePrompt": "A standard spiral-bound reporter's notebook, tall and narrow, with a plain light brown cardboard cover. The pages are filled with the player's handwritten notes in black ink.",
+      "sceneIds": [
+        "intro",
+        "lead_angle",
+        "redirect_rumor",
+        "redirect_generic",
+        "reporting_plan",
+        "warmup_observation"
+      ]
+    },
+    {
+      "id": "player-phone",
+      "name": "Player's Smartphone",
+      "appearancePrompt": "A generic modern smartphone with a simple, dark case. The screen content changes depending on the scene, showing social media feeds, stats, or messages.",
+      "sceneIds": [
+        "lead_angle",
+        "redirect_rumor",
+        "warmup_observation"
+      ]
+    },
+    {
+      "id": "media-credential",
+      "name": "Media Credential",
+      "appearancePrompt": "A laminated press pass on a navy blue 'Full Court Wire' branded lanyard. It features a generic avatar headshot, the name 'Press', outlet ('Full Court Wire'), and access permissions for 'Harbor City Arena'.",
+      "sceneIds": [
+        "intro",
+        "assignment_brief",
+        "reporting_plan",
+        "warmup_observation"
+      ]
+    },
+    {
+      "id": "digital-recorder",
+      "name": "Digital Audio Recorder",
+      "appearancePrompt": "A small, handheld digital audio recorder with a dark gray plastic casing. It has a small LCD screen and a prominent red 'record' button.",
+      "sceneIds": [
+        "intro",
+        "coach_availability",
+        "media_scrum"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:50:17+00:00",
+  "styleReference": "templates/style-reference.png"
+}

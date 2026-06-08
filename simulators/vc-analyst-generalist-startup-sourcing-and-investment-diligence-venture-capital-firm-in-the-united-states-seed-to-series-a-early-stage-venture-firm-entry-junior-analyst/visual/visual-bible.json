@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "slug": "vc-analyst-generalist-startup-sourcing-and-investment-diligence-venture-capital-firm-in-the-united-states-seed-to-series-a-early-stage-venture-firm-entry-junior-analyst",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "Maintain a clean, modern, and slightly desaturated color palette with accents of a single brand color (e.g., a deep blue or forest green) for Northstar Ventures.",
+    "Lighting should be natural and soft, coming from large windows during the day and warm, focused artificial light in the evening scenes.",
+    "All user interface elements (CRM, Slack, spreadsheets) must look realistic and data-dense, using a consistent, clean sans-serif font.",
+    "The overall mood is professional, focused, and grounded in realism, avoiding overly dramatic or stylized visuals."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "alex": {
+      "id": "alex",
+      "name": "Alex Rivera",
+      "role": "Founder and CEO, ClaimPilot",
+      "sourcePersona": "Alex is a former claims-operations leader who knows insurance agency pain deeply. He is articulate, energetic, and a little promotional under fundraising pressure. He wants momentum in the seed round, so he naturally frames the company in the strongest possible light. He responds well to specific, respectful questions and becomes vague when the analyst asks broad questions that let him keep pitching.",
+      "appearancePrompt": "Alex Rivera is a Hispanic man in his late 30s with short, dark, neatly styled hair and a warm, engaging expression. He has a light beard shadow, conveying a focused, hard-working founder's look. He appears energetic and confident on video calls, often using subtle hand gestures to emphasize points.",
+      "wardrobePrompt": "Alex consistently wears a high-quality, dark-colored crewneck sweater or a crisp, button-down shirt (no tie) in solid colors like navy blue or charcoal grey. He does not wear a suit jacket.",
+      "mustStayConsistent": [
+        "Hairstyle and color",
+        "Facial structure",
+        "General age range",
+        "Skin tone"
+      ],
+      "referenceImage": "public/visual-refs/npcs/alex.png"
+    },
+    "leo": {
+      "id": "leo",
+      "name": "Leo Martinez",
+      "role": "General Partner, Northstar Ventures",
+      "sourcePersona": "Leo is a practical early-stage investor who wants clear judgment more than long analysis. He values analysts who separate facts from assumptions, avoid FOMO, and tell him exactly what would make a deal worth his time. In Slack he is direct, brief, and focused on the next decision.",
+      "appearancePrompt": "Leo Martinez is a man in his early 50s with salt-and-pepper hair, cut short and professional. He has a sharp, intelligent gaze, laugh lines around his eyes, and a clean-shaven, angular face. He projects an air of calm authority and experience.",
+      "wardrobePrompt": "Leo is always seen in a well-fitted blazer over a collared dress shirt, often without a tie. His color palette is classic and muted, featuring greys, blues, and whites.",
+      "mustStayConsistent": [
+        "Salt-and-pepper hair",
+        "Facial structure",
+        "Clean-shaven look",
+        "Professional attire style"
+      ],
+      "referenceImage": "public/visual-refs/npcs/leo.png"
+    }
+  },
+  "locations": {
+    "northstar-office": {
+      "id": "northstar-office",
+      "name": "Northstar Ventures Office",
+      "appearancePrompt": "A modern, clean venture capital office in a San Francisco high-rise with expansive city views. The space features a mix of open-plan areas and glass-walled meeting rooms, with light wood floors, minimalist furniture, and subtle branding (a small, geometric Northstar Ventures logo). The overall aesthetic is professional, bright, and focused, with natural light during the day and warm, ambient lighting at dusk.",
+      "stableElements": [
+        "Large windows with city skyline view",
+        "Glass-walled meeting rooms",
+        "Minimalist light wood desks and chairs",
+        "Small, geometric Northstar Ventures logo on a prominent wall",
+        "Whiteboard walls"
+      ],
+      "sceneIds": [
+        "intro",
+        "morning_deal_packet",
+        "triage_signal",
+        "redirect_logo",
+        "redirect_traction",
+        "redirect_tech",
+        "redirect_fomo",
+        "deck_screen",
+        "market_map",
+        "founder_call_prep",
+        "founder_call",
+        "call_debrief",
+        "lead_priority",
+        "grading",
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/northstar-office.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "analyst-laptop",
+      "name": "Analyst's Laptop",
+      "appearancePrompt": "A modern, slim silver or space-gray laptop with no visible logos. The screen has a high resolution and thin bezels. It is often shown with multiple windows open: a CRM, a slide deck, a spreadsheet, and a messaging app.",
+      "sceneIds": [
+        "intro",
+        "morning_deal_packet",
+        "triage_signal",
+        "redirect_logo",
+        "redirect_traction",
+        "redirect_tech",
+        "redirect_fomo",
+        "founder_call",
+        "grading",
+        "final_report"
+      ]
+    },
+    {
+      "id": "analyst-notebook",
+      "name": "Analyst's Notebook",
+      "appearancePrompt": "A simple, professional-looking spiral-bound or case-bound notebook with a dark cover. It is filled with messy, handwritten notes, diagrams, and questions written with a fine-tip black pen.",
+      "sceneIds": [
+        "intro",
+        "triage_signal",
+        "redirect_traction",
+        "redirect_fomo"
+      ]
+    },
+    {
+      "id": "claimpilot-deck",
+      "name": "ClaimPilot Pitch Deck",
+      "appearancePrompt": "A professionally designed pitch deck with a clean, modern aesthetic. It uses a consistent color scheme of dark blue, white, and a single bright accent color (e.g., green or orange). Slides feature bold headlines, data visualizations, and a fictional 'ClaimPilot' logo.",
+      "sceneIds": [
+        "intro",
+        "triage_signal",
+        "redirect_logo",
+        "redirect_traction",
+        "redirect_tech",
+        "redirect_fomo"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:52:55+00:00",
+  "styleReference": "templates/style-reference.png"
+}

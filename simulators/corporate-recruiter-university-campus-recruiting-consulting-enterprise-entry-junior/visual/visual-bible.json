@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "slug": "corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior",
+  "source": "gemini-visual-bible",
+  "globalConsistencyRules": [
+    "All illustrations must use a clean, flat, minimalist vector art style.",
+    "The primary color palette is professional and muted, using blues, grays, and whites, with a single bright accent color (e.g., teal) for calls-to-action and highlights.",
+    "All character portraits are from the chest-up, facing slightly towards the camera, in a consistent style.",
+    "UI elements like buttons and windows must be consistent in design, color, and typography throughout the simulation."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges."
+  ],
+  "characters": {
+    "priya_sharma": {
+      "id": "priya_sharma",
+      "name": "Priya Sharma",
+      "role": "Senior University Recruiter",
+      "sourcePersona": "Priya is your manager. She is direct, efficient, and data-driven, but also a supportive coach. She's feeling pressure from leadership to increase hiring targets without a budget increase, so she needs her team to be autonomous and effective. She prefers quick check-ins and doesn't have time for hand-holding.",
+      "appearancePrompt": "A South Asian woman in her early 40s with a sharp, focused, and competent expression. She has dark brown hair pulled back into a sleek, professional bun, and high cheekbones. Her look is polished and conveys efficiency.",
+      "wardrobePrompt": "Priya consistently wears tailored blazers in solid, dark colors like navy or charcoal over simple silk shell tops. Her only accessory is a pair of minimalist gold hoop earrings.",
+      "mustStayConsistent": [
+        "Sleek bun hairstyle",
+        "Minimalist gold hoop earrings",
+        "Tailored blazer silhouette"
+      ],
+      "referenceImage": "public/visual-refs/npcs/priya_sharma.png"
+    },
+    "eleanor_vance": {
+      "id": "eleanor_vance",
+      "name": "Eleanor Vance",
+      "role": "Senior Manager, Financial Advisory",
+      "sourcePersona": "Eleanor is a brilliant but impatient and traditional hiring manager. She sees recruiting as a service and gets frustrated by questions she thinks are obvious. Her team is overworked after two junior analysts quit, so she needs a new hire urgently and is skeptical that a junior recruiter can meet her high standards.",
+      "appearancePrompt": "A Caucasian woman in her late 40s with a stern, serious expression and sharp features. She has an impeccably styled, short salt-and-pepper bob haircut. She wears classic, thin rectangular-framed glasses that accentuate her direct and impatient gaze.",
+      "wardrobePrompt": "Eleanor's attire is traditional and formal. She favors high-collared blouses and structured sheath dresses in neutral tones like beige, cream, and grey. She always wears a single strand of pearls.",
+      "mustStayConsistent": [
+        "Salt-and-pepper bob haircut",
+        "Rectangular-framed glasses",
+        "Single strand of pearls"
+      ],
+      "referenceImage": "public/visual-refs/npcs/eleanor_vance.png"
+    },
+    "david_chen": {
+      "id": "david_chen",
+      "name": "David Chen",
+      "role": "Director, Tech Strategy",
+      "sourcePersona": "David is a collaborative, thoughtful, and tech-savvy hiring manager. He views recruiting as a true partnership and appreciates getting context and data. He is building a new data analytics sub-team and needs candidates with a very specific, niche skillset, so he needs a recruiter who can screen for potential, not just experience.",
+      "appearancePrompt": "An East Asian man in his late 30s with a warm, friendly, and approachable expression. He has a modern, short haircut and is clean-shaven. He wears stylish, dark-rimmed glasses that give him a thoughtful, tech-focused look.",
+      "wardrobePrompt": "David's style is smart-casual. He typically wears well-fitting button-down shirts, sometimes with a subtle pattern, with the top button undone and no tie. He often layers his shirts with a lightweight, dark-colored crewneck sweater.",
+      "mustStayConsistent": [
+        "Dark-rimmed glasses",
+        "Smart-casual button-down shirt look",
+        "Short, modern haircut"
+      ],
+      "referenceImage": "public/visual-refs/npcs/david_chen.png"
+    },
+    "chloe_kim": {
+      "id": "chloe_kim",
+      "name": "Chloe Kim",
+      "role": "University Student",
+      "sourcePersona": "Chloe is an eager, intelligent, and well-prepared student, but she is nervous because Stratosphere is her top-choice company. She has a non-negotiable, pre-paid family trip planned for three weeks immediately after graduation and is worried it will jeopardize her chances if she brings it up too early.",
+      "appearancePrompt": "An East Asian woman in her early 20s with a bright, earnest, and slightly nervous expression. She has long, straight dark hair worn neatly. Her appearance is polished and professional, clearly dressed for an important interview.",
+      "wardrobePrompt": "Chloe wears appropriate and professional student interview attire. Her go-to outfit is a simple, well-fitting dark blazer over a light-colored, modest shell top.",
+      "mustStayConsistent": [
+        "Long, straight dark hair",
+        "Blazer and shell top combination"
+      ],
+      "referenceImage": "public/visual-refs/npcs/chloe_kim.png"
+    }
+  },
+  "locations": {
+    "player-desk-stratosphere": {
+      "id": "player-desk-stratosphere",
+      "name": "Player's Desk at Stratosphere",
+      "appearancePrompt": "A clean, modern, and organized workstation within a bright, open-plan corporate office. The desk is white, featuring a large monitor, a laptop on a stand, and an ergonomic chair. In the blurred background, floor-to-ceiling windows and other workstations are visible, conveying a sense of a larger, bustling consulting firm.",
+      "stableElements": [
+        "Dual monitor setup (one large primary, one laptop)",
+        "A branded 'Stratosphere Consulting' coffee mug",
+        "A sleek, minimalist desk lamp",
+        "A small succulent plant in a white pot"
+      ],
+      "sceneIds": [
+        "intro",
+        "scene_5_prep",
+        "scene_5",
+        "final_report"
+      ],
+      "referenceImage": "public/visual-refs/locations/player-desk-stratosphere.png"
+    },
+    "eleanor-office-vcall": {
+      "id": "eleanor-office-vcall",
+      "name": "Eleanor's Office (Video Call)",
+      "appearancePrompt": "The background for Eleanor's video calls, showing her private, traditional senior manager's office. The room has a formal, established feel, with dark wood bookshelves filled with leather-bound books and several framed industry awards. A large, tasteful abstract painting with blue and grey tones hangs on the wall directly behind her.",
+      "stableElements": [
+        "Dark wood bookshelves",
+        "Visible industry awards/trophies",
+        "The specific abstract painting"
+      ],
+      "sceneIds": [
+        "scene_3"
+      ],
+      "referenceImage": "public/visual-refs/locations/eleanor-office-vcall.png"
+    },
+    "chloe-home-office-vcall": {
+      "id": "chloe-home-office-vcall",
+      "name": "Chloe's Home Office (Video Call)",
+      "appearancePrompt": "The background for Chloe's video calls, showing a neat and tidy corner of her student apartment, arranged to look as professional as possible. A well-organized bookshelf with university textbooks and a few personal items is visible. The wall is a neutral light gray, and the space is well-lit by a desk lamp.",
+      "stableElements": [
+        "Bookshelf with visible textbooks",
+        "A simple desk lamp",
+        "Neutral light gray wall color"
+      ],
+      "sceneIds": [
+        "scene_5"
+      ],
+      "referenceImage": "public/visual-refs/locations/chloe-home-office-vcall.png"
+    }
+  },
+  "reusableObjects": [
+    {
+      "id": "laptop-standard",
+      "name": "Standard Issue Laptop",
+      "appearancePrompt": "A generic, modern, high-end corporate laptop. It has a slim profile and a dark gray or silver metallic finish with a clean, minimalist design and no visible logo.",
+      "sceneIds": [
+        "intro",
+        "scene_5_prep",
+        "scene_5"
+      ]
+    },
+    {
+      "id": "headset-office",
+      "name": "Office Headset",
+      "appearancePrompt": "A professional, single-ear call center style headset with a thin, adjustable boom mic. It is made of black plastic and metal.",
+      "sceneIds": [
+        "scene_5_prep",
+        "scene_5"
+      ]
+    },
+    {
+      "id": "notepad-yellow-legal",
+      "name": "Yellow Legal Notepad",
+      "appearancePrompt": "A standard yellow legal pad with blue-ruled lines. It is often shown with some scribbled, illegible notes and checkmarks to indicate use during a call or meeting.",
+      "sceneIds": [
+        "scene_5_prep",
+        "scene_5"
+      ]
+    },
+    {
+      "id": "resume-document-template",
+      "name": "Resume Document Template",
+      "appearancePrompt": "A visually consistent template for all candidate resumes shown on screen. It has a clean, modern, single-column layout with clear sans-serif headings for 'Experience', 'Education', and 'Skills'.",
+      "sceneIds": [
+        "scene_5_prep",
+        "scene_5"
+      ]
+    },
+    {
+      "id": "tablet-device",
+      "name": "Tablet Device",
+      "appearancePrompt": "A modern tablet with a thin black bezel and no visible logo, similar in design to the standard laptop. Used for displaying reports and documents.",
+      "sceneIds": [
+        "final_report"
+      ]
+    }
+  ],
+  "createdAt": "2026-05-18T13:49:02+00:00",
+  "styleReference": "templates/style-reference.png"
+}

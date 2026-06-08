@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T05:27:08+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "closing_checklist",
+  "itemId": "closing_checklist",
+  "promptHash": "3b3e8e0a4a4c1bb7",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/public/visual-refs/npcs/maya.png"
+  ],
+  "sourceFile": "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/src/data/scene-config.json"
+}

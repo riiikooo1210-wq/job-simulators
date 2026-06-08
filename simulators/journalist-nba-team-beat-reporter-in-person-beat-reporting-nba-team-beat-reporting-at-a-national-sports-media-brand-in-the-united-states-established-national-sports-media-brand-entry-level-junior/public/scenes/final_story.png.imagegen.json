@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-05-19T05:16:31+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "final_story",
+  "itemId": "final_story",
+  "promptHash": "869fcca4ada13f54",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/npcs/tessa.png",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/locations/arena-media-row.png"
+  ],
+  "sourceFile": "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/src/data/scene-config.json"
+}

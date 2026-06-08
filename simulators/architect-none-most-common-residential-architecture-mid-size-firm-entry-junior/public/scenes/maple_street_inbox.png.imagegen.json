@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T14:56:58+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "maple_street_inbox",
+  "itemId": "maple_street_inbox",
+  "promptHash": "e541e6c2017eaade",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/architect-none-most-common-residential-architecture-mid-size-firm-entry-junior/IMAGE_PROMPTS.md"
+}

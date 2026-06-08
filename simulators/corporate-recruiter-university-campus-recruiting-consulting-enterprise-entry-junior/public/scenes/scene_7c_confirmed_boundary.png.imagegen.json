@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:02:33+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_7c_confirmed_boundary",
+  "itemId": "scene_7c_confirmed_boundary",
+  "promptHash": "b380959cf54169c5",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/corporate-recruiter-university-campus-recruiting-consulting-enterprise-entry-junior/src/data/scene-config.json"
+}

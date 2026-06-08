@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "slug": "wedding-planner-general-wedding-planning-most-common-responsibilities-wedding-venue-mid-sized-venue-business-mid-level",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "elena_marcus": {
+      "id": "elena_marcus",
+      "name": "Elena Rivera and Marcus Chen",
+      "role": "Wedding couple",
+      "sourcePersona": "Elena is warm and anxious about the emotional feel of the wedding, especially the rain backup. Marcus is detail-oriented and wants assurance that vendors have corrected times and clear next steps.",
+      "appearancePrompt": "Elena Rivera and Marcus Chen, Wedding couple. Use this as the locked character identity: Elena is warm and anxious about the emotional feel of the wedding, especially the rain backup. Marcus is detail-oriented and wants assurance that vendors have corrected times and clear next steps.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/elena_marcus.png"
+    },
+    "vendor_channel": {
+      "id": "vendor_channel",
+      "name": "Rivera-Chen Vendor Channel",
+      "role": "Vendor coordination thread",
+      "sourcePersona": "The channel represents practical vendor voices: a florist balancing load-in constraints, a DJ needing precise cues, and venue operations watching policy and timing. Responses should reward clear operational detail.",
+      "appearancePrompt": "Rivera-Chen Vendor Channel, Vendor coordination thread. Use this as the locked character identity: The channel represents practical vendor voices: a florist balancing load-in constraints, a DJ needing precise cues, and venue operations watching policy and timing. Responses should reward clear operational detail.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/vendor_channel.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Willow & Stone\nFirst-person view from a wedding planner's desk at a refined mid-sized wedding venue. A warm cream laptop screen shows the Rivera-Chen final details packet, a timeline, vendor contact list, rain-plan note, and ballroom setup diagram. Through a window, a garden ceremony lawn and an indoor ballroom doorway are visible. The image should feel polished, operational, and venue-specific.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "intro",
+        "redirect_timeline_first",
+        "scene_01_triage_choice",
+        "transition_vendor"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "office": {
+      "id": "office",
+      "name": "Office",
+      "appearancePrompt": "Create a stable location reference for Office. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Move to the Ballroom\nPlanner walking from a venue office toward an open ballroom. A clipboard shows the final setup sheet and a tablet shows the timeline audit. Staff are setting tables in the background.",
+      "stableElements": [],
+      "sceneIds": [
+        "transition_walkthrough"
+      ],
+      "referenceImage": "public/visual-refs/locations/office.png"
+    },
+    "primary-workplace": {
+      "id": "primary-workplace",
+      "name": "Primary Workplace",
+      "appearancePrompt": "Create a stable location reference for Primary Workplace. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Inspect the Ballroom Setup\nBallroom setup inspection scene with visible welcome table, side cart, blocked service aisle, florist bins, family rows missing reserved signs, and setup note panel.\nFirst-person 16:9 view of an elegant mid-sized wedding venue ballroom during final setup. Show a welcome table near the entrance on the left, a side cart with a card box and guest book nearby, a sweetheart table at the far center, two front ceremony rows with no reserved family signs, a DJ booth on the right, a cake table, an east service aisle along the right wall, florist bins incorrectly blocking that aisle, and an open vendor corner near the back right. Include readable but not answer-giving setup sheet clipped to the foreground. Coordinate map: setup sheet x3 y5 w31 h24; welcome table x7 y55 w23",
+      "stableElements": [],
+      "sceneIds": [
+        "scene_03_ballroom_setup",
+        "scene_05_couple_walkthrough"
+      ],
+      "referenceImage": "public/visual-refs/locations/primary-workplace.png"
+    }
+  },
+  "reusableObjects": []
+}

@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "slug": "game-designer-gameplay-systems-and-level-experience-design-nintendo-like-fictional-family-friendly-aaa-console-gameplay-studio-large-aaa-enterprise-studio-mid-level",
+  "createdAt": "2026-05-27T12:47:42+00:00",
+  "source": "fallback-rule-based",
+  "styleReference": "templates/style-reference.png",
+  "globalConsistencyRules": [
+    "All images use the same clean editorial 2D illustration style as the style reference.",
+    "The same named person must keep the same face, hair, skin tone, build, and wardrobe family.",
+    "The same named room or workplace must keep the same architecture, fixtures, furniture, and recurring props.",
+    "Scene images may change camera angle, crop, and foreground composition, but not identity or location continuity."
+  ],
+  "actionAssetRules": [
+    "Every action asset must be generated on a single pure white #FFFFFF background.",
+    "Every action asset must have thin black or very dark charcoal outlines around the object silhouette and key internal edges.",
+    "No transparent checkerboard, colored backdrop, cast shadow, gradient, texture, label, checkmark, or completion badge should appear unless the real object requires readable text."
+  ],
+  "characters": {
+    "emi": {
+      "id": "emi",
+      "name": "Emi Tanaka",
+      "role": "Producer",
+      "sourcePersona": "Emi is organized, warm, and quietly firm about milestone scope. She is not anti-creativity; she just wants the team to make the right call for the next playable build.",
+      "appearancePrompt": "Emi Tanaka, Producer. Use this as the locked character identity: Emi is organized, warm, and quietly firm about milestone scope. She is not anti-creativity; she just wants the team to make the right call for the next playable build.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/emi.png"
+    },
+    "leo": {
+      "id": "leo",
+      "name": "Leo Navarro",
+      "role": "Senior Level Designer",
+      "sourcePersona": "Leo is playful, quick, and visually oriented. He cares about the player's first look, the rhythm of a room, and whether a blockout teaches through movement rather than explanation. He loves charming details but respects a clean first teach.",
+      "appearancePrompt": "Leo Navarro, Senior Level Designer. Use this as the locked character identity: Leo is playful, quick, and visually oriented. He cares about the player's first look, the rhythm of a room, and whether a blockout teaches through movement rather than explanation. He loves charming details but respects a clean first teach.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/leo.png"
+    },
+    "maya": {
+      "id": "maya",
+      "name": "Maya Chen",
+      "role": "Lead Gameplay Designer",
+      "sourcePersona": "Maya is calm, precise, and deeply player-focused. She likes playful ideas, but she pushes designers to prove how a player will understand the mechanic without the designer in the room. She is warm when the student owns tradeoffs and direct when a proposal hides scope risk.",
+      "appearancePrompt": "Maya Chen, Lead Gameplay Designer. Use this as the locked character identity: Maya is calm, precise, and deeply player-focused. She likes playful ideas, but she pushes designers to prove how a player will understand the mechanic without the designer in the room. She is warm when the student owns tradeoffs and direct when a proposal hides scope risk.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/maya.png"
+    },
+    "owen": {
+      "id": "owen",
+      "name": "Owen Brooks",
+      "role": "QA Lead",
+      "sourcePersona": "Owen is direct, observant, and evidence-minded. He trusts designers who read the notes carefully and turn them into testable criteria. He dislikes vague handoffs that make QA guess what changed.",
+      "appearancePrompt": "Owen Brooks, QA Lead. Use this as the locked character identity: Owen is direct, observant, and evidence-minded. He trusts designers who read the notes carefully and turn them into testable criteria. He dislikes vague handoffs that make QA guess what changed.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/owen.png"
+    },
+    "priya": {
+      "id": "priya",
+      "name": "Priya Raman",
+      "role": "Gameplay Engineer",
+      "sourcePersona": "Priya is practical, kind, and constraint-aware. She wants the smallest clear implementation that can be tuned and tested. She appreciates designers who separate desired player experience from exact engineering implementation.",
+      "appearancePrompt": "Priya Raman, Gameplay Engineer. Use this as the locked character identity: Priya is practical, kind, and constraint-aware. She wants the smallest clear implementation that can be tuned and tested. She appreciates designers who separate desired player experience from exact engineering implementation.. Choose one specific, plausible face shape, hairstyle, hair color, skin tone, age presentation, body type, wardrobe, and accessories, then keep them identical across all scenes.",
+      "wardrobePrompt": "Keep the same job-appropriate wardrobe family unless the scene explicitly requires a change.",
+      "mustStayConsistent": [
+        "face shape",
+        "age presentation",
+        "skin tone",
+        "hairstyle and hair color",
+        "build",
+        "recurring wardrobe and accessories"
+      ],
+      "referenceImage": "public/visual-refs/npcs/priya.png"
+    }
+  },
+  "locations": {
+    "desk": {
+      "id": "desk",
+      "name": "Desk",
+      "appearancePrompt": "Create a stable location reference for Desk. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: Welcome to Starling Grove Studios\nA bright, polished AAA game studio design area with warm wood desks, concept art of cute forest guardians on the walls, a console controller, design notebooks, and a large screen showing a whimsical green platforming level. No real company logos.",
+      "stableElements": [],
+      "sceneIds": [
+        "assessment_gate",
+        "final_report",
+        "grading",
+        "intro",
+        "morning_briefing",
+        "scope_consequence_clarity",
+        "scope_consequence_enemy",
+        "scope_consequence_secret"
+      ],
+      "referenceImage": "public/visual-refs/locations/desk.png"
+    },
+    "primary-workplace": {
+      "id": "primary-workplace",
+      "name": "Primary Workplace",
+      "appearancePrompt": "Create a stable location reference for Primary Workplace. Keep the architecture, fixtures, furniture, wall layout, screens, doors, lighting, and recurring props consistent across every scene that uses this location. Source details: In-Person Design Review\nFirst-person view in a bright AAA game studio huddle room beside a playtest lab. Maya Chen, a calm lead gameplay designer in her late 30s with short dark hair and a notebook, sits across the table with a controller and printed level flow nearby. Warm professional illustration, no real company logos.",
+      "stableElements": [],
+      "sceneIds": [
+        "design_review"
+      ],
+      "referenceImage": "public/visual-refs/locations/primary-workplace.png"
+    }
+  },
+  "reusableObjects": []
+}

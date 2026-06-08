@@ -1,0 +1,35 @@
+# Scene Blueprint — restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator
+
+Use this as the Phase 2 approval artifact before scaffolding. It shows the practical chain that reduces manual repair: visible input artifact → student action → output artifact → rubric evidence.
+
+## Work Mix
+
+- Summary: The collected sources and replacement industry digest show a franchise quick-service restaurant owner-operator working through recurring operating rhythms: KPI review, sales and labor tradeoffs, food cost and waste control, line checks, brand-standard compliance, manager coaching, and next-day operating follow-through. The work is partly physical because the owner must walk the store and inspect visible conditions, but the owner also works through dashboards, schedules, checklists, and timed action boards.
+- `physicalProceduralTool`: secondary — Include a physical playground where the player inspects the prep line, reads labels and temperatures, flags issues, and documents corrective observations.
+- `digitalToolArtifactWork`: major — Use dashboard, schedule, manager log, standards reminder, and timed operating-board scenes with visible inputs.
+- `cognitiveAnalysisDecision`: dominant — Core tasks should require prioritization and tradeoff reasoning from realistic store evidence.
+- `writtenDocumentationArtifact`: major — Require a pre-rush Slack plan to Mina, a coaching prep note, and a tomorrow pre-rush operating board.
+- `spokenInterpersonalCommunication`: major — Include an in-person voice coaching conversation with the shift lead.
+- `passiveMonitoringWaitingContextSwitching`: secondary — Show time pressure and context switching through briefings, but grade active outputs.
+
+## Scene Table
+
+| Scene | Type / Surface | Visible Inputs | Student Action | Output Artifact | Rubric Evidence | Next |
+| --- | --- | --- | --- | --- | --- | --- |
+| `intro`<br>Welcome to Harbor Bites Express | `intro` | — | — | — | not explicitly mapped | morning_operating_workspace |
+| `scene_01_first_twenty_minutes`<br>Choose Your First 20 Minutes | `multiple_choice` | Thursday operating workspace (morning_operating_workspace.sourceWorkspace) | Choose the first operating move under pre-rush time pressure. | First 20-minute decision | Evidence-based KPI interpretation | branch: labor_only->redirect_labor_only, balanced_triage->redirect_balanced_triage, coach_first->redirect_coach_first, wait->redirect_wait |
+| `redirect_labor_only`<br>Labor Helps, but It Needs Direction | `briefing` | — | — | — | not explicitly mapped | scene_02_kpi_shift_plan |
+| `redirect_balanced_triage`<br>The Right Level of Control | `briefing` | — | — | — | not explicitly mapped | scene_02_kpi_shift_plan |
+| `redirect_coach_first`<br>Coach from Facts, Not Frustration | `briefing` | — | — | — | not explicitly mapped | scene_02_kpi_shift_plan |
+| `redirect_wait`<br>Waiting Has a Cost | `briefing` | — | — | — | not explicitly mapped | scene_02_kpi_shift_plan |
+| `scene_02_kpi_shift_plan`<br>Write the KPI and Shift Plan | `free_text` / `slack_reply` | workSurface tab: Excel, workSurface tab: Calendar, workSurface tab: Drive, Excel operating workbook (scene_02_kpi_shift_plan.workSurface.sourceTabs.excel and morning_operating_workspace.sourceWorkspace.app:pos), Calendar schedule (scene_02_kpi_shift_plan.workSurface.sourceTabs.calendar and morning_operating_workspace.sourceWorkspace.app:schedule), Drive manager log and safety reminder (scene_02_kpi_shift_plan.workSurface.sourceTabs.drive and morning_operating_workspace.sourceWorkspace.files) | Send Mina a pre-rush Slack message connecting KPIs to staffing and floor verification. | KPI and shift plan | Evidence-based KPI interpretation, Labor and service tradeoff judgment | transition_floor_walk |
+| `transition_floor_walk`<br>Walk the Operation | `section_transition` | — | — | — | not explicitly mapped | scene_03_line_check |
+| `scene_03_line_check`<br>Pre-Rush Line Check | `physical_playground` | — | Perform a pre-rush line check for food safety, labeling, prep readiness, and service bottlenecks. | action log.scene_03_line_check | Food safety and line-check accuracy, Brand-standard accountability | transition_coaching |
+| `transition_coaching`<br>Turn the Walk Into Follow-Through | `section_transition` | — | — | — | not explicitly mapped | scene_04_coaching_prep |
+| `scene_04_coaching_prep`<br>Prepare the Jordan Coaching Note | `structured_entry` / `document_editor` | workSurface tab: Jordan role, workSurface tab: Line-check findings, workSurface tab: Your KPI plan, Jordan role (scene_04_coaching_prep.workSurface.sourceTabs.jordan_role), Line-check findings (scene_04_coaching_prep.workSurface.sourceTabs.line_check_facts), Your KPI plan (scene_04_coaching_prep.workSurface.sourceTabs.kpi_standards) | Use the player's own line-check notes and KPI plan to map each coaching issue to a Jordan action and the KPI or operating standard it supports. | Jordan coaching prep note | Labor and service tradeoff judgment, Coaching specificity and accountability | scene_04_shift_lead_coaching |
+| `scene_04_shift_lead_coaching`<br>Coach Jordan Before the Rush | `voice_meeting` | Your line-check notes, prep note from `scene_04_coaching_prep` | Coach Jordan from the line-check findings. Clarify which floor gaps he owns before lunch and connect the fixes to food safety, brand standards, waste, drive-... | transcript.scene_04_shift_lead_coaching | Labor and service tradeoff judgment, Coaching specificity and accountability | scene_06_daily_action_memo |
+| `scene_06_daily_action_memo`<br>Build Tomorrow's Pre-Rush Operating Board | `kanban_board` / `kanban` | Timing constraints, Timing constraints (scene_06_daily_action_memo.referenceContent and task-card constraints), Line-check findings (scene_06_daily_action_memo.cards), KPI and staffing facts (scene_06_daily_action_memo.cards) | Schedule every required next-day operating task into the correct time window using visible constraints. | Tomorrow pre-rush operating board | Evidence-based KPI interpretation, Labor and service tradeoff judgment, Food safety and line-check accuracy, Brand-standard accountability, Coaching specificity and accountability, Pre-rush operating board quality | assessment_gate |
+| `assessment_gate`<br>The Restaurant Operating Day Is Complete | `section_transition` | — | — | — | not explicitly mapped | grading |
+| `grading`<br>Assessment in Progress | `grading` | — | — | — | not explicitly mapped | final_report |
+| `final_report`<br>Restaurant Owner Simulation Report | `final_report` | — | — | — | not explicitly mapped | null |
+| `morning_operating_workspace`<br>Morning Operating Workspace | `briefing` | sourceWorkspace: Excel, Calendar, Drive, Source workspace (morning_operating_workspace.sourceWorkspace) | Open the source apps and files before choosing the first work move. | Source materials reviewed | not explicitly mapped | scene_01_first_twenty_minutes |

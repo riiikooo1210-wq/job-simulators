@@ -1,0 +1,9 @@
+{
+  "createdAt": "2026-05-18T14:35:14+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "character_reference",
+  "promptHash": "f03b07e9148fb685",
+  "references": [
+    "templates/style-reference.jpg"
+  ]
+}

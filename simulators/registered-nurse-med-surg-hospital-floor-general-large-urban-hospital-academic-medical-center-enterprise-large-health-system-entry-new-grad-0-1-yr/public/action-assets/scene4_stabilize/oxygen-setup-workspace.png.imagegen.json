@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T15:33:16+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "action_asset",
+  "sceneId": "scene4_apply_oxygen",
+  "itemId": "oxygen-setup-workspace",
+  "promptHash": "d19b54e769b67c78",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/public/visual-refs/locations/room-514.png"
+  ],
+  "sourceFile": "simulators/registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr/ACTION_ASSETS.md"
+}

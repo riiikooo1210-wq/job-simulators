@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:05:49+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "creative_slack",
+  "itemId": "creative_slack",
+  "promptHash": "4e023f63737b9c63",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/brand-strategist-general-consumer-brand-strategy-for-fashion-brand-common-brand-strategist-work-imagined-by-aspiring-brand-strategists-fictional-fashion-brand-enterprise-global-brand-entry-junior/src/data/scene-config.json"
+}

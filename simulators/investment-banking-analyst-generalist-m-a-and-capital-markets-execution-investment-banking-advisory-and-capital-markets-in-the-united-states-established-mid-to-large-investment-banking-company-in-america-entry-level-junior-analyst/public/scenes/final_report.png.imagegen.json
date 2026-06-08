@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-18T15:02:44+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "final_report",
+  "itemId": "final_report",
+  "promptHash": "afa16232c190bc2b",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst/IMAGE_PROMPTS.md"
+}

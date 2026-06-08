@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-19T04:42:36+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "intro",
+  "itemId": "intro",
+  "promptHash": "f4d16eb4e76ab606",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/public/visual-refs/locations/computer-lab.png"
+  ],
+  "sourceFile": "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/IMAGE_PROMPTS.md"
+}

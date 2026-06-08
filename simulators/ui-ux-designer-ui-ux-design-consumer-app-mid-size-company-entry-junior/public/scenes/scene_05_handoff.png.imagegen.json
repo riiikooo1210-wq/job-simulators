@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-18T15:41:26+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_05_flow_diagram",
+  "itemId": "scene_05_flow_diagram",
+  "promptHash": "13a659b1eba6d91b",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/IMAGE_PROMPTS.md"
+}

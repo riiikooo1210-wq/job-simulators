@@ -1,0 +1,856 @@
+{
+  "storyline": {
+    "gameTitle": "Investment Banking Analyst Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Morning Triage"
+      },
+      {
+        "num": 2,
+        "label": "Live Deal Execution"
+      },
+      {
+        "num": 3,
+        "label": "Night Turn"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Brookline Ridge",
+        "content": "You are a first-year investment banking analyst at Brookline Ridge Capital, a fictional US middle-market advisory firm. Today you are staffed on a {{Live Deal}} for HarborThread Components, preparing valuation materials, buyer diligence responses, and late-night deck updates while senior bankers move between client calls.",
+        "imageBrief": "First-person view of a New York investment banking bullpen at 8:37 AM. Two monitors show an Excel workbook labeled HarborThread_Model_v23.xlsx with a revenue bridge and a PowerPoint deck labeled HarborThread_Management_Presentation.pptx with a buyer overview slide. Outlook and Slack notification badges sit in the corner of the screen. The desk has a marked-up printed deck, a coffee, a calculator, and a banker bag under cool office lighting.",
+        "next": "briefing_morning",
+        "illustration": "/scenes/intro.png"
+      },
+      "briefing_morning": {
+        "id": "briefing_morning",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "8:52 AM: The Inbox Is Already Moving",
+        "content": "The Slack thread and calendar invite are the source of truth right now. Read the asks, then decide what protects the 12:15 PM client call before work starts moving into the deck.",
+        "slackMessages": [
+          {
+            "sender": "Priya Shah",
+            "role": "Associate",
+            "timestamp": "8:48 AM",
+            "content": "Before noon, can you tie the {{Comps}} page and check the {{EBITDA}} bridge in HarborThread_Model_v23.xlsx before the 12:15 client call? Need clean flags, not a novel."
+          },
+          {
+            "sender": "Marcus Reed",
+            "role": "VP",
+            "timestamp": "8:50 AM",
+            "content": "Also need a crisp answer on customer concentration. If a buyer asks, use the data-room schedule and flag anything that still needs client confirmation."
+          },
+          {
+            "sender": "Elena Park",
+            "role": "MD",
+            "timestamp": "8:51 AM",
+            "content": "For later today, please sharpen the market-growth page in the {{Pitch Book}}. Useful, but do not let it slow down the live-deal materials for the client call."
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "market_first": "redirect_market",
+            "model_first": "redirect_model_first",
+            "dataroom_first": "redirect_dataroom",
+            "rebuild_first": "redirect_rebuild"
+          },
+          "default": "redirect_model_first"
+        },
+        "illustration": "/scenes/briefing_morning.png"
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Choose the First Move",
+        "content": "You have about 90 focused minutes before review. What should you do first?",
+        "options": [
+          {
+            "id": "market_page",
+            "label": "Start the {{MD}}'s market-growth slide for the {{Pitch Book}}.",
+            "body": "Visible senior request, but it does not protect today's {{Live Deal}} call from a number error.",
+            "branchFlag": "market_first"
+          },
+          {
+            "id": "model_tie",
+            "label": "Audit the {{Comps}} and {{EBITDA}} bridge, then flag tie-out issues.",
+            "body": "This protects the live client call and gives your {{Associate}} reviewable facts.",
+            "branchFlag": "model_first"
+          },
+          {
+            "id": "data_room",
+            "label": "Clear easy {{Data Room}} requests so the tracker looks cleaner.",
+            "body": "Useful, but low-risk requests can wait if the valuation materials are not tied.",
+            "branchFlag": "dataroom_first"
+          },
+          {
+            "id": "full_rebuild",
+            "label": "Rebuild the {{DCF}} from scratch because the model feels messy.",
+            "body": "Thorough in theory, but too slow and not aligned to the immediate review need.",
+            "branchFlag": "rebuild_first"
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "market_first": "redirect_market",
+            "model_first": "redirect_model_first",
+            "dataroom_first": "redirect_dataroom",
+            "rebuild_first": "redirect_rebuild"
+          },
+          "default": "redirect_model_first"
+        },
+        "illustration": "/scenes/first_move.png"
+      },
+      "redirect_model_first": {
+        "id": "redirect_model_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Start With the Numbers",
+        "content": "You start with the valuation pack, which is the right first move. The client call will live or die on tied {{Comps}} and a defensible {{EBITDA}} bridge, so you keep the scope tight and turn the model review into a concise issue log Priya can use.",
+        "imageBrief": "Excel valuation model on dual monitors with the Comps tab and EBITDA Bridge tab highlighted. A small calendar reminder shows the 12:15 PM HarborThread client call, and a blank audit log is ready beside the model.",
+        "next": "model_audit",
+        "illustration": "/scenes/redirect_model_first.png"
+      },
+      "redirect_market": {
+        "id": "redirect_market",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Slide Can Wait",
+        "content": "You open the market-growth page, but Priya pings again: the client will ask about valuation first, not the broader industry story. You save the page skeleton and turn back to the {{Comps}} and {{EBITDA}} bridge before the numbers get stale.",
+        "imageBrief": "PowerPoint slide titled Market Growth Story with only half-filled bullets, while a Slack notification from Priya says Need valuation flags first. The Excel workbook is visible behind the deck with red-highlighted cells in the EBITDA bridge.",
+        "next": "model_audit",
+        "illustration": "/scenes/redirect_market.png"
+      },
+      "redirect_dataroom": {
+        "id": "redirect_dataroom",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Clean Tracker, Dirty Model",
+        "content": "You knock out two easy {{Data Room}} rows, but the model is still untied. A clean tracker will not help if the {{VP}} quotes a number that later changes. You pause the tracker and move to the valuation audit.",
+        "imageBrief": "Secure data room tracker with two green completed rows and a separate Excel window showing a red warning note: EBITDA bridge does not tie. A clock widget shows 9:31 AM.",
+        "next": "model_audit",
+        "illustration": "/scenes/redirect_dataroom.png"
+      },
+      "redirect_rebuild": {
+        "id": "redirect_rebuild",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Scope Control",
+        "content": "You start opening old model tabs, then realize a full {{DCF}} rebuild will blow through the review window. Banking often rewards controlled precision over heroic wandering. You narrow the task to the {{Comps}} page, {{EBITDA}} bridge, and specific assumptions that matter for today's call.",
+        "imageBrief": "Excel workbook with many tabs across the bottom, several old versions stacked in Finder, and a sticky note reading Do not boil ocean. The active tab is highlighted around Comps and EBITDA Bridge.",
+        "next": "model_audit",
+        "illustration": "/scenes/redirect_rebuild.png"
+      },
+      "model_audit": {
+        "id": "model_audit",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Audit the Valuation Pack",
+        "content": "Build a concise review-flag log for Priya. Focus on late updates that have not fully flowed through the {{Comps}}, {{EBITDA}} bridge, {{DCF}}, or client-call talking points.",
+        "prompt": "Create four audit findings. For each one, name the priority, issue, why it matters, and the next action.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "HarborThread_Model_v23.xlsx",
+        "appTabs": [
+          {
+            "id": "model_inputs",
+            "label": "Model Inputs",
+            "content": "### Deal clock and asks\n- Priya needs clean valuation review flags before the 12:15 PM HarborThread client call.\n- Marcus needs a crisp customer concentration answer if a buyer asks.\n- Elena's market-growth page is later today; it should not outrank live-deal valuation accuracy.\n- Treat these as update and tie-out flags: identify what changed, where it has not flowed through, and who needs to confirm it.\n\n### Review temperature guide\n| Finding area | Priority | Expected framing |\n|---|---|---|\n| {{EBITDA}} tie-out | High priority / valuation impact | Latest rebate normalization appears reflected in the bridge, but not yet in Summary or Slide 17. |\n| {{Comps}} Zeta row | High priority / valuation range impact | One comp row appears to carry an old denominator, which changes the median multiple. |\n| {{DCF}} assumptions | Medium priority / MD review flag | Market-note assumptions have not been refreshed; flag for review rather than rebuilding from scratch. |\n| Customer concentration | Talking-point / client-confirmation flag | Latest data-room schedule changes buyer Q&A framing and needs confirmation. |\n\n### Summary tab - valuation bridge\n| Item | v23 shown | Latest support | Review flag |\n|---|---:|---:|---|\n| FY25E EBITDA used on Summary | $67.0M | $65.0M | Summary has not picked up the latest rebate normalization from the bridge. |\n| Selected {{Comps}} multiple | 8.3x | 8.1x | Median should be refreshed after the Zeta Systems row is updated. |\n| Midpoint enterprise value | $556M | ~$527M | Valuation midpoint should move once the $65.0M EBITDA base and 8.1x median flow through. |\n| Slide tie-out | Slide 17 = $67.0M EBITDA | Bridge tab = $65.0M adjusted EBITDA | Slide 17 and Summary need tie-out to the bridge before Priya review. |\n\n### {{Comps}} tab - trading multiples\n| Company | v23 EV / EBITDA | Source backup | Review flag |\n|---|---:|---:|---|\n| Alpha Industrial | 7.8x | 7.8x | Ties. |\n| Beacon Components | 8.2x | 8.2x | Ties. |\n| Zeta Systems | 11.6x | 9.6x | v23 appears to carry an old EBITDA denominator; corrected row lowers the median. |\n| MidWest Controls | 8.4x | 8.4x | Ties. |\n| Median | 8.3x | 8.1x | Summary still carries the pre-update median. |\n\n### {{EBITDA}} Bridge tab\n| Bridge item | Amount | Status | Review flag |\n|---|---:|---|---|\n| Reported FY25E EBITDA | $67.0M | Ties to management forecast | Starting point. |\n| One-time plant relocation add-back | +$3.0M | Supported by invoice schedule | Include. |\n| Customer rebate normalization | -$5.0M | Latest client schedule received 8:31 AM | Reflected in the bridge, but not yet reflected in Summary or Slide 17. |\n| Adjusted FY25E EBITDA | $65.0M | Bridge formula correct | Use as live valuation base if Priya confirms treatment. |\n\n### {{DCF}} tab - sensitivity assumptions\n| Assumption | v23 case | Latest market note | Review flag |\n|---|---:|---:|---|\n| WACC range | 8.0% - 9.0% | 9.0% - 10.0% | Market-note update is not reflected; medium-priority MD-review flag. |\n| Terminal growth | 3.5% | 2.5% - 3.0% | Current case sits above the latest market note and needs reviewer confirmation. |\n| Sensitivity footer date | Apr 26 | May 7 market update | Footer/source date needs refresh before MD review. |\n\n### Customer concentration talking points\n| Customer | Revenue share | Renewal / note | Review flag |\n|---|---:|---|---|\n| Atlas Mobility | 18% | Contract renewal 2026-09-30 | Buyer may ask about renewal risk; needs client confirmation on framing. |\n| Northline Auto | 14% | Multi-year contract through 2028 | Lower near-term risk. |\n| Crest Rail | 10% | Purchase order program, not full contract | Avoid calling this fully contracted unless client confirms. |\n| Top 3 concentration | 42% | Data room schedule dated May 7 | Slide 31 appears to use the old February schedule at 35%; flag as Q&A talking-point update. |"
+          }
+        ],
+        "definition": {
+          "itemLabel": "Audit Finding",
+          "bindingKey": "model_audit",
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "fields": [
+            {
+              "key": "priority",
+              "label": "Priority",
+              "placeholder": "Example: High priority - valuation impact.",
+              "multiline": false
+            },
+            {
+              "key": "issue",
+              "label": "Issue",
+              "placeholder": "Example: Summary and Slide 17 have not picked up the latest EBITDA bridge update.",
+              "multiline": false
+            },
+            {
+              "key": "why_it_matters",
+              "label": "Why it matters",
+              "placeholder": "Explain whether this affects valuation, buyer questions, or client credibility.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "next_action",
+              "label": "Next action",
+              "placeholder": "Example: Confirm treatment with Priya, then update Summary and Slide 17.",
+              "multiline": true,
+              "rows": 3
+            }
+          ]
+        },
+        "next": "associate_update",
+        "deskWorkDesign": {
+          "roleFamily": "investment_banking_execution",
+          "workSurface": "Excel valuation model and audit log",
+          "inputArtifacts": [
+            {
+              "id": "model_v23_comps",
+              "label": "HarborThread_Model_v23.xlsx - Comps tab",
+              "whereVisible": "Model Inputs tab in the spreadsheet window",
+              "summary": "Trading multiples need to tie to the summary page before the client call."
+            },
+            {
+              "id": "ebitda_bridge",
+              "label": "FY25E EBITDA bridge",
+              "whereVisible": "Model Inputs tab in the spreadsheet window",
+              "summary": "Latest customer rebate normalization may change the EBITDA base used for valuation."
+            },
+            {
+              "id": "client_call_deadline",
+              "label": "12:15 PM client call invite",
+              "whereVisible": "Morning briefing",
+              "summary": "Priya needs concise, reviewable flags before the call."
+            }
+          ],
+          "studentAction": "Create four specific review flags that connect late model or source updates to valuation, buyer questions, or client-call risk.",
+          "outputArtifact": {
+            "id": "model_audit_log",
+            "label": "Valuation audit log",
+            "format": "structured issue / impact / next-action entries"
+          },
+          "rubricEvidence": [
+            "specificity of issue identification",
+            "valuation or client-call impact",
+            "clear next action or reviewer"
+          ],
+          "continuity": [
+            "Feeds Priya's Slack update and the pre-call conversation."
+          ],
+          "authenticityCheck": "A real associate should be able to scan the entries and decide what to confirm before the call."
+        },
+        "illustration": "/scenes/model_audit.png"
+      },
+      "associate_update": {
+        "id": "associate_update",
+        "type": "free_text",
+        "section": 1,
+        "title": "Send the Associate Update",
+        "content": "Base this on the valuation audit log you just created. Priya needs something she can review fast before the client call: a concise Slack-style update that separates clean items from open questions and names the decision you need from her. Use View Briefing to reopen your audit findings and the morning asks.",
+        "prompt": "Write the update to Priya. Include: what is tied, what is not tied, what changed in valuation, and the one decision or confirmation you need.",
+        "placeholder": "Priya - quick HarborThread valuation status: Comps are tied except...",
+        "minWords": 70,
+        "maxWords": 180,
+        "appWindow": "slack",
+        "windowTitle": "#harborthread-live · channel",
+        "next": "briefing_live_deal",
+        "deskWorkDesign": {
+          "roleFamily": "investment_banking_execution",
+          "workSurface": "Slack deal channel",
+          "inputArtifacts": [
+            {
+              "id": "audit_log",
+              "label": "Model audit findings",
+              "whereVisible": "View Briefing drawer and prior spreadsheet task",
+              "summary": "Comps are mostly tied; EBITDA treatment and customer concentration commentary still need confirmation."
+            },
+            {
+              "id": "priya_ask",
+              "label": "Priya morning Slack",
+              "whereVisible": "Morning briefing",
+              "summary": "Priya asked for clean flags, not a novel."
+            }
+          ],
+          "studentAction": "Write a concise upward update separating tied items, open questions, valuation movement, and the decision needed from Priya.",
+          "outputArtifact": {
+            "id": "associate_slack_update",
+            "label": "Associate status update",
+            "format": "Slack message"
+          },
+          "rubricEvidence": [
+            "done/open split",
+            "valuation impact",
+            "specific decision ask",
+            "concise professional tone"
+          ],
+          "continuity": [
+            "Sets up the live-deal call briefing and spoken check-in."
+          ],
+          "authenticityCheck": "The message should save reviewer time and avoid burying the ask."
+        }
+      },
+      "briefing_live_deal": {
+        "id": "briefing_live_deal",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 2,
+        "title": "12:03 PM: Before the Client Call",
+        "content": "The {{Comps}} now tie, but customer concentration is still sensitive. One buyer has already asked whether HarborThread's top three customers create risk to the revenue forecast. Priya pulls you into a quick spoken check-in so she can pressure-test the answer before the client joins.",
+        "imageBrief": "Small glass conference room with a laptop connected to a Zoom-style call waiting screen titled HarborThread Weekly Sell-Side Update. On the table are printed pages: Comps Summary, Customer Concentration, and EBITDA Bridge. A headset and highlighter sit beside the laptop.",
+        "next": "associate_voice",
+        "illustration": "/scenes/briefing_live_deal.png"
+      },
+      "associate_voice": {
+        "id": "associate_voice",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Live Check-In with Priya",
+        "content": "Purpose: Priya is pressure-testing the answer she will use on the 12:15 PM client call.\n\nGoal: In a quick spoken update, summarize what changed in valuation, explain customer concentration risk in plain business language, and separate what is tied from what still needs client confirmation.\n\nEndpoint: The meeting is done when Priya has a usable client-call answer and closes with: \"Good, stay on for the client call. Marcus may ask you to provide the numbers if Dana presses.\"",
+        "playerGoal": "Give Priya a concise spoken readout: valuation change, customer concentration risk, what is tied, and the one confirmation still needed. Do not over-explain or overclaim.",
+        "supportDocTitle": "Priya Check-In Notes",
+        "supportDocResponseKey": "associate_update",
+        "supportDocResponseTitle": "Your Slack update to Priya",
+        "supportDocResponseFallback": "No Slack update is saved yet. Use the source checks below, or go back and write the Priya update first.",
+        "supportDocContent": "### Source checks to use if Priya presses\n- {{EBITDA}} bridge now supports $65.0M adjusted FY25E EBITDA after the customer rebate normalization.\n- Summary and Slide 17 still need to flow through the $65.0M base instead of $67.0M.\n- {{Comps}} page is mostly tied, but Zeta Systems should be 9.6x, not 11.6x. Correcting it moves the median from 8.3x to 8.1x.\n- {{DCF}} assumptions are a medium-priority refresh flag: WACC should move from 8.0%-9.0% to 9.0%-10.0%, and terminal growth from 3.5% to 2.5%-3.0% if Priya/VP want the May 7 market note reflected before MD review.\n\n### Customer concentration facts\n- Latest data-room schedule shows Top 3 concentration at 42%, not the old 35% on Slide 31.\n- Atlas Mobility: 18% of revenue; renewal date 2026-09-30. Needs client confirmation on renewal confidence.\n- Northline Auto: 14% of revenue; contract runs through 2028. Lower near-term risk.\n- Crest Rail: 10% of revenue; purchase-order program, not a full contract. Do not describe it as fully contracted.\n\n### Decision needed from Priya\n- Confirm whether to use the $65.0M EBITDA base on the call and how strongly to frame Atlas renewal / Crest PO visibility.",
+        "npcId": "priya",
+        "goalPrompt": "You are Priya Shah, the associate on HarborThread. Start direct and time-constrained. Ask the analyst to summarize what changed in the valuation materials, explain the customer concentration risk in plain business language, and say what still needs client confirmation. Expected facts: FY25E adjusted EBITDA should be $65.0M after the rebate normalization, Summary and Slide 17 still need to flow from $67.0M to $65.0M, Zeta Systems should be 9.6x not 11.6x and moves the comps median from 8.3x to 8.1x, Top 3 customer concentration is 42% not 35%, Atlas is 18% of revenue with renewal on 2026-09-30, Northline is 14% with contract through 2028, and Crest is 10% but PO-only rather than fully contracted. If the analyst is vague, press for those specifics. If the analyst overclaims, correct them. If the analyst is accurate and concise, acknowledge it and help shape the client-call answer. After covering those topics, conclude with: 'Good, stay on for the client call. Marcus may ask you to provide the numbers if Dana presses.' Do not open new topics after that closing line.",
+        "meetingContext": "The user is a first-year investment banking analyst joining a quick spoken pre-call with an associate. The user should communicate upward: concise model status, clean risks, specific asks, no overclaiming. The associate is busy but not hostile. Priya's job is to pressure-test the analyst against the actual deal facts before the client joins.",
+        "minTurns": 3,
+        "maxTurns": 6,
+        "voiceName": "Kore",
+        "imageBrief": "Pre-call investment banking conference room for a one-on-one check-in with Priya Shah only. The laptop or meeting screen shows Priya Shah as the sole participant; do not show Marcus Reed, the HarborThread CFO, or any other attendees. A printed customer concentration chart lists Top 3 customers at 42 percent of revenue, renewal dates, and notes. The analyst's notebook has bullets: tied comps, rebate adjustment, client confirm churn.",
+        "next": "client_call",
+        "illustration": "/scenes/priya_call.png",
+        "meetingMode": "in_person"
+      },
+      "client_call": {
+        "id": "client_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "12:15 PM: HarborThread Client Call",
+        "content": "Purpose: You stay on the live client call after Priya's prep. Marcus is leading, Priya is backing him up, and Dana Ellis, HarborThread's CFO, asks for the analyst-level detail behind the buyer response.\n\nGoal: When Dana calls on you, give a concise, client-safe answer: what changed in the numbers, how to frame Top 3 concentration, and which Atlas/Crest confirmations are still needed before sending a buyer-facing response.\n\nEndpoint: The meeting is done when Dana accepts the answer and asks the banking team to turn it into a clean diligence response.",
+        "playerGoal": "Answer the live client question without overclaiming. Use the $65.0M EBITDA base, 42% Top 3 concentration, Atlas renewal date, Northline contract term, and Crest PO-only caveat. Name the confirmations needed before buyer-facing language goes out.",
+        "supportDocTitle": "Client Call Prep",
+        "supportDocResponseKey": "associate_update",
+        "supportDocResponseTitle": "Your pre-call Slack update",
+        "supportDocResponseFallback": "No Slack update is saved yet. Use the source checks below and answer from the facts.",
+        "supportDocContent": "### Facts available for the client call\n- Priya accepted $65.0M FY25E adjusted EBITDA as the working base after the rebate normalization.\n- Top 3 customer concentration is 42% on the May 7 data-room schedule, not the old 35% slide.\n- Atlas Mobility is 18% of revenue with renewal on 2026-09-30; renewal confidence still needs client confirmation.\n- Northline Auto is 14% of revenue and runs through 2028.\n- Crest Rail is 10% of revenue on a purchase-order program; do not call it a full contract.\n\n### Client-safe posture\n- Be precise about what is tied versus still being confirmed.\n- Avoid saying the risk is solved; say the team can disclose the concentration clearly and support it with contract / PO detail.\n- End with the exact confirmations needed before the buyer response is sent.",
+        "npcId": "dana",
+        "goalPrompt": "You are Dana Ellis, CFO of HarborThread Components, on a live 12:15 PM client call with Brookline Ridge Capital. Marcus Reed is leading the call, Priya Shah is present, and the first-year analyst is closest to the model and data-room schedule. Start by saying Marcus mentioned the buyer question about top customer concentration and ask the analyst to walk you through the actual numbers and what the buyer can safely be told. Press for specificity on the 42% Top 3 concentration, Atlas renewal risk, Northline contract coverage, Crest being PO-only, and whether $65.0M EBITDA is now the right base. If the analyst overstates certainty, push back. If the analyst is clear, conclude with: 'That works. Turn that into the buyer response, but keep Atlas renewal and Crest contract status as confirmation items.'",
+        "meetingContext": "This is the actual client call after the Priya pre-call. The user is not running the meeting; they are a junior investment banking analyst who gets called on for factual support. They must be concise, specific, and careful about buyer-facing claims while senior bankers manage the client relationship.",
+        "minTurns": 3,
+        "maxTurns": 6,
+        "voiceName": "Kore",
+        "imageBrief": "Client call in a small investment banking conference room. A laptop shows Dana Ellis, HarborThread CFO, on the meeting screen with Marcus Reed and Priya Shah also present in small tiles. Printed pages on the table show Customer Concentration at 42 percent, Atlas renewal 2026-09-30, Northline contract through 2028, and Crest Rail PO-only. The analyst's notes highlight $65.0M EBITDA and open client confirmations.",
+        "next": "diligence_matrix",
+        "illustration": "/scenes/client_call.png",
+        "meetingMode": "remote"
+      },
+      "diligence_matrix": {
+        "id": "diligence_matrix",
+        "type": "priority_matrix",
+        "section": 2,
+        "title": "Prioritize Buyer Diligence",
+        "content": "After the call, six buyer requests hit the {{Data Room}} tracker. Place them by urgency and deal impact, then explain the first two actions you would take.",
+        "appWindow": "miro",
+        "windowTitle": "HarborThread Diligence Triage",
+        "bindingKey": "diligence_triage",
+        "rationaleBindingKey": "diligence_triage_rationale",
+        "rationalePrompt": "Which two requests would you handle first, who needs to be involved, and what risk are you trying to reduce?",
+        "xAxis": {
+          "label": "Urgency",
+          "lowLabel": "Can wait",
+          "highLabel": "Due soon"
+        },
+        "yAxis": {
+          "label": "Deal impact",
+          "lowLabel": "Low impact",
+          "highLabel": "High impact"
+        },
+        "items": [
+          {
+            "id": "customer_contracts",
+            "label": "Top customer contracts renewal detail"
+          },
+          {
+            "id": "ebitda_support",
+            "label": "Normalized {{EBITDA}} add-back support"
+          },
+          {
+            "id": "management_bios",
+            "label": "Updated management bios"
+          },
+          {
+            "id": "capex",
+            "label": "Maintenance capex schedule"
+          },
+          {
+            "id": "market_sources",
+            "label": "Market-growth source backup"
+          },
+          {
+            "id": "logo_permission",
+            "label": "Buyer logo permission for deck appendix"
+          }
+        ],
+        "next": "briefing_night",
+        "deskWorkDesign": {
+          "roleFamily": "investment_banking_execution",
+          "workSurface": "Data room diligence triage board",
+          "inputArtifacts": [
+            {
+              "id": "buyer_requests",
+              "label": "Six buyer diligence requests",
+              "whereVisible": "Matrix cards",
+              "summary": "Requests vary by urgency, deal impact, buyer sensitivity, and need for management or legal input."
+            },
+            {
+              "id": "customer_concentration_notes",
+              "label": "Customer concentration call notes",
+              "whereVisible": "Prior voice check-in",
+              "summary": "Top customer renewal detail can affect buyer perception of revenue durability."
+            },
+            {
+              "id": "normalized_ebitda_support",
+              "label": "Normalized EBITDA support request",
+              "whereVisible": "Matrix cards",
+              "summary": "Add-back support can affect valuation confidence and buyer trust."
+            }
+          ],
+          "studentAction": "Place requests by urgency and deal impact, then explain the first two actions, stakeholders, and risks reduced.",
+          "outputArtifact": {
+            "id": "diligence_triage_matrix",
+            "label": "Diligence triage matrix with rationale",
+            "format": "priority matrix plus short rationale"
+          },
+          "rubricEvidence": [
+            "urgency and deal-impact placement",
+            "stakeholder dependencies",
+            "risk-based rationale"
+          ],
+          "continuity": [
+            "Carries customer concentration and EBITDA issues from the call into buyer diligence execution."
+          ],
+          "authenticityCheck": "The top priorities should be sensitive deal-risk items, not merely the easiest tracker rows."
+        },
+        "illustration": "/scenes/diligence_matrix.png"
+      },
+      "briefing_night": {
+        "id": "briefing_night",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 3,
+        "title": "9:18 PM: Comments Land",
+        "content": "You had a quiet dinner window. Now the {{VP}} drops a {{Redline}} of HarborThread_Management_Presentation_v24.pptx with 14 comments. The {{MD}} wants the market-growth page tighter by morning, Priya needs the {{DCF}} sensitivity updated, and two client-facing pages in the presentation still do not match the model.",
+        "slackMessages": [
+          {
+            "sender": "Marcus Reed",
+            "role": "VP",
+            "timestamp": "9:18 PM",
+            "content": "I marked up HarborThread_Management_Presentation_v24.pptx with 14 comments. Need the page turn tonight. Prioritize anything client-visible and model-linked first."
+          },
+          {
+            "sender": "Priya Shah",
+            "role": "Associate",
+            "timestamp": "9:21 PM",
+            "content": "When you send, include a status note: complete / open / needs my review. I do not want to hunt through files at 1 AM."
+          }
+        ],
+        "imageBrief": "Late-night analyst desk with city lights outside. Slack shows comments from Marcus Reed and Priya Shah. PowerPoint is open to HarborThread_Management_Presentation_v24.pptx with red comment bubbles on slides 12, 17, and 31. Excel shows a DCF sensitivity table with WACC and terminal growth assumptions.",
+        "next": "turn_plan",
+        "illustration": "/scenes/briefing_night.png"
+      },
+      "turn_plan": {
+        "id": "turn_plan",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Plan the Turn",
+        "content": "Before editing, make the {{turn}} manageable. Create a short workplan that protects client-visible pages first, keeps version control clean, and flags anything that needs review.",
+        "prompt": "Use the Redline Comments tab to organize 14 comments into four {{turn}} work items. Each should include the deliverable, the action, the dependency, and how you will confirm it is done.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "HarborThread_Night_Turn_Tracker.xlsx",
+        "appTabs": [
+          {
+            "id": "redline_comments",
+            "label": "Redline Comments",
+            "content": "COMMENT|Slide 12 - Summary EBITDA|Marcus Reed|VP|9:18 PM|High priority|Client-visible valuation page|Summary still shows $67.0M FY25E adjusted {{EBITDA}}. Update to $65.0M if Priya confirms the rebate normalization.|Need Priya to confirm final rebate treatment before locking the number.|Summary KPI, valuation callout, and exported PDF all show the same FY25E EBITDA.\nCOMMENT|Slide 17 - EBITDA Bridge|Marcus Reed|VP|9:19 PM|High priority|Client-visible valuation page|Tie the bridge to Model v24b after the rebate normalization. Client-facing page should show $65.0M adjusted FY25E {{EBITDA}}, not the old $67.0M.|Need Priya to confirm final rebate treatment before locking the number.|Bridge, model output, and PDF all show the same FY25E EBITDA and footnote treatment.\nCOMMENT|Slide 18 - Valuation Range|Marcus Reed|VP|9:20 PM|High priority|Valuation range impact|Refresh the valuation range after the EBITDA and comps updates. Old range should not remain in the page title or chart labels.|Need the corrected EBITDA base and comps median before rerunning the page.|Slide 18 range, chart labels, and summary backup use the refreshed valuation output.\nCOMMENT|Slide 21 - Public Comps|Priya Shah|Associate|9:21 PM|High priority|Comps tie-out|Zeta row should use 9.6x from the source backup, not 11.6x. Rerun the median and make sure the valuation page picks it up.|Need Priya review after the comps row is corrected.|Comps table, median, and valuation range all reflect the corrected Zeta row.\nCOMMENT|Slide 21 - Comps Source Note|Priya Shah|Associate|9:22 PM|Medium priority|Review support|Add a short source note for the Zeta correction so Marcus can review quickly without reopening the full backup file.|Need source backup citation from the comps support tab.|Slide 21 has a clear source note and no unexplained multiple change.\nCOMMENT|Slide 31 - Customer Concentration|Marcus Reed|VP|9:23 PM|High priority|Buyer talking point|Update concentration framing to Top 3 at 42%. Include Atlas renewal date and Crest PO-only status without overstating contract coverage.|Need Marcus/Priya approval on the exact buyer-facing language; client confirmation still needed on Atlas and Crest.|Slide 31 uses the approved 42% framing and no stale 35% language remains.\nCOMMENT|Slide 31 - Speaker Notes|Marcus Reed|VP|9:24 PM|Medium priority|Talking-point cleanup|Speaker notes still say 35% and sound too definitive on customer contracts. Keep the answer crisp and flag what still needs client confirmation.|Need Marcus approval on the spoken buyer answer.|Slide 31 notes match the page and separate confirmed facts from open confirmations.\nCOMMENT|Appendix B - Customer Backup|Priya Shah|Associate|9:25 PM|Medium priority|Source backup|Tie the customer concentration backup to the May 7 data-room schedule and show where Atlas and Crest details come from.|Need the May 7 customer schedule and latest client confirmation status.|Appendix backup supports the slide 31 wording and can be traced to the source schedule.\nCOMMENT|DCF Sensitivity Page|Priya Shah|Associate|9:26 PM|Medium priority|Model-linked review flag|Refresh the {{DCF}} sensitivity if the team is using the May 7 market note: WACC 9.0%-10.0%, terminal growth 2.5%-3.0%.|Need Priya/VP decision on whether to reflect the May 7 note before MD review.|DCF tab, sensitivity page, and source note use the same WACC and terminal growth range.\nCOMMENT|DCF Source Note|Priya Shah|Associate|9:27 PM|Medium priority|Assumption support|If the May 7 market note drives the new sensitivity, cite it on the page. If not, mark the assumption as a review decision.|Need Priya to confirm whether the market note is in scope for this turn.|DCF page either cites the May 7 note or clearly flags the assumption decision for review.\nCOMMENT|Market Growth Page|Elena Park|MD|9:28 PM|Medium priority|Presentation polish|Sharpen the market-growth page with source-backed bullets. Do this after valuation and client-visible tie-outs are protected.|Need updated market source backup and MD/VP preference on how aggressive to make the growth story.|Market-growth page has source footnotes, cleaner bullets, and no unsupported growth claims.\nCOMMENT|Market Growth Chart|Elena Park|MD|9:29 PM|Medium priority|Source-backed chart|Chart period and source label are vague. Tighten the label and avoid implying a growth rate the source does not support.|Need market source backup before changing chart language.|Chart label, source footnote, and bullets tell the same supported growth story.\nCOMMENT|Client-Facing Pages - Slides 8 and 22|Marcus Reed|VP|9:30 PM|High priority|Client-visible materials|Slides 8 and 22 still pull an old model export. Update them to Model v24b and mark any remaining mismatch as open.|Need latest Model v24b export and Priya review if a number still does not tie.|Slides 8 and 22 tie to Model v24b; any unresolved mismatch is named in the status note.\nCOMMENT|Version Control and Export|Priya Shah|Associate|9:31 PM|High priority|Process / handoff|Keep the file trail clean: save PPT as MP v25, keep model as v24b, export PDF only after tie-outs, and send complete / open / needs review status.|Need all planned page updates complete or clearly flagged before export.|Deal folder contains the correct PPT, PDF, and model filenames; status note separates complete, open, and needs review."
+          }
+        ],
+        "definition": {
+          "itemLabel": "Turn Item",
+          "bindingKey": "turn_plan",
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "fields": [
+            {
+              "key": "deliverable",
+              "label": "Deliverable",
+              "placeholder": "Example: A related set of pages or comments to fix together",
+              "multiline": false
+            },
+            {
+              "key": "action",
+              "label": "Action",
+              "placeholder": "Example: Update the affected pages so the same number, wording, and source support line up.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "dependency",
+              "label": "Needed confirmation or reviewer",
+              "placeholder": "Example: Name the person, file, or confirmation needed before this can be locked.",
+              "multiline": true,
+              "rows": 2
+            },
+            {
+              "key": "done_check",
+              "label": "Done check",
+              "placeholder": "Example: All affected pages match, stale language is removed, and open confirmations are flagged.",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "next": "final_status",
+        "deskWorkDesign": {
+          "roleFamily": "investment_banking_execution",
+          "workSurface": "Night-turn workplan board",
+          "inputArtifacts": [
+            {
+              "id": "vp_redline_v24",
+              "label": "Marcus redline on HarborThread MP v24",
+              "whereVisible": "Redline Comments tab on the desktop work window",
+              "summary": "Fourteen comments on HarborThread_Management_Presentation_v24.pptx include client-visible page edits and model-linked numbers."
+            },
+            {
+              "id": "dcf_sensitivity",
+              "label": "DCF sensitivity update",
+              "whereVisible": "Redline Comments tab on the desktop work window",
+              "summary": "Priya needs the WACC and terminal-growth sensitivity updated and tied."
+            },
+            {
+              "id": "cim_mismatch",
+              "label": "CIM pages not matching model",
+              "whereVisible": "Redline Comments tab on the desktop work window",
+              "summary": "Client-facing materials must match the latest model before morning."
+            }
+          ],
+          "studentAction": "Create four work items that sequence client-visible deliverables, model updates, dependencies, and done checks.",
+          "outputArtifact": {
+            "id": "night_turn_plan",
+            "label": "Night-turn plan",
+            "format": "structured work items"
+          },
+          "rubricEvidence": [
+            "client-visible prioritization",
+            "version-control discipline",
+            "dependency and reviewer clarity",
+            "completion checks"
+          ],
+          "continuity": [
+            "Feeds the final 12:47 AM status note."
+          ],
+          "authenticityCheck": "The plan should make the comment turn manageable under late-night review pressure."
+        },
+        "illustration": "/scenes/turn_plan.png"
+      },
+      "final_status": {
+        "id": "final_status",
+        "type": "free_text",
+        "section": 3,
+        "title": "Send the 12:47 AM Status Note",
+        "content": "You have turned the major comments. Priya asked for a clean late-night status note so she can review without reopening every file.",
+        "prompt": "Write the final status note to Priya and Marcus. Include completed items, open questions, files sent, and what you need reviewed before morning.",
+        "placeholder": "Priya / Marcus - sent HarborThread MP v25 and Model v24b. Completed...",
+        "minWords": 80,
+        "maxWords": 200,
+        "appWindow": "email",
+        "windowTitle": "Outlook - HarborThread night turn status",
+        "next": "day_complete",
+        "illustration": "/scenes/final_status.png",
+        "deskWorkDesign": {
+          "roleFamily": "investment_banking_execution",
+          "workSurface": "Outlook status email",
+          "inputArtifacts": [
+            {
+              "id": "completed_turn_items",
+              "label": "Completed night-turn items",
+              "whereVisible": "Prior workplan",
+              "summary": "Major client-visible comments, model tie-outs, and file exports have been turned."
+            },
+            {
+              "id": "open_review_items",
+              "label": "Open reviewer questions",
+              "whereVisible": "Prior workplan",
+              "summary": "Priya still needs to review rebate add-back treatment; Marcus needs to review buyer framing."
+            },
+            {
+              "id": "sent_files",
+              "label": "Sent file versions",
+              "whereVisible": "Email prompt",
+              "summary": "HarborThread MP v25 PDF/PPT and Model v24b are ready for review."
+            }
+          ],
+          "studentAction": "Send a precise late-night note naming files, completed work, open questions, needed reviews, and morning risk areas.",
+          "outputArtifact": {
+            "id": "night_status_email",
+            "label": "12:47 AM status note",
+            "format": "Outlook email"
+          },
+          "rubricEvidence": [
+            "files named",
+            "completed/open/review split",
+            "morning risk clarity",
+            "professional tone"
+          ],
+          "continuity": [
+            "Closes the simulator by demonstrating whether the analyst made review easy."
+          ],
+          "authenticityCheck": "Priya and Marcus should be able to review without reopening every file just to learn status."
+        },
+        "emailHeaders": {
+          "from": "Analyst <analyst@brooklineridge.example>",
+          "to": "Priya Shah; Marcus Reed",
+          "subject": "HarborThread night turn status - MP v25 / Model v24b"
+        }
+      },
+      "day_complete": {
+        "id": "day_complete",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Banking Day Is Complete",
+        "content": "It is after midnight. You triaged the morning, audited valuation materials, communicated upward, handled a spoken deal check-in, answered on the live client call, prioritized diligence, and turned late-night comments.\n\nYour files are out, your open items are named, and the team has what it needs for morning review. When you are ready, view the assessment of your analyst judgment.",
+        "imageBrief": "Quiet banking bullpen after midnight. The analyst's monitors show a sent Outlook email, a completed PowerPoint export, and Excel model tabs with green tie-out checks. A desk lamp, empty coffee cup, and printed redline sit beside the keyboard.",
+        "ctaLabel": "View Assessment",
+        "next": "grading",
+        "illustration": "/scenes/day_complete.png",
+        "actionLabel": "View Assessment"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment",
+        "content": "Your analyst judgment is being evaluated against the rubric.",
+        "imageBrief": "Quiet banking bullpen after midnight. The analyst's monitors show a sent Outlook email, a completed PowerPoint export, and Excel model tabs with green tie-out checks. A desk lamp, empty coffee cup, and printed redline sit beside the keyboard.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as an investment banking analyst on a live-deal execution day.",
+        "next": null,
+        "illustration": "/scenes/grading.png"
+      }
+    },
+    "devSkips": [
+      {
+        "label": "Skip to live deal call",
+        "targetNodeId": "associate_voice",
+        "prefillKey": "associate_voice_prefill"
+      },
+      {
+        "label": "Skip to night turn",
+        "targetNodeId": "briefing_night"
+      }
+    ]
+  },
+  "npcs": {
+    "priya": {
+      "id": "priya",
+      "name": "Priya Shah",
+      "role": "Investment Banking Associate",
+      "persona": "Priya is a second-year associate who owns day-to-day execution on HarborThread. She is direct, fast, and allergic to vague updates because she has to convert analyst work into client-ready answers. She respects analysts who are precise about what is done, what is not done, and what decision they need. She is under pressure from the VP but is not trying to intimidate the analyst; she wants clean thinking under time pressure.",
+      "voice": "direct, efficient, low tolerance for hand-waving"
+    },
+    "dana": {
+      "id": "dana",
+      "name": "Dana Ellis",
+      "role": "HarborThread CFO",
+      "persona": "Dana is the client CFO on HarborThread. She is practical, detail-oriented, and protective of buyer-facing language because overstating contract visibility can damage credibility. She respects bankers who separate confirmed facts from open management confirmations and can translate model details into plain business language.",
+      "voice": "calm, precise, executive, skeptical of overstatement"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Investment Banking Analyst: Live Deal Day",
+    "welcomeBody": "Brookline Ridge Capital is a fictional US middle-market investment bank that advises companies on M&A, capital raises, and strategic alternatives. You are a first-year analyst supporting a live sell-side process, which means your day is built around models, client materials, diligence, and fast professional communication.",
+    "steps": [
+      {
+        "label": "The Company",
+        "content": "Brookline Ridge helps founder-owned and sponsor-backed companies prepare for transactions. Its bankers build valuation analyses, buyer materials, diligence trackers, and client-ready presentations."
+      },
+      {
+        "label": "Your Role",
+        "content": "You are the junior analyst closest to the Excel model and PowerPoint pages. Your job is to keep details accurate and make review easy for the associate, VP, and MD."
+      },
+      {
+        "label": "The Challenge",
+        "content": "A live deal creates moving deadlines: client calls, buyer requests, senior comments, and late-night revisions all collide."
+      },
+      {
+        "label": "How You Win",
+        "content": "Prioritize by deal risk, communicate precisely, flag uncertainty early, and produce artifacts that a real banking team could use."
+      }
+    ]
+  },
+  "glossary": {
+    "Associate": "The banking team member above analyst who reviews analyst work, coordinates execution, and prepares materials for VP and senior banker review.",
+    "CIM": "Confidential Information Memorandum. A detailed marketing document sent to potential buyers in an M&A process after confidentiality agreements are in place.",
+    "Comps": "Comparable company analysis. A valuation method that compares the target company to similar public companies using trading multiples.",
+    "DCF": "Discounted Cash Flow. A valuation method that estimates a company's value from projected future cash flows discounted back to today.",
+    "Data Room": "A secure online workspace where deal documents, diligence responses, financial files, and legal materials are shared with approved buyers.",
+    "EBITDA": "Earnings before interest, taxes, depreciation, and amortization. A commonly used proxy for operating profitability in valuation work.",
+    "Live Deal": "An active transaction process with real client, buyer, diligence, and execution deadlines, as opposed to a speculative pitch.",
+    "MD": "Managing Director. A senior banker responsible for client relationships, transaction strategy, and winning or leading deal mandates.",
+    "Pitch Book": "A PowerPoint presentation used to win business, present strategic alternatives, or support client discussions.",
+    "Redline": "A marked-up document or presentation showing comments, edits, and revisions requested by reviewers.",
+    "Turn": "A focused round of revising deal materials to address reviewer comments, update linked files, export a clean version, and send status on what is complete or still open.",
+    "VP": "Vice President. The banker who typically manages day-to-day execution at a higher level than the associate and reviews materials before senior bankers."
+  },
+  "sample_answers": {
+    "model_audit": "1. Priority: High - valuation impact. Issue: Summary and slide 17 still use $67.0M FY25E EBITDA, but the bridge reflects the latest rebate normalization and supports $65.0M. Why it matters: the valuation base and client-call EBITDA bridge will not tie until the update flows through. Next action: ask Priya to confirm rebate treatment, then update Summary and slide 17. 2. Priority: High - valuation range impact. Issue: Zeta Systems shows 11.6x in the Comps tab while source backup supports 9.6x. Why it matters: correcting that row moves the median multiple from 8.3x to 8.1x and refreshes the valuation range. Next action: update the Zeta row and rerun the Summary valuation output. 3. Priority: Medium - MD review flag. Issue: DCF still uses 8.0%-9.0% WACC and 3.5% terminal growth even though the May 7 market note shows 9.0%-10.0% WACC and 2.5%-3.0% growth. Why it matters: the sensitivity page may look too aggressive in MD review, but it is a refresh flag rather than a full rebuild. Next action: refresh assumptions or flag the decision for Priya/VP review. 4. Priority: Talking-point / client-confirmation flag. Issue: Slide 31 still says top-three concentration is 35%, but the May 7 data-room schedule shows 42% and includes Atlas renewal and Crest PO-only notes. Why it matters: buyer Q&A could use stale concentration framing. Next action: update the talking point and get client confirmation on Atlas renewal and Crest contract status.",
+    "associate_update": "Priya - quick HarborThread review flags: two high-priority valuation items, one MD-review refresh, and one buyer talking-point flag. EBITDA bridge reflects the latest rebate normalization at $65.0M, but Summary and slide 17 still carry $67.0M. Zeta in Comps appears to use an old denominator, moving the median from 8.3x to 8.1x once corrected. DCF assumptions need May 7 market-note refresh. Customer concentration should be framed at 42%, with Atlas renewal and Crest PO status needing confirmation.",
+    "associate_voice_prefill": {
+      "freeTextResponses": {
+        "associate_update": "Priya - quick HarborThread review flags: two high-priority valuation items, one MD-review refresh, and one buyer talking-point flag. EBITDA bridge reflects the latest rebate normalization at $65.0M, but Summary and slide 17 still carry $67.0M. Zeta in Comps appears to use an old denominator, moving the median from 8.3x to 8.1x once corrected. DCF assumptions need May 7 market-note refresh. Customer concentration should be framed at 42%, with Atlas renewal and Crest PO status needing confirmation."
+      }
+    },
+    "diligence_triage_rationale": "I would handle EBITDA add-back support and top customer contract renewal detail first. Both are high-impact buyer diligence items that can affect valuation confidence and deal risk. EBITDA needs Priya and possibly client finance signoff; customer contracts need management input and maybe legal review before sharing.",
+    "turn_plan": "1. Deliverable: Valuation tie-out pages. Action: update Summary EBITDA, Slide 17 bridge, Slide 18 range, and Slide 21 comps so the management presentation reflects Model v24b and the corrected Zeta row. Dependency: Priya confirms rebate treatment and reviews the comps correction. Done check: model, slides, source note, and PDF all show the same EBITDA, median multiple, and valuation range. 2. Deliverable: Customer concentration narrative. Action: update Slide 31, speaker notes, and Appendix B so Top 3 concentration is 42% and Atlas/Crest language is not overstated. Dependency: Marcus/Priya approve buyer-facing wording and client confirmation remains clearly flagged. Done check: no stale 35% language remains and every customer statement traces to the May 7 schedule. 3. Deliverable: DCF and market-growth review flags. Action: refresh or clearly flag the DCF sensitivity, add source support, and tighten the market-growth page and chart after critical tie-outs. Dependency: Priya/VP decide whether to use the May 7 market note; Elena confirms the growth-story tone. Done check: assumptions, chart label, source footnotes, and bullets are consistent and unsupported claims are removed. 4. Deliverable: Client-facing export and status package. Action: fix Slides 8 and 22, save PPT as MP v25, export PDF only after tie-outs, and send complete / open / needs review status. Dependency: latest Model v24b export and Priya review of any unresolved mismatch. Done check: PPT, PDF, and model filenames are correct, client-facing pages tie, and open items are named in the status note.",
+    "final_status": "Priya / Marcus - sent HarborThread MP v25 PDF and PPT plus Model v24b. Completed: comps tie-out, EBITDA bridge footnote, customer concentration page, and market source backup. Open: need Priya review on rebate add-back treatment and Marcus review on slide 31 buyer framing. Files are in the deal folder under 2026-05-07 night turn. I will check email at 7:30 AM for any morning comments."
+  },
+  "workMixDesign": {
+    "sourceDerivedSummary": "Investment banking analyst work is primarily digital artifact production: Excel valuation models, PowerPoint client materials, diligence trackers, source backup, and concise internal communication under shifting live-deal deadlines. The role has limited physical procedural work, but it does involve sustained desk-tool manipulation, cognitive prioritization, written status artifacts, spoken team updates, and availability around review latency.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "minor",
+        "sourceEvidence": [
+          "Research notes describe the work as office-based analysis, modeling, presentation production, diligence tracking, and review cycles rather than hands-on field or equipment procedures.",
+          "The live-deal day centers on manipulating spreadsheets, decks, trackers, and messages in a banking bullpen or conference room."
+        ],
+        "simulatorImplication": "The simulator represents physical context through office and meeting-room visuals, while active work happens on digital work surfaces rather than a physical playground."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET and practitioner sources emphasize financial analysis, valuation, monitoring company and market information, preparing materials, and supporting transaction execution.",
+          "Reddit and video source summaries repeatedly describe analysts building models, updating decks, tracking diligence requests, and turning comments in Excel, PowerPoint, Outlook, Slack, and data rooms."
+        ],
+        "simulatorImplication": "Most active scenes use desk-work surfaces: spreadsheet audit logs, Slack updates, diligence matrices, kanban-style comment plans, and email status notes."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "The role requires deciding what matters first when live-deal requests, senior banker asks, valuation risk, and buyer diligence collide.",
+          "Practitioner accounts stress prioritizing live-deal accuracy and managing sudden fire drills after senior review comments arrive."
+        ],
+        "simulatorImplication": "The player must triage work by client-call risk, valuation impact, buyer sensitivity, dependencies, and review readiness."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Analyst output often becomes written artifacts: audit notes, Slack status updates, diligence responses, workplans, emails, and client-ready presentation pages.",
+          "The source digest highlights concise written updates that separate completed items, open questions, and reviewer decisions."
+        ],
+        "simulatorImplication": "Constructed-response scenes require concise banking artifacts that are useful to associates and VPs, not generic reflection paragraphs."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Analysts coordinate with associates, VPs, MDs, clients, lawyers, accountants, and company management teams, including quick pre-call check-ins.",
+          "The day-in-the-life sources describe review conversations and rapid upward communication as part of execution work."
+        ],
+        "simulatorImplication": "Two focused voice meetings test concise upward communication before the client call and then a client-safe answer on the actual call without turning the simulator into a sales roleplay."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Practitioners describe waiting for senior banker comments, then receiving late-night requests that displace planned work.",
+          "The job includes availability time, review latency, sudden deadline changes, and switching between model, deck, diligence, and messaging tasks."
+        ],
+        "simulatorImplication": "Briefings create the rhythm of quiet windows followed by urgent comment turns, while active scenes ask the player to impose order on the work."
+      }
+    },
+    "simulatorPlan": "The simulator should feel like a live-deal execution day, not a finance quiz. It uses one bounded MCQ for triage, then emphasizes desk artifacts: an Excel-style valuation audit, a Slack associate update, an in-person spoken pre-call check-in, a live client-call answer, a data-room diligence matrix, a night-turn workplan, and a final Outlook status email.",
+    "activeSceneMixRationale": "A real analyst spends most of the day producing and revising digital artifacts while making judgment calls under review pressure. The active mix therefore favors structured digital deliverables and communication scenes, with office visuals and briefings carrying context rather than physical manipulation."
+  },
+  "rubric": {
+    "simulation_id": "investment-banking-analyst-generalist-m-a-and-capital-markets-execution-investment-banking-advisory-and-capital-markets-in-the-united-states-established-mid-to-large-investment-banking-company-in-america-entry-level-junior-analyst",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の優先判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: 複数の依頼が重なる中で、クライアント影響、数値リスク、上司への連絡、締切を見て最初の動きを選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "モデル監査",
+            "evidenceSceneIds": [
+              "model_audit"
+            ],
+            "rubric_text": "9-10: 評価パックの数字、前提、リンク、違和感を検証し、修正すべき箇所と未確定事項を分けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "アソシエイト更新文",
+            "evidenceSceneIds": [
+              "associate_update"
+            ],
+            "rubric_text": "9-10: 上司に対して、発見事項、影響、未確認点、次の対応を簡潔に報告できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "アソシエイト確認通話",
+            "evidenceSceneIds": [
+              "associate_voice"
+            ],
+            "rubric_text": "9-10: 実際の通話で、修正方針、優先順位、依頼事項、リスクを確認し、曖昧さを残しすぎない。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "クライアント通話",
+            "evidenceSceneIds": [
+              "client_call"
+            ],
+            "rubric_text": "9-10: 実際の通話で、確定情報と未確定情報を区別し、過度な安心や断定を避けながら信頼を保てている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "買い手調査優先順位",
+            "evidenceSceneIds": [
+              "diligence_matrix"
+            ],
+            "rubric_text": "9-10: 買い手からの質問を、重要度、答えられる根拠、残リスクで整理し、優先順位づけできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "作業計画",
+            "evidenceSceneIds": [
+              "turn_plan"
+            ],
+            "rubric_text": "9-10: 残り時間で何を直し、誰に確認し、どこを保留するかを現実的な順序で計画できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "最終報告",
+            "evidenceSceneIds": [
+              "final_status"
+            ],
+            "rubric_text": "9-10: 最終報告だけを根拠に、完了事項、未確定事項、残リスク、次の依頼を明確に伝えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

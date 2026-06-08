@@ -1,0 +1,1302 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "The selected Brand Strategist transcripts describe a computer-and-meeting role centered on brand audits, competitive research, client or stakeholder meetings, customer interviews, messaging, and turning messy inputs into an actionable brand point of view. O*NET Marketing Managers is only an adjacent baseline for market research, team communication, strategy, written communication, and computer-heavy work. Reddit threads are used as supplemental signals that strategy should be evidence-backed and useful, not just a vague deck.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "The selected videos show desk work, meetings, audits, content planning, and interviews rather than hands-on product, equipment, or retail-floor work. [yt:DXMdGgYtq7M] [yt:hf-VgogTmzs]",
+          "O*NET's adjacent baseline describes indoor computer work, email, meetings, and written communication as common. [onet]"
+        ],
+        "simulatorImplication": "No physical_playground scene is needed; realism comes from visible brand briefs, competitor snapshots, research notes, Slack, docs, and voice meeting contexts."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "Brand Strategist videos emphasize audits, meetings, content/strategy work, research, and client-ready strategy artifacts. [yt:n9hh-6d5SYg] [yt:DXMdGgYtq7M]",
+          "O*NET lists computer work, email, presentations, spreadsheets, graphics tools, and video conferencing for the adjacent marketing-manager category. [onet]"
+        ],
+        "simulatorImplication": "Most active scenes use desk-work surfaces: Slack, structured audit table, Miro-style matrix, document editor, and a Canva-like static post builder."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Sources describe brand strategy as translating client, audience, and competitive input into direction for brand identity, messaging, and behavior. [yt:rYnv4skCsNg]",
+          "Reddit discussions warn that strategy frameworks are useful only when applied to evidence and decisions. [reddit:1snimff]"
+        ],
+        "simulatorImplication": "The student must diagnose audience tensions, prioritize evidence, separate observation from implication, and avoid trend-chasing without strategic fit."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "Brand strategy work includes research notes, competitive audits, messaging, strategy decks, and preparing discussion materials for senior leads and clients. [yt:n9hh-6d5SYg] [yt:DXMdGgYtq7M]",
+          "Career discussions emphasize showing strategic thinking through audits, briefs, positioning maps, and recommendations. [reddit:1tm1gfy] [reddit:qnhdmn]"
+        ],
+        "simulatorImplication": "The simulator requires written audit notes, interview questions, a positioning brief, a Slack strategy response, and a low-fidelity static post concept with rationale."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "The videos describe meetings with strategy leads, clients, designers, content teams, and customer interviewees. [yt:DXMdGgYtq7M] [yt:hf-VgogTmzs] [yt:miVH3vSoRwo]",
+          "O*NET's adjacent category includes daily phone conversations, team discussion, and communication with people outside the organization. [onet]"
+        ],
+        "simulatorImplication": "Include one remote voice meeting where the student uses evidence and prepared questions to align a stakeholder."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Day-in-the-life videos show changing meetings, impromptu calls, client work, strategy calls, and competing deliverables. [yt:hf-VgogTmzs] [yt:miVH3vSoRwo]",
+          "Reddit discussions describe pressure for strategy to stay useful under speed and ambiguity. [reddit:15jlpol] [reddit:1n23zta]"
+        ],
+        "simulatorImplication": "Use Slack pings and stakeholder pressure to create context switching, but keep the active work focused on making strategy artifacts."
+      }
+    },
+    "simulatorPlan": "The active scene mix includes one Slack MCQ with four distinct consequences, two structured desk artifacts, one priority matrix, one free-text document deliverable, one remote voice meeting, one typed Slack strategy response, and one static post concept builder. The mix keeps YouTube-described Brand Strategist work at the core: audits, research synthesis, interviews, stakeholder alignment, messaging, and translating insight into usable creative direction.",
+    "activeSceneMixRationale": "Active scenes are first_move, audit_table, insight_matrix, interview_prep, stakeholder_call, positioning_brief, creative_slack, and final_note. Constructed-response work dominates; MCQ is limited to a realistic first-move decision."
+  },
+  "storyline": {
+    "gameTitle": "Brand Strategist Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Diagnose"
+      },
+      {
+        "num": 2,
+        "label": "Align"
+      },
+      {
+        "num": 3,
+        "label": "Synthesize"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Competitive audit",
+        "targetNodeId": "audit_table",
+        "prefillKey": "audit_table"
+      },
+      {
+        "label": "Stakeholder call",
+        "targetNodeId": "stakeholder_call",
+        "prefillKey": "interview_prep"
+      },
+      {
+        "label": "Positioning brief",
+        "targetNodeId": "positioning_brief",
+        "prefillKey": "positioning_brief"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Aurelia & Co.",
+        "content": "You are a Junior Brand Strategist on the global Brand Strategy team at Aurelia & Co., a fictional fashion brand known for elevated everyday apparel. Today you are helping shape the strategic point of view for a capsule refresh called Everyday Icons.",
+        "imageBrief": "First-person view of a junior brand strategist desk at a global fashion brand office. A laptop shows a warm cream dashboard titled Everyday Icons Strategy Sprint with tabs for Brand Brief, Competitor Audit, Audience Notes, and Positioning Brief. Around the laptop are fabric swatches, a notebook with insight arrows, and printed lookbook thumbnails. The scene is stylish but work-focused, with no real brand logos.",
+        "next": "everyday_icons_workspace",
+        "illustration": "/scenes/intro.png"
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With Your First Move",
+        "content": "Mara checks whether you understand what brand strategy work needs first.",
+        "appWindow": "slack",
+        "windowTitle": "#everyday-icons-strategy",
+        "slackMessages": [
+          {
+            "sender": "Mara Chen",
+            "role": "Senior Brand Strategy Lead",
+            "timestamp": "8:49 AM",
+            "avatarInitials": "MC",
+            "content": "Quick gut check: what are you doing first with the workspace? I want strategic progress, not deck theater."
+          }
+        ],
+        "prompt": "Choose the Slack reply you would send.",
+        "options": [
+          {
+            "id": "frame_audit",
+            "label": "I will frame the audience tension, then audit competitor signals for what Aurelia can credibly own.",
+            "branchFlag": "frame_audit"
+          },
+          {
+            "id": "deck_shell",
+            "label": "I will open the strategy deck and build a polished page shell so we have something ready to show.",
+            "branchFlag": "deck_shell"
+          },
+          {
+            "id": "trend_hunt",
+            "label": "I will scan TikTok and competitor posts for the loudest trend we can borrow for the campaign.",
+            "branchFlag": "trend_hunt"
+          },
+          {
+            "id": "survey_dump",
+            "label": "I will send a broad question list to merchandising and creative so they can tell us what the strategy should be.",
+            "branchFlag": "survey_dump"
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "frame_audit": "redirect_frame",
+            "deck_shell": "redirect_deck",
+            "trend_hunt": "redirect_trend",
+            "survey_dump": "redirect_survey"
+          },
+          "default": "redirect_frame"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Everyday Icons source workspace",
+              "whereVisible": "everyday_icons_workspace.sourceWorkspace",
+              "summary": "Brand context, business question, audience notes, competitor snapshots, social listening, guardrails, and Mara's review."
+            }
+          ],
+          "studentAction": "Choose a first Slack response that protects the strategic work sequence.",
+          "outputArtifact": {
+            "id": "first_move",
+            "label": "First-move Slack choice",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mc.first_move"
+          ],
+          "continuity": [
+            "Branch consequence redirects converge into the competitive audit."
+          ],
+          "authenticityCheck": "Junior strategists often need to show they know how to start from evidence and framing instead of polish or trend mimicry."
+        }
+      },
+      "redirect_frame": {
+        "id": "redirect_frame",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Mara Confirms the Path",
+        "content": "Your sent reply: \"{{mc.first_move.label}}\"\n\nMara replies: \"Good. Start with the tension and competitor evidence. I need to know what we can own, not what everyone else is already saying.\"",
+        "slackMessages": [
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:50 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Mara Chen",
+            "role": "Senior Brand Strategy Lead",
+            "timestamp": "8:51 AM",
+            "avatarInitials": "MC",
+            "content": "Good. Start with the tension and competitor evidence. I need to know what we can own, not what everyone else is already saying."
+          }
+        ],
+        "actionLabel": "Open Audit Workspace",
+        "imageBrief": "A cream Slack thread on a laptop in the Aurelia office, showing the student's message and Mara's confirmation. The surrounding desk has source workspace pages and fabric swatches.",
+        "next": "audit_table",
+        "illustration": "/scenes/redirect_frame.png"
+      },
+      "redirect_deck": {
+        "id": "redirect_deck",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Mara Stops the Deck Theater",
+        "content": "Your sent reply: \"{{mc.first_move.label}}\"\n\nMara replies: \"Hold the deck shell. A beautiful empty page will not help Theo or merchandising make a decision. Give me the tension, evidence, and implications first.\"",
+        "slackMessages": [
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:50 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Mara Chen",
+            "role": "Senior Brand Strategy Lead",
+            "timestamp": "8:52 AM",
+            "avatarInitials": "MC",
+            "content": "Hold the deck shell. A beautiful empty page will not help Theo or merchandising make a decision. Give me the tension, evidence, and implications first."
+          }
+        ],
+        "actionLabel": "Open Audit Workspace",
+        "imageBrief": "A laptop with a blank strategy deck minimized and a Slack correction from Mara visible. Cream interface, fashion office desk, no real brand logos.",
+        "next": "audit_table",
+        "illustration": "/scenes/redirect_deck.png"
+      },
+      "redirect_trend": {
+        "id": "redirect_trend",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Mara Redirects the Trend Hunt",
+        "content": "Your sent reply: \"{{mc.first_move.label}}\"\n\nMara replies: \"Trends can be evidence, but not the strategy. If we borrow the loudest thing, Aurelia disappears. Audit what competitors are doing, then name the white space.\"",
+        "slackMessages": [
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:50 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Mara Chen",
+            "role": "Senior Brand Strategy Lead",
+            "timestamp": "8:52 AM",
+            "avatarInitials": "MC",
+            "content": "Trends can be evidence, but not the strategy. If we borrow the loudest thing, Aurelia disappears. Audit what competitors are doing, then name the white space."
+          }
+        ],
+        "actionLabel": "Open Audit Workspace",
+        "imageBrief": "A cream Slack thread with Mara redirecting a trend-first approach. The desk shows competitor snapshots and a note reading white space, not copycat.",
+        "next": "audit_table",
+        "illustration": "/scenes/redirect_trend.png"
+      },
+      "redirect_survey": {
+        "id": "redirect_survey",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Mara Narrows the Ask",
+        "content": "Your sent reply: \"{{mc.first_move.label}}\"\n\nMara replies: \"We will need stakeholders, but a broad question dump makes them do our job. First build a hypothesis, then ask only the questions that change the answer.\"",
+        "slackMessages": [
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:50 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Mara Chen",
+            "role": "Senior Brand Strategy Lead",
+            "timestamp": "8:53 AM",
+            "avatarInitials": "MC",
+            "content": "We will need stakeholders, but a broad question dump makes them do our job. First build a hypothesis, then ask only the questions that change the answer."
+          }
+        ],
+        "actionLabel": "Open Audit Workspace",
+        "imageBrief": "A laptop showing a Slack correction from Mara about narrowing stakeholder asks. Source workspace and sticky notes sit on a fashion strategy desk.",
+        "next": "audit_table",
+        "illustration": "/scenes/redirect_survey.png"
+      },
+      "audit_table": {
+        "id": "audit_table",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Build the Competitive Audit",
+        "content": "Use the source workspace to turn competitor and audience signals into strategy notes. The useful artifact is not a list of who is cool; it is a table of observations, implications, and risks.",
+        "prompt": "Create three audit rows. Each row should name one competitor or audience signal, what you observed, what it implies for Aurelia, and the risk if the team overreacts.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "Everyday Icons - competitive audit",
+        "definition": {
+          "itemLabel": "Audit Row",
+          "bindingKey": "audit_table",
+          "initialCount": 3,
+          "minItems": 3,
+          "maxItems": 5,
+          "fields": [
+            {
+              "key": "signal",
+              "label": "Competitor or audience signal",
+              "placeholder": "e.g., Veyra Studio's modular capsule styling",
+              "multiline": false
+            },
+            {
+              "key": "observation",
+              "label": "Observation",
+              "placeholder": "Describe what is visible in the workspace without jumping to a recommendation.",
+              "multiline": true,
+              "rows": 2
+            },
+            {
+              "key": "implication",
+              "label": "Implication for Aurelia",
+              "placeholder": "Explain what this means for positioning, messaging, or creative direction.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "risk",
+              "label": "Risk or caveat",
+              "placeholder": "Name what could go wrong if Aurelia copies this signal or overreads it.",
+              "multiline": true,
+              "rows": 2
+            }
+          ]
+        },
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "spreadsheet",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Everyday Icons source workspace",
+              "whereVisible": "everyday_icons_workspace.sourceWorkspace and section reference drawer",
+              "summary": "Audience notes, competitor snapshots, social-listening excerpts, guardrails, and Mara's review."
+            }
+          ],
+          "studentAction": "Write audit rows that separate observation, implication, and risk.",
+          "outputArtifact": {
+            "id": "audit_table",
+            "label": "Competitive audit table",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.audit_table"
+          ],
+          "continuity": [
+            "Audit observations feed the insight matrix and positioning brief."
+          ],
+          "authenticityCheck": "Competitive and brand audits are common brand-strategy work and are directly represented in the selected sources."
+        },
+        "next": "insight_matrix"
+      },
+      "insight_matrix": {
+        "id": "insight_matrix",
+        "type": "priority_matrix",
+        "section": 1,
+        "title": "Prioritize the Insight Signals",
+        "content": "Mara needs to know which signals deserve attention before the stakeholder call. Place the signals by decision impact and evidence confidence, then explain what you would pressure-test first.",
+        "appWindow": "miro",
+        "windowTitle": "Everyday Icons insight prioritization",
+        "bindingKey": "insight_matrix",
+        "rationaleBindingKey": "insight_matrix_rationale",
+        "rationalePrompt": "Which signal would you pressure-test first, and what decision would it change?",
+        "rationalePlaceholder": "I would pressure-test... because it could change... The first validation step would be...",
+        "referenceTitle": "Prioritization criteria",
+        "referenceContent": "High decision impact means the signal could change the positioning, messaging pillars, creative guardrails, or stakeholder recommendation.\n\nHigh confidence means the signal is supported by multiple workspace inputs or is directly tied to the target audience tension.\n\nLower priority means the signal may be interesting but does not change today's strategic choice.",
+        "xAxis": {
+          "label": "Evidence confidence",
+          "lowLabel": "Thin",
+          "highLabel": "Supported"
+        },
+        "yAxis": {
+          "label": "Decision impact",
+          "lowLabel": "Low",
+          "highLabel": "High"
+        },
+        "items": [
+          {
+            "id": "quiet_sameness",
+            "label": "Quiet luxury sameness"
+          },
+          {
+            "id": "quality_proof",
+            "label": "Need proof of quality"
+          },
+          {
+            "id": "office_to_dinner",
+            "label": "Office-to-dinner versatility"
+          },
+          {
+            "id": "creator_speed",
+            "label": "Creator-first drop speed"
+          },
+          {
+            "id": "heritage_age",
+            "label": "Heritage feels older"
+          },
+          {
+            "id": "loud_social",
+            "label": "Loud social trends"
+          },
+          {
+            "id": "fewer_better",
+            "label": "Fewer better pieces"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "miro",
+          "inputArtifacts": [
+            {
+              "id": "audit_table",
+              "label": "Competitive audit rows",
+              "whereVisible": "previous scene output plus everyday_icons_workspace.sourceWorkspace",
+              "summary": "Student observations and source workspace signals."
+            },
+            {
+              "id": "prioritization_criteria",
+              "label": "Prioritization criteria",
+              "whereVisible": "insight_matrix.referenceContent",
+              "summary": "Decision impact and evidence confidence criteria."
+            }
+          ],
+          "studentAction": "Sort research signals on a decision-impact / evidence-confidence matrix and write a rationale.",
+          "outputArtifact": {
+            "id": "insight_matrix",
+            "label": "Insight prioritization matrix plus rationale",
+            "format": "priority_matrix"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.insight_matrix",
+            "freeTextResponses.insight_matrix_rationale"
+          ],
+          "continuity": [
+            "Priority rationale informs the stakeholder call and positioning brief."
+          ],
+          "authenticityCheck": "Brand strategy requires prioritizing which evidence changes the recommendation, not simply collecting signals."
+        },
+        "next": "interview_prep"
+      },
+      "interview_prep": {
+        "id": "interview_prep",
+        "type": "free_text",
+        "section": 2,
+        "title": "Prepare Stakeholder Questions",
+        "content": "Elena Rossi, North America Merchandising Director, joins a quick remote call at 11:30. She cares about sell-through and wants the capsule to feel commercially sharp. Prepare questions that help test the strategy instead of asking her to invent it for you.",
+        "prompt": "Draft 3 concise questions for Elena. Avoid leading questions. Cover audience behavior, product proof, and what would make the positioning useful for stores or wholesale partners.",
+        "placeholder": "- What are you seeing in how younger customers style refined basics right now?\n- ...",
+        "minWords": 35,
+        "maxWords": 110,
+        "appWindow": "doc",
+        "windowTitle": "Stakeholder call prep - Elena Rossi",
+        "appTabs": [
+          {
+            "id": "source_workspace",
+            "label": "Source Workspace",
+            "content": "Everyday Icons source reminders\n\nAudience tension:\n- Younger customers want fewer better pieces.\n- They worry heritage fashion feels too polished, too expensive, and disconnected from real daily movement.\n- They want proof of fabric, fit, styling range, and durability.\n\nStrategic risk:\n- Copying trend-led competitors makes Aurelia less distinctive.\n- Generic quiet luxury makes the capsule feel interchangeable.\n\nMara's bar:\n- Ask only questions that change the answer.\n- Keep observation, implication, and caveat separate."
+          },
+          {
+            "id": "stakeholder_context",
+            "label": "Elena Context",
+            "content": "Elena Rossi\nRole: North America Merchandising Director\n\nWhat she knows:\n- Store and wholesale partner reactions to the line.\n- Which product stories associates can explain quickly.\n- Price, fit, and styling objections from younger customers.\n\nLikely pressure:\n- She may push for a louder trend hook if she thinks the line needs traffic.\n- She will respond better to questions that connect positioning to product proof and commercial use."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "doc",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Everyday Icons source workspace",
+              "whereVisible": "interview_prep.appTabs.source_workspace",
+              "summary": "Audience tension, strategic risks, and Mara's review."
+            },
+            {
+              "id": "elena_context",
+              "label": "Elena stakeholder context",
+              "whereVisible": "interview_prep.appTabs.stakeholder_context",
+              "summary": "Merchandising role, knowledge, and likely pressure."
+            }
+          ],
+          "studentAction": "Prepare non-leading stakeholder interview questions.",
+          "outputArtifact": {
+            "id": "interview_prep",
+            "label": "Stakeholder question list",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.interview_prep"
+          ],
+          "continuity": [
+            "Questions remain visible in stakeholder_call via prepNoteKey."
+          ],
+          "authenticityCheck": "Sources describe interviews and stakeholder conversations as part of brand strategy work."
+        },
+        "next": "stakeholder_call"
+      },
+      "stakeholder_call": {
+        "id": "stakeholder_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Remote Call With Merchandising",
+        "content": "Elena joins from the North America merchandising office. Use your prep notes, ask focused questions, and explain the emerging strategic direction without overclaiming.",
+        "npcId": "elena",
+        "meetingMode": "remote",
+        "voiceName": "Aoede",
+        "prepNoteKey": "interview_prep",
+        "prepNoteTitle": "Your stakeholder questions",
+        "prepReferenceTitle": "Call facts",
+        "prepReferenceContent": "Elena can speak to customer reactions, product proof, and store usefulness. She may push for a louder trend hook. Your job is to test what changes the positioning, not to promise a campaign direction.",
+        "goalPrompt": "You are Elena Rossi, North America Merchandising Director at Aurelia & Co. The student is a junior brand strategist calling about the Everyday Icons capsule. Start with a concise greeting and say you are worried the line may be too quiet to drive traffic. Answer the student's questions with practical merchandising context: younger customers ask why pieces cost more, store teams need easy proof points, and wholesale partners like versatility stories. If the student proposes copying loud trend-led competitors, challenge that fit. If they connect product proof, ease, and distinctive Aurelia restraint, respond positively. Leave room for the student to ask three prepared questions plus follow-ups; after about 7-8 student turns, close with a brief recommendation and do not ask another follow-up question.",
+        "meetingContext": "Remote video call with Elena Rossi. The student has prepared stakeholder questions in the prior document. The strategic issue is how Everyday Icons can feel relevant to 24-34 style-conscious customers without copying trend-led competitors. Keep the conversation realistic, businesslike, and useful for a junior strategist.",
+        "minTurns": 3,
+        "maxTurns": 8,
+        "initialMessages": [
+          {
+            "role": "npc",
+            "content": "Hi {{playerName}}, I have about ten minutes. My worry is simple: Everyday Icons is beautiful, but I am not sure it has enough of a hook for younger customers. What do you need from me?"
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "remote voice meeting",
+          "inputArtifacts": [
+            {
+              "id": "interview_prep",
+              "label": "Prepared stakeholder questions",
+              "whereVisible": "stakeholder_call.prepNoteKey",
+              "summary": "Student's question list from the prior scene."
+            },
+            {
+              "id": "call_facts",
+              "label": "Call facts",
+              "whereVisible": "stakeholder_call.prepReferenceContent",
+              "summary": "Elena's role, likely pressure, and what the call should test."
+            }
+          ],
+          "studentAction": "Ask focused questions and explain the emerging strategy in a remote stakeholder call.",
+          "outputArtifact": {
+            "id": "stakeholder_call",
+            "label": "Stakeholder call transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "transcript.stakeholder_call"
+          ],
+          "continuity": [
+            "Call evidence feeds positioning_brief and final_note."
+          ],
+          "authenticityCheck": "Brand strategists regularly use stakeholder and client conversations to shape and sell through strategy."
+        },
+        "next": "positioning_brief",
+        "illustration": "/scenes/stakeholder_call.png",
+        "imageBrief": "Remote video-call view on a laptop in the Aurelia office. Elena Rossi appears in one large video tile from a merchandising office with racks and neutral fashion samples behind her. The student's own face is not visible; only a small muted self tile edge may appear. A side panel shows a compact note titled Your stakeholder questions. No real video-call logos.",
+        "playerGoal": "Use up to 8 turns to ask your three prepared questions, follow up on Elena's answers, and explain the emerging Everyday Icons direction without promising a finished campaign.",
+        "endpoint": "End once you have at least two decision-relevant merchandising insights and have confirmed what the positioning brief should test next.",
+        "successCriteria": "You ask non-leading questions, handle the push for a louder trend hook, and leave with evidence you can use in the positioning brief."
+      },
+      "positioning_brief": {
+        "id": "positioning_brief",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Write the Positioning Brief",
+        "content": "Now turn the research and stakeholder input into a brief Mara can use with creative, social, and merchandising. Keep the strategy specific enough to guide choices.",
+        "prompt": "Complete the positioning brief. Use evidence from the workspace, your audit, prioritization, and stakeholder call.",
+        "appWindow": "doc",
+        "windowTitle": "Everyday Icons - positioning brief",
+        "definition": {
+          "itemLabel": "Brief Section",
+          "bindingKey": "positioning_brief",
+          "initialCount": 1,
+          "minItems": 1,
+          "maxItems": 1,
+          "fields": [
+            {
+              "key": "audience",
+              "label": "Audience",
+              "placeholder": "Who is this for? Be specific beyond age.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "tension",
+              "label": "Audience tension",
+              "placeholder": "What tension should the brand solve?",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "opportunity",
+              "label": "Brand opportunity",
+              "placeholder": "What can Aurelia credibly own that competitors do not?",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "positioning",
+              "label": "Positioning statement",
+              "placeholder": "For [audience], Everyday Icons is... because...",
+              "multiline": true,
+              "rows": 4
+            },
+            {
+              "key": "pillars",
+              "label": "Messaging pillars",
+              "placeholder": "List 2-3 pillars with proof points.",
+              "multiline": true,
+              "rows": 5
+            },
+            {
+              "key": "guardrails",
+              "label": "Creative guardrails",
+              "placeholder": "What should creative do and avoid?",
+              "multiline": true,
+              "rows": 4
+            }
+          ]
+        },
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "doc",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Everyday Icons source workspace",
+              "whereVisible": "everyday_icons_workspace.sourceWorkspace and section reference drawer",
+              "summary": "Audience notes, social-listening excerpts, competitor snapshots, and guardrails."
+            },
+            {
+              "id": "audit_table",
+              "label": "Competitive audit",
+              "whereVisible": "student output from audit_table",
+              "summary": "Observation, implication, and risk rows."
+            },
+            {
+              "id": "stakeholder_call",
+              "label": "Stakeholder call transcript",
+              "whereVisible": "previous voice meeting transcript",
+              "summary": "Merchandising context and validation from Elena."
+            }
+          ],
+          "studentAction": "Write a structured brand positioning brief.",
+          "outputArtifact": {
+            "id": "positioning_brief",
+            "label": "Positioning brief",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.positioning_brief"
+          ],
+          "continuity": [
+            "Positioning brief feeds creative_slack and final_note."
+          ],
+          "authenticityCheck": "Positioning statements, messaging pillars, and guardrails are realistic brand-strategy deliverables."
+        },
+        "next": "creative_slack"
+      },
+      "creative_slack": {
+        "id": "creative_slack",
+        "type": "slack_thread",
+        "section": 3,
+        "title": "Respond to Creative Pushback",
+        "content": "Theo, the Creative Director, sees the positioning brief and worries it may not be bold enough for social. Reply with a strategy-grounded response that protects the point of view while leaving room for creative exploration.",
+        "appWindow": "slack",
+        "windowTitle": "#everyday-icons-creative",
+        "npcId": "theo",
+        "initialMessages": [
+          {
+            "role": "npc",
+            "npcName": "Theo Alvarez",
+            "content": "I like the product proof idea, but are we being too restrained? Luma Lane is winning attention because they are louder. Should Everyday Icons lean into a more meme-able social hook?"
+          },
+          {
+            "role": "npc",
+            "npcName": "Mara Chen",
+            "content": "{{playerName}}, can you answer Theo from the strategy POV before our 4 PM? Keep it useful, not defensive."
+          }
+        ],
+        "playerGoal": "Reply with a concise strategy response that names the audience tension, explains why Aurelia should not simply copy loud competitors, and suggests how creative can still make the idea culturally alive.",
+        "goalPrompt": "Evaluate the student's Slack reply to Theo. A strong reply is diplomatic and specific: it acknowledges the need for cultural energy, protects Aurelia's distinctive positioning, references audience evidence or stakeholder input, and offers a creative direction such as proof-led ease, styling range, or quiet confidence with visible product reasons. A weak reply either shuts Theo down, agrees to copy a competitor, or uses vague brand words with no evidence. After one student reply, respond with a brief closing acknowledgment and do not ask a follow-up question.",
+        "maxTurns": 1,
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "positioning_brief",
+              "label": "Positioning brief",
+              "whereVisible": "previous scene output",
+              "summary": "Audience, tension, opportunity, messaging pillars, and guardrails."
+            },
+            {
+              "id": "creative_pushback",
+              "label": "Creative Slack thread",
+              "whereVisible": "creative_slack.initialMessages",
+              "summary": "Theo's concern that the brief may not be bold enough for social."
+            }
+          ],
+          "studentAction": "Send a strategy-grounded Slack response to creative pushback.",
+          "outputArtifact": {
+            "id": "creative_slack",
+            "label": "Creative Slack response",
+            "format": "slack_thread"
+          },
+          "rubricEvidence": [
+            "npcConversations.theo"
+          ],
+          "continuity": [
+            "Response sets up the final static post concept for Mara."
+          ],
+          "authenticityCheck": "Brand strategists often have to translate strategy into useful guidance for creative partners without becoming defensive."
+        },
+        "next": "final_note"
+      },
+      "final_note": {
+        "id": "final_note",
+        "type": "campaign_studio",
+        "section": 3,
+        "title": "Build the Static Launch Post",
+        "content": "It is 3:38 PM. Mara has finalized the strategic POV for the 4 PM alignment. She needs a quick static post concept that makes the campaign direction tangible without pretending to be final creative. Start by choosing the campaign theme color/background, then build the message hierarchy around it.",
+        "prompt": "Assemble one 4:5 vertical static social post concept. Choose a campaign theme color/background that can carry proof-led ease: restrained enough for Aurelia, energetic enough for social, and readable with the copy. Then choose one headline/support pair, text color, text sizes, and up to three movable stickers. Use the rationale to explain why the theme color and assets express proof-led ease.",
+        "windowTitle": "Aurelia Campaign Studio - Everyday Icons",
+        "referenceTitle": "Mara's Creative Direction",
+        "referenceContent": "Final POV: Everyday Icons should signal proof-led ease for younger professionals building fewer, better wardrobes.\n\nCampaign theme color direction:\n- Lead with deep sage if the concept needs one campaign color: restrained, ownable for Aurelia, strong enough for social, and readable with cream text.\n- Warm cream can feel brand-safe but too quiet or catalog-like.\n- Sunlit yellow has social brightness but creates contrast risk and can feel less premium.\n- City neutral supports daily context but may feel generic unless the proof cues do extra work.\n\nMust show:\n- Daily versatility without shouting.\n- Visible product proof: fabric, fit, movement, styling range.\n- A restrained Aurelia tone with enough energy for social.\n- A readable text hierarchy against the chosen theme color.\n\nAvoid:\n- Meme-first trend chasing.\n- Discount or hype cues.\n- Generic luxury symbols.\n- Text that disappears into the background.",
+        "backgroundOptions": [
+          {
+            "id": "warm_studio",
+            "label": "Warm Cream Catalog",
+            "assetPath": "/campaign-assets/backgrounds/warm-studio.png",
+            "thumbnailColor": "#D8C59D",
+            "accentColor": "#F7F1E3",
+            "tone": "light",
+            "strategicFit": "weak",
+            "warning": "Brand-safe, but too product-catalog and quiet for the social alignment ask.",
+            "prompt": "4:5 vertical social post background for a refined fashion capsule: warm cream studio flatlay with folded trench fabric, knit texture, subtle shadow, generous negative space for headline in the upper left, no text, no logo."
+          },
+          {
+            "id": "sunlit_yellow",
+            "label": "Sunlit Yellow Risk",
+            "assetPath": "/campaign-assets/backgrounds/sunlit-yellow.png",
+            "thumbnailColor": "#F3E58B",
+            "accentColor": "#F7F1E3",
+            "tone": "light",
+            "strategicFit": "weak",
+            "warning": "Bright and social, but white or cream text will be hard to read here and the tone may feel less premium.",
+            "prompt": "4:5 vertical social post background for a fashion lookbook: pale sunlit yellow wall, soft cream garment edge, bright airy styling, lots of open space, no text, no logo. Designed to create a risky low-contrast pairing with white text."
+          },
+          {
+            "id": "deep_sage_motion",
+            "label": "Deep Sage Theme",
+            "assetPath": "/campaign-assets/backgrounds/deep-sage.png",
+            "thumbnailColor": "#3A6B5E",
+            "accentColor": "#89A391",
+            "tone": "dark",
+            "strategicFit": "strong",
+            "warning": "Strong campaign theme color: restrained, ownable, social enough, and readable with cream text.",
+            "prompt": "4:5 vertical social post background: deep sage editorial fashion scene with a model-shaped silhouette in motion, coat hem movement, refined city energy, open negative space for light headline, no text, no logo."
+          },
+          {
+            "id": "city_morning",
+            "label": "City Neutral Commute",
+            "assetPath": "/campaign-assets/backgrounds/city-morning.png",
+            "thumbnailColor": "#B9C8BF",
+            "accentColor": "#EFE8D2",
+            "tone": "medium",
+            "strategicFit": "weak",
+            "warning": "Everyday context is useful, but this is weaker as a campaign theme color unless product proof and dark text do extra work.",
+            "prompt": "4:5 vertical social post background: refined young professional commute scene with neutral city morning light, subtle crosswalk and coat movement, muted palette, open space for headline, no text, no logo."
+          }
+        ],
+        "headlineOptions": [
+          {
+            "id": "proof_led_ease",
+            "label": "Proof-Led Ease",
+            "text": "Proof-led ease for every hour",
+            "strategicFit": "strong"
+          },
+          {
+            "id": "fewer_better",
+            "label": "Fewer Better Pieces",
+            "text": "Fewer pieces. More life.",
+            "strategicFit": "weak",
+            "warning": "Broad capsule language, but it does not make product proof visible."
+          },
+          {
+            "id": "actual_day",
+            "label": "Actual Day",
+            "text": "Dress for the day you actually have",
+            "strategicFit": "weak",
+            "warning": "Useful tone, but too generic without the proof-led strategy."
+          },
+          {
+            "id": "viral_drop",
+            "label": "Viral Drop",
+            "text": "The drop everyone will copy",
+            "strategicFit": "weak",
+            "warning": "Trend-led and copycat instead of proof-led."
+          }
+        ],
+        "proofTextOptions": [
+          {
+            "id": "fabric_fit_range",
+            "label": "Fabric Fit Range",
+            "text": "Fabric, fit, and styling range made visible from commute to dinner.",
+            "strategicFit": "strong"
+          },
+          {
+            "id": "reason_to_believe",
+            "label": "Reason To Believe",
+            "text": "One capsule, clearer reasons to believe in every piece.",
+            "strategicFit": "weak",
+            "warning": "Strategy-adjacent but less concrete than naming fabric, fit, and range."
+          },
+          {
+            "id": "quiet_luxury",
+            "label": "Quiet Luxury",
+            "text": "Because quiet luxury is everywhere right now.",
+            "strategicFit": "weak",
+            "warning": "Generic category language without an Aurelia proof point."
+          },
+          {
+            "id": "discount_hype",
+            "label": "Discount Hype",
+            "text": "Big attention, bigger deal energy.",
+            "strategicFit": "weak",
+            "warning": "Off-strategy for a premium capsule."
+          }
+        ],
+        "textColorOptions": [
+          {
+            "id": "ink",
+            "label": "Ink",
+            "value": "#1E1E1A",
+            "riskyOn": []
+          },
+          {
+            "id": "forest",
+            "label": "Forest",
+            "value": "#3A6B5E",
+            "riskyOn": [
+              "deep_sage_motion"
+            ]
+          },
+          {
+            "id": "cream",
+            "label": "Cream",
+            "value": "#F7F1E3",
+            "riskyOn": [
+              "warm_studio",
+              "sunlit_yellow",
+              "city_morning"
+            ]
+          },
+          {
+            "id": "white",
+            "label": "White",
+            "value": "#FFFFFF",
+            "riskyOn": [
+              "warm_studio",
+              "sunlit_yellow",
+              "city_morning"
+            ]
+          },
+          {
+            "id": "terracotta",
+            "label": "Terracotta",
+            "value": "#B87D6B",
+            "riskyOn": [
+              "warm_studio"
+            ]
+          }
+        ],
+        "stickerOptions": [
+          {
+            "id": "meme_megaphone",
+            "label": "Meme Megaphone",
+            "assetPath": "/campaign-assets/stickers/meme-megaphone.PNG",
+            "relevance": "irrelevant",
+            "category": "distractor",
+            "warning": "Too loud and meme-coded for Aurelia's restrained direction.",
+            "prompt": "Create a distractor PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show an exaggerated social-media megaphone with motion marks and loud hype energy. It should feel too meme-coded and too loud for Aurelia. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: terracotta #B87D6B, muted teal #6B9EA6, warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, and dark charcoal outline #1E1E1A. No readable words, no logo, no watermark."
+          },
+          {
+            "id": "fabric_proof",
+            "label": "Fabric Proof Swatch",
+            "assetPath": "/campaign-assets/stickers/fabric-proof.PNG",
+            "relevance": "aligned",
+            "category": "proof",
+            "prompt": "Create a PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show a refined woven fabric swatch with small stitch detail, subtle texture, and softly folded edges. It should clearly signal material quality and product proof. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, soft sage #89A391, muted teal #6B9EA6, terracotta #B87D6B, and dark charcoal outline #1E1E1A. No text, no logo, no watermark."
+          },
+          {
+            "id": "discount_burst",
+            "label": "Discount Burst",
+            "assetPath": "/campaign-assets/stickers/discount-burst.PNG",
+            "relevance": "irrelevant",
+            "category": "distractor",
+            "warning": "Suggests price promotion instead of premium proof.",
+            "prompt": "Create a distractor PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show a promotional retail sale-burst shape with deal energy, but do not include any readable sale text. It should suggest discounting and price promotion, not premium product proof. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: terracotta #B87D6B, pale yellow #F3E58B, warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, and dark charcoal outline #1E1E1A. No readable words, no logo, no watermark."
+          },
+          {
+            "id": "fit_lines",
+            "label": "Fit Line Overlay",
+            "assetPath": "/campaign-assets/stickers/fit-lines.PNG",
+            "relevance": "aligned",
+            "category": "proof",
+            "prompt": "Create a PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show elegant tailoring fit-line marks around a jacket shoulder and waist, with precise but warm terracotta linework. It should signal fit and construction without feeling technical or clinical. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: terracotta #B87D6B, warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, muted teal #6B9EA6, and dark charcoal outline #1E1E1A. No text, no logo, no watermark."
+          },
+          {
+            "id": "generic_crown",
+            "label": "Generic Luxury Crown",
+            "assetPath": "/campaign-assets/stickers/generic-crown.PNG",
+            "relevance": "irrelevant",
+            "category": "distractor",
+            "warning": "Generic luxury symbol with no audience or product proof.",
+            "prompt": "Create a distractor PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show a simple crown icon with generic luxury energy. It should feel unsupported by product proof and too obvious as a luxury shorthand. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: tan #CDBF94, warm cream #EFE8D2, soft cream #F7F1E3, deep sage #3A6B5E, muted teal #6B9EA6, terracotta #B87D6B, and dark charcoal outline #1E1E1A. No readable words, no logo, no watermark."
+          },
+          {
+            "id": "day_to_night",
+            "label": "Day-to-Night Arc",
+            "assetPath": "/campaign-assets/stickers/day-night.PNG",
+            "relevance": "aligned",
+            "category": "versatility",
+            "prompt": "Create a PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show a simple refined arc moving from a small morning sun to an evening moon, with a minimal city-to-dinner cue. It should signal daily versatility from work to evening. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, muted teal #6B9EA6, terracotta #B87D6B, pale yellow #F3E58B, and dark charcoal outline #1E1E1A. No text, no logo, no watermark."
+          },
+          {
+            "id": "craft_tag",
+            "label": "Craft Detail Tag",
+            "assetPath": "/campaign-assets/stickers/craft-tag.PNG",
+            "relevance": "aligned",
+            "category": "proof",
+            "prompt": "Create a PNG sticker on a plain white background, square canvas with the sticker centered and padded. Show a premium garment hangtag shape with stitch detail, warm cream paper, sage string, and tactile craft cues. It should signal construction/detail proof without using a brand logo or readable words. Use a flat painting style, not a real-life picture or photo, with thin black/charcoal outlines, clean hand-drawn linework, simple cel-shaded shapes, and no photorealism. Use this exact muted palette: warm cream #EFE8D2, soft cream #F7F1E3, tan #CDBF94, deep sage #3A6B5E, muted teal #6B9EA6, terracotta #B87D6B, and dark charcoal outline #1E1E1A. No text, no logo, no watermark."
+          }
+        ],
+        "minHeadlineSize": 5,
+        "minProofSize": 5,
+        "maxStickers": 3,
+        "rationalePrompt": "Rationale for Mara",
+        "rationalePlaceholder": "I chose this campaign theme color/background because it makes proof-led ease visible through...",
+        "deskWorkDesign": {
+          "roleFamily": "brand_strategy",
+          "workSurface": "Canva-like static post concept board",
+          "inputArtifacts": [
+            {
+              "id": "mara_direction",
+              "label": "Mara's finalized creative direction",
+              "whereVisible": "final_note.referenceContent",
+              "summary": "Proof-led ease, deep sage as the preferred theme-color direction, visible product proof, restrained social energy, and avoid list."
+            },
+            {
+              "id": "campaign_assets",
+              "label": "Background, copy, color, and sticker options",
+              "whereVisible": "final_note.campaignStudioOptions",
+              "summary": "Player chooses a campaign theme color/background and strategic static post combination from aligned options and distractors."
+            }
+          ],
+          "studentAction": "Choose a campaign theme color/background, assemble a 4:5 vertical static social post concept from available assets, position movable stickers, and explain the strategic rationale.",
+          "outputArtifact": {
+            "id": "final_note",
+            "label": "Static launch post mockup",
+            "format": "campaign_studio_json"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.final_note"
+          ],
+          "continuity": [
+            "Final graded artifact before the assessment gate."
+          ],
+          "authenticityCheck": "A junior brand strategist may make a low-fidelity vertical social concept to show how positioning translates into message hierarchy, proof cues, and creative guardrails before design production."
+        },
+        "next": "assessment_gate",
+        "illustration": "/scenes/final_note.png",
+        "imageBrief": "A warm cream desktop design tool on a laptop in a fashion brand office. The canvas shows a 4:5 vertical Everyday Icons static social post mockup with selectable background thumbnails, movable sticker assets, copy choices, and contrast checks. No real Canva logo."
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Day Is Complete",
+        "content": "The simulated day is complete. You have finished the Everyday Icons strategy work period; when you are ready, view your assessment.",
+        "actionLabel": "View Assessment",
+        "imageBrief": "End-of-day view of the Aurelia brand strategy desk. The laptop shows submitted Everyday Icons materials, including a 4:5 vertical static post mockup and a quiet calendar after the 4 PM alignment prep. Fabric swatches, competitor printouts, and a closed notebook sit neatly on the desk. No score or assessment UI is visible.",
+        "next": "grading",
+        "illustration": "/scenes/assessment_gate.png"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment",
+        "content": "Your brand strategy work products are ready for review. The assessment will evaluate how well you used evidence, prioritized insight, shaped positioning, and communicated with stakeholders.",
+        "imageBrief": "A clean assessment-ready laptop screen in the Aurelia office showing submitted work tabs for audit, matrix, call transcript, positioning brief, Slack response, and static post mockup. No score is visible in the illustration.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "This report summarizes your performance as a junior Brand Strategist on the Everyday Icons strategy sprint.",
+        "imageBrief": "Final report view on a laptop at a fashion brand strategy desk. The screen has sections labeled Evidence, Insight, Positioning, Stakeholder Communication, and Strategy Clarity. Warm cream palette and no real brand logos.",
+        "next": null,
+        "illustration": "/scenes/final_report.png"
+      },
+      "everyday_icons_workspace": {
+        "id": "everyday_icons_workspace",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Everyday Icons Source Workspace",
+        "content": "Your job today: turn messy brand inputs into a sharper positioning recommendation.",
+        "imageBrief": "First-person brand strategy desk with a laptop showing a cream source workspace: Google Drive, Looker, and Slack app icons. Fabric swatches and lookbook thumbnails sit around the laptop. The coded UI shows the actual source text, so the image should show only realistic unreadable app shapes and no completed answer.",
+        "next": "first_move",
+        "illustration": "/scenes/everyday_icons_workspace.png",
+        "actionLabel": "Choose first move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "Everyday Icons / Strategy Inputs",
+              "files": [
+                {
+                  "id": "brand_context",
+                  "name": "Aurelia context and guardrails.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Aurelia context and internal guardrails",
+                  "sections": [
+                    {
+                      "heading": "Aurelia context and internal guardrails",
+                      "body": "Aurelia & Co. is a fictional global fashion house known for refined basics, quiet quality, and work-to-weekend pieces. Leadership wants Everyday Icons to feel more culturally alive for younger customers without turning the brand into a trend account. Guardrails: do not make Aurelia louder just to be loud; do not reduce the idea to generic quiet luxury; connect product proof to emotional ease, movement, and self-possession."
+                    }
+                  ],
+                  "category": "Brand guardrails",
+                  "lookFor": "Use this file to understand what the brand must preserve, what feels stale, and what the recommendation must avoid."
+                },
+                {
+                  "id": "audience_notes",
+                  "name": "Audience tension notes.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Audience notes",
+                  "sections": [
+                    {
+                      "heading": "Audience notes",
+                      "body": "Core prospect: urban young professional, 24-34, early-to-mid career, style aware, budget conscious but willing to invest. Tension: wants fewer better pieces, but fears heritage fashion brands feel too polished, too expensive, and not built for real daily movement. Social-listening excerpts: \"I want clothes that look put together without trying.\" \"Quiet luxury all looks the same now.\" \"If I am paying more, show me why the fabric, fit, and styling last.\""
+                    }
+                  ],
+                  "category": "Audience tension",
+                  "lookFor": "Use these notes to find the human tension the positioning should speak to, not just demographic facts."
+                },
+                {
+                  "id": "competitor_snapshots",
+                  "name": "Competitor snapshots.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Competitor snapshots",
+                  "sections": [
+                    {
+                      "heading": "Competitor snapshots",
+                      "body": "Luma Lane: trend-led basics, strong social energy, weak quality proof. North & Mercer: heritage minimalism, strong craft story, feels older. Veyra Studio: modular capsule styling, practical versatility, less emotional brand world. Finch Theory: creator-first drops, cultural speed, inconsistent product depth."
+                    }
+                  ],
+                  "category": "Market context",
+                  "lookFor": "Use this file to see how nearby competitors sound and where Everyday Icons can claim clearer white space."
+                },
+                {
+                  "id": "review_bar",
+                  "name": "Mara review.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Mara review",
+                  "sections": [
+                    {
+                      "heading": "Mara review",
+                      "body": "Separate observation from implication. Name the audience tension in plain English. Recommend a positioning direction that Aurelia can own. Include one caveat or research gap. Make the brief useful for creative, merchandising, and social teams."
+                    }
+                  ],
+                  "category": "Review criteria",
+                  "lookFor": "Use this file to understand how Mara will judge the recommendation at the 4 PM review."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#everyday-icons",
+              "messages": [
+                {
+                  "id": "mara",
+                  "channel": "slack",
+                  "from": "Mara Chen",
+                  "timestamp": "8:42 AM",
+                  "body": "Morning. I need your help on Everyday Icons. Start with the strategic tension, evidence, and a recommendation creative can actually use.",
+                  "channelName": "#everyday-icons",
+                  "linkedFileIds": [
+                    "brand_context",
+                    "audience_notes"
+                  ],
+                  "category": "Strategy direction",
+                  "lookFor": "Use this Slack message to understand Mara’s ask, the review deadline, and what decision the sources need to support."
+                }
+              ]
+            },
+            {
+              "id": "dashboard",
+              "label": "Dashboard",
+              "kind": "dashboard",
+              "title": "4 PM alignment dashboard",
+              "rows": [
+                {
+                  "metric": "4 PM alignment",
+                  "target": "Ready POV",
+                  "actual": "Not started",
+                  "status": "warning"
+                },
+                {
+                  "metric": "Audience focus",
+                  "target": "24-34",
+                  "actual": "24-34",
+                  "status": "on_track"
+                },
+                {
+                  "metric": "Positioning risk",
+                  "target": "Distinctive",
+                  "actual": "Quiet luxury sameness",
+                  "status": "warning"
+                }
+              ],
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "lookFor": "Use these alignment notes to see what leadership cares about before recommending a positioning route."
+            }
+          ],
+          "continueLabel": "Choose first move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "everyday_icons_workspace.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      }
+    }
+  },
+  "npcs": {
+    "elena": {
+      "id": "elena",
+      "name": "Elena Rossi",
+      "role": "North America Merchandising Director",
+      "persona": "Elena is commercially sharp, practical, and protective of store usefulness. She cares about sell-through, wholesale partner confidence, and whether associates can explain why the product costs more. She is not hostile, but she challenges strategy that feels too abstract or too disconnected from product proof.",
+      "voice": "direct, pragmatic, warm"
+    },
+    "theo": {
+      "id": "theo",
+      "name": "Theo Alvarez",
+      "role": "Creative Director",
+      "persona": "Theo is visually ambitious, culturally aware, and impatient with strategy that feels timid. He wants the campaign to have energy, but he respects a strategist who can give him a sharper creative problem instead of vague adjectives. He responds well to specific guardrails and a clear tension.",
+      "voice": "creative, fast, candid"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Junior Brand Strategist: Everyday Icons",
+    "welcomeBody": "Step into a day on Aurelia & Co.'s Brand Strategy team. You will use research, competitive signals, stakeholder input, and writing to shape a positioning point of view for a fictional fashion capsule.",
+    "steps": [
+      {
+        "label": "Read the workspace",
+        "content": "Use the visible source workspace before making strategic claims."
+      },
+      {
+        "label": "Do the work",
+        "content": "Create audit notes, prioritize insight, prepare questions, speak with a stakeholder, and write strategy artifacts."
+      },
+      {
+        "label": "Stay strategic",
+        "content": "Avoid vague adjectives and trend copying. Make the strategy useful to creative, merchandising, and social partners."
+      }
+    ]
+  },
+  "glossary": {
+    "brand strategy": "The logic that defines who a brand is for, what it stands for, how it differs, and how it should behave across decisions and communications.",
+    "positioning": "A concise statement of the target audience, the brand's role, the distinctive benefit, and the reason to believe.",
+    "audience tension": "A real conflict or unmet need in the audience's life that the brand can credibly address.",
+    "competitor audit": "A structured review of competing brands' messages, behaviors, strengths, weaknesses, and white space.",
+    "messaging pillar": "A repeatable message theme supported by proof points that can guide copy, content, and creative direction.",
+    "guardrail": "A strategic boundary that tells teams what to do and what to avoid so the brand remains coherent.",
+    "proof point": "Concrete evidence that supports a brand claim, such as product construction, fit, material quality, service, or customer behavior.",
+    "white space": "A distinctive opportunity competitors are not credibly owning."
+  },
+  "sample_answers": {
+    "audit_table": "[{\"signal\":\"Veyra Studio modular capsule styling\",\"observation\":\"Veyra makes versatility very concrete by showing pieces across situations rather than relying on elevated language.\",\"implication\":\"Aurelia can own versatility if it connects styling range to fabric, fit, and everyday movement instead of only aesthetic minimalism.\",\"risk\":\"If Aurelia copies the modular language too closely, the brand may feel functional but emotionally flat.\"},{\"signal\":\"Social listening: quiet luxury sameness\",\"observation\":\"Audience comments suggest quiet luxury is losing distinctiveness because many brands use the same restrained codes.\",\"implication\":\"Everyday Icons needs restraint plus a sharper reason to believe: proof-led ease and self-possession.\",\"risk\":\"Overcorrecting into loud trend behavior would erase Aurelia's core equity.\"},{\"signal\":\"Luma Lane trend-led social energy\",\"observation\":\"Luma gets attention through speed and cultural energy but has weak quality proof.\",\"implication\":\"Aurelia should not chase volume alone; it can create cultural relevance by making product proof feel alive and useful.\",\"risk\":\"If the team treats attention as the goal, the capsule becomes a copycat campaign.\"}]",
+    "insight_matrix_rationale": "I would pressure-test the quality proof and office-to-dinner versatility signals first because they could change both the positioning and the creative brief. If younger customers need a reason to believe the higher price, the strategy should make fabric, fit, and styling range visible rather than only saying the pieces are timeless.",
+    "interview_prep": "- What objections do younger customers raise when they see the price of Aurelia essentials?\n- Which product details do associates use most successfully to explain value?\n- What language or proof point would help stores and wholesale partners make the positioning feel credible?",
+    "positioning_brief": "[{\"audience\":\"Style-conscious 24-34 year olds building a smaller, better wardrobe for work, social plans, and movement through the city.\",\"tension\":\"They want to look composed without feeling corporate or overstyled, and they need proof that investment pieces earn their price in real daily use.\",\"opportunity\":\"Aurelia can own proof-led ease: refined pieces that show why they last and how they move through the day, instead of generic quiet luxury or loud trend mimicry.\",\"positioning\":\"For style-conscious young professionals building fewer better wardrobes, Everyday Icons is the refined capsule that makes daily polish feel effortless because every piece proves its value through fabric, fit, and styling range.\",\"pillars\":\"1. Built to move through the day: office-to-dinner styling range. 2. Proof you can feel: fabric, fit, construction, and care details. 3. Quiet confidence with a point of view: restrained but not anonymous.\",\"guardrails\":\"Do show product proof in lived contexts. Do make styling range visible. Avoid meme-first hooks, generic quiet luxury codes, and language that says elevated without evidence.\"}]",
+    "final_note": "{\"backgroundId\":\"deep_sage_motion\",\"headlineId\":\"proof_led_ease\",\"proofTextId\":\"fabric_fit_range\",\"textColorId\":\"cream\",\"headlineSize\":40,\"proofSize\":19,\"stickerIds\":[\"fabric_proof\",\"day_to_night\"],\"stickerPlacements\":{\"fabric_proof\":{\"x\":18,\"y\":78},\"day_to_night\":{\"x\":78,\"y\":18}},\"rationale\":\"I chose deep sage as the campaign theme color/background and paired it with cream text because the contrast keeps the message readable while staying in Aurelia's restrained palette. The headline leads with proof-led ease, the support makes fabric, fit, and styling range visible, and the movable stickers reinforce product proof plus day-to-night versatility without using meme or discount cues.\",\"labels\":{\"background\":\"Deep Sage Theme\",\"headline\":\"Proof-led ease for every hour\",\"proofText\":\"Fabric, fit, and styling range made visible from commute to dinner.\",\"textColor\":\"Cream\",\"stickers\":[{\"id\":\"fabric_proof\",\"label\":\"Fabric Proof Swatch\",\"relevance\":\"aligned\"},{\"id\":\"day_to_night\",\"label\":\"Day-to-Night Arc\",\"relevance\":\"aligned\"}]},\"checks\":{\"idealBackgroundSelected\":true,\"idealCopyPairSelected\":true,\"textContrastNoticeable\":true,\"headlineLargeEnough\":true,\"proofTextLargeEnough\":true,\"alignedStickerCount\":2,\"irrelevantStickerIds\":[],\"weakCopyIds\":[],\"tooManyStickers\":false,\"warnings\":[]}}"
+  },
+  "rubric": {
+    "simulation_id": "brand-strategist-general-consumer-brand-strategy-for-fashion-brand-common-brand-strategist-work-imagined-by-aspiring-brand-strategists-fictional-fashion-brand-enterprise-global-brand-entry-junior",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の優先判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: 曖昧なブランド課題に対して、調査、関係者確認、制作締切のどれを先に扱うべきかを実務的に選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "競合調査表",
+            "evidenceSceneIds": [
+              "audit_table"
+            ],
+            "rubric_text": "9-10: 競合の約束、表現、差別化、弱点を事実ベースで整理し、自社が避けるべき凡庸な位置づけも見つけられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "洞察の優先順位",
+            "evidenceSceneIds": [
+              "insight_matrix"
+            ],
+            "rubric_text": "9-10: 複数の調査シグナルを、顧客価値、証拠の強さ、制作への使いやすさで優先順位づけできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "関係者通話",
+            "evidenceSceneIds": [
+              "stakeholder_call"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の通話で、販売側の制約、ブランド上の守る線、成功条件を聞き出し、曖昧な要望を確認できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "位置づけ資料",
+            "evidenceSceneIds": [
+              "positioning_brief"
+            ],
+            "rubric_text": "9-10: ターゲット、約束、信じる理由、避ける表現、制作で使える方向性を一貫した資料にまとめられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "制作側への返答",
+            "evidenceSceneIds": [
+              "creative_slack"
+            ],
+            "rubric_text": "9-10: 制作側の懸念に対して、戦略の意図、守るべき制約、修正してよい余地を短く具体的に返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "最終投稿案",
+            "evidenceSceneIds": [
+              "final_note"
+            ],
+            "rubric_text": "9-10: 決めた位置づけを反映し、誇張せず、ターゲットに伝わるコピーとビジュアル方針に落とし込めている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

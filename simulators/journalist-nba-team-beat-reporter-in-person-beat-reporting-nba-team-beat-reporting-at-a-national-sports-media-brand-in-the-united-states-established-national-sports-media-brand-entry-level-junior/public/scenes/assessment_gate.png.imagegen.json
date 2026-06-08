@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:07:16+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "4f0a78cd0623bcef",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/src/data/scene-config.json"
+}

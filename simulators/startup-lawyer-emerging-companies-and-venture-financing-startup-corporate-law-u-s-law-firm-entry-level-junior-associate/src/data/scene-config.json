@@ -1,0 +1,955 @@
+{
+  "workMixDesign": {
+    "sourceDerivedSummary": "Sources describe entry-level startup and emerging-companies law as a desk-document role dominated by gathering facts from client records, reviewing transaction documents, maintaining checklists, identifying inconsistencies, drafting reviewable written work product, and communicating with senior lawyers and clients under deadline pressure. O*NET emphasizes gathering information, evaluating information against standards, preparing legal documents, communicating by email and phone, organizing/prioritizing work, documenting information, and analyzing records. The collected startup-practice notes and public junior-associate themes emphasize closing checklists, signature pagess, cap table consistency, board approvals, diligence summaries, precise questions, and careful escalation rather than unsupervised legal conclusions.",
+    "categories": {
+      "physicalProceduralTool": {
+        "weight": "rare",
+        "sourceEvidence": [
+          "O*NET and BLS describe lawyer work as office-based, document-heavy, email/phone-heavy, and deadline-driven rather than physical tool manipulation. [onet]",
+          "Junior emerging-companies notes emphasize checklists, documents, signatures, cap tables, and email/call communication rather than hands-on physical procedures. [yt:junior_associate_notes] [reddit:junior_detail_work]"
+        ],
+        "simulatorImplication": "No physical_playground scenes are needed. Realism should come from visible transaction documents, deal trackers, email, Slack, spreadsheet-style checklists, and a remote client call."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "dominant",
+        "sourceEvidence": [
+          "O*NET lists document management, PDF tools, email/calendar, legal research, word processing, spreadsheet, workflow, and billing tools. [onet]",
+          "Junior associate notes describe maintaining closing checklists, comparing document drafts, checking cross-references, reviewing diligence, assembling signature pages, and tracking DocuSign workspaces. [yt:junior_associate_notes] [reddit:junior_detail_work]"
+        ],
+        "simulatorImplication": "Most active scenes should occur inside realistic digital work surfaces: a data-room workspace, Slack, spreadsheet checklist, Notion/doc prep, live meeting reference panel, and post-call checklist comments."
+      },
+      "cognitiveAnalysisDecision": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET emphasizes analyzing information, evaluating compliance with standards, interpreting legal implications, and advising on business transactions. [onet]",
+          "Startup-law practice notes emphasize spotting how cap table, approval, SAFE, IP, and signature issues can affect closing timing and investor comfort. [yt:startup_practice_notes]"
+        ],
+        "simulatorImplication": "The student must separate evidence from legal/closing consequence, prioritize issues by closing impact, and avoid unsupported final legal advice."
+      },
+      "writtenDocumentationArtifact": {
+        "weight": "major",
+        "sourceEvidence": [
+          "O*NET lists preparing legal documents, documenting/recording information, and communicating in writing. [onet]",
+          "Public junior-associate themes emphasize concise checklist comments, closing checklists, and reviewable summaries. [reddit:diligence_and_summaries] [reddit:ask_better_questions]"
+        ],
+        "simulatorImplication": "The simulator should require typed legal artifacts: checklist rows, call prep, and post-call checklist comments."
+      },
+      "spokenInterpersonalCommunication": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "O*NET reports frequent contact with supervisors, clients, and outside parties by phone, email, and in person. [onet]",
+          "The job story centers on a founder call where a junior must explain practical closing consequences while staying within a supervised role. [yt:lawyer_occupation_notes]"
+        ],
+        "simulatorImplication": "Include one remote voice meeting with the startup founder, plus asynchronous Slack communication with the senior associate."
+      },
+      "passiveMonitoringWaitingContextSwitching": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Junior associate public-forum themes describe sudden deadlines, waiting for senior review, and abrupt turns when a client or partner needs an answer. [reddit:tight_deadlines]",
+          "Closing work requires tracking signatures, client responses, partner updates, and document status across the day. [reddit:attention_to_detail]"
+        ],
+        "simulatorImplication": "Represent context switching through incoming Slack/email asks, time-stamped deal signals, and sequencing pressure, while keeping active work product central."
+      }
+    },
+    "simulatorPlan": "The active scene mix uses one Slack-shaped bounded MCQ with consequences, constructed digital-document artifacts, one call-prep note, one remote voice founder call, and a post-call checklist annotation deliverable. This matches a junior startup lawyer's day: digital document work and written drafting dominate; legal issue-spotting is constant; client communication appears but is supervised and caveated; physical work is intentionally absent.",
+    "activeSceneMixRationale": "Active scenes are first-move Slack choice, closing checklist, founder-call prep, remote founder call with note-taking, and post-call checklist annotation. MCQ is limited to an authentic first-move alignment moment; most graded work requires the student to draft, speak, or structure legal work product."
+  },
+  "storyline": {
+    "gameTitle": "Entry-Level Startup Lawyer Simulation",
+    "startNode": "intro",
+    "sections": [
+      {
+        "num": 1,
+        "label": "Morning Deal Intake"
+      },
+      {
+        "num": 2,
+        "label": "Founder Call Preparation"
+      },
+      {
+        "num": 3,
+        "label": "Post-Call Checklist Review"
+      }
+    ],
+    "devSkips": [
+      {
+        "label": "Checklist",
+        "targetNodeId": "closing_checklist",
+        "prefillKey": "closing_checklist_dev"
+      },
+      {
+        "label": "Founder call",
+        "targetNodeId": "founder_call",
+        "prefillKey": "founder_call_dev"
+      }
+    ],
+    "nodes": {
+      "intro": {
+        "id": "intro",
+        "type": "intro",
+        "section": 0,
+        "title": "Welcome to Northstar Legal",
+        "content": "You are a first-year associate in Northstar Legal's emerging companies group. Today you are supporting LumenLoop's seed financing. Your job is to keep the closing checklist accurate, spot deal issues, communicate clearly, and make the senior associate's review easier.",
+        "imageBrief": "First-person view of a junior corporate lawyer's desk in a U.S. law firm office. A laptop shows a cream-colored matter dashboard titled LumenLoop Seed Financing, with tabs for data room, closing checklist, cap table, Slack, and draft email. Printed board consent pages, a sticky note with 11:30 founder call, and a precise red pen sit nearby. The atmosphere is realistic, focused, and deadline-driven.",
+        "next": "briefing_morning",
+        "illustration": "/scenes/intro.png"
+      },
+      "briefing_morning": {
+        "id": "briefing_morning",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "LumenLoop Data Room Opens",
+        "content": "Your job today: spot closing issues before the founder call.",
+        "imageBrief": "Laptop view of a law-firm matter dashboard with a Slack thread from Maya on one side and a data-room folder tree, seed financing checklist, and cap table excerpt on the other. Calendar shows 11:30 founder call and 2:00 partner update. The data-room area should show readable headings for board consent, cap table mismatch, SAFE conversion, IP assignment, and signature pages without repeating Maya's Slack instruction or giving completed answers.",
+        "next": "first_move",
+        "illustration": "/scenes/briefing_morning.png",
+        "actionLabel": "Choose first move",
+        "sourceWorkspace": {
+          "introLabel": "Source apps",
+          "desktop": {
+            "width": "75%",
+            "height": "80%"
+          },
+          "apps": [
+            {
+              "id": "drive",
+              "label": "Drive",
+              "kind": "drive",
+              "title": "LumenLoop data room",
+              "files": [
+                {
+                  "id": "closing_checklist",
+                  "name": "Closing checklist status.doc",
+                  "kind": "doc",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Closing checklist status",
+                  "sections": [
+                    {
+                      "heading": "Closing checklist status",
+                      "body": "Matter: LumenLoop, Inc. Series Seed Financing. Northstar Legal represents LumenLoop. Target timeline: 11:30 AM founder call with Arjun Rao, LumenLoop's CEO; 2:00 PM partner-ready status; investor wire ready once closing deliverables are complete."
+                    }
+                  ],
+                  "category": "Closing conditions",
+                  "lookFor": "Use this checklist to identify what must be complete before closing and which items still need follow-up."
+                },
+                {
+                  "id": "charter_cap_table",
+                  "name": "Charter and cap table mismatch.xlsx",
+                  "kind": "spreadsheet",
+                  "modified": "today",
+                  "owner": "Data room",
+                  "previewTitle": "Charter and cap table check",
+                  "columns": [
+                    "item",
+                    "value",
+                    "issue"
+                  ],
+                  "rows": [
+                    {
+                      "item": "Draft charter Section 4.1",
+                      "value": "2,650,000 Series Seed shares authorized",
+                      "issue": "compare to cap table"
+                    },
+                    {
+                      "item": "Cap table export",
+                      "value": "2,740,000 Series Seed shares after financing",
+                      "issue": "does not match charter"
+                    },
+                    {
+                      "item": "Westbridge SAFE holder",
+                      "value": "added manually; conversion treatment to confirm",
+                      "issue": "executed SAFE PDF not uploaded"
+                    }
+                  ],
+                  "category": "Capitalization",
+                  "lookFor": "Use this file to compare the charter, cap table, and SAFE details for mismatches that could affect financing accuracy."
+                },
+                {
+                  "id": "board_consent",
+                  "name": "Board consent status.pdf",
+                  "kind": "pdf",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "Approval and signature status",
+                  "sections": [
+                    {
+                      "heading": "Approval and signature status",
+                      "body": "Board consent approving the financing is signed by Director Lee and Director Gomez. Director Patel signature is pending. Founder says Director Patel is traveling but can sign tonight. Officer certificate is unsigned."
+                    }
+                  ],
+                  "category": "Approvals",
+                  "lookFor": "Use this consent to see whether board approvals, signatures, and officer certificates are ready or still blocking closing."
+                },
+                {
+                  "id": "ip_diligence",
+                  "name": "IP assignment folder note.txt",
+                  "kind": "text",
+                  "modified": "today",
+                  "owner": "Shared",
+                  "previewTitle": "IP and diligence excerpt",
+                  "sections": [
+                    {
+                      "heading": "IP and diligence excerpt",
+                      "body": "Founder IP Assignment - Arjun Rao: signed. Founder IP Assignment - Leah Morris: signed. Contractor IP Assignment - M. Kline: not in data room; folder note says consultant worked on prototype before incorporation. Investor counsel asks to confirm complete IP assignment coverage for founders and prototype contractor."
+                    }
+                  ],
+                  "category": "Diligence",
+                  "lookFor": "Use this file to find any missing contractor IP assignment or diligence item that needs to be escalated before the founder call."
+                }
+              ]
+            },
+            {
+              "id": "slack",
+              "label": "Slack",
+              "kind": "slack",
+              "title": "#lumenloop-closing",
+              "messages": [
+                {
+                  "id": "maya",
+                  "channel": "slack",
+                  "from": "Maya Chen",
+                  "timestamp": "8:42 AM",
+                  "body": "Please do a substance-first checklist pass on LumenLoop before the 11:30 founder call with Arjun Rao, LumenLoop's CEO. Group asks by closing condition and flag anything not final before I review.",
+                  "channelName": "#lumenloop-closing",
+                  "linkedFileIds": [
+                    "closing_checklist"
+                  ],
+                  "category": "Team direction",
+                  "lookFor": "Use this Slack message to identify Maya’s priority, the closing risk, and which data-room items matter before the call."
+                }
+              ]
+            },
+            {
+              "id": "docusign",
+              "label": "E-Signature",
+              "kind": "dashboard",
+              "title": "Signature status",
+              "rows": [
+                {
+                  "metric": "Director signatures",
+                  "target": "3 of 3",
+                  "actual": "2 of 3",
+                  "status": "critical"
+                },
+                {
+                  "metric": "Officer certificate",
+                  "target": "signed",
+                  "actual": "unsigned",
+                  "status": "critical"
+                },
+                {
+                  "metric": "Investor signature pages",
+                  "target": "complete",
+                  "actual": "complete",
+                  "status": "on_track"
+                }
+              ],
+              "columns": [
+                "metric",
+                "target",
+                "actual",
+                "status"
+              ],
+              "lookFor": "Use this status table to identify missing signatures or certificates that could block closing."
+            }
+          ],
+          "continueLabel": "Choose first move"
+        },
+        "deskWorkDesign": {
+          "workSurface": "source workspace",
+          "inputArtifacts": [
+            {
+              "id": "source_workspace",
+              "label": "Source workspace",
+              "whereVisible": "briefing_morning.sourceWorkspace",
+              "summary": "Real workplace source apps and files opened by the player."
+            }
+          ],
+          "studentAction": "Open the source apps and files before choosing the first work move.",
+          "outputArtifact": {
+            "id": "source_readiness",
+            "label": "Source materials reviewed",
+            "format": "briefing"
+          },
+          "rubricEvidence": [
+            "context for later artifacts"
+          ],
+          "continuity": [
+            "Source facts reappear in later app tabs, work surfaces, and conversation prep."
+          ],
+          "authenticityCheck": "The player starts from realistic workplace messages, apps, folders, and dashboards rather than a generic briefing bundle."
+        }
+      },
+      "first_move": {
+        "id": "first_move",
+        "type": "multiple_choice",
+        "section": 1,
+        "isPivot": true,
+        "title": "Reply With Your First Move",
+        "content": "Maya pings for your first move. Choose the Slack reply you would send.",
+        "appWindow": "slack",
+        "windowTitle": "#lumenloop-seed",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:20 AM",
+            "avatarInitials": "MC",
+            "content": "Quick check before you dive in and before the Arjun founder call: what are you doing first with the LumenLoop workspace? I care less about polish and more about whether your first hour protects closing accuracy."
+          }
+        ],
+        "prompt": "Choose the response you would send.",
+        "options": [
+          {
+            "id": "send_client_now",
+            "label": "I will email Arjun now with every question I see so we are not blocked later.",
+            "branchFlag": "question_dump"
+          },
+          {
+            "id": "map_documents",
+            "label": "I will map each closing condition to the source document, owner, status, and closing consequence before asking targeted questions.",
+            "branchFlag": "checklist_first"
+          },
+          {
+            "id": "fix_formatting",
+            "label": "I will polish the checklist formatting first so the partner sees a clean page.",
+            "branchFlag": "polish_first"
+          },
+          {
+            "id": "answer_founder",
+            "label": "I will tell Arjun the deal should be fine if the remaining signatures come in today.",
+            "branchFlag": "overclaim"
+          }
+        ],
+        "next": {
+          "branchOn": "first_move",
+          "cases": {
+            "question_dump": "redirect_questions",
+            "checklist_first": "redirect_checklist_first",
+            "polish_first": "redirect_polish",
+            "overclaim": "redirect_overclaim"
+          },
+          "default": "redirect_checklist_first"
+        },
+        "deskWorkDesign": {
+          "roleFamily": "startup lawyer",
+          "workSurface": "slack",
+          "inputArtifacts": [
+            {
+              "id": "deal_workspace",
+              "label": "LumenLoop data-room materials",
+              "whereVisible": "briefing_morning.referenceContent",
+              "summary": "Data-room index, cap table/charter excerpt, approval/signature status, SAFE note uncertainty, IP assignment note, and investor-counsel diligence request."
+            }
+          ],
+          "studentAction": "Choose the first Slack response that sets up a substance-first legal checklist pass.",
+          "outputArtifact": {
+            "id": "first_move",
+            "label": "First-move Slack choice",
+            "format": "multiple_choice"
+          },
+          "rubricEvidence": [
+            "mcSelections.first_move",
+            "branchFlags.first_move"
+          ],
+          "continuity": [
+            "The selected reply appears in the redirect scene via {{mc.first_move.label}}."
+          ],
+          "authenticityCheck": "Junior associates often align quickly with a senior before spending the first hour on a deal workspace."
+        }
+      },
+      "redirect_checklist_first": {
+        "id": "redirect_checklist_first",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Maya Greenlights the Checklist Pass",
+        "content": "Maya reacts to your first move, and the work converges on a source-based checklist update.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:20 AM",
+            "avatarInitials": "MC",
+            "content": "Quick check before you dive in: what are you doing first with the LumenLoop workspace? I care less about polish and more about whether your first hour protects closing accuracy."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:21 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:22 AM",
+            "avatarInitials": "MC",
+            "content": "Good. Keep the chain reviewable: condition, source evidence, owner, consequence, next action. If something needs legal judgment, flag it for me rather than resolving it yourself."
+          }
+        ],
+        "imageBrief": "Laptop view of a Slack thread where Maya approves a substance-first checklist pass. Beside it, a cream spreadsheet titled LumenLoop closing checklist opens with columns for condition, evidence, owner/status, consequence, and next action. The view should feel like a focused transition into legal work.",
+        "next": "closing_checklist",
+        "illustration": "/scenes/redirect_checklist_first.png"
+      },
+      "redirect_questions": {
+        "id": "redirect_questions",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "The Question Dump Problem",
+        "content": "Maya reacts to your first move, and the work converges on a source-based checklist update.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:20 AM",
+            "avatarInitials": "MC",
+            "content": "Quick check before you dive in: what are you doing first with the LumenLoop workspace? I care less about polish and more about whether your first hour protects closing accuracy."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:21 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:22 AM",
+            "avatarInitials": "MC",
+            "content": "Questions are useful only when they map to a closing condition. Group the asks by document, owner, and consequence first. Start with the checklist so we do not send Arjun an undigested issue dump."
+          }
+        ],
+        "imageBrief": "Laptop view of a premature external message draft with scattered legal questions, while a closing checklist reorganizes them into document, owner, status, and risk columns. Maya's Slack correction appears beside the draft.",
+        "next": "closing_checklist",
+        "illustration": "/scenes/redirect_questions.png"
+      },
+      "redirect_polish": {
+        "id": "redirect_polish",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "A Beautiful But Unreliable Checklist",
+        "content": "Maya reacts to your first move, and the work converges on a source-based checklist update.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:20 AM",
+            "avatarInitials": "MC",
+            "content": "Quick check before you dive in: what are you doing first with the LumenLoop workspace? I care less about polish and more about whether your first hour protects closing accuracy."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:21 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:22 AM",
+            "avatarInitials": "MC",
+            "content": "Cosmetics after substance. The partner needs to know what is ready, what is missing, who owns it, and what could affect closing. Build the source-based pass first."
+          }
+        ],
+        "imageBrief": "Polished closing checklist with unresolved question marks highlighted next to Maya's Slack correction. The image should show that the document looks clean but still misses SAFE, board consent, cap table, and IP substance.",
+        "next": "closing_checklist",
+        "illustration": "/scenes/redirect_polish.png"
+      },
+      "redirect_overclaim": {
+        "id": "redirect_overclaim",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 1,
+        "title": "Too Early To Give Comfort",
+        "content": "Maya reacts to your first move, and the work converges on a source-based checklist update.",
+        "slackMessages": [
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:20 AM",
+            "avatarInitials": "MC",
+            "content": "Quick check before you dive in: what are you doing first with the LumenLoop workspace? I care less about polish and more about whether your first hour protects closing accuracy."
+          },
+          {
+            "sender": "{{playerName}}",
+            "role": "You",
+            "timestamp": "8:21 AM",
+            "avatarInitials": "{{playerInitial}}",
+            "content": "{{mc.first_move.label}}"
+          },
+          {
+            "sender": "Maya Chen",
+            "role": "Senior Associate",
+            "timestamp": "8:22 AM",
+            "avatarInitials": "MC",
+            "content": "Do not give closing comfort from a partial workspace. We still need to reconcile the cap table, confirm the SAFE treatment, and collect the missing board signature. Start with evidence, not reassurance."
+          }
+        ],
+        "imageBrief": "Email draft saying the deal should be fine, paused beside a checklist showing cap table mismatch, missing board signature, and SAFE conversion uncertainty. The visual should communicate why casual comfort is risky.",
+        "next": "closing_checklist",
+        "illustration": "/scenes/redirect_overclaim.png"
+      },
+      "closing_checklist": {
+        "id": "closing_checklist",
+        "type": "structured_entry",
+        "section": 1,
+        "title": "Update the Closing Checklist",
+        "content": "Use Maya's Slack instruction and the LumenLoop data-room materials. Identify four closing items that matter and make each row reviewable from source evidence.",
+        "prompt": "Update four checklist rows. Each row needs the closing condition, visible evidence, owner/status, and risk/next action.",
+        "appWindow": "spreadsheet",
+        "windowTitle": "LumenLoop Seed Financing Closing Checklist",
+        "definition": {
+          "itemLabel": "Checklist Item",
+          "bindingKey": "closing_checklist",
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "fields": [
+            {
+              "key": "condition",
+              "label": "Closing condition",
+              "placeholder": "Example: Board consent approving the seed financing"
+            },
+            {
+              "key": "visible_evidence",
+              "label": "Visible evidence",
+              "placeholder": "Name the source document, row, folder, signature status, or excerpt you are relying on.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "status_owner",
+              "label": "Status and owner",
+              "placeholder": "State whether it is complete, missing, inconsistent, or needs review, and who owns the next step.",
+              "multiline": true,
+              "rows": 3
+            },
+            {
+              "key": "risk_next_action",
+              "label": "Risk and next action",
+              "placeholder": "Explain the closing consequence and the exact next action before senior review.",
+              "multiline": true,
+              "rows": 3
+            }
+          ]
+        },
+        "appTabs": [
+          {
+            "id": "maya_slack",
+            "label": "Maya's Slack",
+            "sourceWorkspaceAppId": "slack",
+            "content": "Maya Chen - #lumenloop-closing - 8:42 AM\n\nPlease do a substance-first checklist pass on LumenLoop before the 11:30 founder call. Group asks by closing condition and flag anything not final before I review."
+          },
+          {
+            "id": "data_room_materials",
+            "label": "Drive",
+            "sourceWorkspaceAppId": "drive",
+            "defaultSourceFileId": "closing_checklist",
+            "content": "LumenLoop data-room materials\n\nClosing checklist status.doc\n- Matter: LumenLoop, Inc. Series Seed Financing.\n- Northstar Legal represents LumenLoop.\n- Target timeline: 11:30 AM founder call, 2:00 PM partner-ready status.\n- Investor wire ready once closing deliverables are complete.\n\nCharter and cap table mismatch.xlsx\n- Draft charter Section 4.1: 2,650,000 Series Seed shares authorized.\n- Cap table export: 2,740,000 Series Seed shares after financing.\n- Westbridge SAFE holder: added manually; conversion treatment to confirm.\n- Executed SAFE PDF not uploaded.\n\nBoard consent status.pdf\n- Financing consent signed by Director Lee and Director Gomez.\n- Director Patel signature pending.\n- Founder says Director Patel is traveling but can sign tonight.\n- Officer certificate unsigned.\n\nIP assignment folder note.txt\n- Founder IP Assignment - Arjun Rao: signed.\n- Founder IP Assignment - Leah Morris: signed.\n- Contractor IP Assignment - M. Kline: not in data room.\n- Folder note says M. Kline worked on prototype before incorporation.\n- Investor counsel asks to confirm complete IP assignment coverage for founders and prototype contractor."
+          },
+          {
+            "id": "docusign_status",
+            "label": "E-Signature",
+            "sourceWorkspaceAppId": "docusign",
+            "content": "Signature status dashboard\n\n- Director signatures: target 3 of 3; actual 2 of 3; status critical.\n- Officer certificate: target signed; actual unsigned; status critical.\n- Investor signature pages: target complete; actual complete; status on track."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "startup lawyer",
+          "workSurface": "spreadsheet",
+          "inputArtifacts": [
+            {
+              "id": "deal_workspace",
+              "label": "LumenLoop data-room materials",
+              "whereVisible": "closing_checklist.appTabs.data_room_materials and closing_checklist.appTabs.docusign_status",
+              "summary": "Data-room index, cap table and charter mismatch, approval/signature status, SAFE note uncertainty, IP assignment folder, and investor-counsel diligence request."
+            },
+            {
+              "id": "maya_slack",
+              "label": "Maya's Slack instruction",
+              "whereVisible": "closing_checklist.appTabs.maya_slack",
+              "summary": "Substance-first checklist pass, grouped by closing condition, with non-final items flagged before Maya review."
+            }
+          ],
+          "studentAction": "Transform visible deal sources into reviewable closing checklist rows.",
+          "outputArtifact": {
+            "id": "closing_checklist",
+            "label": "Closing checklist rows",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.closing_checklist"
+          ],
+          "continuity": [
+            "Checklist issues feed founder-call prep and the post-call checklist annotation."
+          ],
+          "authenticityCheck": "Closing checklist maintenance is core first-year emerging-companies and venture-financing work."
+        },
+        "next": "founder_call_prep"
+      },
+      "founder_call_prep": {
+        "id": "founder_call_prep",
+        "type": "free_text",
+        "section": 2,
+        "title": "Prepare for the Founder Call",
+        "content": "Use the checklist issues you just organized to prepare for Arjun's 11:30 founder call. Arjun has 15 minutes and wants to know why the deal cannot just close today. Turn the checklist blockers into a compact note: what you need to explain, what you need to ask Arjun for, what facts to listen for, and what Maya still must review. Do not write a script or final legal advice.",
+        "prompt": "Draft 4-5 concise call-prep bullets from the checklist: early status, practical closing consequence, exact asks for Arjun, call facts to listen for, caveat/Maya review boundary, and next checkpoint.",
+        "placeholder": "Status: ...\nConsequence: ...\nAsks: ...\nCaveat / Maya review: ...\nNext checkpoint: ...",
+        "minWords": 55,
+        "maxWords": 140,
+        "appWindow": "notion",
+        "windowTitle": "LumenLoop founder-call prep",
+        "appTabs": [
+          {
+            "id": "checklist_findings",
+            "label": "Checklist issues",
+            "content": "Checklist issues to turn into call prep\n\n- Cap table and charter numbers do not match: charter says 2,650,000 Series Seed shares; cap table shows 2,740,000.\n- Westbridge SAFE treatment is not confirmed, and the executed SAFE or conversion backup is not uploaded.\n- Board consent is missing Director Patel's signature, and the officer certificate is unsigned.\n- Contractor IP assignment for M. Kline is missing from the data room.\n- Investor wire is ready only after closing deliverables are clean.\n- Maya must review before anyone gives final closing timing or announcement comfort."
+          },
+          {
+            "id": "call_facts",
+            "label": "Call facts",
+            "content": "Facts available before the 11:30 founder call\n\n- Cap table export shows 2,740,000 Series Seed shares after financing, while the draft charter authorizes 2,650,000 Series Seed shares.\n- Cap table note says the Westbridge SAFE holder was added manually and conversion treatment needs confirmation.\n- Board consent is signed by two of three directors; Director Patel signature is pending.\n- Officer certificate is unsigned.\n- Founder says Director Patel is traveling but can sign tonight.\n- Contractor IP assignment for M. Kline is missing from the data room; investor counsel asked for IP assignment confirmation.\n- Investor wire is ready once closing deliverables are complete.\n- Maya will review before the team gives final closing timing or legal clearance."
+          },
+          {
+            "id": "legal_guardrails",
+            "label": "Guardrails",
+            "content": "Junior associate communication guardrails\n\nUse plain business language:\n- Inconsistent cap table and charter numbers can make financing documents inaccurate.\n- Missing board consent signature can prevent clean authorization for closing.\n- Missing IP assignment support can affect investor diligence comfort.\n\nStay inside role:\n- Ask for exact documents or confirmations.\n- Identify practical closing consequence.\n- Say Maya will confirm the final legal view and timing.\n- Do not promise closing, announce timing, or give broad legal advice from partial facts."
+          },
+          {
+            "id": "maya_bar",
+            "label": "Maya's bar",
+            "content": "Maya's review bar\n\nA useful call prep note should:\n- Lead with what appears to be blocking clean closing comfort.\n- Name evidence, not vibes.\n- Ask for the smallest facts/documents that resolve the issue.\n- Keep the founder moving without blaming the client.\n- Preserve the senior-review boundary."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "startup lawyer",
+          "workSurface": "notion",
+          "inputArtifacts": [
+            {
+              "id": "closing_checklist",
+              "label": "Checklist issues",
+              "whereVisible": "founder_call_prep.appTabs.checklist_findings",
+              "summary": "The source-backed blockers the student just organized: cap table/charter mismatch, SAFE uncertainty, missing board signature, IP assignment gap, investor wire timing, and senior-review boundary."
+            },
+            {
+              "id": "call_facts",
+              "label": "Founder-call facts",
+              "whereVisible": "founder_call_prep.appTabs.call_facts",
+              "summary": "Cap table/charter mismatch, SAFE uncertainty, board signature status, IP assignment gap, investor wire timing, and senior-review boundary."
+            }
+          ],
+          "studentAction": "Turn the checklist issues into compact call bullets for Arjun: explain the blockers, ask for exact documents or confirmations, and preserve Maya's review boundary.",
+          "outputArtifact": {
+            "id": "founder_call_prep",
+            "label": "Founder-call prep note",
+            "format": "free_text"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.founder_call_prep"
+          ],
+          "continuity": [
+            "The prep note appears in founder_call via prepNoteKey."
+          ],
+          "authenticityCheck": "Junior associates often prepare a short, supervised issue explanation before a client call."
+        },
+        "next": "founder_call"
+      },
+      "founder_call": {
+        "id": "founder_call",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Founder Call with LumenLoop",
+        "content": "You join a remote call with Arjun Rao, LumenLoop's CEO, while Maya listens. Arjun wants to close today and asks why the lawyers need more documents.",
+        "npcId": "arjun",
+        "meetingMode": "remote",
+        "playerGoal": "In 3-8 turns, explain the closing blockers to Arjun, ask for the missing items, listen for facts he confirms for the post-call checklist comments, and preserve Maya's senior-review boundary without over-promising timing.",
+        "prepNoteKey": "founder_call_prep",
+        "prepNoteTitle": "Your founder-call prep",
+        "prepReferenceTitle": "Compact deal reference",
+        "prepReferenceContent": "Facts available during the call:\n- Draft charter authorizes 2,650,000 Series Seed shares; cap table export shows 2,740,000.\n- Westbridge SAFE conversion treatment is not confirmed and executed SAFE backup is not uploaded.\n- Board consent is missing Director Patel's signature, and the officer certificate is unsigned.\n- Contractor IP assignment for M. Kline is missing from the data room.\n- Investor wire is ready after closing deliverables are clean.\n- Maya will confirm final legal view and closing timing after reviewing the received documents.",
+        "sessionNotesKey": "founder_call_notes",
+        "sessionNotesTitle": "Founder-call notes",
+        "sessionNotesPrompt": "Take notes while you confirm facts with Arjun. You will use these notes right after the call to comment on the checklist for Maya.",
+        "sessionNotesPlaceholder": "Capture exact call facts, e.g. what Arjun says about Westbridge SAFE treatment, Director Patel timing, the unsigned officer certificate, missing IP backup, and anything Maya still needs to review.",
+        "sessionNotesPlacement": "below_image",
+        "goalPrompt": "You are Arjun Rao, founder and CEO of LumenLoop, on a remote call with the junior associate while Maya listens. Start by asking why the deal cannot close today if the investor already agreed to wire. Cover exactly these topics: whether the associate can explain the cap table/charter mismatch in plain language, whether they ask for the Westbridge SAFE backup or conversion treatment, whether they ask for Director Patel's signature timing and the unsigned officer certificate, whether they ask about the missing M. Kline IP assignment, and whether they avoid promising closing or announcement timing before Maya's review. Make the outcome evident on a gradient. Strong handling: you become aligned, share that Westbridge was added manually to the cap table, Director Patel can sign tonight, you can sign the officer certificate once Maya confirms the final form, and you will look for M. Kline's contractor IP backup, then close with: 'Send Maya the exact list and I will get those items moving today.' Partial handling: you cooperate but ask one clarifying question about what exactly is needed or what Maya still has to review. Weak handling: if the associate is vague, blames you, or overclaims legal clearance, push back once by asking whether they are saying the deal is cleared or whether the lawyers actually know what is missing. Do not open new topics after a clear closing line.",
+        "meetingContext": "The user is a first-year startup corporate associate. A strong performance is calm, specific, practical, and supervised: Arjun should understand why clean closing comfort is not available yet and should know the exact documents or confirmations to move today. A partial performance gets cooperation but leaves Arjun with at least one unresolved question. A weak performance creates visible confusion, frustration, or overclaiming risk. The user should not give final legal advice, should not blame the founder, and should ask for exact documents or confirmations that affect closing.",
+        "minTurns": 3,
+        "maxTurns": 8,
+        "voiceName": "Puck",
+        "deskWorkDesign": {
+          "roleFamily": "startup lawyer",
+          "workSurface": "remote voice meeting",
+          "inputArtifacts": [
+            {
+              "id": "founder_call_prep",
+              "label": "Student founder-call prep",
+              "whereVisible": "founder_call.prepNoteKey",
+              "summary": "Student's prepared status, consequence, asks, caveat, and next checkpoint."
+            },
+            {
+              "id": "compact_deal_reference",
+              "label": "Compact deal reference",
+              "whereVisible": "founder_call.prepReferenceContent",
+              "summary": "Cap table/charter mismatch, SAFE uncertainty, board signature status, IP assignment gap, and senior-review boundary."
+            }
+          ],
+          "studentAction": "Speak with the founder and clarify missing items without over-promising.",
+          "outputArtifact": {
+            "id": "founder_call",
+            "label": "Voice transcript",
+            "format": "voice_meeting"
+          },
+          "rubricEvidence": [
+            "npcConversations.voice:founder_call:arjun"
+          ],
+          "continuity": [
+            "Information from the call and the student's founder-call notes should influence the checklist comments."
+          ],
+          "authenticityCheck": "Startup lawyers often explain transaction friction to founders while preserving senior-review boundaries."
+        },
+        "next": "issue_list",
+        "illustration": "/scenes/founder_call_prep.png",
+        "endpoint": "End once Arjun either aligns on the exact next documents/checkpoint or clearly shows what remains unresolved.",
+        "successCriteria": "Strong: Arjun understands the cap/charter mismatch, SAFE backup, signature/certificate gap, IP gap, and agrees to move exact items today. Partial: Arjun cooperates but still needs clarification on one issue or Maya's review boundary. Weak: Arjun is left confused, receives vague asks, or hears unsupported closing/announcement comfort."
+      },
+      "issue_list": {
+        "id": "issue_list",
+        "type": "structured_entry",
+        "section": 3,
+        "title": "Annotate the Closing Checklist for Maya",
+        "content": "After the call, Maya wants the checklist you already built, with post-call comments under each saved row. The original checklist text is locked. For each item, add a short comment with the call fact or status update, plus any remaining need, Maya review point, or tracking item if applicable.",
+        "prompt": "Add a Maya-facing comment under each saved checklist row. Capture founder-call facts or status changes, and include any remaining need, review point, or follow-up only where it applies.",
+        "appWindow": "doc",
+        "windowTitle": "LumenLoop Closing Checklist - Post-Call Comments",
+        "definition": {
+          "itemLabel": "Checklist Item",
+          "bindingKey": "issue_list",
+          "initialCount": 4,
+          "minItems": 4,
+          "maxItems": 4,
+          "annotationSource": {
+            "bindingKey": "closing_checklist",
+            "itemLabel": "Checklist item",
+            "emptyText": "No saved checklist rows yet. Go back to Update the Closing Checklist and submit the four checklist items before adding Maya comments.",
+            "fieldLabels": {
+              "condition": "Closing condition",
+              "visible_evidence": "Visible evidence",
+              "status_owner": "Status and owner",
+              "risk_next_action": "Risk and next action"
+            }
+          },
+          "previousResponseReference": {
+            "bindingKey": "founder_call_notes",
+            "title": "Founder-call notes",
+            "emptyText": "No founder-call notes yet. Use the note box during the call to capture facts you will use for these comments."
+          },
+          "fields": [
+            {
+              "key": "maya_comment",
+              "label": "Post-call comment to Maya",
+              "placeholder": "Write what Arjun said or what changed on the call. Add any remaining need, Maya review point, or tracking item if applicable.",
+              "multiline": true,
+              "rows": 4
+            }
+          ]
+        },
+        "appTabs": [
+          {
+            "id": "deal_record",
+            "label": "Deal record",
+            "content": "Source record for the post-call checklist comments\n\nUse the record built today, not outside assumptions. You are not creating a new issue list. You are annotating the four checklist rows you already prepared for Maya.\n\nWorkspace/checklist record:\n- Draft charter authorizes 2,650,000 Series Seed shares; cap table export shows 2,740,000.\n- Westbridge SAFE holder was added manually in the cap table, and the executed SAFE or conversion backup is not uploaded.\n- Board consent is signed by two of three directors; Director Patel signature remains pending.\n- Officer certificate is unsigned.\n- Contractor IP assignment for M. Kline is missing from the data room.\n\nCall record:\n- Use your founder-call notes for exact facts Arjun confirmed, especially SAFE treatment, Director Patel timing, officer certificate timing, missing IP backup, and what he can provide today."
+          },
+          {
+            "id": "maya_bar",
+            "label": "Maya's bar",
+            "content": "Maya's review bar for checklist comments\n\nA useful comment should:\n- Say what changed on the call.\n- Identify what is still needed, if anything.\n- Tell Maya what to review, track, or treat as a same-day follow-up.\n- Keep record facts separate from legal conclusions.\n- Avoid rewriting the checklist row or declaring legal clearance before Maya review."
+          }
+        ],
+        "deskWorkDesign": {
+          "roleFamily": "startup lawyer",
+          "workSurface": "doc",
+          "inputArtifacts": [
+            {
+              "id": "founder_call_notes",
+              "label": "Founder-call notes",
+              "whereVisible": "issue_list.definition.previousResponseReference",
+              "summary": "Student notes captured during the founder call for exact call facts."
+            },
+            {
+              "id": "closing_checklist",
+              "label": "Saved closing checklist rows",
+              "whereVisible": "issue_list.definition.annotationSource and issue_list.appTabs.deal_record",
+              "summary": "The student's locked checklist rows plus data-room facts and call record reminders."
+            }
+          ],
+          "studentAction": "Annotate the saved closing checklist with post-call comments for Maya.",
+          "outputArtifact": {
+            "id": "issue_list",
+            "label": "Annotated closing checklist comments",
+            "format": "structured_entry"
+          },
+          "rubricEvidence": [
+            "freeTextResponses.issue_list"
+          ],
+          "continuity": [
+            "Annotated checklist comments are the final work product before assessment."
+          ],
+          "authenticityCheck": "Junior startup lawyers commonly update closing checklists with call notes, remaining asks, and senior-review comments."
+        },
+        "next": "assessment_gate"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "End of Seed Financing Day",
+        "content": "Your responses are being evaluated against the startup-lawyer rubric.",
+        "imageBrief": "End-of-day law firm desk with a completed LumenLoop checklist and annotated post-call comments arranged neatly on a laptop. The visual should feel calm after a precise, deadline-heavy deal day.",
+        "next": "final_report",
+        "illustration": "/scenes/grading.png"
+      },
+      "final_report": {
+        "id": "final_report",
+        "type": "final_report",
+        "section": 3,
+        "title": "Final Report",
+        "content": "Review your performance across deal intake, issue triage, founder communication, and checklist annotation.",
+        "imageBrief": "Final report screen for the LumenLoop seed financing simulation, with a balanced scorecard and concise legal-work feedback. The laptop is on a clean law-firm desk with checklist and annotated call notes visible as supporting materials.",
+        "next": null,
+        "illustration": "/scenes/grading.png"
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "The Week Is Complete",
+        "content": "The simulated week is complete. You have finished the work period; when you are ready, view your assessment.",
+        "illustration": "/scenes/grading.png",
+        "imageBrief": "A calm end-of-week workplace wrap-up moment with completed notes, closed work surfaces, and a quiet team environment. No assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      }
+    }
+  },
+  "npcs": {
+    "arjun": {
+      "id": "arjun",
+      "name": "Arjun Rao",
+      "role": "Founder and CEO, LumenLoop",
+      "persona": "Arjun is a smart startup founder who wants momentum and dislikes procedural delays. He respects clear, practical explanations but gets impatient with legal jargon. He needs the associate to explain the closing consequence without sounding like the law firm is inventing friction.",
+      "voice": "fast, practical, mildly impatient"
+    }
+  },
+  "intro": {
+    "welcomeTitle": "Entry-Level Startup Lawyer: Seed Financing Day",
+    "welcomeBody": "Step into a junior law-firm associate's day: update a closing checklist from visible deal sources, triage financing issues, handle a founder call, and annotate the checklist for senior review.",
+    "steps": [
+      {
+        "label": "Read",
+        "content": "Use the deal workspace, data-room index, cap table, approvals, and diligence notes as source material."
+      },
+      {
+        "label": "Organize",
+        "content": "Turn messy closing facts into a reviewable checklist and issue triage."
+      },
+      {
+        "label": "Communicate",
+        "content": "Explain practical consequences without overclaiming legal clearance."
+      },
+      {
+        "label": "Draft",
+        "content": "Prepare senior-review-ready internal work product."
+      }
+    ]
+  },
+  "glossary": {
+    "board consent": "A written corporate approval by the board of directors, often needed to authorize financing documents or related corporate actions.",
+    "cap table": "A capitalization table showing the company's ownership, securities, investors, and sometimes convertible instruments.",
+    "closing checklist": "A tracker listing documents, signatures, approvals, deliverables, owners, and status needed to close a transaction.",
+    "data room": "A shared online folder containing transaction documents, diligence materials, corporate records, and drafts.",
+    "SAFE": "Simple Agreement for Future Equity, a startup financing instrument that may convert into equity under specified terms.",
+    "signature set": "The collection of documents and signature pages that parties must sign before or at closing.",
+    "charter": "A company's certificate of incorporation or similar governing document that can authorize shares and classes of stock.",
+    "IP assignment": "A document transferring intellectual-property rights from a founder, contractor, or employee to the company."
+  },
+  "sample_answers": {
+    "closing_checklist": "[{\"condition\":\"Board consent approving seed financing\",\"visible_evidence\":\"Board consent DocuSign envelope shows 2 of 3 director signatures complete; Director Patel signature is pending.\",\"status_owner\":\"Missing one director signature. Company/founder owns routing Director Patel signature; Maya reviews once complete.\",\"risk_next_action\":\"Authorization may be incomplete until signed. Ask founder for signature timing and confirm no board roster changes before closing.\"},{\"condition\":\"Cap table and draft charter consistency\",\"visible_evidence\":\"Draft charter authorizes 2,650,000 Series Seed shares; cap table export shows 2,740,000 Series Seed shares after financing.\",\"status_owner\":\"Inconsistent and needs review. Company/CFO or founder owns a reconciled cap table; Maya reviews document numbers.\",\"risk_next_action\":\"Financing documents may reflect inaccurate capitalization. Request reconciled cap table and source explanation before finalizing charter numbers.\"},{\"condition\":\"Westbridge SAFE conversion records\",\"visible_evidence\":\"SAFE tracker says Westbridge SAFE converted? and cap table note says holder added manually; executed SAFE PDF is not uploaded.\",\"status_owner\":\"Unconfirmed. Company owns executed SAFE and conversion treatment; Maya reviews legal effect.\",\"risk_next_action\":\"SAFE treatment could explain share mismatch and affect ownership disclosure. Ask for executed SAFE and conversion backup.\"},{\"condition\":\"IP assignment coverage\",\"visible_evidence\":\"Founder assignments for Arjun and Leah are uploaded; contractor M. Kline assignment is missing and investor counsel requested complete IP assignment confirmation.\",\"status_owner\":\"Incomplete diligence support. Company owns missing contractor assignment or officer confirmation; Maya reviews adequacy.\",\"risk_next_action\":\"Investor diligence comfort may not be satisfied. Ask for missing contractor assignment or backup for Maya review.\"}]",
+    "founder_call_prep": "Status: the main timing issues are document accuracy and approval support, not generic delay. Consequence: the cap table and charter seed-share numbers do not match, and the Westbridge SAFE treatment may explain the difference. Asks: reconciled cap table, executed SAFE or conversion backup, Director Patel signature timing, and contractor IP assignment backup. Caveat: Maya will review before we give final legal clearance or timing. Next checkpoint: send Maya the exact list after the call and update the partner status.",
+    "founder_call_notes": "Arjun said Westbridge was added manually to the cap table and will send the executed SAFE/conversion backup. He said Director Patel is traveling but can sign tonight. He can sign the officer certificate once Maya confirms the final form. M. Kline contractor IP assignment is not in the data room yet; Arjun will look for the contractor backup. Maya still needs to review reconciled numbers, SAFE backup, signature package, and IP backup before final closing comfort.",
+    "issue_list": "[{\"source_condition\":\"Board consent approving seed financing\",\"maya_comment\":\"Arjun said Director Patel can sign tonight and he can sign the officer certificate once Maya confirms the final form. Still need the completed signature package before Maya or the partner treats authorization as final.\"},{\"source_condition\":\"Cap table and draft charter consistency\",\"maya_comment\":\"Arjun confirmed Westbridge was added manually to the cap table. Still need a reconciled cap table and Maya's review before the charter and share numbers can be treated as clean.\"},{\"source_condition\":\"Westbridge SAFE conversion records\",\"maya_comment\":\"Arjun said he will send the executed SAFE or conversion backup. Still need the backup uploaded before Maya can confirm the SAFE treatment and whether it explains the share-count difference.\"},{\"source_condition\":\"IP assignment coverage\",\"maya_comment\":\"Arjun said the M. Kline contractor IP assignment is not in the data room yet and he will look for the backup. Still need the assignment or other support before Maya can assess IP diligence comfort.\"}]",
+    "closing_checklist_dev": {
+      "playerName": "Alex",
+      "mcSelections": {
+        "first_move": "map_documents"
+      },
+      "branchFlags": {
+        "first_move": "checklist_first"
+      },
+      "freeTextResponses": {
+        "closing_checklist": "[{\"condition\":\"Board consent approving seed financing\",\"visible_evidence\":\"Board consent DocuSign envelope shows 2 of 3 director signatures complete; Director Patel signature is pending.\",\"status_owner\":\"Missing one director signature. Company/founder owns routing Director Patel signature; Maya reviews once complete.\",\"risk_next_action\":\"Authorization may be incomplete until signed. Ask founder for signature timing and confirm no board roster changes before closing.\"},{\"condition\":\"Cap table and draft charter consistency\",\"visible_evidence\":\"Draft charter authorizes 2,650,000 Series Seed shares; cap table export shows 2,740,000 Series Seed shares after financing.\",\"status_owner\":\"Inconsistent and needs review. Company/CFO or founder owns a reconciled cap table; Maya reviews document numbers.\",\"risk_next_action\":\"Financing documents may reflect inaccurate capitalization. Request reconciled cap table and source explanation before finalizing charter numbers.\"},{\"condition\":\"Westbridge SAFE conversion records\",\"visible_evidence\":\"SAFE tracker says Westbridge SAFE converted? and cap table note says holder added manually; executed SAFE PDF is not uploaded.\",\"status_owner\":\"Unconfirmed. Company owns executed SAFE and conversion treatment; Maya reviews legal effect.\",\"risk_next_action\":\"SAFE treatment could explain share mismatch and affect ownership disclosure. Ask for executed SAFE and conversion backup.\"},{\"condition\":\"IP assignment coverage\",\"visible_evidence\":\"Founder assignments for Arjun and Leah are uploaded; contractor M. Kline assignment is missing and investor counsel requested complete IP assignment confirmation.\",\"status_owner\":\"Incomplete diligence support. Company owns missing contractor assignment or officer confirmation; Maya reviews adequacy.\",\"risk_next_action\":\"Investor diligence comfort may not be satisfied. Ask for missing contractor assignment or backup for Maya review.\"}]"
+      }
+    },
+    "founder_call_dev": {
+      "playerName": "Alex",
+      "mcSelections": {
+        "first_move": "map_documents"
+      },
+      "branchFlags": {
+        "first_move": "checklist_first"
+      },
+      "freeTextResponses": {
+        "closing_checklist": "[{\"condition\":\"Board consent approving seed financing\",\"visible_evidence\":\"Board consent DocuSign envelope shows 2 of 3 director signatures complete; Director Patel signature is pending.\",\"status_owner\":\"Missing one director signature. Company/founder owns routing Director Patel signature; Maya reviews once complete.\",\"risk_next_action\":\"Authorization may be incomplete until signed. Ask founder for signature timing and confirm no board roster changes before closing.\"},{\"condition\":\"Cap table and draft charter consistency\",\"visible_evidence\":\"Draft charter authorizes 2,650,000 Series Seed shares; cap table export shows 2,740,000 Series Seed shares after financing.\",\"status_owner\":\"Inconsistent and needs review. Company/CFO or founder owns a reconciled cap table; Maya reviews document numbers.\",\"risk_next_action\":\"Financing documents may reflect inaccurate capitalization. Request reconciled cap table and source explanation before finalizing charter numbers.\"},{\"condition\":\"Westbridge SAFE conversion records\",\"visible_evidence\":\"SAFE tracker says Westbridge SAFE converted? and cap table note says holder added manually; executed SAFE PDF is not uploaded.\",\"status_owner\":\"Unconfirmed. Company owns executed SAFE and conversion treatment; Maya reviews legal effect.\",\"risk_next_action\":\"SAFE treatment could explain share mismatch and affect ownership disclosure. Ask for executed SAFE and conversion backup.\"},{\"condition\":\"IP assignment coverage\",\"visible_evidence\":\"Founder assignments for Arjun and Leah are uploaded; contractor M. Kline assignment is missing and investor counsel requested complete IP assignment confirmation.\",\"status_owner\":\"Incomplete diligence support. Company owns missing contractor assignment or officer confirmation. Maya reviews adequacy.\",\"risk_next_action\":\"Investor diligence comfort may not be satisfied. Ask for missing contractor assignment or backup for Maya review.\"}]",
+        "founder_call_prep": "Status: the main timing issues are document accuracy and approval support, not generic delay. Consequence: the cap table and charter seed-share numbers do not match, and the Westbridge SAFE treatment may explain the difference. Asks: reconciled cap table, executed SAFE or conversion backup, Director Patel signature timing, and contractor IP assignment backup. Caveat: Maya will review before we give final legal clearance or timing. Next checkpoint: send Maya the exact list after the call and update the partner status.",
+        "founder_call_notes": "Arjun said Westbridge was added manually to the cap table and will send the executed SAFE/conversion backup. He said Director Patel is traveling but can sign tonight. He can sign the officer certificate once Maya confirms the final form. M. Kline contractor IP assignment is not in the data room yet; Arjun will look for the contractor backup. Maya still needs to review reconciled numbers, SAFE backup, signature package, and IP backup before final closing comfort."
+      }
+    }
+  },
+  "rubric": {
+    "simulation_id": "startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate",
+    "max_score_per_criterion": 10,
+    "sections": [
+      {
+        "section_number": 1,
+        "section_title": "タスク別採点",
+        "criteria": [
+          {
+            "name": "最初の判断",
+            "evidenceSceneIds": [
+              "first_move"
+            ],
+            "rubric_text": "9-10: クロージング前の制約、依頼者対応、相手方確認、リスクを見て最初の行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "締結一覧",
+            "evidenceSceneIds": [
+              "closing_checklist"
+            ],
+            "rubric_text": "9-10: 未完了書類、署名状況、条件、相手方待ち、リスクを締結一覧として正確に整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "創業者通話",
+            "evidenceSceneIds": [
+              "founder_call"
+            ],
+            "rubric_text": "9-10: 準備メモではなく実際の通話で、創業者に必要な事実、リスク、次の行動を分かりやすく確認できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          },
+          {
+            "name": "通話後の注記",
+            "evidenceSceneIds": [
+              "issue_list"
+            ],
+            "rubric_text": "9-10: 通話後に残る論点、法務上の注意、誰が何を確認するかを、締結作業に使える形で注記できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          }
+        ]
+      }
+    ]
+  }
+}

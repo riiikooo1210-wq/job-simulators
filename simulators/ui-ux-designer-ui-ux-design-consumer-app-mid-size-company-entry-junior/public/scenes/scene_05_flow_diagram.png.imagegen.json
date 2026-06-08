@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-27T15:15:58+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_05_flow_diagram",
+  "itemId": "scene_05_flow_diagram",
+  "promptHash": "c0a66347e535fdd2",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/public/visual-refs/npcs/leo.png"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/src/data/scene-config.json"
+}

@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-28T00:00:00+00:00",
+  "model": "placeholder-copy",
+  "kind": "scene",
+  "sceneId": "redirect_constraints",
+  "itemId": "redirect_constraints",
+  "promptHash": "manual-placeholder",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/architect-none-most-common-residential-architecture-mid-size-firm-entry-junior/IMAGE_PROMPTS.md"
+}

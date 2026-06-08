@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-19T04:49:17+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "support_matrix",
+  "itemId": "support_matrix",
+  "promptHash": "44908a16a0d640a4",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/computer-science-professor-general-intro-cs-teaching-heavy-day-community-college-computer-science-education-community-college-assistant-professor/src/data/scene-config.json"
+}

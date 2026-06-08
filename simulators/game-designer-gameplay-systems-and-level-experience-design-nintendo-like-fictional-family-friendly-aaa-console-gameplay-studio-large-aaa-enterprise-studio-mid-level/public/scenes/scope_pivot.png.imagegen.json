@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:13:45+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scope_pivot",
+  "itemId": "scope_pivot",
+  "promptHash": "d28b0c30d8ba6f1c",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/game-designer-gameplay-systems-and-level-experience-design-nintendo-like-fictional-family-friendly-aaa-console-gameplay-studio-large-aaa-enterprise-studio-mid-level/src/data/scene-config.json"
+}

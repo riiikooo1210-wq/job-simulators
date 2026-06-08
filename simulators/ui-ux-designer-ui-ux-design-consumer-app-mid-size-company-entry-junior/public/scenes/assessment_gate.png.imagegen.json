@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:16:35+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "89e23d4ba7412131",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior/src/data/scene-config.json"
+}

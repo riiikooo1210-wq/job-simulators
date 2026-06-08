@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-05-18T14:48:15+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "intro",
+  "itemId": "intro",
+  "promptHash": "95bf55d7bebb8af4",
+  "references": [
+    "templates/style-reference.jpg",
+    "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/public/visual-refs/locations/consultant-desk.png"
+  ],
+  "sourceFile": "simulators/consultant-generalist-analyst-associate-consultant-management-consulting-strategy-and-operations-consulting-in-the-united-states-established-mid-to-large-consulting-firm-entry-junior/IMAGE_PROMPTS.md"
+}

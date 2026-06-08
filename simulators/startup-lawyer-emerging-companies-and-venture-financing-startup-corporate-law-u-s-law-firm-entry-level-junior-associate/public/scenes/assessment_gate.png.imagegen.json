@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T15:15:25+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "assessment_gate",
+  "itemId": "assessment_gate",
+  "promptHash": "e2c4519c7e4cf3ad",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/startup-lawyer-emerging-companies-and-venture-financing-startup-corporate-law-u-s-law-firm-entry-level-junior-associate/src/data/scene-config.json"
+}

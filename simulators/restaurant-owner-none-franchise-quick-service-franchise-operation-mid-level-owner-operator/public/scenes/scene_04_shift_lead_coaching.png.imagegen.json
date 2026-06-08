@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T13:58:38+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "scene_04_shift_lead_coaching",
+  "itemId": "scene_04_shift_lead_coaching",
+  "promptHash": "c841d112316a8b15",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/restaurant-owner-none-franchise-quick-service-franchise-operation-mid-level-owner-operator/IMAGE_PROMPTS.md"
+}

@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-05-27T12:57:56+00:00",
+  "model": "gemini-3-pro-image-preview",
+  "kind": "scene",
+  "sceneId": "everyday_icons_workspace",
+  "itemId": "everyday_icons_workspace",
+  "promptHash": "2a8fdaaefd922364",
+  "references": [
+    "templates/style-reference.jpg"
+  ],
+  "sourceFile": "simulators/brand-strategist-general-consumer-brand-strategy-for-fashion-brand-common-brand-strategist-work-imagined-by-aspiring-brand-strategists-fictional-fashion-brand-enterprise-global-brand-entry-junior/IMAGE_PROMPTS.md"
+}
