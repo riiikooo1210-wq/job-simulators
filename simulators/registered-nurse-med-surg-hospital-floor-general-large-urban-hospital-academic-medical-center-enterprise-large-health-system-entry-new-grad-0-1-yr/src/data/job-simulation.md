@@ -75,13 +75,13 @@ D. Begin pulling all 09:00 medications from the Omnicell to get ahead of the mor
 
 ### Scene 2A: Clinical Prep for Mrs. Vance
 **Setting and time:** Room 512 (Mrs. Vance's room), 07:42
-**What's happening and why:** Before speaking with Sarah, you pause at the bedside to organize the clinical facts: Mrs. Vance is 88, post-op day 2 after a hip fracture, grimacing, rating pain 8/10, with HR 115 and BP 168/92. Severe acute pain can make recovery harder by limiting breathing, coughing, repositioning, mobility, sleep, and participation in care `[onet]`.
+**What's happening and why:** Before speaking with Sarah, you pause at the bedside to organize the clinical facts: Mrs. Vance is 88, post-op day 2 after a hip fracture, grimacing, rating pain around 8-9/10, with HR 115 and BP 168/92. Severe acute pain can make recovery harder by limiting breathing, coughing, repositioning, mobility, sleep, and participation in care `[onet]`.
 **What decision, deliverable, conversation, or hands-on action the student faces:** Review the clinical prep so you can explain pain management in plain language during the family conversation.
 **Interaction mode:** Briefing / source input
 
 ### Scene 2B: A Difficult Conversation
 **Setting and time:** Room 512 (Mrs. Vance's room), 07:45
-**What's happening and why:** You enter the room to assess Mrs. Vance. She is grimacing and her vitals are elevated: HR 115, BP 168/92. She rates her pain as an "8 out of 10." Her daughter, Sarah, is at the bedside, looking worried. As you explain that you'd like to help manage her mother's pain, Sarah interrupts you. "Absolutely no narcotics," she says firmly. "Addiction runs in our family, and I will not let her get hooked on that stuff at her age." You need to have a conversation to advocate for your patient's comfort and recovery `[onet]`.
+**What's happening and why:** You enter the room to assess Mrs. Vance. She is grimacing and her vitals are elevated: HR 115, BP 168/92. She rates her pain around "8 to 9 out of 10." Her daughter, Sarah, is at the bedside, looking worried. As you explain that you'd like to help manage her mother's pain, Sarah interrupts you. "Absolutely no narcotics," she says firmly. "Addiction runs in our family, and I will not let her get hooked on that stuff at her age." You need to have a conversation to advocate for your patient's comfort and recovery `[onet]`.
 **What decision, deliverable, conversation, or hands-on action the student faces:** You need to speak with Sarah, using the clinical prep you just reviewed to explain the importance of pain management while respecting her concerns.
 **Interaction mode:** AI-driven voice meeting
 

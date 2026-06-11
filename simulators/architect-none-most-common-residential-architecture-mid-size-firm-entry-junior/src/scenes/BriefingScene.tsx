@@ -458,7 +458,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                 </div>
               )
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '100%', minHeight: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
@@ -476,14 +476,16 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
                     gap: '0.85rem',
-                    alignItems: 'start',
+                    alignItems: 'stretch',
+                    flex: '1 1 auto',
+                    minHeight: 0,
                   }}
                 >
-                  <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2' }}>
-                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #CDBF94', fontSize: '0.75rem', fontWeight: 800, color: '#3F605C' }}>
+                  <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #CDBF94', fontSize: '0.75rem', fontWeight: 800, color: '#3F605C', flexShrink: 0 }}>
                       Name
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto', minHeight: 0, overflowY: 'auto' }}>
                       {files.map((file) => {
                         const active = file.id === activeFileId
                         const visited = visitedFiles.includes(file.id)
@@ -527,7 +529,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                     </div>
                   </div>
 
-                  <div style={{ minWidth: 0 }}>
+                  <div key={activeFileId || 'empty'} style={{ minWidth: 0, minHeight: 0, overflowY: 'auto' }}>
                     {renderSourceInboxFilePreview(activeFile)}
                   </div>
                 </div>

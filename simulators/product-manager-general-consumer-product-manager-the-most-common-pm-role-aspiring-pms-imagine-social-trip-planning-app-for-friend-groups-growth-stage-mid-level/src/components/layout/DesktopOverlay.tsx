@@ -21,7 +21,16 @@ export default function DesktopOverlay({ children, width = '75%', height = '80%'
         overflow: 'hidden',
       }}
     >
-      <img src="/laptop.png" alt="" style={{ width: '100%', display: 'block' }} />
+      <img
+        src="/laptop.png"
+        alt=""
+        style={{
+          width: '100%',
+          display: 'block',
+          transform: 'translate(-1.2%, -0.8%) scale(1.02)',
+          transformOrigin: 'center 48%',
+        }}
+      />
       <div
         style={{
           position: 'absolute',

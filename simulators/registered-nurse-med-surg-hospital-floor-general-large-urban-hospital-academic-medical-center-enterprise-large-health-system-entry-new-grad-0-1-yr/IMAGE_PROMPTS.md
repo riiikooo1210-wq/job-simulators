@@ -150,7 +150,7 @@ Reference image: Match the reference image's linework, cel-shading treatment, co
 ---
 
 ## scene1_discharge_redirect
-Filename: public/scenes/scene1_discharge_redirect.png
+Filename: public/scenes/scene1_discharge_redirect.jpg
 
 COPY THIS WHOLE PROMPT.
 
@@ -292,7 +292,7 @@ Reference image: Match the reference image's linework, cel-shading treatment, co
 ---
 
 ## scene1_quick_look_redirect
-Filename: public/scenes/scene1_quick_look_redirect.png
+Filename: public/scenes/scene1_quick_look_redirect.jpg
 
 COPY THIS WHOLE PROMPT.
 
@@ -363,7 +363,7 @@ Reference image: Match the reference image's linework, cel-shading treatment, co
 ---
 
 ## scene1_meds_redirect
-Filename: public/scenes/scene1_meds_redirect.png
+Filename: public/scenes/scene1_meds_redirect.jpg
 
 COPY THIS WHOLE PROMPT.
 

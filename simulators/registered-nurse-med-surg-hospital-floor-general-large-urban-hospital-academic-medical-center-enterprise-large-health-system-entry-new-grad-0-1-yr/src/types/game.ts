@@ -169,6 +169,9 @@ export interface BriefingNode extends BaseNode {
   emails?: EmailData[]
   metrics?: MetricRow[]
   quotes?: QuoteData[]
+  prepNoteKey?: string
+  prepNoteTitle?: string
+  prepNotePlaceholder?: string
 }
 
 export interface MultipleChoiceNode extends BaseNode {
@@ -247,6 +250,9 @@ export interface VoiceMeetingNode extends BaseNode {
   maxTurns?: number
   voiceName?: string
   initialMessages?: ChatMessage[]
+  prepNoteKey?: string
+  prepNoteTitle?: string
+  prepNoteEmptyText?: string
 }
 
 export interface InteractiveCanvasNode extends BaseNode {

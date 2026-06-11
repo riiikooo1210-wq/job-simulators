@@ -23,15 +23,21 @@ export default function DesktopOverlay({
   children,
   width = DEFAULT_WINDOW_WIDTH,
   height = DEFAULT_WINDOW_HEIGHT,
-  laptopZoom = 1,
-  laptopOffsetX = '0',
+  laptopZoom,
+  laptopOffsetX,
   windowScale = 1,
 }: Props) {
+  const usesOriginalLaptopDisplay = laptopZoom === undefined && laptopOffsetX === undefined
+  const resolvedLaptopZoom = usesOriginalLaptopDisplay ? 1.02 : laptopZoom ?? 1
+  const resolvedLaptopOffsetX = usesOriginalLaptopDisplay ? '-1.2%' : laptopOffsetX ?? '0'
+  const resolvedLaptopOffsetY = usesOriginalLaptopDisplay ? '-0.8%' : '0'
   const resolvedWidth = scalePercent(width, windowScale)
   const resolvedHeight = scalePercent(height, windowScale)
   const laptopTransform = [
-    laptopOffsetX !== '0' ? `translateX(${laptopOffsetX})` : '',
-    laptopZoom === 1 ? '' : `scale(${laptopZoom})`,
+    resolvedLaptopOffsetX !== '0' || resolvedLaptopOffsetY !== '0'
+      ? `translate(${resolvedLaptopOffsetX}, ${resolvedLaptopOffsetY})`
+      : '',
+    resolvedLaptopZoom === 1 ? '' : `scale(${resolvedLaptopZoom})`,
   ].filter(Boolean).join(' ')
 
   return (

@@ -84,6 +84,42 @@ function ReferenceBlock({ title, content }: { title: string; content: string }) 
   )
 }
 
+function PrepNotesPanel({
+  title,
+  content,
+  emptyText,
+  isInPerson,
+}: {
+  title: string
+  content: string
+  emptyText?: string
+  isInPerson: boolean
+}) {
+  const trimmed = content.trim()
+
+  return (
+    <section
+      style={{
+        flex: 1,
+        minHeight: isInPerson ? 150 : 0,
+        maxHeight: isInPerson ? 260 : undefined,
+        overflowY: 'auto',
+        background: isInPerson ? '#FFF8E8' : 'rgba(255,255,255,0.06)',
+        border: isInPerson ? '1px solid rgba(0,0,0,0.22)' : '1px solid rgba(242,235,217,0.18)',
+        padding: '0.75rem',
+        color: isInPerson ? '#222' : '#F2EBD9',
+      }}
+    >
+      <div style={{ fontSize: '0.75rem', fontWeight: 800, marginBottom: '0.5rem', color: isInPerson ? '#3A6B5E' : '#F2EBD9' }}>
+        {title}
+      </div>
+      <div style={{ fontSize: '0.8125rem', lineHeight: 1.55, whiteSpace: 'pre-wrap', opacity: trimmed ? 1 : 0.65 }}>
+        {trimmed || emptyText || 'No prep notes yet.'}
+      </div>
+    </section>
+  )
+}
+
 export default function VoiceMeetingScene({ node }: Props) {
   const npc = npcs[node.npcId]
   const conversationKey = `voice:${node.id}:${node.npcId}`
@@ -92,6 +128,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
+  const freeTextResponses = useGameStore((s) => s.freeTextResponses)
   const goNext = useGoNext()
 
   const [status, setStatus] = useState<LiveStatus>('idle')
@@ -118,6 +155,9 @@ export default function VoiceMeetingScene({ node }: Props) {
   const userTurns = messages.filter((m) => m.role === 'user').length
   const canSubmit = meetingEnded && userTurns >= minTurns
   const isInPerson = node.presentation === 'in_person'
+  const prepNoteKey = node.prepNoteKey
+  const prepNoteContent = prepNoteKey ? freeTextResponses[prepNoteKey] || '' : ''
+  const hasPrepNotePanel = Boolean(prepNoteKey)
 
   useEffect(() => {
     if (initializedRef.current) return
@@ -234,8 +274,8 @@ export default function VoiceMeetingScene({ node }: Props) {
   const transcript = (
     <div
       style={{
-        flex: isInPerson ? 'initial' : 1,
-        marginTop: isInPerson ? 0 : '0.875rem',
+        flex: hasPrepNotePanel ? 1 : isInPerson ? 'initial' : 1,
+        marginTop: hasPrepNotePanel ? 0 : isInPerson ? 0 : '0.875rem',
         background: isInPerson ? '#FFF8E8' : 'rgba(255,255,255,0.06)',
         border: isInPerson ? '1px solid rgba(0,0,0,0.22)' : '1px solid rgba(242,235,217,0.18)',
         padding: '0.75rem',
@@ -290,6 +330,32 @@ export default function VoiceMeetingScene({ node }: Props) {
       )}
     </div>
   )
+
+  const conversationPanels = hasPrepNotePanel ? (
+    <div
+      style={{
+        display: 'flex',
+        gap: '0.75rem',
+        alignItems: 'stretch',
+        flex: isInPerson ? 'initial' : 1,
+        minHeight: isInPerson ? 170 : 0,
+        marginTop: isInPerson ? 0 : '0.875rem',
+        flexWrap: 'wrap',
+      }}
+    >
+      <div style={{ flex: '1.35 1 20rem', minWidth: '16rem', minHeight: 0, display: 'flex' }}>
+        {transcript}
+      </div>
+      <div style={{ flex: '0.85 1 14rem', minWidth: '13rem', minHeight: 0, display: 'flex' }}>
+        <PrepNotesPanel
+          title={node.prepNoteTitle || 'Your prep notes'}
+          content={prepNoteContent}
+          emptyText={node.prepNoteEmptyText}
+          isInPerson={isInPerson}
+        />
+      </div>
+    </div>
+  ) : transcript
 
   const controls = (
     <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: isInPerson ? 0 : '0.75rem', flexShrink: 0, flexWrap: 'wrap' }}>
@@ -411,7 +477,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               <div style={{ fontSize: '0.75rem', color: status === 'error' ? '#9b2d20' : '#555' }}>{statusLabel}</div>
             </div>
             {controls}
-            {transcript}
+            {conversationPanels}
           </div>
         ) : (
           <DesktopOverlay>
@@ -448,7 +514,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               </div>
 
               {/* Transcript */}
-              {transcript}
+              {conversationPanels}
 
               {/* In-screen controls */}
               {controls}

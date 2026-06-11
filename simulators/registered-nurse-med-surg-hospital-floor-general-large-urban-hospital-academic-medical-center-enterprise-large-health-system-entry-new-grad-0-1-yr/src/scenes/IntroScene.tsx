@@ -66,7 +66,7 @@ export default function IntroScene({ node }: Props) {
           <div style={introCardStyle}>
             <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>What should we call you?</h2>
             <p style={{ fontSize: '0.875rem', lineHeight: 1.7, marginBottom: '1rem', color: '#333' }}>
-              Enter the name you'd like to go by in this office.
+              Enter the name you'd like to go by on this unit.
             </p>
             <input
               type="text"

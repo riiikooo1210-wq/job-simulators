@@ -63,7 +63,7 @@
 - ✅ Physical playground scene(s) have stage/assets/coordinates: scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene4_stabilize, scene4_raise_hob, scene4_apply_oxygen, scene2_administer_meds, scene2_reassessment_reminder.
 - ⚠️ **Physical playground issues:**
   - scene3_dispose_send: asset path `action-assets/scene3_lab_draw/filled-tube.png` is referenced but missing from ACTION_ASSETS.md
-  - scene3_dispose_send: asset path `action-assets/scene3_lab_draw/bag-and-tube.png` is referenced but missing from ACTION_ASSETS.md
+  - scene3_dispose_send: asset path `action-assets/scene3_lab_draw/bag-and-tube.PNG` is referenced but missing from ACTION_ASSETS.md
 
 ## Physical scene quality gate
 - ✅ Physical scene quality gate inspected 11 physical/action scene(s).

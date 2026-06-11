@@ -19,8 +19,9 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
-import { BriefingDrawerContent, renderSourceInboxFilePreview } from './BriefingScene'
-import type { PriorityMatrixNode, SourceInboxFile, WorkSurfaceTab } from '../types/game'
+import { BriefingDrawerContent } from './BriefingScene'
+import { organizeSourceTabs, renderSourceTab } from './sourceTabs'
+import type { PriorityMatrixNode } from '../types/game'
 
 // Quadrant IDs follow "high/low-yAxis-xAxis" convention
 type QuadrantId = 'high-low' | 'high-high' | 'low-low' | 'low-high'
@@ -164,92 +165,6 @@ function parseState(raw: string): Record<string, PlacedItem> {
   return {}
 }
 
-function hasSourcePreview(tab: WorkSurfaceTab) {
-  return Boolean(tab.previewTitle || tab.sections?.length || tab.rows?.length)
-}
-
-interface SourceTabContext {
-  playerName: string
-  branchFlags: Record<string, string>
-  mcSelections: Record<string, string>
-  freeTextResponses: Record<string, string>
-}
-
-function parseBoundNotes(raw: string | undefined): Record<string, string> {
-  if (!raw) return {}
-  try {
-    const parsed = JSON.parse(raw)
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {}
-  } catch {
-    return { note: raw }
-  }
-}
-
-function renderSourceTab(tab: WorkSurfaceTab, ctx: SourceTabContext) {
-  if (tab.sourceBindingKey) {
-    const notes = parseBoundNotes(ctx.freeTextResponses[tab.sourceBindingKey])
-    const entries = Object.entries(notes).filter(([, value]) => value.trim().length > 0)
-    return (
-      <div style={{ padding: '1rem', minHeight: '100%', background: '#F7F1E3', color: '#1E1E1A', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <div>
-          <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 900, textTransform: 'uppercase' }}>
-            {tab.sourceBindingTitle || tab.label}
-          </div>
-          {tab.content && (
-            <div style={{ fontSize: '0.82rem', color: '#6A604B', lineHeight: 1.5, marginTop: '0.25rem' }}>
-              {renderContentWithGlossary(interpolate(tab.content, ctx))}
-            </div>
-          )}
-        </div>
-        {entries.length === 0 ? (
-          <div style={{ border: '1px dashed #CDBF94', background: '#FBF7EA', padding: '0.85rem', fontSize: '0.82rem', color: '#6A604B' }}>
-            {tab.sourceBindingEmptyText || 'No notes saved yet.'}
-          </div>
-        ) : (
-          entries.map(([key, value]) => (
-            <section key={key} style={{ border: '1px solid #CDBF94', background: '#FBF7EA', padding: '0.75rem', borderRadius: 6 }}>
-              <div style={{ fontSize: '0.72rem', color: '#3A6B5E', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.35rem' }}>
-                {tab.sourceBindingLabels?.[key] || key.replace(/_/g, ' ')}
-              </div>
-              <div style={{ fontSize: '0.84rem', lineHeight: 1.55, whiteSpace: 'pre-wrap' }}>{value}</div>
-            </section>
-          ))
-        )}
-      </div>
-    )
-  }
-
-  if (hasSourcePreview(tab)) {
-    const sourceFile: SourceInboxFile = {
-      id: tab.id,
-      name: tab.name || tab.label,
-      kind: tab.kind || (tab.rows?.length ? 'spreadsheet' : 'doc'),
-      modified: tab.modified,
-      owner: tab.owner,
-      previewTitle: tab.previewTitle || tab.label,
-      summary: tab.summary,
-      sections: tab.sections?.map((section) => ({
-        ...section,
-        body: interpolate(section.body, ctx),
-      })),
-      columns: tab.columns,
-      rows: tab.rows,
-    }
-
-    return (
-      <div style={{ padding: '1rem', minHeight: '100%', background: '#F7F1E3' }}>
-        {renderSourceInboxFilePreview(sourceFile, true)}
-      </div>
-    )
-  }
-
-  return (
-    <div style={{ padding: '1rem', minHeight: '100%', background: '#F7F1E3', color: '#1E1E1A', whiteSpace: 'pre-wrap', fontSize: '0.875rem', lineHeight: 1.65 }}>
-      {renderContentWithGlossary(interpolate(tab.content, ctx))}
-    </div>
-  )
-}
-
 // ---- Main Component ----
 export default function PriorityMatrixScene({ node }: { node: PriorityMatrixNode }) {
   const responses = useGameStore((s) => s.freeTextResponses)
@@ -304,7 +219,7 @@ export default function PriorityMatrixScene({ node }: { node: PriorityMatrixNode
   const unplacedItems = node.items.filter((it) => !placedItemIds.includes(it.id))
   const activeItem = node.items.find((it) => it.id === activeId)
   const canSubmit = placedItemIds.length >= 1 && rationale.trim().length >= 20
-  const sourceTabs = mergeWorkSurfaceTabs(node)
+  const sourceTabs = organizeSourceTabs(mergeWorkSurfaceTabs(node))
   const titleTabs = sourceTabs.length > 0
     ? [{ id: 'matrix', label: node.workSurface?.title || node.windowTitle || node.title }, ...sourceTabs.map((tab) => ({ id: tab.id, label: tab.label }))]
     : undefined

@@ -19,7 +19,7 @@
     "nodes": {
       "intro": {
         "id": "intro",
-        "type": "briefing",
+        "type": "intro",
         "briefingMode": "simple",
         "section": 0,
         "title": "Start of Shift",
@@ -77,7 +77,7 @@
         "section": 1,
         "title": "A Call Light Pulls You Back",
         "content": "You start toward the workstation to open Ms. Chen's discharge chart, but Mrs. Vance's call light goes off and her daughter waves from Room 512. Discharge planning matters, but it is not the safest first move when another patient had uncontrolled pain overnight. You redirect to assess Mrs. Vance before the morning gets away from you.",
-        "illustration": "/scenes/scene1_discharge_redirect.png",
+        "illustration": "/scenes/scene1_discharge_redirect.jpg",
         "imageBrief": "A hospital hallway outside the nurses' station. A nurse has one hand near a workstation with discharge paperwork on the monitor, while a call light for Room 512 is visibly flashing in the hallway. In the background, a worried family member stands near a patient room doorway, signaling that the nurse needs to reprioritize.",
         "next": "scene2_assessment"
       },
@@ -88,7 +88,7 @@
         "section": 1,
         "title": "You Go Straight to Room 512",
         "content": "You prioritize the patient with the clearest active problem: uncontrolled post-op pain. That is clinically appropriate because pain can worsen mobility, breathing, delirium risk, and recovery. You gather your assessment supplies and head into Room 512 to evaluate Mrs. Vance and speak with Sarah.",
-        "illustration": "/scenes/scene1_assess_pain_redirect.png",
+        "illustration": "/scenes/scene2_assessment.jpg",
         "imageBrief": "Reuse the Room 512 bedside assessment image from public/scenes/scene2_assessment.jpg for this pain-prioritization redirect scene.",
         "next": "scene2_assessment"
       },
@@ -99,7 +99,7 @@
         "section": 1,
         "title": "Safety Rounds Confirm the Priority",
         "content": "You do a rapid visual safety check on all four rooms. Mr. Jones and Mr. Henderson are breathing comfortably, and Ms. Chen is stable while waiting on paperwork. In Room 512, Mrs. Vance is visibly grimacing and Sarah looks worried, so your quick rounds correctly funnel you back to the pain-management problem.",
-        "illustration": "/scenes/scene1_quick_look_redirect.png",
+        "illustration": "/scenes/scene1_quick_look_redirect.jpg",
         "imageBrief": "A four-panel hospital hallway view showing quick visual checks into patient rooms. Three rooms look calm and stable, while Room 512 stands out with an elderly patient grimacing and a worried daughter at bedside. The nurse is shown moving efficiently from the hallway toward Room 512 after the safety sweep.",
         "next": "scene2_assessment"
       },
@@ -110,7 +110,7 @@
         "section": 1,
         "title": "Assess Before You Medicate",
         "content": "At the {{Omnicell}}, you realize you are about to let the task list drive the shift before you have assessed your patients. Morning medications are important, but safe nursing practice starts with knowing who is stable, who is changing, and who needs immediate assessment. You close the drawer and head to Room 512 first.",
-        "illustration": "/scenes/scene1_meds_redirect.png",
+        "illustration": "/scenes/scene1_meds_redirect.jpg",
         "imageBrief": "A medication room with an Omnicell cabinet open and a nurse pausing before pulling medications. A small printed reminder near the workstation reads 'Assess before med pass.' The nurse is turning away from the cabinet toward the hallway, choosing patient assessment before task completion.",
         "next": "scene2_assessment"
       },
@@ -144,7 +144,7 @@
         "vitals": [
           {
             "label": "Pain",
-            "value": "8/10",
+            "value": "8-9/10",
             "status": "critical"
           },
           {
@@ -202,7 +202,7 @@
                 "id": "pain_score",
                 "label": "Ask pain score",
                 "detail": "Ask Mrs. Vance to rate and describe her pain.",
-                "finding": "She says the hip pain is sharp, 8/10, worse when she turns."
+                "finding": "She says the hip pain is sharp, about 8-9/10, worse when she turns."
               },
               {
                 "id": "surgical_site",
@@ -398,8 +398,8 @@
             "playerInstruction": "Assess pain from the image and patient statement, then document the pain score and description.",
             "requiresObservationText": true,
             "observationPrompt": "Document the pain assessment.",
-            "observationPlaceholder": "Example format: Pain __/10; patient describes ...; worse with ...",
-            "expectedObservation": "Pain 8/10; sharp right hip pain; worse when turning.",
+            "observationPlaceholder": "Example format: Pain __/10; patient describes ...",
+            "expectedObservation": "Pain score documented anywhere from 8/10 to 9/10; sharp right hip pain; worse when turning.",
             "npcLine": "Sharp right hip pain, worse when I turn.",
             "npcName": "Mrs. Vance"
           },
@@ -483,10 +483,10 @@
           {
             "id": "review_orders",
             "label": "Review tablet eMAR",
-            "x": 82,
-            "y": 63,
-            "w": 14,
-            "h": 10,
+            "x": 80,
+            "y": 56,
+            "w": 18,
+            "h": 18,
             "assetId": "review_orders",
             "interactionRole": "readable",
             "primitives": [
@@ -609,11 +609,14 @@
         "briefingMode": "simple",
         "section": 1,
         "title": "Prep: A Difficult Conversation",
-        "content": "Before you speak with Sarah, you pause at the bedside and organize the clinical facts you need.",
+        "content": "Now, you will speak with Mrs. Vance's daughter, Sarah, who is worried about opioid addiction and is refusing opioid pain medication for her mother. Take a moment to organize the clinical facts you need so you can acknowledge Sarah's concern, explain why pain control matters for recovery, and discuss a safe plan.",
         "appWindow": "doc",
         "windowTitle": "Clinical Prep Details",
         "referenceTitle": "Clinical Prep Details",
-        "referenceContent": "**Situation**\n- Mrs. Vance is 88 years old, post-op day 2 after a hip fracture.\n- She is grimacing and rates pain as 8/10.\n- Her current vitals are HR 115 and BP 168/92.\n- Sarah is refusing opioids because addiction runs in the family.\n\n**Why pain control matters**\n- Severe acute pain can raise heart rate and blood pressure and make recovery harder.\n- If Mrs. Vance cannot deep-breathe, cough, reposition, or get out of bed, her risk of complications such as pneumonia, blood clots, delirium, and delayed mobility can increase.\n- Good pain management supports safe turning, breathing exercises, physical therapy, sleep, and participation in care.\n\n**Medication plan facts**\n- Addiction concern is clinically relevant family context, not something to dismiss.\n- Short-term, closely monitored post-op pain treatment is a different clinical situation from unmanaged long-term opioid use.\n- A multimodal plan may include scheduled acetaminophen/NSAID if appropriate, ice, repositioning, and the lowest effective opioid dose only if needed.\n- Opioid-related safety monitoring includes sedation, breathing, confusion, constipation, fall risk, and pain score reassessment.\n- Mrs. Vance, Sarah, the nurse, and the prescriber all have roles in choosing a safe pain-control plan.",
+        "referenceContent": "**Situation**\n- Mrs. Vance is 88 years old, post-op day 2 after a hip fracture.\n- She is grimacing and rates pain around 8-9/10.\n- Her current vitals are HR 115 and BP 168/92.\n- Sarah is refusing opioids because addiction runs in the family.\n\n**Why pain control matters**\n- Severe acute pain can raise heart rate and blood pressure and make recovery harder.\n- If Mrs. Vance cannot deep-breathe, cough, reposition, or get out of bed, her risk of complications such as pneumonia, blood clots, delirium, and delayed mobility can increase.\n- Good pain management supports safe turning, breathing exercises, physical therapy, sleep, and participation in care.\n\n**Medication plan facts**\n- Addiction concern is clinically relevant family context, not something to dismiss.\n- Short-term, closely monitored post-op pain treatment is a different clinical situation from unmanaged long-term opioid use.\n- A multimodal plan may include scheduled acetaminophen/NSAID if appropriate, ice, repositioning, and the lowest effective opioid dose only if needed.\n- Opioid-related safety monitoring includes sedation, breathing, confusion, constipation, fall risk, and pain score reassessment.\n- Mrs. Vance, Sarah, the nurse, and the prescriber all have roles in choosing a safe pain-control plan.",
+        "prepNoteKey": "scene2_clinical_prep_notes",
+        "prepNoteTitle": "Conversation Notes",
+        "prepNotePlaceholder": "Jot the facts, phrases, or reassurance you want to use with Sarah.",
         "next": "scene2_conversation"
       },
       "scene2_conversation": {
@@ -628,6 +631,9 @@
         "presentation": "in_person",
         "voiceName": "Kore",
         "maxTurns": 3,
+        "prepNoteKey": "scene2_clinical_prep_notes",
+        "prepNoteTitle": "Your prep notes",
+        "prepNoteEmptyText": "No prep notes yet. Use the prep scene to jot down clinical facts before speaking with Sarah.",
         "goalPrompt": "You are Sarah Vance, the anxious daughter of an 88-year-old patient. Your mother is in pain, but you are terrified of her becoming addicted to opioids because \"addiction runs in the family\". You are firm that she should only receive ibuprofen. Your goal is to resist the nurse's attempts to provide stronger pain medication. Listen to the nurse's rationale. If they explain the low risk of addiction at this age, the importance of pain control for healing/mobility, and offer a multi-modal approach (e.g., a small dose of a less strong opioid combined with other meds), you can be cautiously persuaded. If they are dismissive or aggressive, become more resistant. After 2-3 exchanges where the nurse has made their case, conclude the conversation by saying either \"Okay... I'm still not sure, but I'll think about what you said. Let's see what the doctor says,\" or \"No, I'm not comfortable with that. We will stick to the ibuprofen.\"",
         "next": "scene2_med_pass"
       },
@@ -654,13 +660,13 @@
           "room": "512",
           "patient": "Mrs. Vance, 88F",
           "diagnosis": "Post-op hip fracture pain",
-          "status": "Pain 8/10; ordered IV acetaminophen and ibuprofen",
+          "status": "Pain 8-9/10; ordered IV acetaminophen and ibuprofen",
           "note": "Use the five rights, scan at bedside, explain each medication, and plan reassessment."
         },
         "vitals": [
           {
             "label": "Pain",
-            "value": "8/10",
+            "value": "8-9/10",
             "status": "critical"
           },
           {
@@ -1853,7 +1859,7 @@
               "id": "explain_draw_popup",
               "displayName": "Patient explanation moment",
               "assetType": "readable_closeup",
-              "filename": "public/action-assets/scene3_lab_draw/patient-explanation-moment.png",
+              "filename": "public/action-assets/scene3_lab_draw/explain-the-draw.jpg",
               "prompt": "RPG-style bedside popup image for an in-person explanation before the blood draw. Show Mrs. Eleanor Vance in bed looking tired and wary after repeated interruptions, with the prepared blood draw tray visible nearby. Leave room below the image for the app voice transcript. Do not include speech bubbles, captions, checkmarks, or text saying what the nurse should say."
             }
           ]
@@ -2576,7 +2582,7 @@
             "y": 38,
             "w": 24,
             "h": 32,
-            "assetPath": "/action-assets/scene3_lab_draw/bag-and-tube.png",
+            "assetPath": "/action-assets/scene3_lab_draw/bag-and-tube.PNG",
             "placedW": 24,
             "placedH": 32,
             "placedOffsetX": 0,
@@ -2715,7 +2721,7 @@
               "id": "specimen_bag_send",
               "displayName": "Bagged specimen overlay",
               "assetType": "transparent_png",
-              "filename": "public/action-assets/scene3_lab_draw/bag-and-tube.png",
+              "filename": "public/action-assets/scene3_lab_draw/bag-and-tube.PNG",
               "prompt": "Transparent-background PNG of a clear biohazard specimen transport bag containing one labeled lavender-top CBC tube, with a concise visible card-style label that communicates this is the bagged specimen to move. Do not include checkmarks, arrows, or answer captions."
             }
           ]
@@ -3490,7 +3496,7 @@
           {
             "id": "sbar_hints",
             "label": "Hints",
-            "content": "**SBAR support facts**\n\n**Background that may not be obvious from the playground**\n- Mrs. Vance is an 88-year-old patient in Room 512, post-op day 2 after hip-fracture repair.\n- She had severe pain overnight; Sarah, her daughter, is anxious about opioids because addiction runs in the family.\n- The current ordered plan is non-opioid pain control with IV acetaminophen and PO ibuprofen.\n\n**Assessment facts to pull into SBAR**\n- Earlier pain was 8/10 with grimacing, HR 115, BP 168/92, shallow breathing, and guarding with turning.\n- Surgical dressing was dry/intact and neurovascular checks were reassuring.\n- Pain control matters for deep breathing, repositioning, mobility, sleep, and delirium/complication prevention.\n\n**Actions already completed**\n- Spoke with Sarah using clinical reasoning and respectful family education.\n- Completed medication safety checks, administered the ordered non-opioid medications, and set reassessment reminders for pain and side effects.\n- Messaged Dr. Carter about repeated piecemeal STAT lab orders; Dr. Carter confirmed the CBC was the last anticipated STAT lab for now.\n- Verified the STAT CBC order and patient ID, explained the draw, selected the correct supplies, drew the lavender-top CBC tube, labeled it at bedside, disposed of sharps, and sent the specimen.\n\n**What the recommendation should ask for**\n- Reassess pain and side effects on schedule and escalate if pain remains uncontrolled or prevents breathing, repositioning, or mobility.\n- Follow up on the STAT CBC result and any provider response.\n- Keep Sarah informed while continuing to advocate for safe, adequate pain control."
+            "content": "**SBAR support facts**\n\n**Background that may not be obvious from the playground**\n- Mrs. Vance is an 88-year-old patient in Room 512, post-op day 2 after hip-fracture repair.\n- She had severe pain overnight; Sarah, her daughter, is anxious about opioids because addiction runs in the family.\n- The current ordered plan is non-opioid pain control with IV acetaminophen and PO ibuprofen.\n\n**Assessment facts to pull into SBAR**\n- Earlier pain was about 8-9/10 with grimacing, HR 115, BP 168/92, shallow breathing, and guarding with turning.\n- Surgical dressing was dry/intact and neurovascular checks were reassuring.\n- Pain control matters for deep breathing, repositioning, mobility, sleep, and delirium/complication prevention.\n\n**Actions already completed**\n- Spoke with Sarah using clinical reasoning and respectful family education.\n- Completed medication safety checks, administered the ordered non-opioid medications, and set reassessment reminders for pain and side effects.\n- Messaged Dr. Carter about repeated piecemeal STAT lab orders; Dr. Carter confirmed the CBC was the last anticipated STAT lab for now.\n- Verified the STAT CBC order and patient ID, explained the draw, selected the correct supplies, drew the lavender-top CBC tube, labeled it at bedside, disposed of sharps, and sent the specimen.\n\n**What the recommendation should ask for**\n- Reassess pain and side effects on schedule and escalate if pain remains uncontrolled or prevents breathing, repositioning, or mobility.\n- Follow up on the STAT CBC result and any provider response.\n- Keep Sarah informed while continuing to advocate for safe, adequate pain control."
           }
         ],
         "definition": {
@@ -4152,7 +4158,7 @@
         "meetingContext": "Room 512. Mrs. Vance is tired after repeated STAT lab interruptions and is worried this will be another painful, piecemeal stick.",
         "goalPrompt": "You are Mrs. Eleanor Vance, an elderly post-op patient who is tired and frustrated by repeated blood draws. Listen to the nurse. If the nurse clearly explains why the CBC is needed, that this should be the last anticipated STAT draw for now, that they verified your identity/order, and that they will label the tube at bedside, relax a little and say you are ready. If the nurse is vague, uses too much jargon, or does not acknowledge the repeated interruptions, ask one focused follow-up question such as \"Is this going to happen again?\" or \"How do I know this tube is mine?\" Stay polite but weary.",
         "next": "scene3_lab_draw",
-        "illustration": "/scenes/scene3_explain_draw.png",
+        "illustration": "/action-assets/scene3_lab_draw/explain-the-draw.jpg",
         "imageBrief": "Reuse the Room 512 bedside phlebotomy setting. Show Mrs. Eleanor Vance in the hospital bed with the prepared blood draw tray nearby, from the nurse's first-person point of view, for an in-person explanation before the STAT CBC draw."
       },
       "scene4_call_marco": {

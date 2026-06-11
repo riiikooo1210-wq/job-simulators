@@ -90,7 +90,7 @@ const ACTION_DEFAULTS: Record<string, Partial<ClinicalActionItem>> = {
     interaction: 'inspect',
     primitive: 'read_label_from_image',
     objectLabel: 'Pain scale card',
-    readableText: 'Mrs. Vance points to 8/10. She describes sharp right hip pain that worsens with turning.',
+    readableText: 'Mrs. Vance points around 8-9/10. She describes sharp right hip pain that worsens with turning.',
     assetPath: '/action-assets/scene2_assessment/pain-scale-card.png',
   },
   surgical_site: {
@@ -169,7 +169,7 @@ const ACTION_DEFAULTS: Record<string, Partial<ClinicalActionItem>> = {
     primitive: 'single_click_target',
     objectLabel: 'Patient explanation moment',
     targetLabel: 'Speak from bedside before starting',
-    assetPath: '/action-assets/scene3_lab_draw/patient-explanation-moment.png',
+    assetPath: '/action-assets/scene3_lab_draw/explain-the-draw.jpg',
   },
   raise_hob: {
     interaction: 'slider',

@@ -173,6 +173,7 @@ interface StageSupplyOverlay {
   h: number
   rotate?: number
   z?: number
+  linkedObjectId?: string
 }
 
 const initialState: PlaygroundState = {
@@ -226,6 +227,7 @@ const HOLD_PRIMITIVES = new Set([
 
 const HAND_HYGIENE_FIRST_SCENE_ID = 'scene2_assessment'
 const HAND_HYGIENE_OBJECT_ID = 'hand_hygiene'
+const HAND_HYGIENE_REFERENCE_EXEMPT_IDS = new Set(['review_orders'])
 const HAND_HYGIENE_FIRST_WARNING = 'Sanitize your hands before doing anything else in the room.'
 const SAFETY_WARNING_RED = '#B87D6B'
 const TABLET_ASSET_SRC = '/action-assets/tablet.PNG'
@@ -241,6 +243,7 @@ const SCENE_TABLET_OVERLAYS: Record<string, StageSupplyOverlay[]> = {
       w: 18,
       h: 18,
       z: 8,
+      linkedObjectId: 'review_orders',
     },
   ],
   scene2_med_pass: [
@@ -1236,7 +1239,10 @@ export default function PhysicalPlaygroundScene({
     current.selectedObjects.includes(HAND_HYGIENE_OBJECT_ID) || Boolean(current.placements[HAND_HYGIENE_OBJECT_ID])
   )
   const shouldBlockForHandHygiene = (current: PlaygroundState, attemptedId: string | undefined) => (
-    requiresHandHygieneFirst && attemptedId !== HAND_HYGIENE_OBJECT_ID && !handHygieneDone(current)
+    requiresHandHygieneFirst
+      && attemptedId !== HAND_HYGIENE_OBJECT_ID
+      && !HAND_HYGIENE_REFERENCE_EXEMPT_IDS.has(attemptedId || '')
+      && !handHygieneDone(current)
   )
   const blockForHandHygiene = (
     current: PlaygroundState,
@@ -1262,6 +1268,7 @@ export default function PhysicalPlaygroundScene({
   ): PlaygroundState => {
     if (!requiresHandHygieneFirst) return current
     if (attemptedId === HAND_HYGIENE_OBJECT_ID) return current
+    if (HAND_HYGIENE_REFERENCE_EXEMPT_IDS.has(attemptedId || '')) return current
     if (handHygieneDone(current)) return current
     if (hasStartedBedsideWork(current) || current.warnings.includes(HAND_HYGIENE_FIRST_WARNING)) return current
 
@@ -2048,22 +2055,64 @@ export default function PhysicalPlaygroundScene({
               </div>
             ))}
 
-            {(SCENE_TABLET_OVERLAYS[node.id] ?? []).map((item) => (
-              <div
-                key={item.id}
-                className={`physical-playground-tablet-overlay physical-playground-tablet-overlay--${item.id}`}
-                style={stageSupplyOverlayStyle(item)}
-                aria-hidden="true"
-              >
-                <img src={item.src} alt="" />
-                <div className={`physical-playground-tablet-screen physical-playground-tablet-screen--${node.id}`}>
-                  <b>eMAR</b>
-                  {(TABLET_SCREEN_LINES[node.id] ?? []).map((line) => (
-                    <span key={line}>{line}</span>
-                  ))}
+            {(SCENE_TABLET_OVERLAYS[node.id] ?? []).map((item) => {
+              const linkedSurface = item.linkedObjectId
+                ? derived.readables.find((surface) => surface.id === item.linkedObjectId)
+                : undefined
+              const linkedObject = item.linkedObjectId
+                ? derived.objects.find((object) => object.id === item.linkedObjectId)
+                : undefined
+              const linkedSubject = linkedSurface || linkedObject
+              const linkedKind = linkedSurface ? 'surface' : 'object'
+              const linkedDone = Boolean(
+                linkedSurface
+                  ? state.inspectedSurfaces.includes(linkedSurface.id)
+                  : linkedObject && state.selectedObjects.includes(linkedObject.id),
+              )
+              const content = (
+                <>
+                  <img src={item.src} alt="" />
+                  <div className={`physical-playground-tablet-screen physical-playground-tablet-screen--${node.id}`}>
+                    <b>eMAR</b>
+                    {(TABLET_SCREEN_LINES[node.id] ?? []).map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </div>
+                  {linkedSubject && (
+                    <span className="physical-playground-object-label">
+                      <b>{linkedDone ? 'Done' : 'Inspect'}</b>
+                      {linkedSubject.label}
+                    </span>
+                  )}
+                </>
+              )
+
+              if (linkedSubject) {
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`physical-playground-tablet-overlay physical-playground-tablet-overlay--${item.id} physical-playground-unit--${linkedSubject.id} ${linkedDone ? 'is-complete' : ''}`}
+                    style={stageSupplyOverlayStyle(item)}
+                    onClick={() => inspect(linkedSubject, linkedKind)}
+                    aria-label={linkedSubject.label}
+                  >
+                    {content}
+                  </button>
+                )
+              }
+
+              return (
+                <div
+                  key={item.id}
+                  className={`physical-playground-tablet-overlay physical-playground-tablet-overlay--${item.id}`}
+                  style={stageSupplyOverlayStyle(item)}
+                  aria-hidden="true"
+                >
+                  {content}
                 </div>
-              </div>
-            ))}
+              )
+            })}
 
             {selectedSupplyOverlays(node.id, state).map((item) => (
               <img
@@ -2139,6 +2188,7 @@ export default function PhysicalPlaygroundScene({
             })}
 
             {derived.readables.map((surface, index) => {
+              if ((SCENE_TABLET_OVERLAYS[node.id] ?? []).some((item) => item.linkedObjectId === surface.id)) return null
               const assetPath = getAssetPath(surface, lookup)
               const done = state.inspectedSurfaces.includes(surface.id)
               const showAsset = false
@@ -2202,6 +2252,7 @@ export default function PhysicalPlaygroundScene({
             )}
 
             {derived.objects.map((object, index) => {
+              if ((SCENE_TABLET_OVERLAYS[node.id] ?? []).some((item) => item.linkedObjectId === object.id)) return null
               if (node.id === 'scene2_reassessment_reminder' && object.primitives?.includes('select_from_image')) return null
               if ((object as any).consumeOnPlace && state.selectedObjects.includes(object.id)) return null
               const objectReq = objectRequirementsMet(object, state)

@@ -173,6 +173,49 @@ function ReferenceCard({ title, content }: { title: string; content: string }) {
   )
 }
 
+function PrepNotesWindow({
+  title,
+  value,
+  placeholder,
+  onChange,
+}: {
+  title: string
+  value: string
+  placeholder?: string
+  onChange: (value: string) => void
+}) {
+  return (
+    <LaptopFrame variant="doc" title={title} fill>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, padding: '1rem', gap: '0.625rem' }}>
+        <textarea
+          aria-label={title}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder || 'Write the facts or phrases you want to remember for the conversation.'}
+          style={{
+            flex: 1,
+            minHeight: 0,
+            width: '100%',
+            resize: 'none',
+            border: '1px solid rgba(0,0,0,0.32)',
+            borderRadius: '4px',
+            background: '#FFFDF6',
+            color: '#222',
+            padding: '0.875rem',
+            fontSize: '0.875rem',
+            lineHeight: 1.55,
+            fontFamily: 'inherit',
+            outlineColor: '#3A6B5E',
+          }}
+        />
+        <div style={{ fontSize: '0.7rem', color: '#5B625B' }}>
+          These notes will be available during the conversation.
+        </div>
+      </div>
+    </LaptopFrame>
+  )
+}
+
 function renderSubStep(s: BriefingSubStep, playerName: string, branchFlags: Record<string, string>, mcSelections: Record<string, string>): ReactNode {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -349,6 +392,8 @@ export default function BriefingScene({ node }: Props) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
+  const freeTextResponses = useGameStore((s) => s.freeTextResponses)
+  const setFreeTextResponse = useGameStore((s) => s.setFreeTextResponse)
   const goNext = useGoNext()
 
   const onAdvance = () => goNext(node)
@@ -356,6 +401,9 @@ export default function BriefingScene({ node }: Props) {
   const referenceContent = node.referenceContent
     ? interpolate(node.referenceContent, { playerName, branchFlags, mcSelections })
     : ''
+  const prepNoteKey = node.prepNoteKey
+  const prepNoteValue = prepNoteKey ? freeTextResponses[prepNoteKey] || '' : ''
+  const prepNoteTitle = node.prepNoteTitle || 'Prep Notes'
 
   return (
     <SceneWrapper illustration={node.illustration}>
@@ -388,12 +436,32 @@ export default function BriefingScene({ node }: Props) {
             )}
             {node.referenceTitle && referenceContent && (
               node.appWindow ? (
-                <DesktopOverlay width="70%" height="84%">
-                  <LaptopFrame variant={node.appWindow} title={node.windowTitle || node.referenceTitle} scrollable fill>
-                    <div style={{ padding: '1rem' }}>
-                      <ReferenceCard title={node.referenceTitle} content={referenceContent} />
+                <DesktopOverlay width={prepNoteKey ? '75%' : '70%'} height="84%">
+                  {prepNoteKey ? (
+                    <div style={{ display: 'flex', gap: '0.875rem', height: '97%', width: '100%', flexWrap: 'nowrap', alignItems: 'stretch' }}>
+                      <div style={{ flex: '1.12 1 0', minWidth: 0, height: '100%', minHeight: 0, maxHeight: '100%', overflow: 'hidden' }}>
+                        <LaptopFrame variant={node.appWindow} title={node.windowTitle || node.referenceTitle} scrollable fill>
+                          <div style={{ padding: '1rem' }}>
+                            <ReferenceCard title={node.referenceTitle} content={referenceContent} />
+                          </div>
+                        </LaptopFrame>
+                      </div>
+                      <div style={{ flex: '0.88 1 0', minWidth: 0, height: '100%', minHeight: 0, maxHeight: '100%', overflow: 'hidden' }}>
+                        <PrepNotesWindow
+                          title={prepNoteTitle}
+                          value={prepNoteValue}
+                          placeholder={node.prepNotePlaceholder}
+                          onChange={(value) => setFreeTextResponse(prepNoteKey, value)}
+                        />
+                      </div>
                     </div>
-                  </LaptopFrame>
+                  ) : (
+                    <LaptopFrame variant={node.appWindow} title={node.windowTitle || node.referenceTitle} scrollable fill>
+                      <div style={{ padding: '1rem' }}>
+                        <ReferenceCard title={node.referenceTitle} content={referenceContent} />
+                      </div>
+                    </LaptopFrame>
+                  )}
                 </DesktopOverlay>
               ) : (
                 <ReferenceCard title={node.referenceTitle} content={referenceContent} />

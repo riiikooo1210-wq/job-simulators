@@ -19,11 +19,24 @@ export default function DesktopOverlay({
   height = '74%',
   frameHeight,
   backgroundSrc = '/scenes/laptop.png',
-  backgroundScale = 1,
-  backgroundObjectPosition = 'center',
+  backgroundScale,
+  backgroundObjectPosition,
   contentPaddingBottom = '5%',
   windowStyle,
 }: Props) {
+  const usesOriginalLaptopDisplay =
+    backgroundSrc === '/scenes/laptop.png' &&
+    frameHeight === undefined &&
+    backgroundScale === undefined &&
+    backgroundObjectPosition === undefined
+  const resolvedBackgroundObjectPosition = backgroundObjectPosition ?? 'center'
+  const resolvedBackgroundScale = usesOriginalLaptopDisplay ? 1.02 : backgroundScale ?? 1
+  const backgroundTransform = usesOriginalLaptopDisplay
+    ? 'translate(-1.2%, -0.8%) scale(1.02)'
+    : resolvedBackgroundScale !== 1
+      ? `scale(${resolvedBackgroundScale})`
+      : undefined
+
   return (
     <div
       style={{
@@ -45,9 +58,9 @@ export default function DesktopOverlay({
           height: frameHeight ? '100%' : undefined,
           display: 'block',
           objectFit: frameHeight ? 'cover' : undefined,
-          objectPosition: backgroundObjectPosition,
-          transform: backgroundScale !== 1 ? `scale(${backgroundScale})` : undefined,
-          transformOrigin: backgroundObjectPosition,
+          objectPosition: resolvedBackgroundObjectPosition,
+          transform: backgroundTransform,
+          transformOrigin: usesOriginalLaptopDisplay ? 'center 48%' : resolvedBackgroundObjectPosition,
         }}
       />
       <div

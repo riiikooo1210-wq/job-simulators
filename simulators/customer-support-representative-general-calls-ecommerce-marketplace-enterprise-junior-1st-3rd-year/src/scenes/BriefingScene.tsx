@@ -469,7 +469,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                 </div>
               )
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '100%', minHeight: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
@@ -487,14 +487,16 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
                     gap: '0.85rem',
-                    alignItems: 'start',
+                    alignItems: 'stretch',
+                    flex: '1 1 auto',
+                    minHeight: 0,
                   }}
                 >
-                  <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2' }}>
-                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #CDBF94', fontSize: '0.75rem', fontWeight: 800, color: '#3F605C' }}>
+                  <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #CDBF94', fontSize: '0.75rem', fontWeight: 800, color: '#3F605C', flexShrink: 0 }}>
                       Name
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto', minHeight: 0, overflowY: 'auto' }}>
                       {files.map((file) => {
                         const active = file.id === activeFileId
                         const visited = visitedFiles.includes(file.id)
@@ -538,7 +540,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                     </div>
                   </div>
 
-                  <div style={{ minWidth: 0 }}>
+                  <div key={activeFileId || 'empty'} style={{ minWidth: 0, minHeight: 0, overflowY: 'auto' }}>
                     {renderSourceInboxFilePreview(activeFile)}
                   </div>
                 </div>
@@ -653,6 +655,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
   const canContinue = openedRequiredCount >= requiredSourceIds.length
   const ctx = { playerName, branchFlags, mcSelections }
   const activeAppNeedsContentMargin = activeApp ? ['ticket', 'build_tracker', 'crm', 'ats'].includes(activeApp.kind) : false
+  const activeAppHasFiles = Boolean(activeApp?.files?.length)
 
   const openApp = (appId: string) => {
     setActiveAppId(appId)
@@ -806,13 +809,16 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                   scrollable
                   fill
                 >
-                  <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                  <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.9rem', height: activeAppHasFiles ? '100%' : undefined, minHeight: 0, overflow: activeAppHasFiles ? 'hidden' : undefined }}>
                     <div
                       style={{
                         minWidth: 0,
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.9rem',
+                        height: activeAppHasFiles ? '100%' : undefined,
+                        minHeight: 0,
+                        overflow: activeAppHasFiles ? 'hidden' : undefined,
                         padding: activeAppNeedsContentMargin ? '1.25rem' : undefined,
                         boxSizing: 'border-box',
                       }}
@@ -935,8 +941,8 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                     )}
 
                     {activeApp.files && activeApp.files.length > 0 && (
-                      <div style={{ display: 'grid', gridTemplateColumns: activeAppNeedsContentMargin ? '8.5rem minmax(0, 1fr)' : 'minmax(11rem, 15rem) minmax(0, 1fr)', gap: '0.75rem', alignItems: 'start' }}>
-                        <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: activeAppNeedsContentMargin ? '8.5rem minmax(0, 1fr)' : 'minmax(11rem, 15rem) minmax(0, 1fr)', gap: '0.75rem', alignItems: 'stretch', flex: '1 1 auto', minHeight: 0 }}>
+                        <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2', minHeight: 0, overflowY: 'auto' }}>
                           <div style={{ padding: '0.5rem 0.65rem', borderBottom: '1px solid #CDBF94', fontSize: '0.72rem', fontWeight: 800, color: '#3F605C' }}>
                             Files
                           </div>
@@ -978,7 +984,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                             )
                           })}
                         </div>
-                        <div style={{ minWidth: 0 }}>{renderSourceInboxFilePreview(activeFile, activeAppNeedsContentMargin)}</div>
+                        <div key={activeFileId || 'empty'} style={{ minWidth: 0, minHeight: 0, overflowY: 'auto' }}>{renderSourceInboxFilePreview(activeFile, activeAppNeedsContentMargin)}</div>
                       </div>
                     )}
 

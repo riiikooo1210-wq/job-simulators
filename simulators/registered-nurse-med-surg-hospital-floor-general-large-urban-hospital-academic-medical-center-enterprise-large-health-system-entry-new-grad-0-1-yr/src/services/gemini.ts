@@ -225,7 +225,8 @@ INSTRUCTIONS:
 3. Calculate total_score (sum of all criteria), max_score (${maxScore}), and score_percentage (total / max, rounded to 2 decimals).
 4. Recommendation thresholds: 80–100% = "Strong Hire", 65–79% = "Hire", 45–64% = "Lean No Hire", 0–44% = "No Hire".
 5. Treat structured physical-playground warnings and actionLog entries as grading evidence. If Scene 1B / scene2_assessment includes "${HAND_HYGIENE_FIRST_WARNING}" or a safety_warning before hand hygiene, do not award full credit for "${HAND_HYGIENE_SAFETY_CRITERION}".
-6. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
+6. For scene2_assessment pain-score documentation, accept any pain score from 8/10 through 9/10 inclusive, including "8", "8.5", "9", "8-9/10", or "between 8 and 9"; do not penalize the candidate for not choosing exactly 8/10 if they capture severe sharp hip pain and/or worsening with turning.
+7. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
 
 Return ONLY valid JSON matching this exact shape (no markdown, no preamble):
 
