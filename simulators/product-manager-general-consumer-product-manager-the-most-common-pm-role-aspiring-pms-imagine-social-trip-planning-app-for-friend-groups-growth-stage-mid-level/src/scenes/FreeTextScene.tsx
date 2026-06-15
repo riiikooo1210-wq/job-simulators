@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import WorkSurfaceFrame, {
-  hasWorkSurfaceVisual,
   mergeWorkSurfaceTabs,
   resolveWorkSurfaceVariant,
 } from '../components/layout/WorkSurfaceFrame'
@@ -129,7 +128,7 @@ export default function FreeTextScene({ node }: Props) {
   )
 
   return (
-    <SceneWrapper illustration={node.illustration} showBack backLabel="Back" hideIllustration={hasWorkSurfaceVisual(node)}>
+    <SceneWrapper illustration={node.illustration} showBack backLabel="Back">
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}

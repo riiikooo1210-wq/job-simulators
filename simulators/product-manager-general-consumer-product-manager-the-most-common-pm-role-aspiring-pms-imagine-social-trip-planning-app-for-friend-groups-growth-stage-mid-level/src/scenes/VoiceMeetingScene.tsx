@@ -462,7 +462,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   ) : null
 
   return (
-    <SceneWrapper illustration={node.illustration} showBack backLabel="Back" hideIllustration>
+    <SceneWrapper illustration={node.illustration} showBack backLabel="Back" hideIllustration={isInPerson}>
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}

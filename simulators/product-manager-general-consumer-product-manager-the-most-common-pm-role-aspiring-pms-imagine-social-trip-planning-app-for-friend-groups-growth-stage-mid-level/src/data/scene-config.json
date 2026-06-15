@@ -923,9 +923,7 @@
           ],
           "authenticityCheck": "PMs commonly translate mixed qualitative and quantitative inputs into a problem frame before committing to a solution."
         },
-        "next": "transition_research",
-        "imageBrief": "Tight first-person view of exactly one laptop showing a cream Notion-style problem-brief workspace titled Problem Brief Workspace. Source evidence cards are visible on one side with short neutral labels only, and the student entry fields are blank: Main problem statement, Evidence, Initial hypothesis, Key risk. Do not fill in the fields, do not write a completed problem title, do not write a sample problem brief, and do not reveal the answer. Background should be a plain office wall, window, plant, or empty chairs only. Do not include coworkers or any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The app window must stay fully inside the laptop screen.",
-        "illustration": "/scenes/scene_02_problem_brief.png"
+        "next": "transition_research"
       },
       "transition_research": {
         "id": "transition_research",
@@ -1010,9 +1008,7 @@
           ],
           "authenticityCheck": "PMs often prepare research questions from a user profile and prior product evidence before a customer conversation."
         },
-        "next": "scene_04_user_call",
-        "imageBrief": "First-person PM laptop showing a cream Notion-style research-prep note. The source tabs show a compact user profile and research guardrails, while the main question list is blank with numbered empty lines. Do not include drafted interview questions or a learning-goal answer. The app window must stay fully inside the laptop screen. Original desk setting. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
-        "illustration": "/scenes/scene_03_research_prep.png"
+        "next": "scene_04_user_call"
       },
       "scene_04_user_call": {
         "id": "scene_04_user_call",
@@ -1364,9 +1360,7 @@
           ],
           "authenticityCheck": "PMs often compare candidate bets using impact, effort, risk, and learning value before narrowing scope."
         },
-        "next": "scene_06_roadmap_kanban",
-        "imageBrief": "Tight first-person view of exactly one laptop showing a cream Miro-style impact-effort matrix for candidate product bets. The matrix quadrants must be empty: no cards placed inside the matrix and no highlighted winner. Put all candidate cards in an unplaced tray or sidebar labeled Candidate cards, with short generic initiative labels only. Do not include a Focus sticky note, recommendation, rationale, correct placement, answer, coaching phrase, or completed prioritization. Background should be a plain office wall, window, plant, or empty chairs only. Do not include any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The matrix and controls stay fully inside the laptop screen.",
-        "illustration": "/scenes/scene_05_priority_matrix.png"
+        "next": "scene_06_roadmap_kanban"
       },
       "scene_06_roadmap_kanban": {
         "id": "scene_06_roadmap_kanban",
@@ -1491,9 +1485,7 @@
           ],
           "authenticityCheck": "PMs commonly translate product strategy into roadmap triage while balancing feasibility and learning."
         },
-        "next": "scene_07_prd_slice",
-        "imageBrief": "First-person PM laptop showing a cream roadmap kanban board. Cards are in an Inbox column with neutral candidate labels; other columns are visible but empty. Do not show completed triage, correct card locations, or a written rationale. The kanban board stays fully inside the laptop screen. Original desk setting. Laptop only; no monitor, tablet, phone, wheelchair, mobility aid, prosthetic limb, elderly person, sample answer text, or typed response.",
-        "illustration": "/scenes/scene_06_roadmap_kanban.png"
+        "next": "scene_07_prd_slice"
       },
       "scene_07_prd_slice": {
         "id": "scene_07_prd_slice",
@@ -1567,9 +1559,7 @@
           ],
           "authenticityCheck": "Mid-level PMs are expected to turn discovery and prioritization into a written artifact the team can align around."
         },
-        "next": "assessment_gate",
-        "imageBrief": "Tight first-person view of exactly one laptop showing a cream document editor titled PRD Slice Draft. Reference tabs are visible as compact neutral labels, and the main document has blank section headings only: Problem, Target user, Hypothesis, Success metric, Scope, Risks. Do not write a drafted PRD, decision memo, recommendation, sample answer, or typed body text. Background should be a plain office wall, window, plant, or empty chairs only. Do not include coworkers or any other screen-like object anywhere: no external monitor, desktop display, second laptop, tablet, iPad, phone, TV, wall display, or dark rectangle. The document stays fully inside the laptop screen.",
-        "illustration": "/scenes/scene_07_prd_slice.png"
+        "next": "assessment_gate"
       },
       "assessment_gate": {
         "id": "assessment_gate",
