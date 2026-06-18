@@ -226,9 +226,7 @@ export default function MultipleChoiceScene({ node }: Props) {
         {isMessageReplyScene && (
           <ActionButton text="Submit" onClick={handleSubmit} disabled={!selectedOption} />
         )}
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => commitSelection(node.options[0])} variant="secondary" fullWidth={false} />
-        )}
       </div>
     </div>
   )

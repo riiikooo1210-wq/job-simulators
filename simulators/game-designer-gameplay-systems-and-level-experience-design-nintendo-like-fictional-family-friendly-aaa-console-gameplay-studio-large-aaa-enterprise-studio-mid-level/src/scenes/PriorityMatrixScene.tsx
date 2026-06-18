@@ -323,9 +323,7 @@ export default function PriorityMatrixScene({ node }: { node: PriorityMatrixNode
                     disabled={!canSubmit}
                     variant={canSubmit ? 'primary' : 'secondary'}
                   />
-                  {import.meta.env.DEV && (
                     <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-                  )}
                 </div>
               </div>
 

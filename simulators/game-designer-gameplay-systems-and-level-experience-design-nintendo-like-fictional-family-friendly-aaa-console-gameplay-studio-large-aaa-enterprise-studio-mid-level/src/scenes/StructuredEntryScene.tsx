@@ -3,9 +3,11 @@ import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import WorkSurfaceFrame, {
   hasWorkSurfaceVisual,
+  mergeWorkSurfaceTabs,
   resolveWorkSurfaceVariant,
 } from '../components/layout/WorkSurfaceFrame'
 import ActionButton from '../components/ui/ActionButton'
+import MetricsTable from '../components/ui/MetricsTable'
 import ReferenceDrawer, { ReferenceButton } from '../components/ui/ReferenceDrawer'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
@@ -15,6 +17,7 @@ import { BriefingDrawerContent } from './BriefingScene'
 import type { LaptopFrameVariant } from '../components/ui/LaptopFrame'
 import type {
   StructuredEntryNode,
+  StructuredEntryFieldOption,
   StructuredEntryPreviousResponseReference,
   StructuredEntryVisualBoard,
   StructuredEntryVisualHotspot,
@@ -67,6 +70,14 @@ function humanizeKey(key: string) {
   return key
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (letter) => letter.toUpperCase())
+}
+
+function getOptionValue(option: StructuredEntryFieldOption) {
+  return typeof option === 'string' ? option : option.value
+}
+
+function getOptionLabel(option: StructuredEntryFieldOption) {
+  return typeof option === 'string' ? option : option.label
 }
 
 function PreviousResponseReferenceCard({
@@ -265,6 +276,8 @@ export default function StructuredEntryScene({ node }: Props) {
   const briefing = useSectionBriefing()
   const [refOpen, setRefOpen] = useState(false)
   const [activeBeatIndex, setActiveBeatIndex] = useState(0)
+  const [activeAppTab, setActiveAppTab] = useState('editor')
+  const interpolationContext = { playerName, branchFlags, mcSelections, freeTextResponses: responses }
 
   const def = node.definition
   const initialCount = def.initialCount ?? def.minItems ?? 3
@@ -291,6 +304,10 @@ export default function StructuredEntryScene({ node }: Props) {
 
   const allFilled = items.every((it) => def.fields.every((f) => (it[f.key] || '').trim().length > 0))
   const appWindow = resolveWorkSurfaceVariant(node, 'notion') as LaptopFrameVariant
+  const appTabs = mergeWorkSurfaceTabs(node)
+  const titleTabs = appTabs.length > 0
+    ? [{ id: 'editor', label: node.workSurface?.title || node.windowTitle || node.title }, ...appTabs.map((tab) => ({ id: tab.id, label: tab.label }))]
+    : undefined
   const presentation = def.presentation
     ?? (node.workSurface?.kind === 'spreadsheet_workbook' ? 'spreadsheet'
       : node.workSurface?.kind === 'ats_screening' ? 'screening_sheet'
@@ -325,6 +342,27 @@ export default function StructuredEntryScene({ node }: Props) {
       outline: 'none',
       borderRadius: '4px',
     }
+    const options = field.options || []
+    if ((field.inputType === 'select' || options.length > 0) && options.length > 0) {
+      return (
+        <select
+          aria-label={field.label}
+          value={items[idx]?.[field.key] || ''}
+          onChange={(e) => updateItem(idx, field.key, e.target.value)}
+          style={commonStyle}
+        >
+          <option value="" disabled>{field.placeholder || `Select ${field.label}`}</option>
+          {options.map((option) => {
+            const value = getOptionValue(option)
+            return (
+              <option key={value} value={value}>
+                {getOptionLabel(option)}
+              </option>
+            )
+          })}
+        </select>
+      )
+    }
     if (field.multiline) {
       return (
         <textarea
@@ -352,6 +390,18 @@ export default function StructuredEntryScene({ node }: Props) {
   }
 
   const renderTutorialField = (field: typeof def.fields[number]) => {
+    if (field.key === 'stage_focus' && field.inputType === 'select') {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+          {renderControl(activeItemIndex, field)}
+          {activeHotspot?.description && (
+            <p style={{ margin: 0, fontSize: '0.75rem', lineHeight: 1.45, color: '#555' }}>
+              {activeHotspot.description}
+            </p>
+          )}
+        </div>
+      )
+    }
     if (field.key === 'stage_focus') {
       return (
         <div
@@ -530,9 +580,7 @@ export default function StructuredEntryScene({ node }: Props) {
           disabled={!allFilled}
           variant={allFilled ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </div>
     )
   }
@@ -641,10 +689,36 @@ export default function StructuredEntryScene({ node }: Props) {
         disabled={!allFilled}
         variant={allFilled ? 'primary' : 'secondary'}
       />
-      {import.meta.env.DEV && (
         <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-      )}
     </div>
+  )
+
+  const tabbedWindowContent = activeAppTab === 'editor' ? (
+    formContent
+  ) : (
+    appTabs.map((tab) => (
+      activeAppTab === tab.id && (
+        <div
+          key={tab.id}
+          style={{
+            background: '#F7F1E3',
+            border: '1px solid #CDBF94',
+            padding: '1rem',
+            fontSize: '0.875rem',
+            lineHeight: 1.65,
+            color: '#1E1E1A',
+            whiteSpace: 'pre-wrap',
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
+          {renderContentWithGlossary(interpolate(tab.content, interpolationContext))}
+          {tab.metrics && tab.metrics.length > 0 && <MetricsTable metrics={tab.metrics} />}
+        </div>
+      )
+    ))
   )
 
   return (
@@ -680,8 +754,11 @@ export default function StructuredEntryScene({ node }: Props) {
           node={node}
           variant={appWindow}
           title={node.workSurface?.title || node.windowTitle}
+          titleTabs={titleTabs}
+          activeTitleTabId={activeAppTab}
+          onTitleTabChange={setActiveAppTab}
         >
-          {formContent}
+          {appTabs.length > 0 ? tabbedWindowContent : formContent}
         </WorkSurfaceFrame>
       </motion.div>
       {hasReferenceDrawer && (

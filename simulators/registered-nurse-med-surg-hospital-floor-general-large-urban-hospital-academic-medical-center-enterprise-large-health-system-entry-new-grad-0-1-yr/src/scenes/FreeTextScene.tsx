@@ -102,9 +102,7 @@ export default function FreeTextScene({ node }: Props) {
           disabled={!canSubmit}
           variant={canSubmit ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </div>
     </>
   )
@@ -151,17 +149,19 @@ export default function FreeTextScene({ node }: Props) {
             {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
           </div>
         )}
-        <div
-          style={{
-            backgroundColor: '#fff',
-            border: '1px solid #000',
-            padding: '0.75rem 1rem',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-          }}
-        >
-          {renderContentWithGlossary(interpolate(node.prompt, { playerName, branchFlags, mcSelections }))}
-        </div>
+        {node.prompt.trim().length > 0 && (
+          <div
+            style={{
+              backgroundColor: '#fff',
+              border: '1px solid #000',
+              padding: '0.75rem 1rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+            }}
+          >
+            {renderContentWithGlossary(interpolate(node.prompt, { playerName, branchFlags, mcSelections }))}
+          </div>
+        )}
 
         {appWindow ? (
           <DesktopOverlay

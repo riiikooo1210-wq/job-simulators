@@ -48,6 +48,7 @@ export default function StructuredEntryScene({ node }: Props) {
 
   const def = node.definition
   const initialCount = def.initialCount ?? def.minItems ?? 3
+  const itemTitle = (idx: number) => def.itemTitles?.[idx] || `${def.itemLabel} #${idx + 1}`
   const items = useMemo(() => {
     return parseItems(responses[def.bindingKey] || '', def.fields, initialCount)
   }, [responses, def.bindingKey, def.fields, initialCount])
@@ -139,7 +140,7 @@ export default function StructuredEntryScene({ node }: Props) {
               {items.map((_item, idx) => (
                 <tr key={idx}>
                   <td style={{ padding: '0.5rem', borderTop: idx ? '1px solid #E4D8B9' : 0, fontSize: '0.78rem', fontWeight: 800, color: '#1E1E1A' }}>
-                    #{idx + 1}
+                    {itemTitle(idx)}
                   </td>
                   {def.fields.map((field) => (
                     <td key={field.key} style={{ padding: '0.5rem', borderTop: idx ? '1px solid #E4D8B9' : 0, verticalAlign: 'top' }}>
@@ -177,7 +178,7 @@ export default function StructuredEntryScene({ node }: Props) {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <strong style={{ fontSize: '0.8125rem' }}>
-                {def.itemLabel} #{idx + 1}
+                {itemTitle(idx)}
               </strong>
               {(!def.minItems || items.length > def.minItems) && (
                 <button
@@ -221,9 +222,7 @@ export default function StructuredEntryScene({ node }: Props) {
         disabled={!allFilled}
         variant={allFilled ? 'primary' : 'secondary'}
       />
-      {import.meta.env.DEV && (
         <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-      )}
     </div>
   )
 

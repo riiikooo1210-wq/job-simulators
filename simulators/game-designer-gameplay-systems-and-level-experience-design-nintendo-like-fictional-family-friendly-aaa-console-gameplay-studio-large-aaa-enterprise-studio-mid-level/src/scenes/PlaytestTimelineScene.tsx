@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
@@ -88,7 +88,7 @@ function parseWatchlist(raw: string | undefined) {
   return []
 }
 
-function PlaytestMomentStage({ event }: { event: PlaytestTimelineEvent }) {
+function PlaytestMomentStage({ event, children }: { event: PlaytestTimelineEvent; children?: ReactNode }) {
   const [imageFailed, setImageFailed] = useState(false)
   const showImage = Boolean(event.image && !imageFailed)
   const playerX = event.focusX ?? 28
@@ -234,6 +234,7 @@ function PlaytestMomentStage({ event }: { event: PlaytestTimelineEvent }) {
       >
         {event.testerLabel} · {event.stepLabel}
       </div>
+      {children}
     </div>
   )
 }
@@ -410,38 +411,6 @@ export default function PlaytestTimelineScene({ node }: { node: PlaytestTimeline
           })}
         </section>
 
-        <section style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          {testerEvents.map((event, index) => {
-            const active = index === currentIndex
-            const viewed = viewedSet.has(event.id)
-            return (
-              <button
-                key={event.id}
-                type="button"
-                onClick={() => activeTester && setActiveTesterMoment(activeTester.id, index)}
-                title={event.headline}
-                style={{
-                  width: '2.3rem',
-                  height: '2.05rem',
-                  border: active ? '2px solid #000' : '1px solid #000',
-                  background: active ? '#C75448' : viewed ? '#E8DCC8' : '#F7F1E3',
-                  color: active ? '#F7F1E3' : '#1E1E1A',
-                  boxShadow: active ? '2px 2px 0 #000' : 'none',
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: '0.75rem',
-                  fontWeight: 900,
-                  cursor: 'pointer',
-                }}
-              >
-                {index + 1}
-              </button>
-            )
-          })}
-          <span style={{ fontSize: '0.75rem', color: '#666' }}>
-            Choose any {currentEvent.testerLabel} moment to revisit.
-          </span>
-        </section>
-
         <section
           style={{
             width: 'calc(100% + 6rem)',
@@ -452,51 +421,59 @@ export default function PlaytestTimelineScene({ node }: { node: PlaytestTimeline
             background: '#1E1E1A',
           }}
         >
-          <PlaytestMomentStage event={currentEvent} />
-        </section>
-
-        <section
-          style={{
-            border: '1px solid #000',
-            boxShadow: '4px 4px 0 #000',
-            background: '#F7F1E3',
-            padding: '1rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.625rem',
-          }}
-        >
-          <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase' }}>
-            {currentEvent.testerLabel} · {Math.min(currentIndex + 1, testerEvents.length)} of {testerEvents.length}
-          </div>
-          <h2 style={{ margin: 0, fontSize: '1.08rem', lineHeight: 1.3 }}>{currentEvent.headline}</h2>
-          <div style={{ fontSize: '0.875rem', lineHeight: 1.65, color: '#1E1E1A' }}>
-            {currentEvent.description}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexWrap: 'wrap' }}>
-            <ActionButton
-              text="Previous moment"
-              onClick={previousMoment}
-              disabled={atFirstMoment}
-              variant="secondary"
-              fullWidth={false}
-            />
-            <ActionButton
-              text={
-                currentEventViewed
-                  ? atLastMoment ? `${currentEvent.testerLabel} complete` : 'Next moment'
-                  : atLastMoment ? `Mark ${currentEvent.testerLabel} complete` : 'Watch next moment'
-              }
-              onClick={watchNext}
-              disabled={currentEventViewed && atLastMoment}
-              variant={currentEventViewed && atLastMoment ? 'secondary' : 'primary'}
-              fullWidth={false}
-            />
-            <span style={{ fontSize: '0.75rem', color: '#666' }}>
-              {currentTesterViewed}/{testerEvents.length} watched for {currentEvent.testerLabel}
-              {allViewed ? ' · all tester runs watched' : ''}
-            </span>
-          </div>
+          <PlaytestMomentStage event={currentEvent}>
+            <section
+              className="playtest-moment-dialogue"
+              style={{
+                position: 'absolute',
+                left: 'clamp(0.75rem, 3vw, 2rem)',
+                right: 'clamp(0.75rem, 3vw, 2rem)',
+                bottom: 'clamp(0.75rem, 2vw, 1.25rem)',
+                zIndex: 4,
+                border: '1px solid #000',
+                boxShadow: '0 12px 28px rgba(0,0,0,0.38), 4px 4px 0 #000',
+                background: 'rgba(247,241,227,0.96)',
+                padding: 'clamp(0.7rem, 1.7vw, 1rem)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                maxHeight: '46%',
+                overflowY: 'auto',
+              }}
+            >
+              <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase' }}>
+                {currentEvent.testerLabel} · {Math.min(currentIndex + 1, testerEvents.length)} of {testerEvents.length}
+              </div>
+              <h2 style={{ margin: 0, fontSize: 'clamp(0.9rem, 1.5vw, 1.08rem)', lineHeight: 1.25 }}>{currentEvent.headline}</h2>
+              <div style={{ fontSize: 'clamp(0.78rem, 1.2vw, 0.875rem)', lineHeight: 1.48, color: '#1E1E1A' }}>
+                {currentEvent.description}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flexWrap: 'wrap' }}>
+                <ActionButton
+                  text="Previous moment"
+                  onClick={previousMoment}
+                  disabled={atFirstMoment}
+                  variant="secondary"
+                  fullWidth={false}
+                />
+                <ActionButton
+                  text={
+                    currentEventViewed
+                      ? atLastMoment ? `${currentEvent.testerLabel} complete` : 'Next moment'
+                      : atLastMoment ? `Mark ${currentEvent.testerLabel} complete` : 'Watch next moment'
+                  }
+                  onClick={watchNext}
+                  disabled={currentEventViewed && atLastMoment}
+                  variant={currentEventViewed && atLastMoment ? 'secondary' : 'primary'}
+                  fullWidth={false}
+                />
+                <span style={{ fontSize: '0.75rem', color: '#555' }}>
+                  {currentTesterViewed}/{testerEvents.length} watched for {currentEvent.testerLabel}
+                  {allViewed ? ' · all tester runs watched' : ''}
+                </span>
+              </div>
+            </section>
+          </PlaytestMomentStage>
         </section>
 
         <section
@@ -579,9 +556,7 @@ export default function PlaytestTimelineScene({ node }: { node: PlaytestTimeline
             </span>
           )}
           <ActionButton text="Submit observation log" onClick={() => goNext(node)} disabled={!canSubmit} variant={canSubmit ? 'primary' : 'secondary'} />
-          {import.meta.env.DEV && (
             <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-          )}
         </section>
       </motion.div>
     </SceneWrapper>

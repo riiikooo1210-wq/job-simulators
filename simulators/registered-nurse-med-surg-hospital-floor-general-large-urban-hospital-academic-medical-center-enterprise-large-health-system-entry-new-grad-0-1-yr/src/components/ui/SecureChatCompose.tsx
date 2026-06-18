@@ -45,8 +45,9 @@ export default function SecureChatCompose({
     >
       <div
         style={{
-          flex: sent ? '0 0 auto' : '0 0 1.35rem',
+          flex: '1 1 auto',
           minHeight: sent ? 110 : 22,
+          overflowY: 'auto',
           padding: sent ? '1rem' : '0.25rem 1rem',
           display: 'flex',
           flexDirection: 'column',
@@ -212,7 +213,6 @@ export default function SecureChatCompose({
           </div>
         )}
       </div>
-      <div style={{ flex: '1 1 auto', minHeight: 0 }} />
     </div>
   )
 }

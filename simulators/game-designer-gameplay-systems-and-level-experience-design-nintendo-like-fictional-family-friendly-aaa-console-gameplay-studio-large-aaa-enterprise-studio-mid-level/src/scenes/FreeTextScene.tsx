@@ -99,9 +99,7 @@ export default function FreeTextScene({ node }: Props) {
           disabled={!canSubmit}
           variant={canSubmit ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </div>
     </>
   )

@@ -66,6 +66,27 @@ export interface BriefingSubStep {
   quotes?: QuoteData[]
 }
 
+export interface BriefingMemoryCard {
+  title?: string
+  bullets: string[]
+}
+
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+  nextCue?: string
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
+}
+
 export interface SourceInboxEntryMessage {
   channel: 'email' | 'slack'
   from: string
@@ -299,6 +320,7 @@ export interface WorkSurfaceSpec {
 
 export interface StructuredEntryDefinition {
   itemLabel: string
+  itemTitles?: string[]
   fields: StructuredEntryField[]
   initialCount?: number
   minItems?: number
@@ -362,6 +384,8 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  memoryCard?: BriefingMemoryCard
+  coworkerRecap?: CoworkerRecap
   actionLabel?: string
   referenceTitle?: string
   referenceContent?: string
@@ -481,6 +505,18 @@ export interface AppAuditScreenSection {
   tone?: 'neutral' | 'warning' | 'success'
 }
 
+export interface AppAuditAction {
+  id: string
+  label: string
+  resultTitle: string
+  resultBody: string
+  resultItems?: {
+    label: string
+    detail?: string
+    status?: 'complete' | 'pending' | 'quiet' | 'warning'
+  }[]
+}
+
 export interface AppAuditScreen {
   id: string
   title: string
@@ -498,7 +534,9 @@ export interface AppAuditScreen {
   }[]
   emptyStateTitle?: string
   emptyStateBody?: string
+  textBoxPlaceholder?: string
   footerNote?: string
+  actions?: AppAuditAction[]
 }
 
 export interface AppAuditObservation {
@@ -507,8 +545,16 @@ export interface AppAuditObservation {
   screenId: string
   prompt: string
   placeholder: string
-  hint: string
+  companionNudges?: string[]
   metricLink?: string
+}
+
+export interface AppAuditCompanionConfig {
+  npcId: string
+  title?: string
+  voiceName?: string
+  fallbackPrompt?: string
+  systemGuidance?: string
 }
 
 export interface AppAuditNode extends BaseNode {
@@ -519,6 +565,7 @@ export interface AppAuditNode extends BaseNode {
   screens: AppAuditScreen[]
   observations: AppAuditObservation[]
   minCompleted?: number
+  companion?: AppAuditCompanionConfig
 }
 
 export interface ActionAssetSpec {
@@ -1084,7 +1131,7 @@ export interface Storyline {
   devSkips?: DevSkip[]
 }
 
-// Grading shapes (kept identical to reference so FinalReportScene + GradingCard work unchanged)
+// Legacy numeric grading shapes are retained as an internal archive only.
 export interface CriterionResult {
   criterion: string
   score: number
@@ -1109,10 +1156,71 @@ export interface GradingResult {
   overall_assessment: string
 }
 
+export type CareerSignalId =
+  | 'evidence_use'
+  | 'prioritization'
+  | 'communication'
+  | 'systems_thinking'
+  | 'craft_iteration'
+  | 'procedural_care'
+  | 'adaptability'
+  | 'documentation'
+  | 'problem_framing'
+  | 'user_empathy'
+  | 'inquiry_listening'
+  | 'tradeoff_reasoning'
+  | 'data_reasoning'
+  | 'safety_mindset'
+  | 'collaboration'
+  | 'planning_follow_through'
+  | 'quality_control'
+  | 'technical_translation'
+
+export type TaskFeedbackLevel =
+  | 'Strong signal'
+  | 'Solid signal'
+  | 'Developing signal'
+  | 'Early signal'
+
+export interface TaskFeedbackResult {
+  task: string
+  section_title: string
+  level: TaskFeedbackLevel
+  evidence: string
+  career_signal_ids: CareerSignalId[]
+}
+
+export interface CareerProfileItem {
+  signal_id: CareerSignalId
+  title: string
+  body: string
+  evidence: string
+}
+
+export interface CareerProfile {
+  headline: string
+  strengths: CareerProfileItem[]
+  growth_edges: CareerProfileItem[]
+  transferable_patterns: string[]
+  practice_suggestions: string[]
+}
+
+export interface AssessmentResult {
+  candidate_id: string
+  simulation: string
+  assessment_version: string
+  state_fingerprint: string
+  task_feedback: TaskFeedbackResult[]
+  career_profile: CareerProfile
+  legacy_grade_archive: GradingResult
+}
+
 export interface RubricCriterion {
   name: string
   rubric_text: string
   evidenceSceneIds?: string[]
+  evidenceMode?: 'single_workflow'
+  careerSignalIds?: CareerSignalId[]
 }
 
 export interface RubricSection {

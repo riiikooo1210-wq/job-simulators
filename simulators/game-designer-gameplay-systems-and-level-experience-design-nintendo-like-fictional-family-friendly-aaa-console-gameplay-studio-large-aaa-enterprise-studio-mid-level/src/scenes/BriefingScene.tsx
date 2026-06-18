@@ -13,8 +13,10 @@ import { ChartIcon, CheckIcon, DocumentIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
+import { coworkerRecapReply } from '../services/gemini'
 import type { CSSProperties, ReactNode } from 'react'
-import type { BriefingNode, BriefingSubStep, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
+import type { BriefingNode, BriefingSubStep, CoworkerRecapTurn, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
@@ -103,6 +105,228 @@ function SourceAttachmentButtons({
           </button>
         )
       })}
+    </div>
+  )
+}
+
+function isLikelyAck(text: string) {
+  const cleaned = text.trim().toLowerCase()
+  if (!cleaned) return false
+  if (cleaned.includes('?') || cleaned.includes('？')) return false
+  const ackWords = ['yes', 'yeah', 'yep', 'ok', 'okay', 'got it', 'understood', 'i understand', 'makes sense', 'はい', 'うん', '了解', 'わかった', '分かった', '大丈夫']
+  return cleaned.length <= 40 && ackWords.some((word) => cleaned.includes(word))
+}
+
+function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  if (!node.memoryCard?.bullets?.length) return null
+  return (
+    <div
+      style={{
+        border: '1px solid #CDBF94',
+        backgroundColor: '#F7F1E3',
+        boxShadow: '3px 3px 0 rgba(0,0,0,0.18)',
+        padding: '0.75rem 0.9rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.45rem',
+      }}
+    >
+      <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+        {node.memoryCard.title || 'You already know'}
+      </div>
+      <ul style={{ margin: 0, paddingLeft: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        {node.memoryCard.bullets.slice(0, 3).map((bullet, i) => (
+          <li key={i} style={{ fontSize: '0.8rem', lineHeight: 1.45, color: '#1E1E1A' }}>
+            {renderContentWithGlossary(interpolate(bullet, ctx))}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function fallbackRecapAnswer(turn: CoworkerRecapTurn, fallback: string) {
+  if (!turn.answerFacts?.length) return fallback
+  return `${fallback} ${turn.answerFacts[0]}`
+}
+
+function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap?.speakerRole || npc?.role
+  const fallback = recap?.fallback || "You don't need that extra context for this moment. Focus on the point I just gave you."
+  const turns = recap?.turns || []
+  const [turnIndex, setTurnIndex] = useState(0)
+  const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
+  const [draft, setDraft] = useState('')
+  const [loading, setLoading] = useState(false)
+  const complete = turns.length > 0 && turnIndex >= turns.length
+  const currentTurn = turns[turnIndex]
+
+  useEffect(() => {
+    setTurnIndex(0)
+    setDraft('')
+    setLoading(false)
+    setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
+  }, [node.id])
+
+  if (!recap || turns.length === 0) return null
+
+  const advanceTurn = (nextMessages: { role: 'assistant' | 'user'; content: string }[]) => {
+    const nextIndex = turnIndex + 1
+    if (nextIndex < turns.length) {
+      setTurnIndex(nextIndex)
+      setMessages([...nextMessages, { role: 'assistant', content: turns[nextIndex].coworkerLine }])
+    } else {
+      setTurnIndex(nextIndex)
+      setMessages([...nextMessages, { role: 'assistant', content: 'Great. That is all the context you need before opening the workspace.' }])
+    }
+  }
+
+  const submitText = async (text: string) => {
+    if (!currentTurn || loading) return
+    const trimmed = text.trim()
+    if (!trimmed) return
+    const withUser = [...messages, { role: 'user' as const, content: trimmed }]
+    setMessages(withUser)
+    setDraft('')
+
+    if (isLikelyAck(trimmed)) {
+      advanceTurn(withUser)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const answer = await coworkerRecapReply({
+        speakerName,
+        speakerRole,
+        topic: currentTurn.topic,
+        question: trimmed,
+        facts: currentTurn.answerFacts || [],
+        fallback,
+      })
+      setMessages([...withUser, { role: 'assistant', content: answer }])
+    } catch {
+      setMessages([...withUser, { role: 'assistant', content: fallbackRecapAnswer(currentTurn, fallback) }])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#EFE8D2',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.24)',
+        padding: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.7rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline' }}>
+        <div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>{speakerName}</div>
+          {speakerRole && <div style={{ fontSize: '0.68rem', color: '#6f6758' }}>{speakerRole}</div>}
+        </div>
+        <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 800 }}>
+          Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
+        </div>
+      </div>
+      {!complete && (
+        <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#6f6758' }}>
+          Click "I understand" or ask a question if anything is unclear.
+        </div>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            style={{
+              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+              maxWidth: '86%',
+              border: '1px solid #CDBF94',
+              backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
+              padding: '0.55rem 0.65rem',
+              fontSize: '0.8rem',
+              lineHeight: 1.45,
+              color: '#1E1E1A',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {renderContentWithGlossary(interpolate(message.content, ctx))}
+          </div>
+        ))}
+        {loading && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerName} is answering...</div>}
+      </div>
+      {!complete && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') void submitText(draft)
+              }}
+              placeholder={'Click "I understand" or ask a question if anything is unclear...'}
+              style={{
+                flex: 1,
+                border: '1px solid #CDBF94',
+                backgroundColor: '#FBF7EA',
+                padding: '0.55rem 0.65rem',
+                font: 'inherit',
+                fontSize: '0.8rem',
+                minWidth: 0,
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => void submitText(draft)}
+              disabled={loading || !draft.trim()}
+              style={{
+                border: '1px solid #000',
+                backgroundColor: '#3A6B5E',
+                color: '#F7F1E3',
+                boxShadow: '2px 2px 0 #000',
+                padding: '0 0.8rem',
+                fontWeight: 900,
+                cursor: loading || !draft.trim() ? 'not-allowed' : 'pointer',
+              }}
+            >
+              Send
+            </button>
+            <button
+              type="button"
+              onClick={() => void submitText('Yes, I understand.')}
+              disabled={loading}
+              style={{
+                border: '1px solid #000',
+                backgroundColor: '#F7F1E3',
+                color: '#1E1E1A',
+                boxShadow: '2px 2px 0 #000',
+                padding: '0 0.75rem',
+                fontWeight: 900,
+                cursor: loading ? 'not-allowed' : 'pointer',
+              }}
+            >
+              I understand
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function BriefingLeadIn({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  if (!node.memoryCard && !node.coworkerRecap) return null
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <MemoryCard node={node} ctx={ctx} />
+      <CoworkerRecap node={node} ctx={ctx} />
     </div>
   )
 }
@@ -425,6 +649,8 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
           </p>
         )}
 
+        <BriefingLeadIn node={node} ctx={ctx} />
+
         <DesktopOverlay width={sourceInbox.desktop?.width || '75%'} height={sourceInbox.desktop?.height || '80%'}>
           <LaptopFrame
             variant={folderOpen ? 'doc' : entry.channel}
@@ -597,9 +823,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
           disabled={!canContinue}
           variant={canContinue ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
-          <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
-        )}
+        <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
       </motion.div>
     </SceneWrapper>
   )
@@ -752,6 +976,8 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
           </p>
         )}
 
+        <BriefingLeadIn node={node} ctx={ctx} />
+
         <DesktopOverlay width={sourceWorkspace.desktop?.width || '75%'} height={sourceWorkspace.desktop?.height || '80%'}>
           <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 0 }}>
             <div
@@ -898,7 +1124,6 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                         <div style={{ padding: '0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                           {activeApp.messages.map((message, i) => (
                             <div key={message.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                              {renderLookForCard(message.lookFor ? interpolate(message.lookFor, ctx) : undefined)}
                               <SlackMessageEnhanced
                                 message={resolveWorkspaceSlackMessage(message, ctx)}
                                 delay={i * 0.12}
@@ -941,7 +1166,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                           if (message.channel === 'email' || activeApp.kind === 'email') {
                             return (
                               <div key={message.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                                {renderLookForCard(message.lookFor ? interpolate(message.lookFor, ctx) : undefined)}
+                                {message.channel !== 'slack' && renderLookForCard(message.lookFor ? interpolate(message.lookFor, ctx) : undefined)}
                                 <EmailBlock
                                   email={resolveWorkspaceEmailMessage(message, ctx, activeApp.title || activeApp.label)}
                                   initialExpanded
@@ -956,7 +1181,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                           }
                           return (
                             <div key={message.id} style={{ border: '1px solid #CDBF94', backgroundColor: '#F2EBD9', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
-                              {renderLookForCard(message.lookFor ? interpolate(message.lookFor, ctx) : undefined)}
+                              {message.channel !== 'slack' && renderLookForCard(message.lookFor ? interpolate(message.lookFor, ctx) : undefined)}
                               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 <strong style={{ fontSize: '0.82rem' }}>{interpolate(title, ctx)}</strong>
                                 {message.timestamp && <span style={{ fontSize: '0.68rem', color: '#6f6758' }}>{interpolate(message.timestamp, ctx)}</span>}
@@ -1098,9 +1323,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
           disabled={!canContinue}
           variant={canContinue ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
-          <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
-        )}
+        <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
       </motion.div>
     </SceneWrapper>
   )
@@ -1261,9 +1484,7 @@ function SequentialBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance
           <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
-      {import.meta.env.DEV && (
-        <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-      )}
+      <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
     </>
   )
 }
@@ -1304,9 +1525,7 @@ function PaginatedBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance:
           <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
-      {import.meta.env.DEV && (
-        <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-      )}
+      <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
     </>
   )
 }
@@ -1346,13 +1565,16 @@ export default function BriefingScene({ node }: Props) {
           </h2>
         </div>
 
+        {mode === 'simple' && node.illustration && <InlineIllustration src={node.illustration} />}
+
+        <BriefingLeadIn node={node} ctx={{ playerName, branchFlags, mcSelections }} />
+
         {mode === 'sequential' ? (
           <SequentialBriefing node={node} onAdvance={onAdvance} />
         ) : mode === 'paginated' ? (
           <PaginatedBriefing node={node} onAdvance={onAdvance} />
         ) : (
           <>
-            {node.illustration && <InlineIllustration src={node.illustration} />}
             {node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
                 {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
@@ -1401,9 +1623,7 @@ export default function BriefingScene({ node }: Props) {
               />
             ))}
             <ActionButton text={actionLabel} onClick={onAdvance} />
-            {import.meta.env.DEV && (
-              <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-            )}
+            <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
           </>
         )}
       </motion.div>

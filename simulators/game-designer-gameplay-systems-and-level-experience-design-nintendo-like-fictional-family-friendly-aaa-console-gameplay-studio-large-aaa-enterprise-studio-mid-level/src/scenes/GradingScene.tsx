@@ -73,7 +73,7 @@ export default function GradingScene({ node }: Props) {
             </div>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Your responses are being evaluated</h2>
             <p style={{ fontSize: '0.875rem', color: '#555', lineHeight: 1.6 }}>
-              The AI grader is reviewing your decisions, conversations, and written responses against the rubric.
+              The AI reviewer is turning your decisions, conversations, and written work into a career exploration report.
               This typically takes 30–60 seconds.
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
@@ -117,13 +117,11 @@ export default function GradingScene({ node }: Props) {
               <CheckIcon size={20} color="#F2EBD9" />
             </div>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Evaluation Complete</h2>
-            <p style={{ fontSize: '0.875rem', color: '#555' }}>Your assessment results are ready.</p>
+            <p style={{ fontSize: '0.875rem', color: '#555' }}>Your career exploration report is ready.</p>
             <ActionButton text="View Results" onClick={() => goNext(node)} />
           </>
         )}
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
     </SceneWrapper>
   )

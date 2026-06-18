@@ -261,9 +261,7 @@ export default function ActionSimulationScene({ node }: Props) {
           {!canSubmit && <span style={{ fontSize: '0.75rem', color: '#666' }}>Complete the required interaction steps before continuing.</span>}
         </div>
 
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
     </SceneWrapper>
   )

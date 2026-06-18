@@ -163,7 +163,7 @@ export default function CameraShootScene({ node }: { node: CameraShootNode }) {
                 />
               </label>
               <ActionButton text="Submit" onClick={() => goNext(node)} disabled={!canSubmit} variant={canSubmit ? 'primary' : 'secondary'} />
-              {import.meta.env.DEV && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
+              <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
             </div>
           </div>
         </WorkSurfaceFrame>

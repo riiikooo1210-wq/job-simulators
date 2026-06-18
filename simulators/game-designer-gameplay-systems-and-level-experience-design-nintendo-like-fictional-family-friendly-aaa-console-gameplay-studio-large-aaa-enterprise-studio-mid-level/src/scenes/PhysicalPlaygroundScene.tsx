@@ -1232,9 +1232,7 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
           {!canSubmit && <span style={{ fontSize: '0.75rem', color: '#666' }}>{activeStepCount} workplace move{activeStepCount === 1 ? '' : 's'} completed.</span>}
         </div>
 
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
 
         {modal && (
           <div className="physical-playground-modal-backdrop" onClick={() => setModal(null)}>

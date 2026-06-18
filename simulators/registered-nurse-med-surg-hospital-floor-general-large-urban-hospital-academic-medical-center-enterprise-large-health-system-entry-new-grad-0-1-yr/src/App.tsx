@@ -29,7 +29,7 @@ export default function App() {
     store.navigateTo(targetNodeId)
   }
 
-  const devSkips = (storyline.devSkips || []).slice(0, 3)
+  const devSkips = (storyline.devSkips || []).filter((skip) => !["assessment_gate", "grading"].includes(skip.targetNodeId) && !/assessment|grading/i.test(skip.label)).slice(0, 3)
 
   return (
     <>

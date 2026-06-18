@@ -13,7 +13,7 @@
       },
       {
         "num": 3,
-        "label": "Crisis Response"
+        "label": "Room 512 Wrap-Up"
       }
     ],
     "nodes": {
@@ -183,8 +183,8 @@
               {
                 "id": "bed_low_locked",
                 "label": "Check bed low and locked",
-                "detail": "Confirm the bed is low and the wheel brakes are locked.",
-                "finding": "Bed is in a low position and the visible wheel brakes are locked."
+                "detail": "Check that the mattress deck is down near the floor, the under-bed scissor/lift arms are not raised high, and the wheel brake pedals are locked/down.",
+                "finding": "Bed is in a low position: the scissor/lift arms are not extended high and the visible wheel brakes are locked."
               },
               {
                 "id": "place_call_light",
@@ -360,9 +360,23 @@
             "primitives": [
               "inspect_image"
             ],
-            "detail": "Confirm the bed is low and the wheel brakes are locked.",
-            "readableText": "Inspect the bed base and brake closeup before moving on.",
-            "playerInstruction": "Check the bed base image. Confirm the bed is low and the visible wheel brakes are locked.",
+            "detail": "Check that the mattress deck is down near the floor, the under-bed scissor/lift arms are not raised high, and the wheel brake pedals are locked/down.",
+            "readableText": "Inspect the bed base closeup: height indicator, under-bed scissor/lift arms, caster wheels, and red brake pedals.",
+            "playerInstruction": "Use the closeup to check three cues: the height indicator is at lowest, the under-bed scissor/lift arms are not extended high, and both visible red brake pedals are pressed down/locked.",
+            "choiceQuestion": "Is Mrs. Vance's bed low and locked?",
+            "choiceOptions": [
+              {
+                "id": "bed_low_and_locked",
+                "label": "Yes, bed is low and locked",
+                "correct": true
+              },
+              {
+                "id": "bed_not_low_or_unlocked",
+                "label": "No, bed is too high or unlocked",
+                "correct": false,
+                "feedback": "Look again at the height indicator, the under-bed scissor/lift arms, and the red brake pedals. The bed is lowered and the visible brakes are locked."
+              }
+            ],
             "required": true
           },
           {
@@ -418,11 +432,11 @@
             "detail": "Look for bleeding, drainage, and swelling.",
             "readableText": "Inspect the dressing image and record what you observe.",
             "required": true,
-            "playerInstruction": "Inspect the dressing image, then document the visible wound/dressing status.",
+            "playerInstruction": "Inspect the wound and document the status.",
             "requiresObservationText": true,
-            "observationPrompt": "Document the wound/dressing observation.",
-            "observationPlaceholder": "Record dressing status, swelling, drainage, and redness.",
-            "expectedObservation": "Right hip dressing dry and intact; mild expected swelling; no active drainage; no spreading redness."
+            "observationPrompt": "Document the wound observation.",
+            "observationPlaceholder": "Record swelling and redness.",
+            "expectedObservation": "Accept if the wound observation mentions swelling/腫れ or redness/赤み around the right hip wound/dressing; do not require dry/intact, drainage, or no-spreading-redness details."
           },
           {
             "id": "neurovascular",
@@ -446,6 +460,11 @@
             "expectedObservation": "Foot warm; sensation intact; movement present; pedal pulse palpable.",
             "npcLine": "Yes, I can feel you touching my foot.",
             "npcName": "Mrs. Vance",
+            "visibleFindings": [
+              "Foot warm to touch.",
+              "Toes move on request.",
+              "Pedal pulse palpable."
+            ],
             "imageHoldTarget": {
               "x": 42,
               "y": 45.5,
@@ -635,7 +654,10 @@
         "prepNoteTitle": "Your prep notes",
         "prepNoteEmptyText": "No prep notes yet. Use the prep scene to jot down clinical facts before speaking with Sarah.",
         "goalPrompt": "You are Sarah Vance, the anxious daughter of an 88-year-old patient. Your mother is in pain, but you are terrified of her becoming addicted to opioids because \"addiction runs in the family\". You are firm that she should only receive ibuprofen. Your goal is to resist the nurse's attempts to provide stronger pain medication. Listen to the nurse's rationale. If they explain the low risk of addiction at this age, the importance of pain control for healing/mobility, and offer a multi-modal approach (e.g., a small dose of a less strong opioid combined with other meds), you can be cautiously persuaded. If they are dismissive or aggressive, become more resistant. After 2-3 exchanges where the nurse has made their case, conclude the conversation by saying either \"Okay... I'm still not sure, but I'll think about what you said. Let's see what the doctor says,\" or \"No, I'm not comfortable with that. We will stick to the ibuprofen.\"",
-        "next": "scene2_med_pass"
+        "next": "scene2_med_pass",
+        "playerGoal": "Acknowledge Sarah’s opioid concern, explain why pain control matters for breathing, mobility, recovery, and safety, and keep the conversation respectful while identifying the next clinical step.",
+        "endpoint": "Sarah either agrees to keep discussing the plan with the care team or clearly states she still wants only non-opioid medication.",
+        "successCriteria": "You validate the concern, avoid dismissive language, use plain clinical reasoning, connect pain control to recovery, and leave Sarah with a clear next step."
       },
       "scene2_med_pass": {
         "id": "scene2_med_pass",
@@ -1341,13 +1363,37 @@
         "type": "free_text",
         "section": 2,
         "title": "The Order Barrage",
-        "content": "You're finally sitting down to chart your assessments. You've documented Mrs. Vance's pain and your conversation with her daughter. Suddenly, an alert for a new {{STAT}} order from Dr. Carter pops up in the {{EMR}}: '{{STAT}} Lactate' for Mrs. Vance. You acknowledge the order, go into the room, draw the blood, and send it to the lab. As you sit back down, another {{STAT}} order appears: '{{STAT}} Troponin'. You groan, knowing you could have drawn both at the same time.\n\nFifteen minutes later, a third {{STAT}} order for a 'CBC' appears. You need to communicate with Dr. Carter efficiently and professionally to address this pattern, which is causing unnecessary discomfort for the patient and wasting time.",
+        "content": "You're finally sitting down to chart your assessments. You've documented Mrs. Vance's pain and your conversation with her daughter. Suddenly, an alert for a new {{STAT}} order from Dr. Carter pops up in the {{EMR}}: '{{STAT}} Lactate' for Mrs. Vance. You acknowledge the order, go into the room, draw the blood, and send it to the lab. As you sit back down, another {{STAT}} order appears: '{{STAT}} Troponin'. You groan, knowing you could have drawn both at the same time.\n\nFifteen minutes later, a third {{STAT}} order for a 'CBC' appears. You need to communicate with Dr. Carter efficiently and professionally to address this pattern, which is causing unnecessary discomfort for the patient and wasting time.\n\nYour message should briefly state the pattern you noticed, frame the concern around patient comfort and efficient care, and ask whether Dr. Carter would like to add any other {{STAT}} labs now so they can be drawn together. Use a respectful, collaborative tone. Avoid blaming Dr. Carter or complaining about your workload.",
         "appWindow": "slack",
         "windowTitle": "Secure Chat with Dr. Ben Carter",
-        "prompt": "Write a professional, concise secure chat message to Dr. Carter regarding the series of {{STAT}} lab orders for Mrs. Vance in room 512. Your goal is to prevent further piecemeal orders without sounding insubordinate.",
+        "prompt": "",
         "placeholder": "Type your message to Dr. Carter here...",
         "next": "scene3_lab_draw",
-        "illustration": "/scenes/scene3_orders.png"
+        "deskWorkDesign": {
+          "roleFamily": "registered_nurse",
+          "workSurface": "secure provider message in the EMR / secure chat workflow",
+          "inputArtifacts": [
+            {
+              "id": "stat_order_pattern",
+              "label": "Repeated STAT lab order alerts for Mrs. Vance",
+              "whereVisible": "scene content and secure chat work surface",
+              "summary": "The nurse has already received separate STAT lactate and troponin orders, then a new CBC order appears."
+            }
+          ],
+          "studentAction": "Write a respectful secure message that names the repeated-order pattern and asks whether any additional STAT labs should be batched now.",
+          "outputArtifact": {
+            "id": "provider_message",
+            "label": "Secure message to Dr. Carter",
+            "format": "brief professional clinical message"
+          },
+          "rubricEvidence": [
+            "scene3_orders freeTextResponses"
+          ],
+          "continuity": [
+            "Dr. Carter confirms the CBC is the last anticipated STAT lab before the draw workflow."
+          ],
+          "authenticityCheck": "Nurses often need to coordinate orders efficiently while keeping patient comfort and workflow safety in view."
+        }
       },
       "scene3_lab_draw": {
         "id": "scene3_lab_draw",
@@ -1954,6 +2000,28 @@
             "primitive": "drag_object_to_target"
           }
         ]
+      },
+      "scene3_explain_draw": {
+        "id": "scene3_explain_draw",
+        "type": "voice_meeting",
+        "section": 2,
+        "title": "Explain the STAT Draw",
+        "content": "Explain the STAT CBC draw to Mrs. Vance in plain language before you start the procedure.",
+        "npcId": "eleanor",
+        "presentation": "in_person",
+        "voiceName": "Kore",
+        "minTurns": 1,
+        "maxTurns": 3,
+        "playerGoal": "Explain that the CBC is the last anticipated STAT lab for now, that you verified the order and identifiers, that labeling will happen at the bedside, and that you are batching the work to avoid more unnecessary sticks.",
+        "prepReferenceTitle": "Draw Explanation Facts",
+        "prepReferenceContent": "- The visible order is a STAT CBC for Mrs. Vance.\n- Dr. Carter confirmed this is the last anticipated STAT lab for now.\n- Two identifiers and bedside labeling protect against specimen errors.\n- Mrs. Vance is tired and frustrated by repeated interruptions.",
+        "meetingContext": "Room 512. Mrs. Vance is tired after repeated STAT lab interruptions and is worried this will be another painful, piecemeal stick.",
+        "goalPrompt": "You are Mrs. Eleanor Vance, an elderly post-op patient who is tired and frustrated by repeated blood draws. Listen to the nurse. If the nurse clearly explains why the CBC is needed, that this should be the last anticipated STAT draw for now, that they verified your identity/order, and that they will label the tube at bedside, relax a little and say you are ready. If the nurse is vague, uses too much jargon, or does not acknowledge the repeated interruptions, ask one focused follow-up question such as \"Is this going to happen again?\" or \"How do I know this tube is mine?\" Stay polite but weary. After the nurse addresses those points or after two unclear attempts, end the conversation with a short readiness or concern statement.",
+        "next": "scene3_lab_draw",
+        "illustration": "/action-assets/scene3_lab_draw/explain-the-draw.jpg",
+        "imageBrief": "Reuse the Room 512 bedside phlebotomy setting. Show Mrs. Eleanor Vance in the hospital bed with the prepared blood draw tray nearby, from the nurse's first-person point of view, for an in-person explanation before the STAT CBC draw.",
+        "endpoint": "Mrs. Vance says she understands why the CBC is needed and is ready for the draw.",
+        "successCriteria": "You explain the CBC, confirm this should be the last anticipated STAT lab for now, mention identity/order verification and bedside labeling, and acknowledge her frustration."
       },
       "scene3_perform_draw": {
         "id": "scene3_perform_draw",
@@ -2738,757 +2806,12 @@
           "Placement log for used needle, labeled tube, and specimen bag in the cleanup/send popup."
         ]
       },
-      "scene4_stabilize": {
-        "id": "scene4_stabilize",
-        "type": "physical_playground",
-        "mode": "stabilization",
-        "section": 3,
-        "title": "Room 514: Stabilize First",
-        "objective": "Act at the bedside before you write the SBAR.",
-        "simulatedAction": "Immediate bedside deterioration response: hand hygiene, gather full vitals and assess the acute change, call the senior nurse into the room with role delegation, raise the head of bed in a closeup, connect and apply oxygen with flow setting, activate rapid response, and write scratch facts for the later formal SBAR.",
-        "digitalPrimitives": [
-          "radio_select",
-          "drag_object_to_target",
-          "range_slider",
-          "inspect_image",
-          "read_monitor_value",
-          "type_text",
-          "timed_hold",
-          "conditional_unlock"
-        ],
-        "content": "You're in Mr. Jones's room to hang his next IV antibiotic, but you do not hang the antibiotic yet. He is newly confused, picking at the blanket, breathing fast, and his oxygen saturation is 88% on room air. Marco is walking past the doorway. Foam in, assess the acute change and vitals, call Marco in with a clear role, raise the head of bed, start oxygen, activate rapid response, and write the facts you will later turn into a formal SBAR.",
-        "illustration": "/scenes/scene4_stabilize.png",
-        "imageBrief": "First-person urgent bedside view in Room 514 composed for an interactive 16:9 playground. Place a wall sanitizer pump at x 3-13%, y 47-65% for a first hand-hygiene hotspot. Place the oxygen wall and rapid response control at x 5-24%, y 15-45%, with a nasal cannula/tubing source visible but not on the patient yet. Put Mr. Jones's bed at x 34-79%, y 23-72%, with his face/oxygen target around x 55-67%, y 34-46% and open bedside workspace around x 39-56%, y 55-70%. Put bed head controls at x 17-35%, y 62-80% for a closeup popup launch. Put the vital-sign monitor at x 72-92%, y 9-31% with visible SpO2 88%, RR 28, HR 122, BP 96/58, temp 38.9 C. Put Marco in the doorway hotspot at x 83-95%, y 32-57%, and leave a small scratch-facts notepad workspace near x 14-32%, y 75-89%.",
-        "patientCard": {
-          "room": "514",
-          "patient": "Mr. Jones, 65M",
-          "diagnosis": "Cellulitis on IV antibiotics",
-          "status": "New confusion, rapid shallow breathing, SpO2 88% on room air",
-          "note": "Do not hang the antibiotic first. Assess the acute change, stabilize breathing, get help, activate RRT, then write facts for SBAR."
-        },
-        "vitals": [
-          {
-            "label": "SpO2",
-            "value": "88%",
-            "status": "critical"
-          },
-          {
-            "label": "RR",
-            "value": "28",
-            "status": "critical"
-          },
-          {
-            "label": "HR",
-            "value": "122",
-            "status": "watch"
-          },
-          {
-            "label": "BP",
-            "value": "96/58",
-            "status": "watch"
-          },
-          {
-            "label": "Temp",
-            "value": "38.9 C",
-            "status": "watch"
-          }
-        ],
-        "actionGroups": [
-          {
-            "id": "immediate_stabilization",
-            "label": "Immediate Bedside Stabilization",
-            "items": [
-              {
-                "id": "full_vitals",
-                "label": "Inspect full vitals",
-                "detail": "Start with the bedside assessment: confirm BP, HR, RR, temperature, oxygen saturation, and mental status."
-              },
-              {
-                "id": "call_for_help",
-                "label": "Call Marco into the room",
-                "detail": "Get a second set of experienced eyes and delegate a role."
-              },
-              {
-                "id": "raise_hob_control",
-                "label": "Raise head of bed",
-                "detail": "Use the bed control closeup to sit him upright."
-              },
-              {
-                "id": "apply_oxygen",
-                "label": "Set up oxygen",
-                "detail": "Connect oxygen, set initial flow, and apply the nasal cannula."
-              },
-              {
-                "id": "rapid_response",
-                "label": "Activate rapid response",
-                "detail": "Use the unit escalation pathway for acute deterioration."
-              },
-              {
-                "id": "prepare_sbar",
-                "label": "Write scratch facts",
-                "detail": "Capture enough facts to build the formal SBAR in the next scene."
-              }
-            ]
-          }
-        ],
-        "requiredActionIds": [
-          "full_vitals",
-          "call_for_help",
-          "raise_hob_control",
-          "apply_oxygen",
-          "rapid_response",
-          "prepare_sbar"
-        ],
-        "resultTitle": "Patient stabilized enough to report",
-        "resultContent": "You gathered a clearer clinical picture, pulled Marco in with a role, raised the head of bed, started oxygen, activated rapid response, and wrote scratch facts for the formal SBAR.",
-        "next": "scene4_decline",
-        "learningGoal": "Act at the bedside before you write the SBAR.",
-        "background": {
-          "filename": "public/scenes/scene4_stabilize.png",
-          "prompt": "First-person urgent bedside view in Room 514 composed for an interactive 16:9 playground. Place a wall sanitizer pump at x 3-13%, y 47-65% for a first hand-hygiene hotspot. Place the oxygen wall and rapid response control at x 5-24%, y 15-45%, with a nasal cannula/tubing source visible but not on the patient yet. Put Mr. Jones's bed at x 34-79%, y 23-72%, with his face/oxygen target around x 55-67%, y 34-46% and open bedside workspace around x 39-56%, y 55-70%. Put bed head controls at x 17-35%, y 62-80% for a closeup popup launch. Put the vital-sign monitor at x 72-92%, y 9-31% with visible SpO2 88%, RR 28, HR 122, BP 96/58, temp 38.9 C. Put Marco in the doorway hotspot at x 83-95%, y 32-57%, and leave a small scratch-facts notepad workspace near x 14-32%, y 75-89%.",
-          "coordinateMap": [
-            {
-              "label": "wall sanitizer pump",
-              "x": 3,
-              "y": 47,
-              "w": 10,
-              "h": 18,
-              "role": "fixture"
-            },
-            {
-              "label": "oxygen wall and rapid response control",
-              "x": 5,
-              "y": 15,
-              "w": 19,
-              "h": 30,
-              "role": "fixture"
-            },
-            {
-              "label": "Mr. Jones's bed",
-              "x": 34,
-              "y": 23,
-              "w": 45,
-              "h": 49,
-              "role": "person"
-            },
-            {
-              "label": "bed head controls popup launch",
-              "x": 17,
-              "y": 62,
-              "w": 18,
-              "h": 18,
-              "role": "control"
-            },
-            {
-              "label": "vitals monitor",
-              "x": 72,
-              "y": 9,
-              "w": 20,
-              "h": 22,
-              "role": "fixture"
-            },
-            {
-              "label": "Marco doorway",
-              "x": 83,
-              "y": 32,
-              "w": 12,
-              "h": 25,
-              "role": "person"
-            },
-            {
-              "label": "scratch-facts notepad workspace",
-              "x": 14,
-              "y": 75,
-              "w": 18,
-              "h": 14,
-              "role": "workspace"
-            }
-          ]
-        },
-        "interactiveObjects": [
-          {
-            "id": "hand_hygiene",
-            "label": "Hand hygiene",
-            "x": 5,
-            "y": 27,
-            "w": 10,
-            "h": 10,
-            "interactionRole": "clickable",
-            "primitives": [
-              "press_and_hold_target"
-            ],
-            "detail": "Press and hold the sanitizer pump before touching Mr. Jones, the bed controls, oxygen setup, or supplies.",
-            "required": true
-          }
-        ],
-        "dropTargets": [],
-        "controls": [],
-        "steps": [],
-        "requiredObjectIds": [
-          "hand_hygiene",
-          "full_vitals",
-          "call_for_help",
-          "raise_hob_control",
-          "apply_oxygen",
-          "rapid_response",
-          "prepare_sbar"
-        ],
-        "requiredStepIds": [],
-        "requiredControlIds": [],
-        "successConditions": [
-          "You stayed at the bedside by assessing full vitals, calling Marco with a role, raising the head of bed, starting oxygen, activating rapid response, and writing scratch facts for the formal SBAR."
-        ],
-        "failureModes": [
-          "Hangs the IV antibiotic before stabilizing the acute change.",
-          "Writes or prepares formal SBAR before stabilizing and escalating.",
-          "Fails to apply oxygen, raise head of bed, get help, activate rapid response, or gather vitals.",
-          "Copies conclusions instead of recording visible deterioration facts.",
-          "Skips hand hygiene before bedside stabilization or equipment contact."
-        ],
-        "gradingEvidence": [
-          "Warnings from locked actions attempted before prerequisites.",
-          "Player-written vital-sign/mental-status observation and scratch-facts note.",
-          "Voice transcript from calling Marco into the room.",
-          "Action log includes hand hygiene before vitals, Marco escalation, HOB, oxygen, RRT, and scratch facts."
-        ],
-        "visualAssetsRequired": {
-          "readableSurfaces": [
-            {
-              "id": "full_vitals",
-              "displayName": "Vitals monitor and patient cue closeup",
-              "assetType": "readable_closeup",
-              "filename": "public/action-assets/scene4_stabilize/vitals-monitor-closeup.png",
-              "prompt": "Readable bedside closeup showing the vital-sign monitor and part of Mr. Jones in bed. The monitor must visibly show: SpO2 88% on room air, RR 28, HR 122, BP 96/58, Temp 38.9 C. In the same frame, show Mr. Jones looking newly confused/restless and breathing rapidly. Do not include a diagnosis, SBAR, checkmarks, arrows, \"sepsis\" label, or completed nursing documentation; the player must document the finding."
-            },
-            {
-              "id": "marco_doorway_popup",
-              "displayName": "Marco doorway escalation popup",
-              "assetType": "readable_closeup",
-              "filename": "public/action-assets/scene4_stabilize/marco-doorway-hotspot.jpeg",
-              "prompt": "RPG-style bedside popup image from inside Room 514 looking toward the doorway. Marco, a senior male RN, is visible in the doorway turning toward the room with concern while Mr. Jones remains in the bed foreground. Leave room below the image for voice transcript. Do not include speech bubbles, captions, checkmarks, or instructions telling the player what to say."
-            },
-            {
-              "id": "rapid_response_panel",
-              "displayName": "Rapid response control panel",
-              "assetType": "readable_closeup",
-              "filename": "public/action-assets/scene4_stabilize/rapid-response-button.png",
-              "prompt": "Readable closeup of the room emergency / rapid response call panel on the hospital wall. Show a large physical button labeled \"RAPID RESPONSE\" with nearby neutral unit labels like \"Room 514\" and \"Call\". Leave a clear centered button area for the app to overlay a press-and-hold target. Do not include a pressed state, checkmark, alarm-success banner, or answer caption."
-            },
-            {
-              "id": "sbar_scratch_card",
-              "displayName": "Scratch facts card",
-              "assetType": "readable_closeup",
-              "filename": "public/action-assets/scene4_stabilize/sbar-scratch-card.png",
-              "prompt": "Readable bedside closeup of a small cream nurse scratch card or notepad on the workstation, with blank headings only: \"What changed\", \"Key numbers\", \"Actions started\", and \"What I need next\". Include a pen and subtle Room 514 context, but do not prefill the content or list the correct facts. No checkmarks, arrows, completed documentation, or answer text."
-            }
-          ]
-        },
-        "sceneLinks": [
-          {
-            "id": "start_raise_hob",
-            "label": "Raise head of bed",
-            "next": "scene4_raise_hob",
-            "x": 41,
-            "y": 56,
-            "w": 18,
-            "h": 10,
-            "requiresObjects": [
-              "hand_hygiene",
-              "full_vitals",
-              "call_for_help"
-            ],
-            "lockedText": "Complete hand hygiene, gather vitals, and call Marco before using the bed controls.",
-            "verb": "Adjust",
-            "modalObjectId": "raise_hob_control",
-            "modalSceneNodeId": "scene4_raise_hob",
-            "modalCompleteLabel": "Head of bed raised",
-            "primitive": "range_slider",
-            "modalBody": "Use the HOB control to raise Mr. Jones to at least 60° so he is upright enough to support breathing."
-          },
-          {
-            "id": "start_apply_oxygen",
-            "label": "Apply oxygen",
-            "next": "scene4_apply_oxygen",
-            "x": 23,
-            "y": 27,
-            "w": 14,
-            "h": 10,
-            "requiresObjects": [
-              "hand_hygiene",
-              "full_vitals",
-              "call_for_help"
-            ],
-            "lockedText": "Complete hand hygiene, gather vitals, and call Marco before setting up oxygen.",
-            "verb": "Inspect",
-            "modalObjectId": "apply_oxygen",
-            "modalSceneNodeId": "scene4_apply_oxygen",
-            "modalCompleteLabel": "Oxygen started",
-            "primitive": "drag_object_to_target"
-          },
-          {
-            "id": "start_call_marco",
-            "label": "Call Marco in",
-            "next": "scene4_stabilize",
-            "x": 83,
-            "y": 34,
-            "w": 12,
-            "h": 18,
-            "requiresObjects": [
-              "hand_hygiene",
-              "full_vitals"
-            ],
-            "lockedText": "Complete hand hygiene and gather vitals before calling Marco.",
-            "verb": "Speak",
-            "modalObjectId": "call_for_help",
-            "modalAssetId": "marco_doorway_popup",
-            "modalBody": "Call Marco into the room, state the immediate safety concern, and delegate help before you adjust positioning and oxygen.",
-            "modalCompleteLabel": "Start call",
-            "modalVoiceNodeId": "scene4_call_marco",
-            "primitive": "inspect_image"
-          },
-          {
-            "id": "start_rapid_response",
-            "label": "Activate rapid response",
-            "next": "scene4_stabilize",
-            "x": 1,
-            "y": 35,
-            "w": 15,
-            "h": 9,
-            "requiresObjects": [
-              "hand_hygiene",
-              "full_vitals",
-              "call_for_help",
-              "raise_hob_control",
-              "apply_oxygen"
-            ],
-            "lockedText": "Complete hand hygiene, gather vitals, call Marco, raise the head of bed, and start oxygen before activating rapid response.",
-            "verb": "Open",
-            "modalObjectId": "rapid_response",
-            "modalAssetId": "rapid_response_panel",
-            "modalBody": "Activate rapid response means using the hospital emergency escalation pathway so the rapid response team is paged to Room 514 for acute hypoxia, new confusion, and respiratory distress. You have gathered enough bedside facts to escalate; do not wait to write the formal SBAR.",
-            "modalCompleteLabel": "Complete",
-            "primitive": "press_and_hold_target",
-            "imageHoldTarget": {
-              "x": 26,
-              "y": 47,
-              "w": 12,
-              "h": 21.3,
-              "label": "Rapid response",
-              "instruction": "Press and hold the Rapid Response button.",
-              "completionText": "Rapid Response Team paged to Room 514."
-            }
-          },
-          {
-            "id": "start_full_vitals",
-            "label": "Gather vitals",
-            "next": "scene4_stabilize",
-            "x": 68,
-            "y": 15,
-            "w": 20,
-            "h": 19,
-            "requiresObjects": [
-              "hand_hygiene"
-            ],
-            "lockedText": "Complete hand hygiene first, then gather vitals and assess the acute change.",
-            "verb": "Inspect",
-            "modalObjectId": "full_vitals",
-            "modalAssetId": "full_vitals",
-            "modalBody": "Start with the bedside facts that tell you how urgent this is: mental status change, respiratory effort, SpO2, respiratory rate, heart rate, blood pressure, and temperature.",
-            "modalCompleteLabel": "Vitals noted",
-            "primitive": "inspect_image",
-            "requiresObservationText": true,
-            "observationPrompt": "Record the deterioration facts you will need later.",
-            "observationPlaceholder": "Vitals + visible change: SpO2 __; RR __; HR __; BP __; temp __; mental status / breathing ...",
-            "expectedObservation": "SpO2 88% on room air; RR 28; HR 122; BP 96/58; temp 38.9 C; newly confused/agitated with rapid shallow breathing.",
-            "narrationText": "Mr. Jones is newly confused, restless, and breathing in fast shallow bursts while the monitor alarms.",
-            "npcName": "Mr. Jones",
-            "npcLine": "Where am I? I can't catch my breath."
-          },
-          {
-            "id": "start_prepare_sbar",
-            "label": "Write scratch facts",
-            "next": "scene4_stabilize",
-            "x": 18,
-            "y": 76,
-            "w": 18,
-            "h": 11,
-            "requiresObjects": [
-              "hand_hygiene",
-              "full_vitals",
-              "call_for_help",
-              "raise_hob_control",
-              "apply_oxygen",
-              "rapid_response"
-            ],
-            "lockedText": "Complete hand hygiene, gather vitals, call Marco, stabilize breathing, and activate rapid response before writing scratch facts.",
-            "verb": "Write",
-            "modalObjectId": "prepare_sbar",
-            "modalAssetId": "sbar_scratch_card",
-            "modalBody": "Write rough facts only. In the next scene you will turn these notes into a formal SBAR, so capture enough to build Situation, Background, Assessment, and Recommendation without drafting the final message here.",
-            "modalCompleteLabel": "Save scratch facts",
-            "primitive": "type_text",
-            "requiresObservationText": true,
-            "observationPrompt": "Write concise scratch facts that would help you build SBAR next.",
-            "observationPlaceholder": "What changed: ...\nKey numbers: ...\nActions started: ...\nNeed next: ...",
-            "expectedObservation": "What changed: acute new confusion, hypoxia, rapid shallow breathing. Key numbers: SpO2 88% on room air, RR 28, HR 122, BP 96/58, temp 38.9 C. Actions started: stayed with patient, Marco called, HOB up, oxygen started, RRT activated. Need next: urgent evaluation/support and continued monitoring."
-          }
-        ]
-      },
-      "scene4_raise_hob": {
-        "id": "scene4_raise_hob",
-        "type": "physical_playground",
-        "mode": "stabilization_popup",
-        "section": 3,
-        "title": "Raise Head of Bed",
-        "learningGoal": "Raise the head of bed to at least 60° to support breathing.",
-        "simulatedAction": "Head-of-bed closeup: adjust the hospital bed control until the patient is upright for respiratory support.",
-        "digitalPrimitives": [
-          "range_slider",
-          "trigger_state_change"
-        ],
-        "content": "Use the bed control closeup. Move the head-of-bed control to at least 60° to help Mr. Jones breathe.",
-        "background": {
-          "filename": "public/action-assets/scene4_stabilize/hob-before.png",
-          "prompt": "Generate a 16:9 first-person closeup of Mr. Jones in Room 514 before repositioning, with the head of bed still too low for his respiratory distress. Show the bed control area in the foreground or lower-left with a clear area for a simulator slider overlay. Mr. Jones should look restless and short of breath. Do not include nurse hands, checkmarks, arrows, success labels, or final angle text. Match the nurse simulator flat editorial hospital style. Do not include checkmarks, arrows, answer captions, completed documentation, or text telling the player what to do.",
-          "coordinateMap": [
-            {
-              "label": "bed control area",
-              "x": 13,
-              "y": 58,
-              "w": 27,
-              "h": 22,
-              "role": "control"
-            },
-            {
-              "label": "Mr. Jones low head-of-bed position",
-              "x": 43,
-              "y": 22,
-              "w": 39,
-              "h": 46,
-              "role": "person"
-            }
-          ]
-        },
-        "stateBackgrounds": [
-          {
-            "id": "hob_after_raised",
-            "filename": "public/action-assets/scene4_stabilize/hob-after.png",
-            "whenControl": "raise_hob_control"
-          }
-        ],
-        "controls": [
-          {
-            "id": "raise_hob_control",
-            "label": "Head of bed",
-            "x": 14,
-            "y": 61,
-            "w": 24,
-            "h": 15,
-            "primitive": "range_slider",
-            "min": 0,
-            "max": 90,
-            "step": 5,
-            "initialValue": 20,
-            "successMin": 60,
-            "unit": "°",
-            "required": true,
-            "prompt": "Raise the head of bed to at least 60°."
-          }
-        ],
-        "interactiveObjects": [],
-        "dropTargets": [],
-        "steps": [],
-        "requiredObjectIds": [],
-        "requiredStepIds": [],
-        "requiredControlIds": [
-          "raise_hob_control"
-        ],
-        "visualAssetsRequired": {
-          "backgrounds": [
-            {
-              "id": "hob_before",
-              "displayName": "Head of bed before repositioning",
-              "assetType": "background",
-              "filename": "public/action-assets/scene4_stabilize/hob-before.png",
-              "prompt": "Generate a 16:9 first-person closeup of Mr. Jones in Room 514 before repositioning, with the head of bed still too low for his respiratory distress. Show the bed control area in the foreground or lower-left with a clear area for a simulator slider overlay. Mr. Jones should look restless and short of breath. Do not include nurse hands, checkmarks, arrows, success labels, or final angle text. Match the nurse simulator flat editorial hospital style. Do not include checkmarks, arrows, answer captions, completed documentation, or text telling the player what to do."
-            },
-            {
-              "id": "hob_after",
-              "displayName": "Head of bed raised",
-              "assetType": "background",
-              "filename": "public/action-assets/scene4_stabilize/hob-after.png",
-              "prompt": "Generate the matching after-state image for the head-of-bed popup in the same Room 514 composition as hob-before. Mr. Jones is now visibly upright with the head of bed raised high enough to support breathing, while still clinically distressed. Keep the bed control area in the same foreground/lower-left position for the simulator slider. Do not include checkmarks, arrows, success labels, or final angle text. Match the nurse simulator flat editorial hospital style. Do not include checkmarks, arrows, answer captions, completed documentation, or text telling the player what to do."
-            }
-          ]
-        },
-        "successConditions": [
-          "The head of bed is raised to at least 60 degrees."
-        ],
-        "failureModes": [
-          "Leaves the patient too flat during acute respiratory distress."
-        ],
-        "gradingEvidence": [
-          "Head-of-bed slider value from the closeup popup."
-        ]
-      },
-      "scene4_apply_oxygen": {
-        "id": "scene4_apply_oxygen",
-        "type": "physical_playground",
-        "mode": "stabilization_popup",
-        "section": 3,
-        "title": "Start Oxygen",
-        "learningGoal": "Choose an initial oxygen flow, then place the nasal cannula on Mr. Jones.",
-        "simulatedAction": "Oxygen setup closeup: set the flowmeter to 2-4 L/min, then apply the nasal cannula to the patient.",
-        "digitalPrimitives": [
-          "drag_object_to_target",
-          "range_slider",
-          "place_item_on_surface"
-        ],
-        "content": "Work in the closeup. Set the nasal-cannula oxygen flow to 2-4 L/min, then place the cannula at Mr. Jones’s nose.",
-        "background": {
-          "filename": "public/action-assets/scene4_stabilize/oxygen-setup-workspace.png",
-          "prompt": "Generate a 16:9 first-person closeup in Room 514 for oxygen setup. Show the wall oxygen outlet and flowmeter on the left, Mr. Jones's face/upper body on the right, and an uncluttered tray/bedside surface at the bottom with room for transparent nasal cannula/tubing overlays. Leave clear target zones at the oxygen outlet, flowmeter control, and patient nose. Do not include nurse hands, checkmarks, arrows, success labels, or instruction text. Match the nurse simulator flat editorial hospital style. Do not include checkmarks, arrows, answer captions, completed documentation, or text telling the player what to do.",
-          "coordinateMap": [
-            {
-              "label": "oxygen outlet",
-              "x": 12,
-              "y": 22,
-              "w": 16,
-              "h": 18,
-              "role": "target"
-            },
-            {
-              "label": "flowmeter control",
-              "x": 14,
-              "y": 43,
-              "w": 18,
-              "h": 20,
-              "role": "control"
-            },
-            {
-              "label": "Mr. Jones nose / cannula target",
-              "x": 64,
-              "y": 33,
-              "w": 16,
-              "h": 13,
-              "role": "target"
-            },
-            {
-              "label": "oxygen supplies tray",
-              "x": 20,
-              "y": 72,
-              "w": 60,
-              "h": 17,
-              "role": "workspace"
-            }
-          ]
-        },
-        "stateBackgrounds": [
-          {
-            "id": "oxygen_after_applied",
-            "filename": "public/action-assets/scene4_stabilize/oxygen-setup-workspace-after.png",
-            "whenStep": "apply_cannula"
-          }
-        ],
-        "interactiveObjects": [
-          {
-            "id": "nasal_cannula_apply",
-            "label": "Nasal cannula",
-            "x": 5,
-            "y": 14,
-            "w": 16,
-            "h": 40,
-            "assetPath": "/action-assets/scene4_stabilize/nasal-cannula.png",
-            "imageOffsetX": -25,
-            "interactionRole": "draggable",
-            "primitives": [
-              "drag_object_to_target"
-            ],
-            "requiresControls": [
-              "oxygen_flow_control"
-            ],
-            "consumeOnPlace": true,
-            "required": true
-          }
-        ],
-        "dropTargets": [
-          {
-            "id": "patient_cannula_target",
-            "label": "Apply cannula to nose",
-            "x": 64,
-            "y": 33,
-            "w": 16,
-            "h": 13,
-            "hideLabelAfterSteps": [
-              "apply_cannula"
-            ],
-            "accepts": [
-              "nasal_cannula_apply"
-            ],
-            "detail": "Place the nasal cannula on Mr. Jones."
-          }
-        ],
-        "controls": [
-          {
-            "id": "oxygen_flow_control",
-            "label": "Oxygen flow",
-            "x": 26,
-            "y": 14,
-            "w": 18,
-            "h": 16,
-            "primitive": "range_slider",
-            "min": 0,
-            "max": 6,
-            "step": 1,
-            "initialValue": 0,
-            "successMin": 2,
-            "successMax": 4,
-            "unit": " L/min",
-            "required": true,
-            "prompt": "Set the nasal-cannula flow to 2-4 L/min before placing it on Mr. Jones."
-          }
-        ],
-        "steps": [
-          {
-            "id": "apply_cannula",
-            "label": "Cannula applied",
-            "instruction": "After the flowmeter is set to 2-4 L/min, place the nasal cannula on Mr. Jones.",
-            "digitalPrimitive": "drag_object_to_target",
-            "objectIds": [
-              "nasal_cannula_apply"
-            ],
-            "targetId": "patient_cannula_target",
-            "requiresControls": [
-              "oxygen_flow_control"
-            ],
-            "successFeedback": "The nasal cannula is on Mr. Jones with oxygen flowing.",
-            "failureHint": "Connect the tubing, set the oxygen flow to 2-4 L/min, then apply the cannula."
-          }
-        ],
-        "requiredObjectIds": [
-          "nasal_cannula_apply"
-        ],
-        "requiredStepIds": [
-          "apply_cannula"
-        ],
-        "requiredControlIds": [
-          "oxygen_flow_control"
-        ],
-        "visualAssetsRequired": {
-          "backgrounds": [
-            {
-              "id": "oxygen_setup_workspace",
-              "displayName": "Oxygen setup workspace",
-              "assetType": "background",
-              "filename": "public/action-assets/scene4_stabilize/oxygen-setup-workspace.png",
-              "prompt": "Generate a 16:9 first-person closeup in Room 514 for oxygen setup. Show the wall oxygen outlet and flowmeter on the left, Mr. Jones's face/upper body on the right, and an uncluttered tray/bedside surface at the bottom with room for transparent nasal cannula/tubing overlays. Leave clear target zones at the oxygen outlet, flowmeter control, and patient nose. Do not include nurse hands, checkmarks, arrows, success labels, or instruction text. Match the nurse simulator flat editorial hospital style. Do not include checkmarks, arrows, answer captions, completed documentation, or text telling the player what to do."
-            },
-            {
-              "id": "oxygen_after_applied",
-              "displayName": "Oxygen setup after cannula applied",
-              "assetType": "background",
-              "filename": "public/action-assets/scene4_stabilize/oxygen-setup-workspace-after.png",
-              "prompt": "Matching after-state closeup for the Room 514 oxygen setup. Mr. Jones now has the nasal cannula correctly placed at his nose with oxygen tubing connected, while the wall oxygen flow setup remains visible. Do not include checkmarks, arrows, success labels, captions, or instructions."
-            }
-          ],
-          "interactiveObjects": [
-            {
-              "id": "nasal_cannula",
-              "displayName": "Nasal cannula and oxygen tubing",
-              "assetType": "transparent_png",
-              "filename": "public/action-assets/scene4_stabilize/nasal-cannula.png",
-              "prompt": "Transparent-background PNG of a nasal cannula with attached oxygen tubing, drawn as a concrete draggable bedside object. It should be clear enough to drag from the oxygen wall area to the patient face. Do not include checkmarks, arrows, oxygen-success labels, or answer text."
-            }
-          ]
-        },
-        "successConditions": [
-          "The oxygen flow is set to 2-4 L/min and the cannula is placed on the patient."
-        ],
-        "failureModes": [
-          "Applies cannula with flow still off.",
-          "Sets the nasal-cannula flow outside the 2-4 L/min target range."
-        ],
-        "gradingEvidence": [
-          "Flowmeter value and patient cannula placement from the closeup popup."
-        ]
-      },
-      "scene4_decline": {
-        "id": "scene4_decline",
-        "type": "structured_entry",
-        "section": 3,
-        "title": "Formal SBAR From Scratch Facts",
-        "content": "You stabilized first in Room 514 and wrote rough scratch facts at the bedside. Now turn those facts into a formal SBAR report for Marco and the rapid response team.",
-        "appWindow": "doc",
-        "windowTitle": "Room 514 SBAR Note",
-        "prompt": "Use the scratch facts from stabilization to write a concise formal SBAR. Include the acute change, relevant background, current assessment data, support already started, and what you need next.",
-        "appTabs": [
-          {
-            "id": "sbar_hints",
-            "label": "Hints",
-            "content": "**SBAR support facts**\n\n**Background that may not be obvious from the playground**\n- Mr. Jones is a 65-year-old patient in Room 514.\n- He was admitted yesterday for left-leg cellulitis and is receiving IV antibiotics.\n- He was previously stable; you entered to hang his next IV antibiotic, but you paused because of the acute change.\n\n**Assessment facts to pull into SBAR**\n- New confusion/agitation and rapid, shallow breathing.\n- SpO2 88% on room air.\n- RR 28, HR 122, BP 96/58, temp 38.9 C.\n\n**Actions already started**\n- Stayed with the patient and called Marco into the room.\n- Raised the head of bed to support breathing.\n- Started nasal-cannula oxygen at 2-4 L/min.\n- Activated rapid response for acute hypoxia, confusion, and respiratory distress.\n\n**What the recommendation should ask for**\n- Ask the rapid response team/provider for urgent bedside evaluation and continued support for hypoxia, respiratory distress, and possible sepsis or clinical deterioration."
-          }
-        ],
-        "definition": {
-          "itemLabel": "Formal SBAR",
-          "bindingKey": "decline_response",
-          "inputTabLabel": "Stabilization Notes",
-          "outputTabLabel": "SBAR",
-          "previousResponseReference": {
-            "bindingKey": "scene4_stabilize",
-            "title": "Reference Doc: Room 514 Stabilization Notes",
-            "emptyText": "Complete the Room 514 stabilization task first. Your observed vitals, scratch facts, and completed actions will appear here.",
-            "fieldLabels": {
-              "hand_hygiene": "Hand hygiene",
-              "full_vitals": "Vitals and visible deterioration",
-              "call_for_help": "Marco called into the room",
-              "raise_hob_control": "Head of bed raised",
-              "apply_oxygen": "Oxygen support started",
-              "rapid_response": "Rapid response activated",
-              "prepare_sbar": "Scratch SBAR facts"
-            }
-          },
-          "initialCount": 1,
-          "minItems": 1,
-          "maxItems": 1,
-          "fields": [
-            {
-              "key": "situation",
-              "label": "Situation",
-              "placeholder": "What is happening right now and why are you escalating?",
-              "multiline": true,
-              "rows": 3
-            },
-            {
-              "key": "background",
-              "label": "Background",
-              "placeholder": "What short context matters for Mr. Jones?",
-              "multiline": true,
-              "rows": 3
-            },
-            {
-              "key": "assessment",
-              "label": "Assessment",
-              "placeholder": "What are the key vitals, mental status, breathing findings, and response to support?",
-              "multiline": true,
-              "rows": 4
-            },
-            {
-              "key": "recommendation",
-              "label": "Recommendation",
-              "placeholder": "What do you need the rapid response lead/provider to do next?",
-              "multiline": true,
-              "rows": 3
-            }
-          ]
-        },
-        "next": "assessment_gate"
-      },
       "scene6_handoff": {
         "id": "scene6_handoff",
         "type": "structured_entry",
         "section": 2,
         "title": "Mrs. Vance SBAR Update",
-        "content": "Before the next patient need pulls you away, capture a concise {{SBAR}} update for Mrs. Vance while the details are fresh. You have assessed her pain and mobility risk, spoken with Sarah, completed the ordered non-opioid medication pass and reassessment plan, coordinated with Dr. Carter about repeated {{STAT}} labs, and completed the CBC draw workflow. Use the reference notes and hints to turn that shift story into a structured handoff.",
+        "content": "Capture a concise {{SBAR}} update for Mrs. Vance while the details are fresh. You have assessed her pain and mobility risk, spoken with Sarah, completed the ordered non-opioid medication pass and reassessment plan, coordinated with Dr. Carter about repeated {{STAT}} labs, and completed the CBC draw workflow. Use the reference notes and hints to turn that shift story into a structured handoff.",
         "appWindow": "doc",
         "windowTitle": "SBAR Update: Mrs. Vance, Rm 512",
         "prompt": "Use the Room 512 facts to write a concise formal SBAR. Include Mrs. Vance's post-op hip-fracture status, pain and mobility concerns, Sarah's opioid concern, current non-opioid medication/reassessment plan, repeated STAT lab coordination, CBC draw status, and what the next nurse or covering team should monitor or follow up.",
@@ -3562,14 +2885,58 @@
             }
           ]
         },
-        "next": "scene4_stabilize"
+        "next": "assessment_gate",
+        "deskWorkDesign": {
+          "roleFamily": "registered_nurse",
+          "workSurface": "structured SBAR documentation note",
+          "inputArtifacts": [
+            {
+              "id": "room_512_shift_facts",
+              "label": "Room 512 care facts and SBAR hints",
+              "whereVisible": "SBAR hints tab inside the documentation scene",
+              "summary": "Assessment findings, family concern, medication plan, STAT lab coordination, CBC draw status, and follow-up needs."
+            }
+          ],
+          "studentAction": "Write a concise SBAR handoff that separates situation, background, assessment, and recommendation.",
+          "outputArtifact": {
+            "id": "sbar_handoff",
+            "label": "Mrs. Vance SBAR update",
+            "format": "structured clinical handoff note"
+          },
+          "rubricEvidence": [
+            "scene6_handoff structuredEntry response"
+          ],
+          "continuity": [
+            "This note becomes the shift wrap-up artifact before the assessment gate."
+          ],
+          "authenticityCheck": "Nursing handoffs need concise, factual, actionable documentation for the next clinician."
+        }
+      },
+      "assessment_gate": {
+        "id": "assessment_gate",
+        "type": "section_transition",
+        "section": 3,
+        "title": "Room 512 Shift Period Complete",
+        "content": "The Room 512 shift period is complete. You assessed Mrs. Vance, handled the family conversation and medication workflow, coordinated repeated STAT labs with Dr. Carter, completed the CBC draw workflow, and captured a concise SBAR update. When you are ready, view your assessment.",
+        "illustration": "/scenes/assessment_gate.png",
+        "imageBrief": "A calm hospital workstation wrap-up moment after Room 512 care is complete. The chart is settled on screen, clinical supplies are put away, and no assessment results or score cards are visible.",
+        "actionLabel": "View Assessment",
+        "next": "grading"
+      },
+      "grading": {
+        "id": "grading",
+        "type": "grading",
+        "section": 3,
+        "title": "Assessment",
+        "next": "final_report",
+        "illustration": "/scenes/assessment_gate.png"
       },
       "final_report": {
         "id": "final_report",
         "type": "final_report",
         "section": 3,
-        "title": "End of Shift",
-        "content": "You've completed the major work of the shift. You captured Mrs. Vance's SBAR update while the details were fresh, then managed Mr. Jones's sudden decline and escalation. It was a challenging day, but you handled multiple complex situations and kept your patients safer. Now it's time to review your performance.",
+        "title": "Room 512 Wrap-Up",
+        "content": "You completed all current Mrs. Vance work: assessment, family communication, the ordered non-opioid medication workflow and reassessment plan, professional coordination with Dr. Carter about repeated STAT labs, the final CBC draw workflow, and a concise SBAR update. The later Mr. Jones sequence is archived separately.",
         "illustration": "/scenes/assessment_gate.png",
         "imageBrief": "Reuse the assessment gate illustration: a calm end-of-shift workplace wrap-up moment with the student stepping back from the main work area, tools or documents settled, and warm evening light suggesting the shift has ended. No assessment results or score cards are visible."
       },
@@ -3589,9 +2956,11 @@
         "prepReferenceTitle": "Medication Explanation Notes",
         "prepReferenceContent": "- IV acetaminophen: non-opioid pain medicine, through IV\n- PO ibuprofen: anti-inflammatory pain medicine, taken with water\n- Expected: pain relief, easier deep breathing / movement\n- Ask Mrs. Vance to tell you if she feels: nausea, dizziness, rash, trouble breathing, worse pain, stomach discomfort\n- Tell Mrs. Vance you will reassess: pain score + side effects after administration",
         "meetingContext": "Room 512. Mrs. Vance is awake, uncomfortable, and ready for her scheduled non-opioid pain medication pass. The nurse has already completed the safety checks and scans.",
-        "goalPrompt": "You are Mrs. Eleanor Vance, an elderly post-op hip-fracture patient receiving scheduled non-opioid pain medication. Listen to the nurse's explanation. If the nurse clearly explains both medications, their purpose, how they will be given, what symptoms or side effects to report, and that they will reassess your pain/response, respond briefly: \"I understand. Thank you for explaining.\" Do not ask extra questions after a clear explanation. If the explanation is vague, missing one medication, or uses too much jargon, ask one focused follow-up question such as \"What is the IV medicine for?\" or \"What should I tell you if I feel strange?\" Give the nurse up to two chances to clarify. If it is still unclear after two follow-up questions, say: \"Could you show me the medication note instead? I am still not quite following.\" Stay polite, tired, and realistic.",
+        "goalPrompt": "You are Mrs. Eleanor Vance, an elderly post-op hip-fracture patient receiving scheduled non-opioid pain medication. Listen to the nurse's explanation. If the nurse clearly explains both medications, their purpose, how they will be given, what symptoms or side effects to report, and that they will reassess your pain/response, respond briefly: \"I understand. Thank you for explaining.\" Do not ask extra questions after a clear explanation. If the explanation is vague, missing one medication, or uses too much jargon, ask one focused follow-up question such as \"What is the IV medicine for?\" or \"What should I tell you if I feel strange?\" Give the nurse up to two chances to clarify. If it is still unclear after two follow-up questions, say: \"Could you show me the medication note instead? I am still not quite following.\" Stay polite, tired, and realistic. After a clear explanation or after two unclear attempts, end the conversation with a short understanding or remaining-confusion statement.",
         "next": "scene2_administer_meds",
-        "continueLabel": "Start administration"
+        "continueLabel": "Start administration",
+        "endpoint": "Mrs. Vance says she understands the medications and is ready for administration.",
+        "successCriteria": "You explain both medications, their purpose, how they will be given, what symptoms or side effects to report, and that you will reassess her response."
       },
       "scene2_administer_meds": {
         "id": "scene2_administer_meds",
@@ -4140,65 +3509,6 @@
         "resultTitle": "Medication pass complete",
         "resultContent": "You administered the ordered non-opioid medications and set up the reassessment loop instead of treating medication administration as a checkbox.",
         "next": "scene3_orders"
-      },
-      "scene3_explain_draw": {
-        "id": "scene3_explain_draw",
-        "type": "voice_meeting",
-        "section": 2,
-        "title": "Explain the STAT Draw",
-        "content": "Explain the STAT CBC draw to Mrs. Vance in plain language before you start the procedure.",
-        "npcId": "eleanor",
-        "presentation": "in_person",
-        "voiceName": "Kore",
-        "minTurns": 1,
-        "maxTurns": 3,
-        "playerGoal": "Explain that the CBC is the last anticipated STAT lab for now, that you verified the order and identifiers, that labeling will happen at the bedside, and that you are batching the work to avoid more unnecessary sticks.",
-        "prepReferenceTitle": "Draw Explanation Facts",
-        "prepReferenceContent": "- The visible order is a STAT CBC for Mrs. Vance.\n- Dr. Carter confirmed this is the last anticipated STAT lab for now.\n- Two identifiers and bedside labeling protect against specimen errors.\n- Mrs. Vance is tired and frustrated by repeated interruptions.",
-        "meetingContext": "Room 512. Mrs. Vance is tired after repeated STAT lab interruptions and is worried this will be another painful, piecemeal stick.",
-        "goalPrompt": "You are Mrs. Eleanor Vance, an elderly post-op patient who is tired and frustrated by repeated blood draws. Listen to the nurse. If the nurse clearly explains why the CBC is needed, that this should be the last anticipated STAT draw for now, that they verified your identity/order, and that they will label the tube at bedside, relax a little and say you are ready. If the nurse is vague, uses too much jargon, or does not acknowledge the repeated interruptions, ask one focused follow-up question such as \"Is this going to happen again?\" or \"How do I know this tube is mine?\" Stay polite but weary.",
-        "next": "scene3_lab_draw",
-        "illustration": "/action-assets/scene3_lab_draw/explain-the-draw.jpg",
-        "imageBrief": "Reuse the Room 512 bedside phlebotomy setting. Show Mrs. Eleanor Vance in the hospital bed with the prepared blood draw tray nearby, from the nurse's first-person point of view, for an in-person explanation before the STAT CBC draw."
-      },
-      "scene4_call_marco": {
-        "id": "scene4_call_marco",
-        "type": "voice_meeting",
-        "section": 3,
-        "title": "Call Marco Into Room 514",
-        "content": "Call Marco into the room from the bedside and give the immediate reason for help.",
-        "npcId": "marco",
-        "presentation": "in_person",
-        "voiceName": "Puck",
-        "minTurns": 1,
-        "maxTurns": 2,
-        "playerGoal": "Get Marco into Room 514 immediately by naming the acute change: Mr. Jones is newly confused, breathing fast, and hypoxic at SpO2 88% on room air. Ask Marco to help escalate or trigger rapid response, gather support/vitals, or stay engaged while you raise the head of bed and start oxygen.",
-        "prepReferenceTitle": "Escalation Facts",
-        "prepReferenceContent": "- Room 514: Mr. Jones, cellulitis on IV antibiotics.\n- New confusion and rapid shallow breathing.\n- SpO2 88% on room air.\n- Ask Marco for a concrete role before positioning and oxygen: help activate rapid response, get another set of eyes/vitals, or stay with you while you raise the head of bed and start oxygen.",
-        "meetingContext": "Room 514. Marco is passing the doorway while Mr. Jones is newly confused and hypoxic. This is an urgent in-person escalation with quick role delegation, not a formal SBAR yet.",
-        "goalPrompt": "You are Marco Diaz, senior RN, passing Room 514. If the nurse clearly calls you in, names the acute safety concern, and gives you a concrete role such as helping activate rapid response, gathering support/vitals, or staying engaged while they raise the head of bed and start oxygen, step into the room and respond bluntly but helpfully: \"I am here. Raise him upright and start oxygen. I will help get rapid response moving.\" If the nurse is vague or does not convey urgency, ask, \"What changed? Give me the quick facts and what you need me to do.\" Keep responses short and focused on bedside action.",
-        "next": "scene4_stabilize",
-        "illustration": "/scenes/scene4_call_marco.png",
-        "imageBrief": "Reuse the Room 514 urgent bedside setting. Show Marco Diaz, the senior RN, stepping into the doorway while Mr. Jones remains visibly distressed in bed, from the nurse's first-person point of view, for an in-person urgent escalation."
-      },
-      "grading": {
-        "id": "grading",
-        "type": "grading",
-        "section": 3,
-        "title": "Assessment",
-        "next": "final_report",
-        "illustration": "/scenes/assessment_gate.png"
-      },
-      "assessment_gate": {
-        "id": "assessment_gate",
-        "type": "section_transition",
-        "section": 3,
-        "title": "Shift Complete",
-        "content": "Your shift is complete. The workplace moment has ended; when you are ready, view your assessment.",
-        "illustration": "/scenes/assessment_gate.png",
-        "imageBrief": "A calm end-of-shift workplace wrap-up moment with the student stepping back from the main work area, tools or documents settled, and warm evening light suggesting the shift has ended. No assessment results or score cards are visible.",
-        "actionLabel": "View Assessment",
-        "next": "grading"
       }
     }
   },
@@ -4264,36 +3574,44 @@
   },
   "sample_answers": {},
   "workMixDesign": {
-    "sourceDerivedSummary": "Med-surg bedside nursing is dominated by direct patient care, procedural safety checks, clinical prioritization, documentation, and face-to-face communication. The simulator therefore puts the heaviest active weight on visual bedside playgrounds for assessment, medication safety, lab draw setup, and acute stabilization, while still preserving spoken family, patient, and peer conversations plus written SBAR update work.",
+    "sourceDerivedSummary": "This shortened med-surg bedside nursing arc focuses on direct Room 512 care, procedural safety checks, clinical prioritization, documentation, family communication, medication workflow, repeated STAT lab coordination, CBC specimen workflow, and a Mrs. Vance SBAR update. Later Mr. Jones tasks are archived separately.",
     "categories": {
       "physicalProceduralTool": {
         "weight": "dominant",
         "sourceEvidence": [
-          "O*NET and collected nursing sources emphasize direct care, monitoring patient status, administering medications, collecting specimens, operating bedside equipment, and responding to changing conditions.",
-          "The approved nurse story centers on bedside assessment, med pass, lab draw setup, and acute deterioration response."
+          "O*NET and collected nursing sources emphasize direct care, monitoring patient status, administering medications, collecting specimens, operating bedside equipment, and maintaining procedural safety.",
+          "The shortened nurse story centers on bedside assessment, med pass, CBC lab draw workflow, and Room 512 wrap-up documentation."
         ],
-        "simulatorImplication": "Most clinically consequential active scenes are physical_playground stages where the player manipulates bedside tools, labels, monitors, supplies, controls, and patient-room objects."
+        "simulatorImplication": "Most clinically consequential active scenes are physical_playground stages where the player manipulates Room 512 bedside tools, labels, monitors, supplies, controls, and patient-room objects."
+      },
+      "digitalToolArtifactWork": {
+        "weight": "secondary",
+        "sourceEvidence": [
+          "Med-surg nursing uses EHR/eMAR review, barcode medication workflows, secure messaging, order review, reminders, and structured handoff documentation.",
+          "The shortened nurse simulator includes eMAR/order review, a physician secure chat, reassessment reminder setup, and a Mrs. Vance SBAR update."
+        ],
+        "simulatorImplication": "Digital-tool work appears as bounded medication/order review, reassessment reminder setup, secure physician communication, and SBAR documentation, while bedside procedural care remains the dominant active mode."
       },
       "cognitiveAnalysisDecision": {
         "weight": "major",
         "sourceEvidence": [
           "Nursing work requires prioritizing competing patients, recognizing deterioration, sequencing safety checks, and deciding when to escalate."
         ],
-        "simulatorImplication": "Prioritization, clinical sequencing, and escalation decisions are embedded inside the playground steps and SBAR documentation."
+        "simulatorImplication": "Prioritization and clinical sequencing are embedded through the Room 512 assessment, medication workflow, lab batching/completion, reassessment planning, and physician communication."
       },
       "writtenDocumentationArtifact": {
         "weight": "secondary",
         "sourceEvidence": [
           "The role includes charting, concise secure messages, SBAR notes, patient updates, and shift handoff documentation."
         ],
-        "simulatorImplication": "The simulator includes a secure chat to the physician, a Mrs. Vance SBAR update, and a structured SBAR report for Mr. Jones."
+        "simulatorImplication": "The shortened simulator includes a secure chat to the physician and a Mrs. Vance SBAR update; later Mr. Jones formal report tasks are archived separately."
       },
       "spokenInterpersonalCommunication": {
         "weight": "secondary",
         "sourceEvidence": [
           "Bedside nursing includes family education, patient explanations, urgent peer escalation, and therapeutic communication."
         ],
-        "simulatorImplication": "The simulator includes in-person voice conversations with the patient family member, patient, and senior RN during bedside care."
+        "simulatorImplication": "The shortened simulator includes the in-person family education conversation and patient explanation during the CBC draw; later urgent peer escalation is archived separately."
       },
       "passiveMonitoringWaitingContextSwitching": {
         "weight": "secondary",
@@ -4303,7 +3621,7 @@
         "simulatorImplication": "Passive/context-switch pressure appears as scenario timing and interruptions, but active scenes focus on the decisions and actions that follow."
       }
     },
-    "simulatorPlan": "The active scene mix follows this med-surg nurse profile: visual bedside playgrounds carry the major procedural workload; voice meetings cover family education, patient explanation, and urgent peer escalation; written scenes capture secure messaging and SBAR updates; MCQ is limited to bounded shift prioritization.",
+    "simulatorPlan": "This shortened nurse simulator completes the Room 512 arc: bedside assessment, family communication, medication safety, reassessment planning, professional physician communication about repeated STAT orders, CBC lab draw workflow, and Mrs. Vance SBAR update. It ends before the later Mr. Jones sequence.",
     "activeSceneMixRationale": "This role has much more direct patient/procedural work than a desk-tool job, so the simulator makes bedside manipulation and inspection the largest active component without applying a universal numeric ratio."
   },
   "rubric": {
@@ -4319,21 +3637,36 @@
             "evidenceSceneIds": [
               "scene1_prioritization"
             ],
-            "rubric_text": "9-10: 申し送り情報から、緊急度、転倒や呼吸リスク、時間指定タスクを見て最初に見る患者を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 申し送り情報から、緊急度、転倒や呼吸リスク、時間指定タスクを見て最初に見る患者を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "prioritization",
+              "safety_mindset",
+              "procedural_care"
+            ]
           },
           {
             "name": "部屋512観察",
             "evidenceSceneIds": [
               "scene2_assessment"
             ],
-            "rubric_text": "9-10: 痛み、創部、足の循環、呼吸や動き、本人確認、手指衛生、記録を同じ観察場面の中で安全に行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 痛み、創部、足の循環、呼吸や動き、本人確認、手指衛生、記録を同じ観察場面の中で安全に行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "procedural_care",
+              "safety_mindset",
+              "evidence_use"
+            ]
           },
           {
             "name": "家族対応",
             "evidenceSceneIds": [
               "scene2_conversation"
             ],
-            "rubric_text": "9-10: 実際の会話で、家族の不安を受け止め、患者の安全とケア方針を説明し、対立を悪化させず協力を引き出せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 実際の会話で、家族の不安を受け止め、患者の安全とケア方針を説明し、対立を悪化させず協力を引き出せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "user_empathy",
+              "communication",
+              "safety_mindset"
+            ]
           },
           {
             "name": "薬の安全確認・投与・再評価",
@@ -4344,14 +3677,24 @@
               "scene2_reassessment_reminder"
             ],
             "evidenceMode": "single_workflow",
-            "rubric_text": "9-10: 薬確認、アレルギー確認、患者確認、説明、正しい薬の投与、再評価時間設定を1つの薬ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 薬確認、アレルギー確認、患者確認、説明、正しい薬の投与、再評価時間設定を1つの薬ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "procedural_care",
+              "safety_mindset",
+              "quality_control"
+            ]
           },
           {
             "name": "医師への連絡",
             "evidenceSceneIds": [
               "scene3_orders"
             ],
-            "rubric_text": "9-10: 新しい指示や懸念を、患者状況、必要な確認、優先度が伝わる形で医師へ連絡できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 新しい指示や懸念を、患者状況、必要な確認、優先度が伝わる形で医師へ連絡できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "communication",
+              "prioritization",
+              "collaboration"
+            ]
           },
           {
             "name": "採血ワークフロー",
@@ -4363,32 +3706,24 @@
               "scene3_dispose_send"
             ],
             "evidenceMode": "single_workflow",
-            "rubric_text": "9-10: 採血前確認、説明、採血手技、ベッドサイドラベル貼り、針廃棄、検体提出を1つの採血ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-          },
-          {
-            "name": "急変対応ワークフロー",
-            "evidenceSceneIds": [
-              "scene4_stabilize",
-              "scene4_call_marco",
-              "scene4_raise_hob",
-              "scene4_apply_oxygen"
-            ],
-            "evidenceMode": "single_workflow",
-            "rubric_text": "9-10: 急変初期対応、同僚呼び込み、頭側挙上、酸素開始、記録を1つの急変対応ワークフローとして安全に進められている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-          },
-          {
-            "name": "正式報告",
-            "evidenceSceneIds": [
-              "scene4_decline"
-            ],
-            "rubric_text": "9-10: 急変後の正式な報告として、状況、背景、評価、依頼を、事実に基づくSBARで整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 採血前確認、説明、採血手技、ベッドサイドラベル貼り、針廃棄、検体提出を1つの採血ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "procedural_care",
+              "safety_mindset",
+              "quality_control"
+            ]
           },
           {
             "name": "申し送り",
             "evidenceSceneIds": [
               "scene6_handoff"
             ],
-            "rubric_text": "9-10: 次勤務者が安全に引き継げるよう、患者状態、実施済み対応、未完了事項、注意点を簡潔に申し送れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: 次勤務者が安全に引き継げるよう、患者状態、実施済み対応、未完了事項、注意点を簡潔に申し送れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "careerSignalIds": [
+              "documentation",
+              "planning_follow_through",
+              "communication"
+            ]
           }
         ]
       }

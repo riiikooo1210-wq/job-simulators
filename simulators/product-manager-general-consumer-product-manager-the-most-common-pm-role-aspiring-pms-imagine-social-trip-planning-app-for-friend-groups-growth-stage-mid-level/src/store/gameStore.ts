@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { ChatMessage, GradingResult } from '../types/game'
+import type { AssessmentResult, ChatMessage } from '../types/game'
 import { storyline } from '../data/storyline'
 
 // Persist key is set per-job at scaffold time via STORE_PERSIST_KEY constant.
@@ -29,7 +29,7 @@ interface GameState {
 
   // Grading
   gradingStatus: 'idle' | 'loading' | 'complete' | 'error'
-  gradingResult: GradingResult | null
+  gradingResult: AssessmentResult | null
   gradingError: string | null
 
   // Actions — navigation
@@ -55,7 +55,7 @@ interface GameState {
 
   // Grading
   setGradingStatus: (status: 'idle' | 'loading' | 'complete' | 'error') => void
-  setGradingResult: (result: GradingResult) => void
+  setGradingResult: (result: AssessmentResult) => void
   setGradingError: (error: string | null) => void
 
   resetGame: () => void

@@ -345,9 +345,7 @@ function SequentialBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance
           <ActionButton text="Start the Task" onClick={onAdvance} />
         )}
       </div>
-      {import.meta.env.DEV && (
         <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-      )}
     </>
   )
 }
@@ -381,9 +379,7 @@ function PaginatedBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance:
           <ActionButton text="Start the Task" onClick={onAdvance} />
         )}
       </div>
-      {import.meta.env.DEV && (
         <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-      )}
     </>
   )
 }
@@ -504,9 +500,7 @@ export default function BriefingScene({ node }: Props) {
               />
             ))}
             <ActionButton text="Start the Task" onClick={onAdvance} />
-            {import.meta.env.DEV && (
               <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
-            )}
           </>
         )}
       </motion.div>

@@ -359,14 +359,12 @@ export default function VoiceMeetingScene({ node }: Props) {
 
       {/* In-screen controls */}
       <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: '0.75rem', flexShrink: 0 }}>
-        {import.meta.env.DEV && (
           <button
             onClick={() => goNext(node)}
             style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
           >
             Skip (dev)
           </button>
-        )}
         {!inCall && !meetingEnded && (
           <button
             onClick={startMeeting}

@@ -1,72 +1,57 @@
 # Validation report — registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr
 
-**Summary:** 24 pass · 10 warn · 14 fail · advisory mode
+**Summary:** 31 pass · 5 warn · 0 fail · strict mode
 
 ## Hard gates
-- ❌ scene3_orders: app-window scene declares `illustration`/`imageBrief`; remove the duplicate banner and let the app window be the visual focus
-- ❌ scene2_conversation: voice meeting is missing player-facing `playerGoal`
-- ❌ scene2_conversation: voice meeting is missing player-facing `endpoint`
-- ❌ scene2_conversation: voice meeting is missing player-facing `successCriteria`
-- ❌ scene2_explain_meds: voice meeting is missing player-facing `endpoint`
-- ❌ scene2_explain_meds: voice meeting is missing player-facing `successCriteria`
-- ❌ scene2_explain_meds: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
-- ❌ scene3_explain_draw: voice meeting is missing player-facing `endpoint`
-- ❌ scene3_explain_draw: voice meeting is missing player-facing `successCriteria`
-- ❌ scene3_explain_draw: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
-- ❌ scene4_call_marco: voice meeting is missing player-facing `endpoint`
-- ❌ scene4_call_marco: voice meeting is missing player-facing `successCriteria`
-- ❌ scene4_call_marco: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
-- ❌ workMixDesign missing `digitalToolArtifactWork` category
+- ✅ No hard-gate failures.
 
 ## Next-rule references
-- ✅ All `next` references resolve (28 nodes).
+- ✅ All `next` references resolve (23 nodes).
 
 ## Assessment gate
 - ✅ Assessment starts only after period-complete gate(s) with `View Assessment`: assessment_gate.
 
 ## NPC references
-- ✅ All NPC references resolve (3 used).
+- ✅ All NPC references resolve (2 used).
 - ⚠️ **Unused NPCs (defined but never referenced):**
   - priya
+  - marco
   - ben
 
 ## Work-mix design
-- ✅ Physical/procedural/tool work is represented with visual playground scene(s): scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send, scene4_stabilize, scene4_raise_hob, scene4_apply_oxygen, scene2_administer_meds, scene2_reassessment_reminder.
-- ✅ Active-scene mix snapshot: 11/19 scenes involve manipulation/inspection/tool work. Use this as a comparison to the source-derived mix, not as a universal target.
-- ⚠️ **Incomplete work-mix categories:** digitalToolArtifactWork
+- ✅ Source-derived work mix declared (physicalProceduralTool=dominant, digitalToolArtifactWork=secondary, cognitiveAnalysisDecision=major, writtenDocumentationArtifact=secondary, spokenInterpersonalCommunication=secondary, passiveMonitoringWaitingContextSwitching=secondary).
+- ✅ Physical/procedural/tool work is represented with visual playground scene(s): scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send, scene2_administer_meds, scene2_reassessment_reminder.
+- ✅ Digital tool/artifact work is represented with desk-work scene(s): scene3_orders, scene6_handoff.
+- ✅ Active-scene mix snapshot: 8/14 scenes involve manipulation/inspection/tool work. Use this as a comparison to the source-derived mix, not as a universal target.
 
 ## Scene structure contracts
-- ⚠️ **Scene structure contract issues:**
-  - scene3_orders: app-window scene declares `illustration`/`imageBrief`; remove the duplicate banner and let the app window be the visual focus
+- ✅ Scene structure contracts pass: supported scene types, no app-window duplicate banners, and free-text scenes use tool-like surfaces.
 
 ## Scene mix
-- ✅ Constructed-response work present (18 scenes): scene2_assessment, scene2_conversation, scene2_med_pass, scene3_orders, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send...
+- ✅ Constructed-response work present (13 scenes): scene2_assessment, scene2_conversation, scene2_med_pass, scene3_orders, scene3_lab_draw, scene3_explain_draw, scene3_perform_draw, scene3_label_specimen...
 - ✅ Multiple-choice support present (1 scene(s)), for bounded decisions.
-- ✅ Voice meeting scene(s) present: scene2_conversation, scene2_explain_meds, scene3_explain_draw, scene4_call_marco.
+- ✅ Voice meeting scene(s) present: scene2_conversation, scene3_explain_draw, scene2_explain_meds.
 
 ## Action work mix
-- ✅ Physical/procedural/tool-work scenes: 11/19 active scenes (58%). Compare this to `workMixDesign`; this validator does not impose a universal ratio.
-- ✅ Physical/action scene(s) include primitives/assets/evidence: scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send, scene4_stabilize, scene4_raise_hob, scene4_apply_oxygen, scene2_administer_meds, scene2_reassessment_reminder.
+- ✅ Physical/procedural/tool-work scenes: 8/14 active scenes (57%). Compare this to `workMixDesign`; this validator does not impose a universal ratio.
+- ✅ Physical/action scene(s) include primitives/assets/evidence: scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send, scene2_administer_meds, scene2_reassessment_reminder.
 
 ## Desk-work quality
-- ✅ Desk-work surface scene(s): scene3_orders, scene4_decline, scene6_handoff.
-- ✅ Visible desk-work source artifact(s): scene2_med_pass, scene4_decline, scene2_explain_meds, scene3_explain_draw, scene4_call_marco.
-- ⚠️ **Desk-work quality issues:**
-  - scene3_orders: desk-work scene has no `deskWorkDesign` chain (input → action → output → rubric evidence)
-  - scene4_decline: desk-work scene has no `deskWorkDesign` chain (input → action → output → rubric evidence)
-  - scene6_handoff: desk-work scene has no `deskWorkDesign` chain (input → action → output → rubric evidence)
+- ✅ Desk-work surface scene(s): scene3_orders, scene6_handoff.
+- ✅ Visible desk-work source artifact(s): scene2_med_pass, scene3_orders, scene3_explain_draw, scene6_handoff, scene2_explain_meds.
+- ✅ Desk-work scenes declare visible inputs, realistic surfaces, and output artifacts.
 
 ## Source realism
 - ✅ No generic packet-style source inputs detected.
 
 ## Physical playgrounds
-- ✅ Physical playground scene(s) have stage/assets/coordinates: scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene4_stabilize, scene4_raise_hob, scene4_apply_oxygen, scene2_administer_meds, scene2_reassessment_reminder.
+- ✅ Physical playground scene(s) have stage/assets/coordinates: scene2_assessment, scene2_med_pass, scene3_lab_draw, scene3_perform_draw, scene3_label_specimen, scene2_administer_meds, scene2_reassessment_reminder.
 - ⚠️ **Physical playground issues:**
   - scene3_dispose_send: asset path `action-assets/scene3_lab_draw/filled-tube.png` is referenced but missing from ACTION_ASSETS.md
   - scene3_dispose_send: asset path `action-assets/scene3_lab_draw/bag-and-tube.PNG` is referenced but missing from ACTION_ASSETS.md
 
 ## Physical scene quality gate
-- ✅ Physical scene quality gate inspected 11 physical/action scene(s).
+- ✅ Physical scene quality gate inspected 8 physical/action scene(s).
 - ⚠️ **Physical scene quality gate issues:**
   - scene2_assessment: missing `physicalWorkDesign`; new physical scenes should include the decomposition/design pass
   - scene2_assessment: movable object `Place call light within reach` has no `objectState`/`stateChange` persistence rule
@@ -88,15 +73,6 @@
   - scene3_dispose_send: movable object `Used butterfly` has no `objectState`/`stateChange` persistence rule
   - scene3_dispose_send: movable object `Labeled tube` has no `objectState`/`stateChange` persistence rule
   - scene3_dispose_send: movable object `Bagged specimen` has no `objectState`/`stateChange` persistence rule
-  - scene4_stabilize: missing `physicalWorkDesign`; new physical scenes should include the decomposition/design pass
-  - scene4_stabilize: selection-like work appears present, but no `selectionSurface` with item hotspots is defined
-  - scene4_stabilize: movement/placement/attachment/disposal work appears present but lacks object-to-target movement primitives and targets
-  - scene4_raise_hob: missing `physicalWorkDesign`; new physical scenes should include the decomposition/design pass
-  - scene4_raise_hob: movement/placement/attachment/disposal work appears present but lacks object-to-target movement primitives and targets
-  - scene4_apply_oxygen: missing `physicalWorkDesign`; new physical scenes should include the decomposition/design pass
-  - scene4_apply_oxygen: selection-like work appears present, but no `selectionSurface` with item hotspots is defined
-  - scene4_apply_oxygen: movable object `Nasal cannula` has no `objectState`/`stateChange` persistence rule
-  - scene4_apply_oxygen: control `Oxygen flow` may need prerequisite gating but declares none
   - scene2_administer_meds: missing `physicalWorkDesign`; new physical scenes should include the decomposition/design pass
   - scene2_administer_meds: selection-like work appears present, but no `selectionSurface` with item hotspots is defined
   - scene2_administer_meds: movable object `PO ibuprofen` has no `objectState`/`stateChange` persistence rule
@@ -110,22 +86,10 @@
 - ✅ No canonical primitive names found in player-visible text.
 
 ## NPC interaction modes
-- ✅ In-person spoken NPC scene(s): scene2_conversation, scene2_explain_meds, scene3_explain_draw, scene4_call_marco.
+- ✅ In-person spoken NPC scene(s): scene2_conversation, scene3_explain_draw, scene2_explain_meds.
 
 ## AI conversation endpoints
-- ⚠️ **AI conversation endpoint issues:**
-  - scene2_conversation: voice meeting is missing player-facing `playerGoal`
-  - scene2_conversation: voice meeting is missing player-facing `endpoint`
-  - scene2_conversation: voice meeting is missing player-facing `successCriteria`
-  - scene2_explain_meds: voice meeting is missing player-facing `endpoint`
-  - scene2_explain_meds: voice meeting is missing player-facing `successCriteria`
-  - scene2_explain_meds: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
-  - scene3_explain_draw: voice meeting is missing player-facing `endpoint`
-  - scene3_explain_draw: voice meeting is missing player-facing `successCriteria`
-  - scene3_explain_draw: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
-  - scene4_call_marco: voice meeting is missing player-facing `endpoint`
-  - scene4_call_marco: voice meeting is missing player-facing `successCriteria`
-  - scene4_call_marco: `goalPrompt` does not clearly tell the NPC when/how to end the conversation
+- ✅ All 3 AI conversation scene(s) declare maxTurns and endpoint guidance.
 
 ## MCQ branching
 - ✅ MCQ branch redirects present: scene1_prioritization.
@@ -143,22 +107,24 @@
 - ✅ Prep/reference materials avoid obvious answer-key phrasing.
 
 ## Scene images
-- ⚠️ **Missing scene images** (1 of 22):
+- ⚠️ **Missing scene images** (1 of 18):
   - public/scenes/scene2_conversation.png
 
 ## Citation markers
-- ✅ Citations: 11 unique sources, 27/36 paragraphs cited.
-- ⚠️ **4 factual-looking paragraphs without citation markers** (showing first 3):
+- ✅ Citations: 11 unique sources, 22/31 paragraphs cited.
+- ⚠️ **3 factual-looking paragraphs without citation markers** (showing first 3):
   - **What "good" looks like vs. "poor" looks like:**
 *   **Good:** The student completes hand hygiene b
-  - **Prompt:** Write a professional, concise secure chat message to Dr. Carter regarding the series of 
-  - **Prompt:** In the text box below, first list the immediate actions you took. Then, write the exact 
+  - Your message should briefly state the pattern you noticed, frame the concern around patient comfort
+  - | 採点項目 | 根拠シーン | 採点基準 |
+| :--- | :--- | :--- |
+| 朝の優先判断 | scene1_prioritization | 9-10: 申し送り情報から、緊急度
 
 ## Rubric shape
-- ✅ Rubric has 6 criteria across 1 sections.
+- ✅ Rubric has 7 criteria across 1 sections.
 
 ## Rubric evidence mapping
-- ⚠️ **Rubric lacks explicit `evidenceSceneIds`** — add scene-id evidence mapping to each criterion so validation can prove every constructed-response scene is graded.
+- ✅ Every scoreable active task is mapped to exactly one rubric criterion; 0 meeting-prep scene(s) are ungraded exceptions.
 
 ## Token leaks
 - ✅ No GTM token leaks detected.

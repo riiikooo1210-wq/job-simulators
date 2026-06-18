@@ -86,7 +86,7 @@ Filename: public/scenes/morning_briefing.png
 COPY THIS WHOLE PROMPT.
 
 Scene-specific subject:
-First-person view at a bright AAA game studio desk during the morning build review. A cream laptop and notebook are open, a controller sits nearby, and a wall monitor in the background shows a whimsical forest platforming level with a small wind-flower mechanic. Keep all screen text generic or unreadable; the actual brief, Slack messages, metrics, and quotes are rendered by the simulator UI.
+First-person view at a bright AAA game studio desk during the morning recap. A cream laptop and notebook are open, a controller sits nearby, and a wall monitor in the background shows a whimsical forest platforming level with a small wind-flower mechanic. Keep all screen text generic or unreadable; the actual recap notes and quotes are rendered by the simulator UI.
 
 Style:
 Generate an illustration in the EXACT same art style as the attached reference image. The style is a clean editorial 2D illustration — hand-drawn digital art with confident ink linework, fully flat cel-shaded color, and very subtle paper-grain texture. Think polished startup pitch deck, modern editorial article, or refined animation storyboard: professional, calm, optimistic, warm, and human-centered. It is NOT a cartoon, NOT photorealistic, NOT anime, NOT 3D rendered, NOT watercolor, NOT pixel art, and NOT a flat icon-style vector.

@@ -335,14 +335,12 @@ export default function VoiceMeetingScene({ node }: Props) {
 
       {/* In-screen controls */}
       <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: '0.75rem', flexShrink: 0 }}>
-        {import.meta.env.DEV && (
           <button
             onClick={() => goNext(node)}
             style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
           >
             Skip (dev)
           </button>
-        )}
         {!inCall && !meetingEnded && (
           <button
             onClick={startMeeting}
@@ -386,14 +384,14 @@ export default function VoiceMeetingScene({ node }: Props) {
 
   const referenceContent = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-      {prepReference && (
-        <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} />
+      {prepNote && (
+        <ReferenceBlock title={node.prepNoteTitle || 'Prep note'} content={prepNote} />
       )}
       {prepReference && prepNote && (
         <div style={{ height: 1, background: '#CDBF94', opacity: 0.8 }} />
       )}
-      {prepNote && (
-        <ReferenceBlock title={node.prepNoteTitle || 'Prep note'} content={prepNote} />
+      {prepReference && (
+        <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} />
       )}
     </div>
   )

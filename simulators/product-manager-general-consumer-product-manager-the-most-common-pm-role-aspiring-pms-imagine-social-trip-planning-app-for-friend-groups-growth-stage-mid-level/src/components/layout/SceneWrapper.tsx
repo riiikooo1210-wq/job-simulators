@@ -53,10 +53,9 @@ export default function SceneWrapper({ children, illustration, showBack = false,
     >
       <div
         style={{
-          width: 'min(calc(100vw - 2rem), 900px)',
+          width: 'min(calc(100vw - 2rem), 1800px)',
           backgroundColor: '#F2EBD9',
           border: '1px solid #000000',
-          boxShadow: '8px 8px 0px #000000',
           display: 'flex',
           flexDirection: 'column',
         }}

@@ -204,7 +204,7 @@ export default function CampaignStudioScene({ node }: { node: CampaignStudioNode
                 />
               </label>
               <ActionButton text="Submit" onClick={() => goNext(node)} disabled={!canSubmit} variant={canSubmit ? 'primary' : 'secondary'} />
-              {import.meta.env.DEV && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
+              <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
             </aside>
           </div>
         </WorkSurfaceFrame>

@@ -36,9 +36,7 @@ export default function SectionTransitionScene({ node }: Props) {
           </div>
         )}
         <ActionButton text={actionLabel} onClick={() => goNext(node)} />
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
     </SceneWrapper>
   )

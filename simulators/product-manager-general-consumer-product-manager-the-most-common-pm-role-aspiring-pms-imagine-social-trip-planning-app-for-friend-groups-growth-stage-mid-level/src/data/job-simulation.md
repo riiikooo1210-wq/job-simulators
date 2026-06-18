@@ -44,11 +44,11 @@ Passive monitoring and context switching are real but should not dominate the pl
 
 ### Section 1 — Diagnose the Drop-Off
 
-The day starts with a product source workspace. Activation is weak for friend-group trips: many users create a trip and invite friends, but fewer groups complete dates, budget, and itinerary decisions. The PM must choose the best first move after reading the source workspace. This bounded MCQ branches to different immediate consequences, then converges so all students still do the core work [yt:U-lYLSlYU1o][reddit:121egoe].
+The day starts with a product source workspace. Activation is weak for friend-group trips: many users create a trip and invite friends, but fewer groups complete dates, budget, and itinerary decisions. After reviewing the source workspace, the PM goes straight into auditing the current Roamly flow so the first active task is grounded in the product experience [yt:U-lYLSlYU1o][reddit:121egoe].
 
-Before drafting the problem brief, the student audits the current Roamly app flow. They inspect invite status, date/budget preferences, saved-place voting, and the empty itinerary state, then write short observations with optional hint buttons for each observation point. This turns funnel drop-off into cause hypotheses without requiring the student to infer every UX issue unaided [yt:4rA_vADcD6Q][reddit:1no5voo].
+Before narrowing the product problem, the student audits the current Roamly app flow. They inspect invite status, date/budget preferences, saved-place voting, and the AI itinerary draft that creates a full plan from current trip information without separating confirmed choices from unresolved group decisions. A peer PM companion can help them read the visible evidence, but the student still has to write the cause-hypothesis notes in their own words [yt:4rA_vADcD6Q][reddit:1no5voo].
 
-The first structured problem-brief task then asks the student to synthesize dashboard metrics, thin source signals, and current-app observations into a short PM problem brief. This mirrors PM work where the job is not to "have ideas," but to make messy evidence usable and separate the main problem from the cause hypothesis [yt:4rA_vADcD6Q][reddit:1no5voo].
+The first structured problem-note task then asks the student to refine each current-app observation into a PM note with observed friction, why it may matter, a cause hypothesis, and one question for the user call. This mirrors PM work where early evidence is kept testable before the team decides which problem deserves a solution bet [yt:4rA_vADcD6Q][reddit:1no5voo].
 
 ### Section 2 — Learn and Prioritize
 

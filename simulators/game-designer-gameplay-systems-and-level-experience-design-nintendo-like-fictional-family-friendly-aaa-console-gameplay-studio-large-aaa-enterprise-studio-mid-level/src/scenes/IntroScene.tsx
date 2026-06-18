@@ -94,9 +94,7 @@ export default function IntroScene({ node }: Props) {
             onClick={handleNameSubmit}
             variant={playerName.trim().length > 0 ? 'primary' : 'secondary'}
           />
-          {import.meta.env.DEV && (
             <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />
-          )}
         </motion.div>
       </SceneWrapper>
     )
@@ -185,14 +183,12 @@ export default function IntroScene({ node }: Props) {
             <ActionButton text="Back" onClick={() => setStep(step - 1)} variant="secondary" />
           )}
           {isLastStep ? (
-            <ActionButton text="Begin Assessment" onClick={handleStart} />
+            <ActionButton text="Start Simulation" onClick={handleStart} />
           ) : (
             <ActionButton text="Next" onClick={() => setStep(step + 1)} variant="secondary" />
           )}
         </div>
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
     </SceneWrapper>
   )

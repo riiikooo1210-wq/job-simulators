@@ -21,7 +21,7 @@ You are a mid-level Game Designer, six months into Starling Grove after shipping
 ## The Day
 
 ### 1. Morning Briefing - 9:15 AM
-The build review packet shows that players like the Wind Bud toy but often miss the first safe use, overshoot a platform, or ask whether the bud is a jump pad or a wind tunnel. Game designers routinely balance and adjust gameplay, devise challenges, create documentation, and use test feedback to preserve the intended experience [onet][src:level_playtesting]. The scene gives you a visible feature brief, Slack updates, and playtest metrics before you act [src:riot_agile].
+The morning recap shows that players like the Wind Bud toy but often miss the first safe use, overshoot a platform, or ask whether the bud is a jump pad or a wind tunnel. Game designers routinely balance and adjust gameplay, devise challenges, create documentation, and use test feedback to preserve the intended experience [onet][src:level_playtesting]. The scene gives you Maya's verbal recap, then the Teaching Note workspace keeps the debugging notes and playtest metrics visible as tabs while you act [src:riot_agile].
 
 Interaction mode: briefing with visible source artifacts. Good performance means absorbing constraints before proposing work [src:gitbook_gdd].
 

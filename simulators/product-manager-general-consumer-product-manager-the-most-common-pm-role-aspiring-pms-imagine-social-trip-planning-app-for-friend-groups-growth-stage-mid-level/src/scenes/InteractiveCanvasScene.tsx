@@ -86,9 +86,7 @@ export default function InteractiveCanvasScene({ node }: Props) {
           disabled={!canFinish}
           variant={canFinish ? 'primary' : 'secondary'}
         />
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => { setSceneCompleted(node.id); goNext(node) }} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
 
       <AnimatePresence>

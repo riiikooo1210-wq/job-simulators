@@ -55,16 +55,6 @@
     }
   },
   "locations": {
-    "conference-room": {
-      "id": "conference-room",
-      "name": "Conference Room",
-      "appearancePrompt": "Original Roamly small conference room with a warm cream wall, one whiteboard, a round-corner rectangular table, a few sage chairs, sticky notes, and a laptop as the only device. Fresh room layout that does not copy the style reference. No monitors, tablets, phones, wheelchairs, mobility aids, prosthetics, or elderly people.",
-      "stableElements": [],
-      "sceneIds": [
-        "redirect_solution_first"
-      ],
-      "referenceImage": "public/visual-refs/locations/conference-room.png"
-    },
     "desk": {
       "id": "desk",
       "name": "Desk",
@@ -73,9 +63,7 @@
       "sceneIds": [
         "briefing_kickoff",
         "final_report",
-        "intro",
-        "redirect_data_first",
-        "scene_01_first_move"
+        "intro"
       ],
       "referenceImage": "public/visual-refs/locations/desk.png"
     },

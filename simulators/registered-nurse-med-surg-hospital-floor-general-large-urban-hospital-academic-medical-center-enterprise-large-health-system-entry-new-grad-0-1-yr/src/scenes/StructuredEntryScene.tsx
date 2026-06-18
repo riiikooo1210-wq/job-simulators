@@ -307,6 +307,12 @@ export default function StructuredEntryScene({ node }: Props) {
     </div>
   )
 
+  const instructionBlock = node.content ? (
+    <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
+      {renderContentWithGlossary(interpolate(node.content, context))}
+    </div>
+  ) : null
+
   const formContent = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: appWindow ? '1rem' : '0' }}>
       {items.map((item, idx) => (
@@ -406,9 +412,7 @@ export default function StructuredEntryScene({ node }: Props) {
         disabled={!allFilled}
         variant={allFilled ? 'primary' : 'secondary'}
       />
-      {import.meta.env.DEV && (
         <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-      )}
     </div>
   )
 
@@ -429,11 +433,6 @@ export default function StructuredEntryScene({ node }: Props) {
       >
         {activeTab === 'input' ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-            {node.content && (
-              <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
-                {renderContentWithGlossary(interpolate(node.content, context))}
-              </div>
-            )}
             <PreviousResponseReferenceCard
               refSpec={previousReference}
               raw={responses[previousReference.bindingKey]}
@@ -468,6 +467,8 @@ export default function StructuredEntryScene({ node }: Props) {
           {briefing && <ReferenceButton onClick={() => setRefOpen(true)} label="View Briefing" />}
         </div>
 
+        {instructionBlock}
+
         {inputOutputWindow || (appWindow ? (
           <DesktopOverlay>
             <LaptopFrame variant={appWindow} title={node.windowTitle} fill scrollable>
@@ -476,11 +477,6 @@ export default function StructuredEntryScene({ node }: Props) {
           </DesktopOverlay>
         ) : (
           <>
-            {node.content && (
-              <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
-                {renderContentWithGlossary(interpolate(node.content, context))}
-              </div>
-            )}
             {previousReference && (
               <PreviousResponseReferenceCard
                 refSpec={previousReference}

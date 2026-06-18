@@ -847,6 +847,64 @@ body {
   opacity: 0.58;
 }
 
+.physical-playground-stage--scene2_assessment .physical-playground-object.is-sequence-locked,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.is-sequence-locked,
+.physical-playground-stage--scene2_assessment .physical-playground-target.is-sequence-locked,
+.physical-playground-stage--scene2_assessment .physical-playground-step.is-sequence-locked,
+.physical-playground-stage--scene2_assessment .physical-playground-scene-link.is-sequence-locked,
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-sequence-locked,
+.physical-playground-stage--scene2_med_pass .physical-playground-hotspot.is-sequence-locked,
+.physical-playground-stage--scene2_med_pass .physical-playground-target.is-sequence-locked,
+.physical-playground-stage--scene2_med_pass .physical-playground-step.is-sequence-locked,
+.physical-playground-stage--scene2_med_pass .physical-playground-scene-link.is-sequence-locked,
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-sequence-locked,
+.physical-playground-stage--scene3_lab_draw .physical-playground-hotspot.is-sequence-locked,
+.physical-playground-stage--scene3_lab_draw .physical-playground-target.is-sequence-locked,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step.is-sequence-locked,
+.physical-playground-stage--scene3_lab_draw .physical-playground-scene-link.is-sequence-locked,
+.physical-playground-tablet-overlay.is-sequence-locked {
+  cursor: not-allowed;
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-target.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-step.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-scene-link.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-hotspot.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-target.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-step.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-scene-link.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-hotspot.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-target.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step.is-sequence-locked .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-scene-link.is-sequence-locked .physical-playground-object-label,
+.physical-playground-tablet-overlay.is-sequence-locked .physical-playground-object-label {
+  opacity: 0.34;
+  filter: saturate(0.65);
+}
+
+.physical-playground-stage--scene2_assessment .physical-playground-object.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-hotspot.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-target.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-step.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_assessment .physical-playground-scene-link.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-object.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-hotspot.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-target.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-step.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene2_med_pass .physical-playground-scene-link.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-object.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-hotspot.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-target.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-step.is-sequence-completed .physical-playground-object-label,
+.physical-playground-stage--scene3_lab_draw .physical-playground-scene-link.is-sequence-completed .physical-playground-object-label,
+.physical-playground-tablet-overlay.is-sequence-completed .physical-playground-object-label {
+  opacity: 0.48;
+}
+
 .physical-playground-stage--scene2_assessment .physical-playground-object.has-stage-asset,
 .physical-playground-stage--scene2_assessment .physical-playground-hotspot.has-stage-asset {
   overflow: visible;
@@ -1406,6 +1464,24 @@ button.physical-playground-tablet-overlay:focus-visible img {
   color: #3A6B5E;
   font-size: 0.75rem;
   text-transform: uppercase;
+}
+
+.physical-playground-rpg-findings {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  list-style: none;
+}
+
+.physical-playground-rpg-findings li {
+  border: 1px solid #3A6B5E;
+  background: #F7F1E3;
+  color: #1E1E1A;
+  padding: 0.45rem 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 850;
+  line-height: 1.35;
 }
 
 .physical-playground-observation-field {

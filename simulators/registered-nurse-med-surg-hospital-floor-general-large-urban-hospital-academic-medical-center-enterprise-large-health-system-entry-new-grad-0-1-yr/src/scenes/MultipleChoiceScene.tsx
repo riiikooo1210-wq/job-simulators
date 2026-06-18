@@ -86,9 +86,7 @@ export default function MultipleChoiceScene({ node }: Props) {
               )}
             </button>
           ))}
-          {import.meta.env.DEV && (
             <ActionButton text="Skip (dev)" onClick={() => handleSelect(node.options[0].id, node.options[0].branchFlag)} variant="secondary" fullWidth={false} />
-          )}
         </div>
       </motion.div>
       {briefing && (

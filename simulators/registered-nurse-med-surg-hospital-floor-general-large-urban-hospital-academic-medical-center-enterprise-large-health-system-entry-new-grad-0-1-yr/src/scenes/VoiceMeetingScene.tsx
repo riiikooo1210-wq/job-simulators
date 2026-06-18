@@ -359,7 +359,6 @@ export default function VoiceMeetingScene({ node }: Props) {
 
   const controls = (
     <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: isInPerson ? 0 : '0.75rem', flexShrink: 0, flexWrap: 'wrap' }}>
-      {import.meta.env.DEV && (
         <button
           onClick={() => goNext(node)}
           style={{
@@ -374,7 +373,6 @@ export default function VoiceMeetingScene({ node }: Props) {
         >
           Skip (dev)
         </button>
-      )}
       {!inCall && !meetingEnded && (
         <button
           onClick={startMeeting}

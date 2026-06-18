@@ -107,55 +107,25 @@ D. Begin pulling all 09:00 medications from the Omnicell to get ahead of the mor
 **What decision, deliverable, conversation, or hands-on action the student faces:** Fifteen minutes later, a third STAT order for a "CBC" appears. You need to communicate with Dr. Carter efficiently and professionally to address this pattern, which is causing unnecessary discomfort for the patient and wasting time.
 **Interaction mode:** Typed workplace deliverable (Secure Chat Message)
 
-**Prompt:** Write a professional, concise secure chat message to Dr. Carter regarding the series of STAT lab orders for Mrs. Vance in room 512. Your goal is to prevent further piecemeal orders without sounding insubordinate.
+Your message should briefly state the pattern you noticed, frame the concern around patient comfort and efficient care, and ask whether Dr. Carter would like to add any other STAT labs now so they can be drawn together. Use a respectful, collaborative tone. Avoid blaming Dr. Carter or complaining about your workload.
 
 **What "good" looks like vs. "poor" looks like:**
 *   **Good:** A polite, non-accusatory message that provides context and offers a solution. E.g., "Hi Dr. Carter, re: Mrs. Vance in 512. Just sent a third STAT lab. If you're anticipating any others in the next hour, please let me know so I can batch the draws for patient comfort. Thanks." `[onet]`.
 *   **Poor:** A rude or demanding message ("Please batch your orders!"), a passive-aggressive one ("Drawing *another* lab on Mrs. Vance..."), or one that doesn't offer a collaborative solution `[reddit:lxb4lr]`.
 
-### Scene 3B: STAT Lab Draw Setup
-**Setting and time:** Room 512, 09:50
-**What's happening and why:** Dr. Carter confirms the CBC should be the last anticipated STAT lab for now. You return to Mrs. Vance's room to draw the specimen cleanly, label it at bedside, and avoid another fragmented, unsafe workflow `[onet]`.
-**What decision, deliverable, conversation, or hands-on action the student faces:** Drag supplies to a prep tray and press procedure controls for a safe blood draw: verify order, use two identifiers, explain the draw, clean the site, draw the lavender tube, secure the site, label at bedside, dispose sharps, and send to lab.
-**Interaction mode:** Clinical procedure scene
-
-**What "good" looks like vs. "poor" looks like:**
-*   **Good:** The student gathers all required supplies, verifies the order and patient, uses the correct tube, follows clean draw sequence, labels in the room, disposes of sharps immediately, and sends the specimen promptly.
-*   **Poor:** The student draws without identity verification, chooses incomplete supplies or wrong tube, labels away from bedside, skips sharps safety, or handles the procedure as a vague narrated step.
-
-### Scene 3C: Mrs. Vance SBAR Update
-**Setting and time:** Hallway Workstation, shortly after the CBC is sent
-**What's happening and why:** Before the next patient need pulls you away, you capture a concise SBAR update for Mrs. Vance while the details are fresh. You have assessed her pain and mobility risk, spoken with Sarah, completed the ordered non-opioid medication pass and reassessment plan, coordinated with Dr. Carter about repeated STAT labs, and completed the CBC draw workflow `[yt:JXFcSEhquXI]`.
-**What decision, deliverable, conversation, or hands-on action the student faces:** Write a comprehensive but concise SBAR update for Mrs. Vance.
-**Interaction mode:** Typed workplace deliverable (SBAR update)
+### Scene 3B: Finish Mrs. Vance's STAT Lab and SBAR Update
+**Setting and time:** Room 512 and Hallway Workstation, after Dr. Carter replies
+**What's happening and why:** Dr. Carter replies that the CBC is the last anticipated STAT lab for now. Back in Room 512, you complete one clean CBC workflow: verify the order, explain the draw to Mrs. Vance, draw the specimen, label it at the bedside, dispose of sharps, and send it to the lab. Before the next patient need pulls you away, you capture a concise SBAR update for Mrs. Vance while the details are fresh `[yt:JXFcSEhquXI]`.
+**What decision, deliverable, conversation, or hands-on action the student faces:** Complete the CBC draw workflow, then write a comprehensive but concise SBAR update for Mrs. Vance.
+**Interaction mode:** Clinical action scene + typed workplace deliverable
 
 **Prompt:** Write a concise SBAR update for Mrs. Vance now. Include her post-op hip-fracture status, pain/family opioid concern, current non-opioid medication plan and reassessment needs, the repeated STAT lab issue and CBC status, and what the next nurse or covering team should monitor or follow up.
 
 **What "good" looks like vs. "poor" looks like:**
-*   **Good:** The update is structured, accurate, and anticipates follow-up needs. It covers SBAR elements, including family dynamics, pain management plan, medication reassessment, repeated STAT lab coordination, and CBC status `[yt:JXFcSEhquXI]`.
-*   **Poor:** The update is disorganized, rambling, or missing critical information such as Sarah's opioid refusal, reassessment timing, or lab status `[onet]`.
+*   **Good:** The student completes the lab workflow safely, then writes a structured, accurate update that covers SBAR elements, family dynamics, pain management plan, medication reassessment, repeated STAT lab coordination, and CBC status `[yt:JXFcSEhquXI]`.
+*   **Poor:** The student skips bedside verification, explanation, labeling, sharps safety, or specimen submission; or the SBAR update is disorganized, rambling, or missing critical information such as Sarah's opioid refusal, reassessment timing, or lab status `[onet]`.
 
-### Scene 4A: Room 514: Stabilize First
-**Setting and time:** Room 514 (Mr. Jones's room), 11:00
-**What's happening and why:** You're in Mr. Jones's room to hang his next dose of IV antibiotics. He was fine an hour ago, but now he seems agitated and confused, picking at his blanket. "Where am I?" he asks, his breathing shallow and rapid. You quickly check his pulse oximeter: his O2 saturation is 88% on room air. This is a significant change in condition that requires immediate action `[onet]`. Marco, the senior RN, is walking past the room.
-**What decision, deliverable, conversation, or hands-on action the student faces:** Act first at the bedside: collect full vitals, call Marco in with a concrete role, raise the head of bed, apply oxygen, activate rapid response, stay with the patient, and prepare the SBAR facts.
-**Interaction mode:** Clinical action scene
-
-**What "good" looks like vs. "poor" looks like:**
-*   **Good:** The student immediately supports breathing, applies oxygen, gets help, stays with the unstable patient, gathers critical vitals, activates rapid response, and prepares concise communication.
-*   **Poor:** The student leaves the patient, writes before stabilizing, delays oxygen or help, or treats the deterioration as only a documentation exercise.
-
-### Scene 4B: A Sudden Decline SBAR
-**Setting and time:** Room 514 (Mr. Jones's room), 11:05
-**What's happening and why:** You have started the bedside response for Mr. Jones. Now Marco and the Rapid Response Team need a concise report that connects the acute change to the background and next ask `[onet]`.
-**What decision, deliverable, conversation, or hands-on action the student faces:** Document the immediate actions already taken and formulate a concise SBAR report to give to Marco and the rapid response team.
-**Interaction mode:** Constructed-response (typed submission)
-
-**Prompt:** In the text box below, first list the immediate actions you took. Then, write the exact SBAR report you will say to Marco and the rapid response team.
-
-**What "good" looks like vs. "poor" looks like:**
-*   **Good:** Actions are prioritized correctly: 1. Get a full set of vital signs and name the acute change, 2. Call Marco for a concrete role, 3. Sit patient up, 4. Apply oxygen, 5. Activate rapid response. The SBAR is clear and concise: "(S) Marco, I need help in 514. Mr. Jones has an acute mental status change and is desatting to 88%. (B) He's the 65-year-old admitted for cellulitis. (A) He is breathing rapidly, febrile, hypotensive, and confused. (R) Help me get rapid response moving while I sit him up and start oxygen." `[onet]`.
-*   **Poor:** Actions are out of order (e.g., delaying help until after all stabilization tasks are finished). The SBAR is disorganized, panicked, or missing key information `[yt:JXFcSEhquXI]`.
+> The current playable version ends after Scene 3B. The later Mr. Jones deterioration sequence has been moved to the `registered-nurse-med-surg-hospital-floor-general-large-urban-hospital-academic-medical-center-enterprise-large-health-system-entry-new-grad-0-1-yr-archive` folders.
 
 ## Grading Rubric
 
@@ -169,8 +139,6 @@ D. Begin pulling all 09:00 medications from the Omnicell to get ahead of the mor
 | 薬の安全確認・投与・再評価 | scene2_med_pass, scene2_explain_meds, scene2_administer_meds, scene2_reassessment_reminder | 9-10: 薬確認、アレルギー確認、患者確認、説明、正しい薬の投与、再評価時間設定を1つの薬ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
 | 医師への連絡 | scene3_orders | 9-10: 新しい指示や懸念を、患者状況、必要な確認、優先度が伝わる形で医師へ連絡できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
 | 採血ワークフロー | scene3_lab_draw, scene3_explain_draw, scene3_perform_draw, scene3_label_specimen, scene3_dispose_send | 9-10: 採血前確認、説明、採血手技、ベッドサイドラベル貼り、針廃棄、検体提出を1つの採血ワークフローとして安全に完了できている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 急変対応ワークフロー | scene4_stabilize, scene4_call_marco, scene4_raise_hob, scene4_apply_oxygen | 9-10: 急変初期対応、同僚呼び込み、頭側挙上、酸素開始、記録を1つの急変対応ワークフローとして安全に進められている。この点数は、指定された同一ワークフローまたはプレイグラウンド場面だけを根拠にし、その中の小作業を1つの10点枠の中で足し上げる。前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 正式報告 | scene4_decline | 9-10: 急変後の正式な報告として、状況、背景、評価、依頼を、事実に基づくSBARで整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
 | 申し送り | scene6_handoff | 9-10: 次勤務者が安全に引き継げるよう、患者状態、実施済み対応、未完了事項、注意点を簡潔に申し送れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
 ## Glossary
 - **Med-Surg:** Medical-Surgical, a hospital unit that cares for adult patients with a wide variety of illnesses and those recovering from surgery.
@@ -190,6 +158,4 @@ D. Begin pulling all 09:00 medications from the Omnicell to get ahead of the mor
 - **Scene 2:** The conflict with the patient's daughter is a dramatization of the scenario described in `[reddit:1qyduhb]`. The need for patient advocacy and education is a core nursing function `[onet]`.
 - **Scene 2C:** The medication pass action scene is grounded in O*NET tasks around administering medications, monitoring reactions, documenting care, and reassessing patient response `[onet]`.
 - **Scene 3:** The frustration with piecemeal STAT lab orders is taken directly from `[reddit:lxb4lr]`. The use of the EMR and secure chat is standard hospital technology `[onet]`.
-- **Scene 3B:** The lab draw setup is grounded in O*NET tasks around conducting specified laboratory tests, preparing supplies, verifying patient information, and maintaining accurate records `[onet]`.
-- **Scene 4:** The scenario of a patient suddenly declining and needing a rapid response is a common high-stakes event for nurses. The need to monitor, record, report, and respond to changes in condition is a key O*NET task `[onet]`. The feeling of being overwhelmed is a theme in `[reddit:1sgenll]`.
-- **Scene 3C:** The Mrs. Vance SBAR update is grounded in the handoff/reporting workflow shown in multiple sources, including `[yt:XjPKJTQrz9w]` and `[yt:JXFcSEhquXI]`. The SBAR format is a widely used industry standard for this communication.
+- **Scene 3B:** The CBC workflow is grounded in O*NET tasks around conducting specified laboratory tests, preparing supplies, verifying patient information, and maintaining accurate records `[onet]`. The Mrs. Vance SBAR update is grounded in handoff/reporting workflows shown in `[yt:XjPKJTQrz9w]` and `[yt:JXFcSEhquXI]`.

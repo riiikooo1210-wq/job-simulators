@@ -9,6 +9,13 @@ import { interpolate } from '../lib/interpolate'
 import { storyline } from '../data/storyline'
 import { npcs } from '../data/npcs'
 import { GeminiLiveSession, type LiveStatus } from '../services/geminiLive'
+import {
+  getSequencedTaskAvailability,
+  MED_PASS_SAFETY_CHECKS_SCENE_ID,
+  ROOM_512_ASSESSMENT_SCENE_ID,
+  ROOM_512_WRISTBAND_TASK_ID,
+  STAT_LAB_DRAW_SCENE_ID,
+} from './physicalPlaygroundAvailability'
 import type {
   ActionDropTarget,
   ActionInteractiveObject,
@@ -114,6 +121,7 @@ interface ModalContent {
   narrationText?: string
   npcName?: string
   npcLine?: string
+  visibleFindings?: string[]
   imageHoldTarget?: ImageHoldTarget
   selectableItems?: SelectableImageItem[]
   selectableAutoComplete?: boolean
@@ -160,6 +168,7 @@ interface SceneLink {
   narrationText?: string
   npcName?: string
   npcLine?: string
+  visibleFindings?: string[]
   imageHoldTarget?: ImageHoldTarget
 }
 
@@ -225,10 +234,12 @@ const HOLD_PRIMITIVES = new Set([
   'timed_release',
 ])
 
-const HAND_HYGIENE_FIRST_SCENE_ID = 'scene2_assessment'
+const HAND_HYGIENE_FIRST_SCENE_ID = ROOM_512_ASSESSMENT_SCENE_ID
 const HAND_HYGIENE_OBJECT_ID = 'hand_hygiene'
 const HAND_HYGIENE_REFERENCE_EXEMPT_IDS = new Set(['review_orders'])
 const HAND_HYGIENE_FIRST_WARNING = 'Sanitize your hands before doing anything else in the room.'
+const WRISTBAND_SECOND_WARNING = 'Scan the wristband before starting the rest of the bedside assessment.'
+const SEQUENCED_TASK_WARNING_PREFIX = 'Complete '
 const SAFETY_WARNING_RED = '#B87D6B'
 const TABLET_ASSET_SRC = '/action-assets/tablet.PNG'
 
@@ -473,6 +484,22 @@ function parseState(raw: string | undefined): PlaygroundState {
 
 function unique(values: string[]) {
   return Array.from(new Set(values))
+}
+
+function completedTaskIdsForState(state: PlaygroundState) {
+  return unique([
+    ...state.selectedObjects,
+    ...Object.keys(state.placements),
+    ...state.completedSteps,
+    ...state.inspectedSurfaces,
+    ...state.completedControls,
+  ])
+}
+
+function taskAvailabilityClass(state: 'available' | 'locked' | 'completed') {
+  if (state === 'locked') return 'is-sequence-locked'
+  if (state === 'completed') return 'is-sequence-completed'
+  return ''
 }
 
 function normalizeAssetPath(path: string | undefined): string | undefined {
@@ -1238,10 +1265,13 @@ export default function PhysicalPlaygroundScene({
   const handHygieneDone = (current: PlaygroundState) => (
     current.selectedObjects.includes(HAND_HYGIENE_OBJECT_ID) || Boolean(current.placements[HAND_HYGIENE_OBJECT_ID])
   )
+  const isHandHygieneReferenceExempt = (attemptedId: string | undefined) => (
+    node.id !== HAND_HYGIENE_FIRST_SCENE_ID && HAND_HYGIENE_REFERENCE_EXEMPT_IDS.has(attemptedId || '')
+  )
   const shouldBlockForHandHygiene = (current: PlaygroundState, attemptedId: string | undefined) => (
     requiresHandHygieneFirst
       && attemptedId !== HAND_HYGIENE_OBJECT_ID
-      && !HAND_HYGIENE_REFERENCE_EXEMPT_IDS.has(attemptedId || '')
+      && !isHandHygieneReferenceExempt(attemptedId)
       && !handHygieneDone(current)
   )
   const blockForHandHygiene = (
@@ -1259,6 +1289,43 @@ export default function PhysicalPlaygroundScene({
     ))
     return true
   }
+  const sequencedAvailabilityFor = (current: PlaygroundState, taskId: string | undefined) => getSequencedTaskAvailability({
+    sceneId: node.id,
+    taskId,
+    completedTaskIds: completedTaskIdsForState(current),
+  })
+  const sequenceWarningFor = (requiredId: string | undefined, attemptedLabel: string) => {
+    const requiredLabel = taskLabelFor(requiredId)
+    return `${SEQUENCED_TASK_WARNING_PREFIX}${requiredLabel} before starting ${attemptedLabel}.`
+  }
+  const blockForSequencedTask = (
+    current: PlaygroundState,
+    attemptedId: string | undefined,
+    attemptedLabel: string,
+    primitive?: string,
+  ) => {
+    const availability = sequencedAvailabilityFor(current, attemptedId)
+    if (availability.state !== 'locked') return false
+    const warning = node.id === ROOM_512_ASSESSMENT_SCENE_ID && availability.lockedBy === ROOM_512_WRISTBAND_TASK_ID
+      ? WRISTBAND_SECOND_WARNING
+      : sequenceWarningFor(availability.lockedBy, attemptedLabel)
+    save(record(
+      addWarning(current, warning),
+      'safety_warning',
+      `Started ${attemptedLabel} before ${availability.lockedBy || 'the current sequence step'}`,
+      { objectId: attemptedId, primitive },
+    ))
+    return true
+  }
+  const blockForTaskSequence = (
+    current: PlaygroundState,
+    attemptedId: string | undefined,
+    attemptedLabel: string,
+    primitive?: string,
+  ) => (
+    blockForHandHygiene(current, attemptedId, attemptedLabel, primitive)
+    || blockForSequencedTask(current, attemptedId, attemptedLabel, primitive)
+  )
 
   const withHandHygieneFirstWarning = (
     current: PlaygroundState,
@@ -1268,7 +1335,7 @@ export default function PhysicalPlaygroundScene({
   ): PlaygroundState => {
     if (!requiresHandHygieneFirst) return current
     if (attemptedId === HAND_HYGIENE_OBJECT_ID) return current
-    if (HAND_HYGIENE_REFERENCE_EXEMPT_IDS.has(attemptedId || '')) return current
+    if (isHandHygieneReferenceExempt(attemptedId)) return current
     if (handHygieneDone(current)) return current
     if (hasStartedBedsideWork(current) || current.warnings.includes(HAND_HYGIENE_FIRST_WARNING)) return current
 
@@ -1353,7 +1420,7 @@ export default function PhysicalPlaygroundScene({
 
   const completeObject = (object: ActionInteractiveObject, action: string) => {
     const primitive = object.primitives?.[0]
-    if (blockForHandHygiene(state, object.id, object.label, primitive)) return
+    if (blockForTaskSequence(state, object.id, object.label, primitive)) return
     if ((object as any).correct === false) {
       warn((object as any).incorrectFeedback || `${object.label} does not belong in this task.`)
       return
@@ -1401,6 +1468,7 @@ export default function PhysicalPlaygroundScene({
     narrationText?: string
     npcName?: string
     npcLine?: string
+    visibleFindings?: string[]
     imageHoldTarget?: ImageHoldTarget
     selectableItems?: SelectableImageItem[]
     selectableAutoComplete?: boolean
@@ -1410,7 +1478,7 @@ export default function PhysicalPlaygroundScene({
     modalCompleteLabel?: string
     modalReference?: ModalReferenceCard
   }, kind: 'object' | 'surface') => {
-    if (blockForHandHygiene(state, subject.id, subject.label, subject.primitives?.[0])) return
+    if (blockForTaskSequence(state, subject.id, subject.label, subject.primitives?.[0])) return
     const modalAsset = subject.modalAssetId ? normalizeAssetPath(lookup[subject.modalAssetId] || subject.modalAssetId) : undefined
     const image = modalAsset || getAssetPath(subject, lookup)
     const body = subject.playerInstruction || subject.readableText || subject.detail || 'Inspect the visible details, then record what you observed.'
@@ -1442,6 +1510,7 @@ export default function PhysicalPlaygroundScene({
       narrationText: subject.narrationText,
       npcName: subject.npcName,
       npcLine: subject.npcLine,
+      visibleFindings: subject.visibleFindings,
       imageHoldTarget: subject.imageHoldTarget,
       selectableItems: subject.selectableItems,
       selectableAutoComplete: subject.selectableAutoComplete,
@@ -1484,6 +1553,7 @@ export default function PhysicalPlaygroundScene({
       narrationText: link.narrationText,
       npcName: link.npcName,
       npcLine: link.npcLine,
+      visibleFindings: link.visibleFindings,
       imageHoldTarget: link.imageHoldTarget,
     })
   }
@@ -1653,7 +1723,7 @@ export default function PhysicalPlaygroundScene({
   }
 
   const placeObject = (objectId: string, target: ActionDropTarget) => {
-    if (blockForHandHygiene(state, objectId, derived.objects.find((o) => o.id === objectId)?.label || objectId)) {
+    if (blockForTaskSequence(state, objectId, derived.objects.find((o) => o.id === objectId)?.label || objectId)) {
       setDraggingId(null)
       return
     }
@@ -1690,7 +1760,7 @@ export default function PhysicalPlaygroundScene({
   }
 
   const completeStageStep = (step: ActionSimulationStep) => {
-    if (blockForHandHygiene(state, step.id, step.label, stepPrimitive(step))) return
+    if (blockForTaskSequence(state, step.id, step.label, stepPrimitive(step))) return
     const req = requirementsMet(step, state)
     if (!req.ok) {
       warn(step.failureHint || `Finish the needed prior move first: ${[...req.missingSteps, ...req.missingObjects, ...req.missingControls].join(', ')}.`)
@@ -1706,7 +1776,7 @@ export default function PhysicalPlaygroundScene({
   }
 
   const changeControl = (control: PlaygroundControl, value: number) => {
-    if (blockForHandHygiene(state, control.id, control.label, control.digitalPrimitive || control.primitive)) return
+    if (blockForTaskSequence(state, control.id, control.label, control.digitalPrimitive || control.primitive)) return
     const req = controlRequirementsMet(control, state)
     if (!req.ok) {
       warn(`Finish the needed prior move first: ${[...req.missingSteps, ...req.missingObjects].join(', ')}.`)
@@ -1856,6 +1926,20 @@ export default function PhysicalPlaygroundScene({
   const warnSceneLink = (link: SceneLink) => {
     save(addWarning(clearSceneLinkWarnings(state), link.lockedText || defaultSceneLinkWarning))
   }
+  function taskLabelFor(taskId: string | undefined) {
+    if (!taskId) return 'the highlighted safety check'
+    const object = derived.objects.find((candidate) => candidate.id === taskId)
+    if (object) return object.label
+    const readable = derived.readables.find((candidate) => candidate.id === taskId)
+    if (readable) return readable.label
+    const control = derived.controls.find((candidate) => candidate.id === taskId)
+    if (control) return control.label
+    const step = derived.steps.find((candidate) => candidate.id === taskId)
+    if (step) return step.label
+    const link = sceneLinks.find((candidate) => candidate.id === taskId || candidate.modalObjectId === taskId)
+    if (link) return link.label
+    return taskId.replace(/_/g, ' ')
+  }
 
   const hasObjectOrPlacement = (id: string) => state.selectedObjects.includes(id) || Boolean(state.placements[id])
   const requirementIdDone = (id: string) => (
@@ -1878,6 +1962,17 @@ export default function PhysicalPlaygroundScene({
     || impliedCompletedStepIds.has(id)
     || state.completedControls.includes(id)
   )
+  const sequencedTaskWarningResolved = (warning: string) => {
+    if (!warning.startsWith(SEQUENCED_TASK_WARNING_PREFIX)) return false
+    const taskIds = unique([
+      ...derived.objects.map((object) => object.id),
+      ...derived.readables.map((surface) => surface.id),
+      ...derived.controls.map((control) => control.id),
+      ...derived.steps.map((step) => step.id),
+      ...sceneLinks.flatMap((link) => [link.id, link.modalObjectId].filter((id): id is string => Boolean(id))),
+    ])
+    return taskIds.some((taskId) => warning.startsWith(`Complete ${taskLabelFor(taskId)} before`) && subjectDone(taskId))
+  }
   const warningDependencyIds = (warning: string) => {
     const match = warning.match(/^Finish the needed prior move first:\s*(.+)\.$/)
     if (!match) return []
@@ -1958,6 +2053,7 @@ export default function PhysicalPlaygroundScene({
   const warningResolved = (warning: string) => {
     if (canSubmit) return true
     if (warning === HAND_HYGIENE_FIRST_WARNING) return handHygieneDone(state)
+    if (warning === WRISTBAND_SECOND_WARNING) return subjectDone(ROOM_512_WRISTBAND_TASK_ID)
 
     const matchingSceneLink = sceneLinks.find((link) => (
       (link.lockedText || 'Finish the earlier medication-pass work before starting this step.') === warning
@@ -1978,6 +2074,7 @@ export default function PhysicalPlaygroundScene({
     if (incorrectObjectWarningResolved(warning)) return true
     if (observationWarningResolved(warning)) return true
     if (holdWarningResolved(warning)) return true
+    if (sequencedTaskWarningResolved(warning)) return true
 
     return false
   }
@@ -1986,6 +2083,12 @@ export default function PhysicalPlaygroundScene({
   const modalSafetyWarning = modal?.safetyWarning === HAND_HYGIENE_FIRST_WARNING && handHygieneDone(state)
     ? undefined
     : modal?.safetyWarning
+  const completedTaskIds = completedTaskIdsForState(state)
+  const availabilityForTask = (taskId: string | undefined) => (
+    node.id === ROOM_512_ASSESSMENT_SCENE_ID || node.id === MED_PASS_SAFETY_CHECKS_SCENE_ID || node.id === STAT_LAB_DRAW_SCENE_ID
+      ? getSequencedTaskAvailability({ sceneId: node.id, taskId, completedTaskIds })
+      : { state: 'available' as const }
+  )
   const warningStyle = {
     border: `1px solid ${SAFETY_WARNING_RED}`,
     background: '#F2EBD9',
@@ -2026,7 +2129,7 @@ export default function PhysicalPlaygroundScene({
               onError={(e) => { e.currentTarget.style.display = 'none' }}
             />
 
-            {import.meta.env.DEV && (
+            {import.meta.env.DEV && !embedded && (
               <button
                 type="button"
                 className="physical-playground-dev-reset"
@@ -2069,6 +2172,8 @@ export default function PhysicalPlaygroundScene({
                   ? state.inspectedSurfaces.includes(linkedSurface.id)
                   : linkedObject && state.selectedObjects.includes(linkedObject.id),
               )
+              const availability = availabilityForTask(linkedSubject?.id)
+              const availabilityClass = taskAvailabilityClass(availability.state)
               const content = (
                 <>
                   <img src={item.src} alt="" />
@@ -2092,10 +2197,14 @@ export default function PhysicalPlaygroundScene({
                   <button
                     key={item.id}
                     type="button"
-                    className={`physical-playground-tablet-overlay physical-playground-tablet-overlay--${item.id} physical-playground-unit--${linkedSubject.id} ${linkedDone ? 'is-complete' : ''}`}
+                    className={`physical-playground-tablet-overlay physical-playground-tablet-overlay--${item.id} physical-playground-unit--${linkedSubject.id} ${linkedDone ? 'is-complete' : ''} ${availabilityClass}`}
                     style={stageSupplyOverlayStyle(item)}
-                    onClick={() => inspect(linkedSubject, linkedKind)}
+                    onClick={() => {
+                      if (availability.state === 'completed') return
+                      inspect(linkedSubject, linkedKind)
+                    }}
                     aria-label={linkedSubject.label}
+                    aria-disabled={availability.state !== 'available'}
                   >
                     {content}
                   </button>
@@ -2150,23 +2259,36 @@ export default function PhysicalPlaygroundScene({
 	              const targetAcceptsDragging = Boolean(
 	                draggingId && (!target.accepts?.length || target.accepts.includes(draggingId)),
 	              )
+              const targetTaskId = target.accepts?.[0] || target.id
+              const availability = availabilityForTask(targetTaskId)
               return (
 	                <div
 	                  key={target.id}
-	                  className={`physical-playground-target physical-playground-unit--${target.id} ${placedObjectId ? 'has-placement' : ''} ${completedTargetCard ? 'is-completed-target' : ''} ${targetAcceptsDragging ? 'is-active-drop-target' : ''}`}
+	                  className={`physical-playground-target physical-playground-unit--${target.id} ${placedObjectId ? 'has-placement' : ''} ${completedTargetCard ? 'is-completed-target' : ''} ${targetAcceptsDragging ? 'is-active-drop-target' : ''} ${taskAvailabilityClass(availability.state)}`}
 	                  style={stageStyle(target, index, 'target')}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={() => {
+                    if (availability.state === 'completed') {
+                      setDraggingId(null)
+                      return
+                    }
+                    if (availability.state === 'locked' && blockForTaskSequence(state, targetTaskId, target.label)) {
+                      setDraggingId(null)
+                      return
+                    }
                     if (draggingId) placeObject(draggingId, target)
                     setDraggingId(null)
                   }}
                   onClick={() => {
+                    if (availability.state === 'completed') return
+                    if (availability.state === 'locked' && blockForTaskSequence(state, targetTaskId, target.label)) return
                     if (draggingId) {
                       placeObject(draggingId, target)
                       setDraggingId(null)
                     }
                   }}
                   aria-label={target.label}
+                  aria-disabled={availability.state !== 'available'}
                 >
 	                  {assetPath && showAsset && <GeneratedAssetImage src={assetPath} label={target.label} compact />}
 	                  {placedAssetPath && (
@@ -2191,14 +2313,19 @@ export default function PhysicalPlaygroundScene({
               if ((SCENE_TABLET_OVERLAYS[node.id] ?? []).some((item) => item.linkedObjectId === surface.id)) return null
               const assetPath = getAssetPath(surface, lookup)
               const done = state.inspectedSurfaces.includes(surface.id)
+              const availability = availabilityForTask(surface.id)
               const showAsset = false
               return (
                 <button
                   key={surface.id}
-                  className={`physical-playground-hotspot physical-playground-unit--${surface.id} ${done ? 'is-complete' : ''} ${showAsset ? 'has-stage-asset' : ''}`}
+                  className={`physical-playground-hotspot physical-playground-unit--${surface.id} ${done ? 'is-complete' : ''} ${showAsset ? 'has-stage-asset' : ''} ${taskAvailabilityClass(availability.state)}`}
                   style={stageStyle(surface, index, 'readable')}
-                  onClick={() => inspect(surface, 'surface')}
+                  onClick={() => {
+                    if (availability.state === 'completed') return
+                    inspect(surface, 'surface')
+                  }}
                   aria-label={surface.label}
+                  aria-disabled={availability.state !== 'available'}
                 >
                   {assetPath && showAsset && <GeneratedAssetImage src={assetPath} label={surface.label} compact />}
                   {(!showAsset || node.id !== 'scene2_assessment' || surface.id === 'review_orders') && (
@@ -2214,12 +2341,13 @@ export default function PhysicalPlaygroundScene({
             {derived.controls.map((control, index) => {
               const value = state.controlValues[control.id] ?? control.initialValue ?? control.min ?? 0
               const req = controlRequirementsMet(control, state)
+              const availability = availabilityForTask(control.id)
               return (
                 <label
                   key={control.id}
-                  className={`physical-playground-control ${req.ok ? '' : 'is-disabled'}`}
+                  className={`physical-playground-control ${req.ok && availability.state === 'available' ? '' : 'is-disabled'} ${taskAvailabilityClass(availability.state)}`}
                   style={stageStyle(control, index, 'control')}
-                  aria-disabled={!req.ok}
+                  aria-disabled={!req.ok || availability.state !== 'available'}
                 >
                   <span>{control.label}</span>
                   <input
@@ -2228,7 +2356,7 @@ export default function PhysicalPlaygroundScene({
                     max={control.max ?? 100}
                     step={control.step ?? 1}
                     value={value}
-                    disabled={!req.ok}
+                    disabled={!req.ok || availability.state !== 'available'}
                     onChange={(e) => changeControl(control, Number(e.currentTarget.value))}
                   />
                   <b>{value}{control.unit || ''}</b>
@@ -2260,18 +2388,33 @@ export default function PhysicalPlaygroundScene({
               const assetPath = getAssetPath(object, lookup)
               const placed = Boolean(state.placements[object.id])
               const selected = state.selectedObjects.includes(object.id) || placed
+              const availability = availabilityForTask(object.id)
               const hold = needsHold(object.primitives)
               const draggable = isDragObject(object)
               const role = object.interactionRole || (object.readableText ? 'readable' : 'clickable')
               const hint = actionHint({ role, primitives: object.primitives, draggable })
               const showAsset = shouldShowStageAsset(node.id, object.id) && draggable
               const handleDragStart = (event: DragEvent<HTMLElement>) => {
+                if (availability.state === 'completed') {
+                  event.preventDefault()
+                  return
+                }
+                if (availability.state === 'locked') {
+                  event.preventDefault()
+                  blockForTaskSequence(state, object.id, object.label, object.primitives?.[0])
+                  return
+                }
                 setDragPreviewFromAsset(event, object.id)
                 setDraggingId(object.id)
                 const next = withHandHygieneFirstWarning(state, object.id, object.label, object.primitives?.[0])
                 if (next !== state) save(next)
               }
               const activate = () => {
+                if (availability.state === 'completed') return
+                if (availability.state === 'locked') {
+                  blockForTaskSequence(state, object.id, object.label, object.primitives?.[0])
+                  return
+                }
                 if (draggable) {
                   const next = withHandHygieneFirstWarning(state, object.id, object.label, object.primitives?.[0])
                   if (next !== state) {
@@ -2291,7 +2434,7 @@ export default function PhysicalPlaygroundScene({
                 <button
                   key={object.id}
                   draggable={draggable}
-                  className={`physical-playground-object physical-playground-unit--${object.id} ${selected ? 'is-complete' : ''} ${placed ? 'is-placed' : ''} ${showAsset ? 'has-stage-asset' : ''} ${hold ? 'is-holdable' : ''}`}
+                  className={`physical-playground-object physical-playground-unit--${object.id} ${selected ? 'is-complete' : ''} ${placed ? 'is-placed' : ''} ${showAsset ? 'has-stage-asset' : ''} ${hold ? 'is-holdable' : ''} ${taskAvailabilityClass(availability.state)}`}
                   style={stageStyle(object, index, 'object')}
                   onDragStart={handleDragStart}
                   onDragEnd={() => setDraggingId(null)}
@@ -2308,6 +2451,7 @@ export default function PhysicalPlaygroundScene({
                     if (hold) cancelHold()
                   }}
                   aria-label={object.label}
+                  aria-disabled={availability.state !== 'available'}
                 >
                   {assetPath && showAsset && (
                     <GeneratedAssetImage
@@ -2343,12 +2487,20 @@ export default function PhysicalPlaygroundScene({
 	              const done = state.completedSteps.includes(step.id)
 	              if (node.id === 'scene3_perform_draw' && done) return null
 	              const hold = needsHold(undefined, stepPrimitive(step))
-              const activate = () => completeStageStep(step)
+              const availability = availabilityForTask(step.id)
+              const activate = () => {
+                if (availability.state === 'completed') return
+                if (availability.state === 'locked') {
+                  blockForTaskSequence(state, step.id, step.label, stepPrimitive(step))
+                  return
+                }
+                completeStageStep(step)
+              }
               const hint = hold ? 'Hold' : 'Do'
               return (
 	                <button
 	                  key={step.id}
-	                  className={`physical-playground-step physical-playground-unit--${step.id} ${done ? 'is-complete' : ''}`}
+	                  className={`physical-playground-step physical-playground-unit--${step.id} ${done ? 'is-complete' : ''} ${taskAvailabilityClass(availability.state)}`}
 	                  style={stageStyle(step, index, 'step')}
                   onClick={() => {
                     if (!hold) activate()
@@ -2362,6 +2514,7 @@ export default function PhysicalPlaygroundScene({
                   onPointerLeave={() => {
                     if (hold) cancelHold()
                   }}
+                  aria-disabled={availability.state !== 'available'}
                 >
                   <span className="physical-playground-object-label">
                     <b>{done ? 'Done' : hint}</b>
@@ -2372,16 +2525,20 @@ export default function PhysicalPlaygroundScene({
             })}
 
             {visibleSceneLinks.map((link) => {
+              const taskId = link.modalObjectId || link.id
+              const availability = availabilityForTask(taskId)
               const ready = sceneLinkReady(link)
-              const done = Boolean(link.modalObjectId && state.selectedObjects.includes(link.modalObjectId))
+              const done = availability.state === 'completed' || Boolean(link.modalObjectId && state.selectedObjects.includes(link.modalObjectId))
+              const readyAndAvailable = ready && availability.state === 'available'
               return (
                 <button
                   key={link.id}
-                  className={`physical-playground-scene-link ${ready ? '' : 'is-locked'} ${done ? 'is-complete' : ''}`}
+                  className={`physical-playground-scene-link ${readyAndAvailable ? '' : 'is-locked'} ${done ? 'is-complete' : ''} ${taskAvailabilityClass(availability.state)}`}
                   style={stageStyle(link, 0, 'step')}
                   onClick={() => {
-                    if (blockForHandHygiene(state, link.id, link.label)) return
-                    if (ready) {
+                    if (done) return
+                    if (availability.state === 'locked' && blockForTaskSequence(state, taskId, link.label, link.primitive)) return
+                    if (readyAndAvailable) {
                       const nextState = clearSceneLinkWarnings(state)
                       if (nextState.warnings.length !== state.warnings.length) save(nextState)
                       if (link.modalAssetId || link.modalAssetPath || link.modalSceneNodeId) {
@@ -2393,6 +2550,7 @@ export default function PhysicalPlaygroundScene({
                     }
                     warnSceneLink(link)
                   }}
+                  aria-disabled={!readyAndAvailable}
                 >
                   <span className="physical-playground-object-label">
                     <b>{done ? 'Done' : link.verb || 'Inspect'}</b>
@@ -2473,7 +2631,7 @@ export default function PhysicalPlaygroundScene({
           {!canSubmit && <span style={{ fontSize: '0.75rem', color: '#666' }}>{activeStepCount} workplace move{activeStepCount === 1 ? '' : 's'} completed.</span>}
         </div>
 
-        {import.meta.env.DEV && !embedded && (
+        {!embedded && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
         )}
 
@@ -2625,7 +2783,7 @@ export default function PhysicalPlaygroundScene({
                 </div>
               )}
               {!modal.embeddedSceneNodeId && <p>{renderContentWithGlossary(interpolate(modal.body, context))}</p>}
-              {(modal.narrationText || (modal.npcLine && (!modal.imageHoldTarget || modalHoldComplete))) && (
+              {(modal.narrationText || ((modal.npcLine || modal.visibleFindings?.length) && (!modal.imageHoldTarget || modalHoldComplete))) && (
                 <div className="physical-playground-rpg-panel">
                   {modal.narrationText && <div>{renderContentWithGlossary(interpolate(modal.narrationText, context))}</div>}
                   {modal.npcLine && (!modal.imageHoldTarget || modalHoldComplete) && (
@@ -2633,6 +2791,13 @@ export default function PhysicalPlaygroundScene({
                       <b>{modal.npcName || 'Person'}</b>
                       <span>{renderContentWithGlossary(interpolate(modal.npcLine, context))}</span>
                     </blockquote>
+                  )}
+                  {!!modal.visibleFindings?.length && (!modal.imageHoldTarget || modalHoldComplete) && (
+                    <ul className="physical-playground-rpg-findings" aria-label="Assessment findings">
+                      {modal.visibleFindings.map((finding) => (
+                        <li key={finding}>{renderContentWithGlossary(interpolate(finding, context))}</li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               )}

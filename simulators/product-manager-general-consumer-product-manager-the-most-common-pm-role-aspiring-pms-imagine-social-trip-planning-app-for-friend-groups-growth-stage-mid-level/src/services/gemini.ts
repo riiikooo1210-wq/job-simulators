@@ -4,9 +4,17 @@
 // Per-job content:
 //   - simulationDoc (?raw markdown) — the full per-job sim doc with rubric
 //   - rubric (JSON) — structured rubric used to fill the response template
-import type { ChatMessage, GradingResult, Rubric, MultipleChoiceNode } from '../types/game'
+import type { AssessmentResult, ChatMessage, GradingResult, Rubric, MultipleChoiceNode } from '../types/game'
 import { storyline } from '../data/storyline'
 import { npcs } from '../data/npcs'
+import {
+  ASSESSMENT_SEED,
+  ASSESSMENT_VERSION,
+  buildAssessmentResult,
+  canonicalizeAssessmentState,
+  stableStringifyForAssessment,
+  type AssessmentState,
+} from './assessment'
 // @ts-ignore — Vite ?raw import
 import simulationDoc from '../data/job-simulation.md?raw'
 import rubricJson from '../data/rubric.json'
@@ -32,6 +40,8 @@ interface GeminiCallOpts {
   temperature: number
   jsonMode: boolean
   systemInstruction?: string
+  responseSchema?: object
+  seed?: number
 }
 
 async function callGemini(opts: GeminiCallOpts): Promise<string> {
@@ -43,8 +53,13 @@ async function callGemini(opts: GeminiCallOpts): Promise<string> {
         const body: Record<string, unknown> = {
           contents: [{ parts: [{ text: opts.prompt }] }],
           generationConfig: {
+            candidateCount: 1,
             temperature: opts.temperature,
-            ...(opts.jsonMode ? { responseMimeType: 'application/json' } : {}),
+            ...(opts.seed != null ? { seed: opts.seed } : {}),
+            ...(opts.jsonMode ? {
+              responseMimeType: 'application/json',
+              ...(opts.responseSchema ? { responseSchema: opts.responseSchema } : {}),
+            } : {}),
           },
         }
         if (opts.systemInstruction) {
@@ -167,27 +182,67 @@ RULES:
   })
 }
 
+export async function coworkerRecapReply(args: {
+  speakerName: string
+  speakerRole?: string
+  topic: string
+  question: string
+  facts: string[]
+  fallback: string
+}): Promise<string> {
+  if (!args.facts.length) return args.fallback
+
+  const system = `You are ${args.speakerName}${args.speakerRole ? `, ${args.speakerRole}` : ''}, giving a short onboarding recap for a workplace simulator.
+
+RULES:
+- Answer only from the provided facts.
+- If the student's question cannot be answered from the facts, reply exactly with the fallback.
+- Keep the reply under 55 words.
+- Do not invent names, numbers, documents, deadlines, risks, or decisions.
+- Do not mention being an AI, a model, or a simulator.`
+
+  const prompt = `TOPIC:
+${args.topic}
+
+FACTS YOU MAY USE:
+${args.facts.map((fact) => `- ${fact}`).join('\n')}
+
+FALLBACK:
+${args.fallback}
+
+STUDENT QUESTION:
+${args.question}
+
+Reply as ${args.speakerName}.`
+
+  return callGemini({
+    models: NPC_MODELS,
+    prompt,
+    temperature: 0.2,
+    jsonMode: false,
+    systemInstruction: system,
+  })
+}
+
 // ============================================================================
 // Grading
 // ============================================================================
 
-interface SerializedState {
-  playerName: string
-  visitedNodes: string[]
-  branchFlags: Record<string, string>
-  mcSelections: Record<string, string>
-  freeTextResponses: Record<string, string>
-  npcConversations: Record<string, ChatMessage[]>
+type SerializedState = AssessmentState
+
+export function isGradableConversationId(conversationId: string): boolean {
+  return !conversationId.startsWith('companion:')
 }
 
 function serializeState(s: SerializedState): string {
+  const canonical = canonicalizeAssessmentState(s)
   const parts: string[] = []
-  parts.push(`PLAYER: ${s.playerName || 'Anonymous'}`)
-  parts.push(`PATH: ${s.visitedNodes.join(' -> ')}`)
-  parts.push(`BRANCH FLAGS: ${JSON.stringify(s.branchFlags)}`)
+  parts.push(`PLAYER: ${canonical.playerName || 'Anonymous'}`)
+  parts.push(`PATH: ${canonical.visitedNodes.join(' -> ')}`)
+  parts.push(`BRANCH FLAGS: ${stableStringifyForAssessment(canonical.branchFlags)}`)
 
   parts.push('\n=== MULTIPLE-CHOICE SELECTIONS ===')
-  for (const [sceneId, optId] of Object.entries(s.mcSelections)) {
+  for (const [sceneId, optId] of Object.entries(canonical.mcSelections)) {
     const node = storyline.nodes[sceneId]
     if (!node || node.type !== 'multiple_choice') continue
     const mc = node as MultipleChoiceNode
@@ -198,13 +253,14 @@ function serializeState(s: SerializedState): string {
   }
 
   parts.push('\n=== FREE-TEXT / STRUCTURED RESPONSES ===')
-  for (const [k, v] of Object.entries(s.freeTextResponses)) {
+  for (const [k, v] of Object.entries(canonical.freeTextResponses)) {
     if (!v || !v.trim()) continue
     parts.push(`\n[${k}]\n${v}`)
   }
 
   parts.push('\n=== NPC CONVERSATIONS ===')
-  for (const [conversationId, msgs] of Object.entries(s.npcConversations)) {
+  for (const [conversationId, msgs] of Object.entries(canonical.npcConversations)) {
+    if (!isGradableConversationId(conversationId)) continue
     const keyParts = conversationId.split(':')
     const npcId = keyParts[keyParts.length - 1] || conversationId
     const npc = npcs[conversationId] || npcs[npcId]
@@ -219,7 +275,57 @@ function serializeState(s: SerializedState): string {
   return parts.join('\n')
 }
 
-function buildResponseTemplate(): { schema: object; criteriaCount: number; maxScore: number } {
+function buildLegacyGradeResponseSchema(): object {
+  return {
+    type: 'object',
+    properties: {
+      candidate_id: { type: 'string' },
+      simulation: { type: 'string' },
+      graded_at: { type: 'string' },
+      scenarios: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            scenario_number: { type: 'integer' },
+            scenario_title: { type: 'string' },
+            criteria: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  criterion: { type: 'string' },
+                  score: { type: 'integer' },
+                  comment: { type: 'string' },
+                },
+                required: ['criterion', 'score', 'comment'],
+              },
+            },
+          },
+          required: ['scenario_number', 'scenario_title', 'criteria'],
+        },
+      },
+      total_score: { type: 'integer' },
+      max_score: { type: 'integer' },
+      score_percentage: { type: 'number' },
+      recommendation: { type: 'string' },
+      overall_assessment: { type: 'string' },
+    },
+    required: [
+      'candidate_id',
+      'simulation',
+      'graded_at',
+      'scenarios',
+      'total_score',
+      'max_score',
+      'score_percentage',
+      'recommendation',
+      'overall_assessment',
+    ],
+  }
+}
+
+function buildResponseTemplate(): { schema: object; responseSchema: object; criteriaCount: number; maxScore: number } {
   const scenarios = rubric.sections.map((sec) => ({
     scenario_number: sec.section_number,
     scenario_title: sec.section_title,
@@ -230,7 +336,7 @@ function buildResponseTemplate(): { schema: object; criteriaCount: number; maxSc
   const schema = {
     candidate_id: 'candidate_001',
     simulation: rubric.simulation_id,
-    graded_at: '<current ISO 8601 timestamp>',
+    graded_at: ASSESSMENT_VERSION,
     scenarios,
     total_score: 0,
     max_score: maxScore,
@@ -238,12 +344,12 @@ function buildResponseTemplate(): { schema: object; criteriaCount: number; maxSc
     recommendation: 'Hire',
     overall_assessment: '',
   }
-  return { schema, criteriaCount, maxScore }
+  return { schema, responseSchema: buildLegacyGradeResponseSchema(), criteriaCount, maxScore }
 }
 
 function buildGradingPrompt(state: SerializedState): string {
   const { schema, criteriaCount, maxScore } = buildResponseTemplate()
-  return `You are an expert hiring evaluator for the role described below. Grade a candidate's responses to a 30-minute simulation.
+  return `You are an expert career-simulation evaluator for the role described below. Evaluate a student's responses to a 30-minute career exploration simulation.
 
 ---BEGIN SIMULATION DOCUMENT---
 ${simulationDoc}
@@ -260,22 +366,27 @@ ${serializeState(state)}
 INSTRUCTIONS:
 1. Grade each of the ${criteriaCount} criteria according to the STRUCTURED RUBRIC JSON above. Use the criterion NAMES exactly as listed. Use only the scene IDs listed in each criterion's evidenceSceneIds as evidence for that criterion; do not mix in preparation tasks, earlier/later tasks, or later deliverables. If a criterion lists multiple evidenceSceneIds, treat them as one approved playground/workflow score set and assign one score for the whole set. If the simulation document contains older or conflicting grading wording, ignore that conflicting grading wording.
 2. For EVERY criterion, provide a score (0-${rubric.max_score_per_criterion}) AND a one-sentence evidence-based comment that cites SPECIFIC details from the candidate's responses (their actual words, choices made, NPC interactions). Do NOT write generic comments.
-3. Calculate total_score (sum of all criteria), max_score (${maxScore}), and score_percentage (total / max, rounded to 2 decimals).
-4. Recommendation thresholds: 80–100% = "Strong Hire", 65–79% = "Hire", 45–64% = "Lean No Hire", 0–44% = "No Hire".
-5. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
+3. Write all free-text fields in English, especially comment and overall_assessment, even when the rubric text or candidate responses include another language. Do not copy non-English words into student-facing comments; translate or paraphrase them in English instead.
+4. Calculate total_score (sum of all criteria), max_score (${maxScore}), and score_percentage (total / max, rounded to 2 decimals).
+5. The recommendation field is legacy internal data and is not shown to students. Use these legacy thresholds: 80–100% = "Strong Hire", 65–79% = "Hire", 45–64% = "Lean No Hire", 0–44% = "No Hire".
+6. Set graded_at to "${ASSESSMENT_VERSION}". Do not use the current time or any timestamp.
+7. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
 
 Return ONLY valid JSON matching this exact shape (no markdown, no preamble):
 
 ${JSON.stringify(schema, null, 2)}`
 }
 
-export async function gradeResponses(state: SerializedState): Promise<GradingResult> {
+export async function gradeResponses(state: SerializedState): Promise<AssessmentResult> {
   const prompt = buildGradingPrompt(state)
+  const { responseSchema } = buildResponseTemplate()
   const text = await callGemini({
     models: GRADING_MODELS,
     prompt,
-    temperature: 0.3,
+    temperature: 0,
     jsonMode: true,
+    responseSchema,
+    seed: ASSESSMENT_SEED,
   })
   // Strip code fences if a model leaks them
   let cleaned = text.trim()
@@ -283,5 +394,5 @@ export async function gradeResponses(state: SerializedState): Promise<GradingRes
     cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '')
   }
   const parsed = JSON.parse(cleaned) as GradingResult
-  return parsed
+  return buildAssessmentResult(parsed, rubric, state)
 }

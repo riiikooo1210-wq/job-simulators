@@ -91,9 +91,7 @@ export default function LiveChatScene({ node }: Props) {
         ) : (
           chatPanel
         )}
-        {import.meta.env.DEV && (
           <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
-        )}
       </motion.div>
       {briefing && (
         <ReferenceDrawer isOpen={refOpen} onClose={() => setRefOpen(false)} title={briefing.title}>

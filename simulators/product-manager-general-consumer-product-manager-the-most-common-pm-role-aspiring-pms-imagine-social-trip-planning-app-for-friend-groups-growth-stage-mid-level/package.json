@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test:app-audit-layout": "node scripts/test-app-audit-layout.mjs",
+    "test:remove-roadmap-tasks": "node scripts/test-remove-roadmap-tasks.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
