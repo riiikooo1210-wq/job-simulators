@@ -39,68 +39,27 @@
 
 ## The Day / Week
 
-### Scene 1: The Morning Stand-up
-- **Setting and time:** 9:30 AM, a Google Meet call with your product squad.
-- **What's happening and why:** It's the daily product team meeting where everyone shares what they worked on yesterday and what they're doing today [yt:HA1t7Nc-3mE][reddit:1qmby9h]. Ben, the PM, is excited to kick off a new feature.
-- **What you face:** Ben introduces the next project: "Friend Streaks," a feature to let users share their habit progress with a friend to create mutual accountability. He says, "User research shows people are more likely to stick with habits if a friend is involved. We need a simple flow where a user can invite a friend, and they can both see each other's daily streak for a specific habit." Your task is to start exploring the user flow and initial screens for this feature [onet].
-- **Interaction mode:** Multiple-choice pivot. Ben asks, "What's your first step after this meeting?"
-
-    A. Start creating high-fidelity mockups in Figma immediately to show progress quickly [reddit:1lwxo3g].
-    B. Schedule a 1-hour brainstorming meeting with the entire team to discuss every possibility [reddit:1oux08a].
-    C. Do some quick competitive analysis and sketch out a few rough user flows and wireframes [yt:FR2e2Kdw6_c][reddit:1suf0of].
-    D. Wait for Maya to assign you a specific task and give you detailed instructions [reddit:1o4s8ea].
-
-- **Story consequences by choice:**
-    - **A (high_fidelity) → Scene 1b-A:** Maya messages about an hour later, pointing out that jumping to high-fidelity skipped structural alignment. She asks you to step back and map the flow first before continuing.
-    - **B (brainstorm) → Scene 1b-B:** Ben immediately declines the meeting invite and redirects you to solo exploration. Maya backs him up. You cancel the invite and start independently.
-    - **C (research_sketch) → Scene 2 directly:** Smooth path — no intervention needed.
-    - **D (wait) → Scene 1b-D:** An hour passes with no message. Maya eventually pings you, explaining that the role expects initiative and nudging you to start independently.
-
-- **What "good" looks like:** Option C. A good designer knows not to jump straight into high-fidelity mockups without understanding the problem space and exploring different structures first [reddit:1lwxo3g][yt:FR2e2Kdw6_c]. This shows an understanding of the design process.
-- **What "poor" looks like:** Option A is a common junior mistake [reddit:1lwxo3g]. Option B is inefficient for a small feature [reddit:1oux08a]. Option D shows a lack of initiative [reddit:1o4s8ea].
-
-### Scene 1b-A: Maya Taps the Brakes *(branch from A only)*
-- **Setting and time:** ~10:30 AM, after about an hour of Figma work.
-- **What's happening and why:** You invested time on polished screens before the structure was agreed on. Maya intercepts before the effort compounds [reddit:1lwxo3g][yt:FR2e2Kdw6_c].
-- **What you face:** A Slack message from Maya: polished screens are visible in Figma but the flow hasn't been established. She asks you to close the frames and map the user journey first.
-- **Interaction mode:** Briefing (no interaction — story continuation). Proceeds to Scene 2.
-
-### Scene 1b-B: Ben Pumps the Brakes *(branch from B only)*
-- **Setting and time:** Immediately after the stand-up, while drafting a calendar invite.
-- **What's happening and why:** A large group meeting before any individual thinking is an inefficient use of cross-functional time for a well-scoped feature [reddit:1oux08a].
-- **What you face:** Ben's quick Slack reply declining the meeting and asking you to explore solo first. Maya backs him up with a "+1."
-- **Interaction mode:** Briefing (no interaction — story continuation). Proceeds to Scene 2.
-
-### Scene 1b-D: Maya Checks In *(branch from D only)*
-- **Setting and time:** ~10:30 AM, after about an hour of inaction.
-- **What's happening and why:** Waiting for top-down instruction on a scoped task signals a lack of professional autonomy. Maya steps in to redirect [reddit:1o4s8ea][reddit:1ks8gf9].
-- **What you face:** A Slack message from Maya noting that you haven't started, explaining the expectation of self-directed initiative, and giving you a concrete suggestion on where to begin.
-- **Interaction mode:** Briefing (no interaction — story continuation). Proceeds to Scene 2.
-
-### Scene 2: Ideation & Sketching
+### Scene 1: Ideation & Sketching
 - **Setting and time:** 10:00 AM, at your virtual desk.
-- **What's happening and why:** You're breaking ground on the "Friend Streaks" feature. The goal is to get initial ideas out of your head and onto a canvas before committing to a specific direction in a high-fidelity tool like Figma [yt:FR2e2Kdw6_c][onet].
-- **What you face:** Create a simple user flow diagram for the "Friend Streaks" feature. It should cover the key steps [onet]:
-    1.  How does a user initiate an invitation?
-    2.  What does the friend see when they receive the invitation?
-    3.  What does the screen look like where they can both see their shared streak?
-- **Interaction mode:** Canvas/design manipulation. You will be presented with a simple digital whiteboarding tool to create a user flow diagram using basic shapes and text.
-- **What "good" looks like:** A clear, logical flow that considers the journey from both the inviter's and invitee's perspective. It doesn't need to be visually polished, but it should be easy to understand [yt:FR2e2Kdw6_c].
-- **What "poor" looks like:** A confusing or incomplete flow that misses key steps (like what happens if the friend declines) or is just a collection of disconnected screens [reddit:1riqgxq].
+- **What's happening and why:** You're breaking ground on the invitation-based, habit-specific "Friend Streaks" feature. Before drawing a full flow, you inspect the current WellNest Home and Hydration Detail screens so your first ideas fit the product users already know [yt:FR2e2Kdw6_c][onet].
+- **What you face:** Write early design notes, not a full user flow. Identify two natural entry points in the existing app, and think through why each feels natural so you can explain it to Maya later. Then list three elements that must appear on the final Shared Streak screen after the friend accepts the invite. The shared streak is not an app-open streak; it counts consecutive days when both people complete the same habit on the same day.
+- **Interaction mode:** Written ideation notes beside a lightweight clickable mock of the current WellNest app. The mock shows existing Home habit cards and Hydration Detail with glass progress, personal flame streak counters, and the Mark Complete action; Friend Streaks is not already present.
+- **What "good" looks like:** The notes use the current WellNest screens as evidence, name two plausible entry points, and define a Shared Streak screen that could support mutual accountability and retention.
+- **What "poor" looks like:** The notes jump straight into a full flow, invent existing friend features that are not visible, ignore the current Home/Habit Detail surfaces, or list generic screen elements without explaining why they matter.
 
-### Scene 3: Design Check-in with Maya
+### Scene 2: Design Check-in with Maya
 - **Setting and time:** 11:30 AM, a 15-minute in-person design check-in with Maya in a small project room near the design team's desks.
 - **What's happening and why:** This is a quick, informal critique session. Maya wants to see your early thinking to make sure you're on the right track before you invest too much time in polished designs [onet][reddit:1ks8gf9].
-- **What you face:** You bring your rough user flow notes from the previous scene and talk Maya through them face-to-face. Maya will ask you questions to probe your design rationale. Be prepared to verbally explain your choices and respond to her feedback [reddit:1rjffqo].
+- **What you face:** You bring your early design notes from the previous scene and talk Maya through the rationale. Maya leads the conversation: first entry points, then why those entry points fit the current app, then the Shared Streak screen elements, then how that screen structure could motivate users to keep coming back to complete the shared habit [reddit:1rjffqo].
 - **Interaction mode:** In-person AI-driven voice conversation. You will speak your responses, and an AI playing Maya will reply.
     - **Maya might ask:**
-        - "Walk me through this flow. What's the most important user problem you're trying to solve on this main streak screen?" [reddit:1rjffqo]
-        - "You've shown the happy path. What happens if the user I invite doesn't have the app installed yet?" [reddit:1riqgxq]
-        - "Why did you choose to place the 'Invite Friend' button here? What other options did you consider?" [onet]
-- **What "good" looks like:** Clearly articulating the user goal, demonstrating consideration for edge cases, and explaining design choices with a user-centered rationale, not just "it looked good" [reddit:1rjffqo][yt:4_QjZ4yNG5Y].
-- **What "poor" looks like:** Being unable to explain the reasoning behind your decisions, getting defensive, or having no thoughts on alternative approaches or potential user problems [reddit:1rbbd46].
+        - "What are the two most natural places in the current WellNest app where Friend Streaks could begin?" [reddit:1rjffqo]
+        - "What makes those entry points feel natural in the existing WellNest Home or Habit Detail experience?" [onet]
+        - "How would that screen structure make the streak feel motivating enough for users to keep coming back to the app?" [yt:4_QjZ4yNG5Y]
+- **What "good" looks like:** Clearly explaining the rationale behind the entry points and Shared Streak screen elements with user-centered reasoning, not just "it looked good" [reddit:1rjffqo][yt:4_QjZ4yNG5Y].
+- **What "poor" looks like:** Being unable to connect ideas to the current app, inventing product facts, getting defensive, or treating the early notes as a finalized flow [reddit:1rbbd46].
 
-### Scene 4: Mockups and... Complications
+### Scene 3: Mockups and... Complications
 - **Setting and time:** 2:00 PM, working in Figma.
 - **What's happening and why:** Based on Maya's feedback, you're now building the first version of the UI screens in Figma [onet]. You're focusing on a simple, clean layout using components from WellNest's design system [yt:HA1t7Nc-3mE]. Suddenly, you get a Slack message from Ben.
 - **What you face:** Ben wants to see your progress. You share your screen, showing a simple, functional design. He says, "This is a good start, but can we make it more exciting? I saw a competitor's app that has these cool, dynamic animations when the streak is updated. Can we add something like that? It would be great for engagement." Shortly after, you get a comment in your Figma file from Leo, the engineer: "Heads up, custom animations like Ben is talking about would be a lot of work and might delay the launch. We should stick to our standard motion patterns if we want to ship this quarter." You are now caught between conflicting stakeholder requests [onet][reddit:1s1tjot][reddit:1r7uf6l].
@@ -108,20 +67,20 @@
 - **What "good" looks like:** A diplomatic and proactive response. It validates the PM's goal (engagement) but transparently raises the engineering concern. It proposes a next step, like exploring a simpler animation or discussing the trade-offs as a team [onet][reddit:1me4eoz].
 - **What "poor" looks like:** Immediately agreeing to the PM's request without considering the trade-offs, shutting down the idea without explanation, or simply telling the PM and engineer to talk to each other (passing the buck) [reddit:1rbbd46].
 
-### Scene 5: Map the User Flow
+### Scene 4: Map the User Flow
 - **Setting and time:** 4:00 PM, still in Figma.
-- **What's happening and why:** After a brief team discussion, you've all agreed to proceed with a simpler design for the first version (the MVP). Now Leo needs to understand what screens exist, how users move between them, and what edge cases the build needs to support [yt:HA1t7Nc-3mE][reddit:1nftipa]. A clear flow prevents confusion and saves development time [reddit:1sdrvpn].
-- **What you face:** Build a final user flow diagram in Figma. Friend Streaks Home is already placed as the fixed first screen. Add the remaining screens as nodes, connect the screens with labeled transitions, and explain the rationale behind your structure [onet].
-- **Interaction mode:** Flow-diagram workspace. You start from the locked Friend Streaks Home node, create the remaining screen nodes, connect them with arrows, label each transition with the button/link/CTA label the user chooses, and write a short design rationale.
-- **What "good" looks like:** The flow covers the happy path and at least one meaningful edge case. Transitions are labeled with clear button or link text, and the rationale explains why the flow is structured that way [yt:HA1t7Nc-3mE][reddit:1nftipa].
+- **What's happening and why:** Leo needs a practical user flow outline that shows the Entry point, key screens and actions, a Decision branch, an Edge case, and the Final interaction before implementation starts [yt:HA1t7Nc-3mE][reddit:1nftipa]. A clear flow prevents confusion and saves development time [reddit:1sdrvpn].
+- **What you face:** Build the Friend Streaks flow in Figma. Choose the Entry point yourself, such as Home habit card or Hydration Detail. Include the Decision branch "Does the friend already have WellNest?", one Edge case such as friend does not have the app, invite ignored, invite declined, or one person misses a day, and end with the Final interaction: Shared Streak screen is created and visible [onet].
+- **Interaction mode:** Flow-diagram workspace. Add Entry point, Screen, Action, Decision branch, and Final interaction nodes; connect them with arrows; label arrows only when the path needs clarification, such as Yes, No, Invite ignored, Invite declined, or Missed day; and write a short design rationale.
+- **What "good" looks like:** The flow connects to an existing WellNest screen, uses the WellNest account Decision branch, covers at least one listed Edge case, labels transitions clearly, and ends at the Shared Streak screen [yt:HA1t7Nc-3mE][reddit:1nftipa].
 - **What "poor" looks like:** The flow is a disconnected set of screens, misses obvious states, or gives Leo no clarity about how the feature should behave [reddit:1o27fjs].
 
-### Scene 6: Design One Screen
+### Scene 5: Design One Screen
 - **Setting and time:** 4:40 PM, still in Figma.
-- **What's happening and why:** Before you wrap up, Maya asks for one quick screen pass so the team can see how the Friend Streaks feature might begin as an actual mobile page. It makes the design work feel closer to a real UI/UX day, where designers move between flow structure, layout, component choices, and implementation notes [onet][yt:HA1t7Nc-3mE].
-- **What you face:** Assemble the first page of the Friend Streaks feature as a low-to-mid fidelity mobile screen. Place every element needed for that screen, using plain shapes when you need a custom button, card, or placeholder. Leave a short note about the state or behavior you chose.
+- **What's happening and why:** Before you wrap up, Maya asks for one quick screen pass so the team can see the final Shared Streak screen after a friend accepts the invitation. It makes the design work feel closer to a real UI/UX day, where designers move between flow structure, layout, component choices, states, and implementation notes [onet][yt:HA1t7Nc-3mE].
+- **What you face:** Assemble the accepted Shared Streak screen as a low-to-mid fidelity mobile screen. Make the accepted shared-streak behavior clear: the shared habit, two-person relationship, shared streak progress or today's completion state, and the main action or next state can be communicated through layer labels, supporting text, layout, and the implementation note. Keep buttons or CTAs from overlapping.
 - **Interaction mode:** Figma-like screen design studio. You add components or normal shapes to a phone artboard, drag and resize layers, write your own button/shape labels, choose variants, preview the page, and save the mockup.
-- **What "good" looks like:** The mockup reads as the first page of Friend Streaks, includes clear button or shape labels, places the elements needed for the page, and has a useful implementation note for engineering.
+- **What "good" looks like:** The mockup functions as the final Shared Streak screen for this app, communicates the accepted two-person shared habit state through the visible layers and/or implementation note, keeps the next action understandable, avoids overlapping buttons or CTAs, and has a useful implementation note for engineering.
 - **What "poor" looks like:** The mockup is visually busy, disconnected from the feature, missing the elements needed to understand the page, or has no useful implementation note.
 
 ## Grading Rubric
@@ -130,12 +89,11 @@
 
 | 採点項目 | 根拠シーン | 採点基準 |
 | :--- | :--- | :--- |
-| 朝会での判断 | scene_01_standup | 9-10: 曖昧な依頼、期限、ユーザー課題、チームの依存関係を見て、最初に進めるべき設計行動を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 発想と下書き | scene_02_ideation | 9-10: ユーザー課題に対して、複数の案、判断理由、捨てる案、次に確認すべきことを具体的に下書きできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
+| 発想と下書き | scene_02_ideation | 9-10: 既存のWellNest画面を根拠に、Friend Streaksの自然な入口候補2つと、Shared Streak画面に必要な要素3つを具体的に下書きできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
 | 設計確認通話 | scene_03_checkin | 9-10: 実際の通話で、目的、制約、懸念、次に作るものを確認し、相手のフィードバックを設計判断に変えられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 設計上の問題対応 | scene_04_complications | 9-10: 追加の制約や懸念に対して、何を変え、何を守り、誰に確認するかを具体的に返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 利用者の流れ図 | scene_05_flow_diagram | 9-10: ユーザーの入口、判断点、主要行動、失敗時の戻り先を、画面設計に使える流れとして整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 画面案 | scene_06_screen_design | 9-10: 一画面の目的、情報階層、主要操作、状態、ユーザーの迷いを減らす配置を具体的に設計できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
+| 設計上の問題対応 | scene_04_complications | 9-10: 追加の制約や懸念に対して、何を変え、何を守り、どう進めるかを具体的に返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
+| 利用者の流れ図 | scene_05_flow_diagram | 9-10: Entry pointが既存WellNest画面（Home habit cardまたはHydration Detail）に接続し、Decision branch（Does the friend already have WellNest?）、主要Action/Screen、Edge case（friend does not have the app、invite ignored、invite declined、one person misses a dayのいずれか）、Final interaction（Shared Streak screen is created and visible）を、画面設計に使える流れとして整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
+| 画面案 | scene_06_screen_design | 9-10: レイヤーのラベル、補足テキスト、配置、implementation noteを合わせて、Shared Streakの機能契約（accepted/final screenであること、habit-specificな2人の共有関係、shared streak progressまたは今日のsame-day completion状態、主要な次アクションまたは次状態）が4つとも明確で、情報階層がユーザーの迷いを減らしており、DETERMINISTIC BUTTON/CTA OVERLAP CHECKがPASSである。各情報が別々の視覚レイヤーとして全て揃っていなくても、ノートを含む成果物全体から機能契約が明確ならよい。7-8: 4カテゴリのうち少なくとも3つが明確で、残り1つもノートや文脈から明示的に推測でき、重なりチェックはPASS。4-6: 2カテゴリ以上は分かるが、Shared Streak画面として実装前に確認が必要、または重なりチェックがFAILしている。この場合、内容が強くても最大6点。0-3: Shared Streak画面として読めない、共有streakの利用状態や主要アクションがほぼ分からない、または唯一の主要アクションが重なりで読めない。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 |
 ## Glossary
 - **Design System:** A collection of reusable components (like buttons, icons, and menus) and standards that allow teams to design and build products faster and more consistently [yt:HA1t7Nc-3mE][reddit:1sdrvpn].
 - **Handoff:** The process of passing finalized designs to the engineering team for development. This often includes documentation, specs, and assets [yt:HA1t7Nc-3mE][reddit:1nftipa].
@@ -148,9 +106,8 @@
 - **Company Profile:** The company type (consumer app, mid-size) and the role of a designer in improving engagement are common across the source materials. The focus on business goals is mentioned in [yt:HA1t7Nc-3mE]. The cross-functional team structure is described in [reddit:1q20juv].
 - **Protagonist Profile:** The experience level (junior, 4 months in) reflects the target audience for this simulation and the common "stuck" feeling described in [reddit:1oy9ap3] and [reddit:1o4s8ea].
 - **Cast:** The characters represent the key collaborators for a designer: a manager/mentor [reddit:1ks8gf9], a product manager focused on business goals [yt:HA1t7Nc-3mE][reddit:1s1tjot], and a pragmatic engineer concerned with feasibility [yt:FR2e2Kdw6_c][reddit:1sdrvpn]. This dynamic is central to the job [onet].
-- **Scene 1:** The daily stand-up is a common routine mentioned in [yt:HA1t7Nc-3mE] and [reddit:1qmby9h]. The decision point contrasts a common junior mistake (jumping to high-fidelity) with best practices (research and sketching) mentioned in [reddit:1lwxo3g] and [yt:FR2e2Kdw6_c].
-- **Scene 2:** The act of sketching and creating user flows before high-fidelity design is a core part of the process described in [yt:FR2e2Kdw6_c], advocated for in [reddit:1suf0of], and listed as a core task in [onet].
-- **Scene 3:** The design critique and the focus on rationale over visuals is a key theme. The pressure to explain the "why" is highlighted in [reddit:1rjffqo] and [yt:4_QjZ4yNG5Y]. Collaboration with management to develop concepts is a core O*NET task [onet].
-- **Scene 4:** The tension between PM desires, engineering constraints, and design is a classic, realistic conflict [onet][reddit:1s1tjot]. PMs push for features [yt:HA1t7Nc-3mE], while engineering feedback can cause pivots [yt:FR2e2Kdw6_c]. This scene directly simulates the need to "resolve conflicts" [onet] and manage stakeholder expectations [reddit:1r7uf6l].
-- **Scene 5:** Preparing clear flow documentation for developers is a critical task described in detail by a practitioner in [yt:HA1t7Nc-3mE] and is a frequent topic of discussion for junior designers trying to improve their process [reddit:1nftipa]. Poor handoffs are a common frustration [reddit:1o27fjs].
-- **Scene 6:** Translating the first Friend Streaks page into a rough UI screen reflects the practical back-and-forth between structure, components, states, and implementation notes that designers do before a handoff [onet][yt:HA1t7Nc-3mE].
+- **Scene 1:** Inspecting current product surfaces and writing early design notes before high-fidelity design is a core part of the process described in [yt:FR2e2Kdw6_c], advocated for in [reddit:1suf0of], and listed as a core task in [onet].
+- **Scene 2:** The design critique and the focus on rationale over visuals is a key theme. The pressure to explain the "why" is highlighted in [reddit:1rjffqo] and [yt:4_QjZ4yNG5Y]. Collaboration with management to develop concepts is a core O*NET task [onet].
+- **Scene 3:** The tension between PM desires, engineering constraints, and design is a classic, realistic conflict [onet][reddit:1s1tjot]. PMs push for features [yt:HA1t7Nc-3mE], while engineering feedback can cause pivots [yt:FR2e2Kdw6_c]. This scene directly simulates the need to "resolve conflicts" [onet] and manage stakeholder expectations [reddit:1r7uf6l].
+- **Scene 4:** Preparing clear flow documentation for developers is a critical task described in detail by a practitioner in [yt:HA1t7Nc-3mE] and is a frequent topic of discussion for junior designers trying to improve their process [reddit:1nftipa]. Poor handoffs are a common frustration [reddit:1o27fjs].
+- **Scene 5:** Translating the final Shared Streak state into a rough UI screen reflects the practical back-and-forth between structure, components, states, and implementation notes that designers do before a handoff [onet][yt:HA1t7Nc-3mE].

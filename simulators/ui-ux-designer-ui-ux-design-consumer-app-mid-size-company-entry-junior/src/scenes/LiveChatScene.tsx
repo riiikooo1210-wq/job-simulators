@@ -38,6 +38,7 @@ export default function LiveChatScene({ node }: Props) {
       npcId={node.npcId}
       goalPrompt={node.goalPrompt}
       playerGoal={node.playerGoal}
+      replyTargetLabel={node.replyTargetLabel}
       channel={channel}
       maxTurns={node.maxTurns ?? 8}
       initialMessages={node.initialMessages}

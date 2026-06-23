@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -13,16 +13,22 @@ import { ChartIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
 import type { ReactNode } from 'react'
 import type { BriefingNode, BriefingSubStep, CmsSidebarRuleData, EmailData, SlackMessageData, SocialPostData } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
 type AssignmentAppId = 'messages' | 'email' | 'stats' | 'sns' | 'cms'
+type BriefingContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
 
 function resolveSlackMessage(
   msg: SlackMessageData,
-  ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> },
+  ctx: BriefingContext,
 ): SlackMessageData {
   return {
     ...msg,
@@ -32,6 +38,148 @@ function resolveSlackMessage(
     content: interpolate(msg.content, ctx),
     avatarInitials: msg.avatarInitials ? interpolate(msg.avatarInitials, ctx) : undefined,
   }
+}
+
+function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  if (!node.memoryCard?.bullets.length) return null
+
+  return (
+    <div
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#F7F1E3',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.18)',
+        padding: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.45rem',
+      }}
+    >
+      <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+        {node.memoryCard.title || 'You already know'}
+      </div>
+      <ul style={{ margin: 0, paddingLeft: '1.1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        {node.memoryCard.bullets.slice(0, 3).map((bullet, i) => (
+          <li key={i} style={{ fontSize: '0.8rem', lineHeight: 1.45, color: '#1E1E1A' }}>
+            {renderContentWithGlossary(interpolate(bullet, ctx))}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap?.speakerRole || npc?.role
+  const turns = recap?.turns || []
+  const [turnIndex, setTurnIndex] = useState(0)
+  const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
+  const messagesRef = useRef<HTMLDivElement | null>(null)
+  const complete = turns.length > 0 && turnIndex >= turns.length
+
+  useEffect(() => {
+    setTurnIndex(0)
+    setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
+  }, [node.id])
+
+  useEffect(() => {
+    const messagesEl = messagesRef.current
+    if (!messagesEl) return
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }, [messages])
+
+  if (!recap || turns.length === 0) return null
+
+  const advanceTurn = (nextMessages: { role: 'assistant' | 'user'; content: string }[]) => {
+    const nextIndex = turnIndex + 1
+    if (nextIndex < turns.length) {
+      setTurnIndex(nextIndex)
+      setMessages([...nextMessages, { role: 'assistant', content: turns[nextIndex].coworkerLine }])
+    } else {
+      setTurnIndex(nextIndex)
+      setMessages([...nextMessages, { role: 'assistant', content: 'Great. That is enough context for the first newsroom decision.' }])
+    }
+  }
+
+  const acknowledge = () => {
+    if (complete) return
+    advanceTurn([...messages, { role: 'user' as const, content: 'Okay' }])
+  }
+
+  return (
+    <div
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#EFE8D2',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.24)',
+        padding: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.7rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline' }}>
+        <div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>{speakerName}</div>
+          {speakerRole && <div style={{ fontSize: '0.68rem', color: '#6f6758' }}>{speakerRole}</div>}
+        </div>
+        <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 800 }}>
+          Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
+        </div>
+      </div>
+      <div ref={messagesRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            style={{
+              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+              maxWidth: '86%',
+              border: '1px solid #CDBF94',
+              backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
+              padding: '0.55rem 0.65rem',
+              fontSize: '0.8rem',
+              lineHeight: 1.45,
+              color: '#1E1E1A',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {renderContentWithGlossary(interpolate(message.content, ctx))}
+          </div>
+        ))}
+      </div>
+      {!complete && (
+        <button
+          type="button"
+          onClick={acknowledge}
+          style={{
+            alignSelf: 'flex-end',
+            border: '1px solid #000',
+            backgroundColor: '#F7F1E3',
+            color: '#1E1E1A',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.55rem 0.9rem',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          Okay
+        </button>
+      )}
+    </div>
+  )
+}
+
+function BriefingLeadIn({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  if (!node.memoryCard && !node.coworkerRecap) return null
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <MemoryCard node={node} ctx={ctx} />
+      <CoworkerRecap node={node} ctx={ctx} />
+    </div>
+  )
 }
 
 function BriefingReferenceCard({ title, content }: { title: string; content: string }) {
@@ -84,7 +232,7 @@ function resolveCmsRule(
   }
 }
 
-function SocialFeed({ posts }: { posts: SocialPostData[] }) {
+export function SocialFeed({ posts }: { posts: SocialPostData[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {posts.map((post, i) => (
@@ -138,7 +286,7 @@ const cmsSeverityColors: Record<NonNullable<CmsSidebarRuleData['severity']>, { b
   hold: { bg: '#F9DADA', border: '#c0392b', color: '#81261f' },
 }
 
-function CmsSidebarRules({ rules }: { rules: CmsSidebarRuleData[] }) {
+export function CmsSidebarRules({ rules }: { rules: CmsSidebarRuleData[] }) {
   return (
     <aside style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
       {rules.map((rule, i) => {
@@ -443,7 +591,7 @@ function AssignmentDesktopBriefing({ node, onAdvance }: { node: BriefingNode; on
     }
     if (activeApp === 'email' && sourceEmails.length > 0) {
       return (
-        <LaptopFrame variant="email" title="Email inbox - assignment sources" scrollable fill>
+        <LaptopFrame variant="email" title="Email inbox - work materials" scrollable fill>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0.875rem' }}>
             {sourceEmails.map((email, i) => (
               <EmailBlock
@@ -540,7 +688,7 @@ function AssignmentDesktopBriefing({ node, onAdvance }: { node: BriefingNode; on
               }}
             >
               <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#3A6B5E', textAlign: 'center', maxWidth: 290, lineHeight: 1.45 }}>
-                Open each assignment source before replying to Tessa.
+                Open the materials you need before replying to Tessa.
               </div>
             </div>
           )}
@@ -794,6 +942,7 @@ export default function BriefingScene({ node }: Props) {
           <PaginatedBriefing node={node} onAdvance={onAdvance} />
         ) : (
           <>
+            <BriefingLeadIn node={node} ctx={{ playerName, branchFlags, mcSelections }} />
             {node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
                 {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}

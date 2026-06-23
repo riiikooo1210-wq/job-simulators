@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -14,9 +14,8 @@ import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
 import { npcs } from '../data/npcs'
-import { coworkerRecapReply } from '../services/gemini'
 import type { CSSProperties, ReactNode } from 'react'
-import type { BriefingNode, BriefingSubStep, CoworkerRecapTurn, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
+import type { BriefingNode, BriefingSubStep, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
@@ -109,14 +108,6 @@ function SourceAttachmentButtons({
   )
 }
 
-function isLikelyAck(text: string) {
-  const cleaned = text.trim().toLowerCase()
-  if (!cleaned) return false
-  if (cleaned.includes('?') || cleaned.includes('？')) return false
-  const ackWords = ['yes', 'yeah', 'yep', 'ok', 'okay', 'got it', 'understood', 'i understand', 'makes sense', 'はい', 'うん', '了解', 'わかった', '分かった', '大丈夫']
-  return cleaned.length <= 40 && ackWords.some((word) => cleaned.includes(word))
-}
-
 function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
   if (!node.memoryCard?.bullets?.length) return null
   return (
@@ -145,31 +136,27 @@ function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext })
   )
 }
 
-function fallbackRecapAnswer(turn: CoworkerRecapTurn, fallback: string) {
-  if (!turn.answerFacts?.length) return fallback
-  return `${fallback} ${turn.answerFacts[0]}`
-}
-
 function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
   const recap = node.coworkerRecap
   const npc = recap?.npcId ? npcs[recap.npcId] : undefined
   const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
   const speakerRole = recap?.speakerRole || npc?.role
-  const fallback = recap?.fallback || "You don't need that extra context for this moment. Focus on the point I just gave you."
   const turns = recap?.turns || []
   const [turnIndex, setTurnIndex] = useState(0)
   const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
-  const [draft, setDraft] = useState('')
-  const [loading, setLoading] = useState(false)
+  const messagesRef = useRef<HTMLDivElement | null>(null)
   const complete = turns.length > 0 && turnIndex >= turns.length
-  const currentTurn = turns[turnIndex]
 
   useEffect(() => {
     setTurnIndex(0)
-    setDraft('')
-    setLoading(false)
     setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
   }, [node.id])
+
+  useEffect(() => {
+    const messagesEl = messagesRef.current
+    if (!messagesEl) return
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }, [messages])
 
   if (!recap || turns.length === 0) return null
 
@@ -184,35 +171,9 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
     }
   }
 
-  const submitText = async (text: string) => {
-    if (!currentTurn || loading) return
-    const trimmed = text.trim()
-    if (!trimmed) return
-    const withUser = [...messages, { role: 'user' as const, content: trimmed }]
-    setMessages(withUser)
-    setDraft('')
-
-    if (isLikelyAck(trimmed)) {
-      advanceTurn(withUser)
-      return
-    }
-
-    setLoading(true)
-    try {
-      const answer = await coworkerRecapReply({
-        speakerName,
-        speakerRole,
-        topic: currentTurn.topic,
-        question: trimmed,
-        facts: currentTurn.answerFacts || [],
-        fallback,
-      })
-      setMessages([...withUser, { role: 'assistant', content: answer }])
-    } catch {
-      setMessages([...withUser, { role: 'assistant', content: fallbackRecapAnswer(currentTurn, fallback) }])
-    } finally {
-      setLoading(false)
-    }
+  const acknowledge = () => {
+    if (complete) return
+    advanceTurn([...messages, { role: 'user' as const, content: 'Okay' }])
   }
 
   return (
@@ -236,12 +197,7 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
           Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
         </div>
       </div>
-      {!complete && (
-        <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#6f6758' }}>
-          Click "I understand" or ask a question if anything is unclear.
-        </div>
-      )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+      <div ref={messagesRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
         {messages.map((message, i) => (
           <div
             key={i}
@@ -260,62 +216,24 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
             {renderContentWithGlossary(interpolate(message.content, ctx))}
           </div>
         ))}
-        {loading && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerName} is answering...</div>}
       </div>
       {!complete && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') void submitText(draft)
-              }}
-              placeholder={'Click "I understand" or ask a question if anything is unclear...'}
-              style={{
-                flex: 1,
-                border: '1px solid #CDBF94',
-                backgroundColor: '#FBF7EA',
-                padding: '0.55rem 0.65rem',
-                font: 'inherit',
-                fontSize: '0.8rem',
-                minWidth: 0,
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => void submitText(draft)}
-              disabled={loading || !draft.trim()}
-              style={{
-                border: '1px solid #000',
-                backgroundColor: '#3A6B5E',
-                color: '#F7F1E3',
-                boxShadow: '2px 2px 0 #000',
-                padding: '0 0.8rem',
-                fontWeight: 900,
-                cursor: loading || !draft.trim() ? 'not-allowed' : 'pointer',
-              }}
-            >
-              Send
-            </button>
-            <button
-              type="button"
-              onClick={() => void submitText('Yes, I understand.')}
-              disabled={loading}
-              style={{
-                border: '1px solid #000',
-                backgroundColor: '#F7F1E3',
-                color: '#1E1E1A',
-                boxShadow: '2px 2px 0 #000',
-                padding: '0 0.75rem',
-                fontWeight: 900,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
-              I understand
-            </button>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={acknowledge}
+          style={{
+            alignSelf: 'flex-end',
+            border: '1px solid #000',
+            backgroundColor: '#F7F1E3',
+            color: '#1E1E1A',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.55rem 0.9rem',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          Okay
+        </button>
       )}
     </div>
   )

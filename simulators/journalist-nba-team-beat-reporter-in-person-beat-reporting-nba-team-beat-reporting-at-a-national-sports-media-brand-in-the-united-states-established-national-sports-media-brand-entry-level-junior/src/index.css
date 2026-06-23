@@ -117,6 +117,20 @@ body {
   overflow-y: auto;
 }
 
+.possession-workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(230px, 0.85fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.possession-workspace-primary {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .physical-playground {
   border: 1px solid #000000;
   box-shadow: 5px 5px 0 #000000;
@@ -720,6 +734,10 @@ body {
   }
 
   .voice-meeting-inperson-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .possession-workspace-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }

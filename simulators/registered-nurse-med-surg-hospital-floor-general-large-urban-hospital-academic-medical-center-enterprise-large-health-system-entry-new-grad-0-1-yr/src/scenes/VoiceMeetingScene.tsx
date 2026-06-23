@@ -23,7 +23,7 @@ function buildSystemPrompt(args: {
 }) {
   const { node, npc, playerName, goalPrompt, meetingContext } = args
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   const setting = node.presentation === 'in_person'
@@ -140,6 +140,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [liveNpc, setLiveNpc] = useState('')
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -166,6 +167,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -273,6 +280,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
   const transcript = (
     <div
+      ref={transcriptRef}
       style={{
         flex: hasPrepNotePanel ? 1 : isInPerson ? 'initial' : 1,
         marginTop: hasPrepNotePanel ? 0 : isInPerson ? 0 : '0.875rem',
@@ -312,7 +320,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               whiteSpace: 'pre-wrap',
             }}
           >
-            {m.content}
+            {renderContentWithGlossary(m.content)}
           </div>
         </div>
       ))}
@@ -438,7 +446,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            <strong>Your goal: </strong>{interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
+            <strong>Your goal: </strong>{renderContentWithGlossary(interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }))}
           </div>
         )}
 

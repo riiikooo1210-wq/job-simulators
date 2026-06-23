@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { PointerEvent, ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
@@ -22,6 +22,8 @@ type ElementKind =
   | 'shape_square'
   | 'shape_horizontal'
   | 'shape_vertical'
+  | 'freeform_rectangle'
+  | 'freeform_vertical'
   | 'status_chip'
   | 'tab_bar'
   | 'text_input'
@@ -80,18 +82,25 @@ interface StudioChecks {
   notesReady: boolean
 }
 
-const fixedScreen = { id: 'friend_streaks_home', label: 'Friend Streaks Home' }
+const fixedScreen = { id: 'shared_streak_screen', label: 'Shared Streak Screen' }
+const studioGridColumns = 'clamp(84px, 24%, 156px) minmax(0, 1fr) clamp(92px, 29%, 196px)'
+const phoneCanvasAspectRatio = 458 / 220
 
 const componentDefinitions: ComponentDefinition[] = [
-  { kind: 'top_bar', label: 'Top Bar', detail: 'Back + page context', w: 84, h: 8, variant: 'neutral' },
-  { kind: 'screen_title', label: 'Screen Title', detail: 'Primary page heading', w: 76, h: 10, variant: 'neutral' },
-  { kind: 'habit_card', label: 'Habit Card', detail: 'Habit name, cadence, streak', w: 78, h: 15, variant: 'brand' },
-  { kind: 'friend_card', label: 'Friend Card', detail: 'Friend identity and invite state', w: 78, h: 14, variant: 'neutral' },
-  { kind: 'progress_ring', label: 'Progress Ring', detail: 'Shared streak progress', w: 34, h: 17, variant: 'success' },
+  { kind: 'top_bar', label: 'Shared Streak Nav', detail: 'Back + shared habit context', w: 84, h: 8, variant: 'neutral' },
+  { kind: 'screen_title', label: 'Shared Hydration Streak', detail: 'Final screen after the friend accepts', w: 76, h: 10, variant: 'neutral' },
+  { kind: 'progress_ring', label: '12 days', detail: 'Current shared streak count', w: 34, h: 17, variant: 'success' },
+  { kind: 'friend_card', label: 'You + Ava', detail: 'Both friends and completion state', w: 78, h: 14, variant: 'neutral' },
+  { kind: 'habit_card', label: 'Hydration', detail: 'Same habit, same day rule', w: 78, h: 15, variant: 'brand' },
+  { kind: 'status_chip', label: 'Active', detail: 'Accepted shared streak state', w: 44, h: 7, variant: 'success' },
+  { kind: 'primary_button', label: "Mark Today's Habit", detail: 'Complete your side of the shared habit', w: 72, h: 9, variant: 'brand' },
+  { kind: 'secondary_button', label: 'Message Friend', detail: 'Encourage the friend without leaving the screen', w: 72, h: 9, variant: 'neutral' },
   { kind: 'tab_bar', label: 'Bottom Nav', detail: 'Home, habits, profile', w: 84, h: 10, variant: 'neutral' },
-  { kind: 'shape_square', label: 'Square', detail: 'Add your own text', w: 28, h: 14, variant: 'neutral' },
-  { kind: 'shape_horizontal', label: 'Horizontal Rect', detail: 'Add a button name', w: 64, h: 9, variant: 'brand' },
-  { kind: 'shape_vertical', label: 'Vertical Rect', detail: 'Add your own text', w: 30, h: 24, variant: 'neutral' },
+  { kind: 'shape_square', label: 'Friend Avatar', detail: 'Add your own text', w: 28, h: 14, variant: 'neutral' },
+  { kind: 'shape_horizontal', label: 'Last 7 Days Row', detail: 'Use for shared streak history', w: 64, h: 9, variant: 'brand' },
+  { kind: 'shape_vertical', label: 'Motivation Card', detail: 'Add your own text', w: 30, h: 24, variant: 'neutral' },
+  { kind: 'freeform_rectangle', label: 'Horizontal Rect', detail: 'Freeform label or button area', w: 64, h: 9, variant: 'neutral' },
+  { kind: 'freeform_vertical', label: 'Vertical Rect', detail: 'Freeform panel or placeholder', w: 30, h: 24, variant: 'neutral' },
 ]
 
 const defaultPlacements: Record<ElementKind, { x: number; y: number }> = {
@@ -105,6 +114,8 @@ const defaultPlacements: Record<ElementKind, { x: number; y: number }> = {
   shape_square: { x: 12, y: 43 },
   shape_horizontal: { x: 18, y: 66 },
   shape_vertical: { x: 58, y: 38 },
+  freeform_rectangle: { x: 18, y: 58 },
+  freeform_vertical: { x: 58, y: 36 },
   status_chip: { x: 28, y: 62 },
   tab_bar: { x: 8, y: 88 },
   text_input: { x: 12, y: 24 },
@@ -201,7 +212,7 @@ function serializeStudioState(state: StudioState) {
         variant: item.variant,
       })),
       buttonsAndShapes: state.elements
-        .filter((item) => ['primary_button', 'secondary_button', 'shape_square', 'shape_horizontal', 'shape_vertical'].includes(item.kind))
+        .filter((item) => ['primary_button', 'secondary_button', 'shape_square', 'shape_horizontal', 'shape_vertical', 'freeform_rectangle', 'freeform_vertical'].includes(item.kind))
         .map((item) => ({
           type: item.kind,
           text: item.label,
@@ -329,7 +340,7 @@ function renderDesignElementContent(element: DesignElement) {
     )
   }
 
-  if (element.kind === 'shape_square' || element.kind === 'shape_horizontal' || element.kind === 'shape_vertical') {
+  if (element.kind === 'shape_square' || element.kind === 'shape_horizontal' || element.kind === 'shape_vertical' || element.kind === 'freeform_rectangle' || element.kind === 'freeform_vertical') {
     return (
       <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem', textAlign: 'center', fontSize: '0.62rem', fontWeight: 900, lineHeight: 1.15, overflowWrap: 'anywhere' }}>
         {element.label}
@@ -420,15 +431,41 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
   const mcSelections = useGameStore((s) => s.mcSelections)
   const goNext = useGoNext()
   const phoneRef = useRef<HTMLDivElement>(null)
+  const designCanvasRef = useRef<HTMLDivElement>(null)
   const [drag, setDrag] = useState<DragState | null>(null)
   const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 })
   const [canvasPan, setCanvasPan] = useState<CanvasPanState | null>(null)
+  const [designCanvasWidth, setDesignCanvasWidth] = useState(220)
 
   const templateVars = { playerName, branchFlags, mcSelections }
   const studio = parseStudioState(responses[node.bindingKey])
   const checks = buildChecks(studio, node)
   const selectedElement = studio.elements.find((item) => item.id === studio.selectedId)
   const canSubmit = checks.enoughElements && checks.notesReady
+  const phoneCanvasWidth = clamp(designCanvasWidth - 32, 72, 220)
+  const phoneCanvasHeight = Math.round(phoneCanvasWidth * phoneCanvasAspectRatio)
+  const phoneShellPadding = clamp(phoneCanvasWidth * 0.055, 4, 12)
+  const phoneShellRadius = clamp(phoneCanvasWidth * 0.14, 14, 30)
+  const phoneCanvasRadius = clamp(phoneCanvasWidth * 0.11, 12, 24)
+  const phoneNotchWidth = clamp(phoneCanvasWidth * 0.33, 28, 72)
+  const phoneNotchTop = clamp(phoneCanvasWidth * 0.036, 4, 8)
+  const phoneContentTop = clamp(phoneCanvasWidth * 0.082, 10, 18)
+
+  useEffect(() => {
+    const canvas = designCanvasRef.current
+    if (!canvas) return
+
+    const updateCanvasWidth = () => {
+      setDesignCanvasWidth(canvas.getBoundingClientRect().width)
+    }
+
+    updateCanvasWidth()
+    if (typeof ResizeObserver === 'undefined') return
+
+    const observer = new ResizeObserver(updateCanvasWidth)
+    observer.observe(canvas)
+    return () => observer.disconnect()
+  }, [])
 
   const persistStudio = (next: StudioState) => {
     setFreeTextResponse(node.bindingKey, serializeStudioState(next))
@@ -576,7 +613,7 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
           {interpolate(node.prompt, templateVars)}
         </div>
 
-        <DesktopOverlay width="88%" height="86%">
+        <DesktopOverlay>
           <LaptopFrame variant="figma" title={node.windowTitle ?? 'Friend Streaks Mockup.fig'} fill>
             <div style={{ height: '100%', minHeight: 0, display: 'flex', flexDirection: 'column', background: '#F7F1E3', color: '#1E1E1A' }}>
               <div style={{ height: 36, flexShrink: 0, borderBottom: '1px solid #CDBF94', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 0.75rem', background: '#EFE8D2' }}>
@@ -590,8 +627,8 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                 </div>
               </div>
 
-              <div style={{ flex: 1, minHeight: 0, display: 'grid', gridTemplateColumns: '176px minmax(280px, 1fr) 232px' }}>
-                <aside style={{ borderRight: '1px solid #CDBF94', padding: '0.65rem', display: 'flex', flexDirection: 'column', gap: '0.7rem', minHeight: 0, overflowY: 'auto' }}>
+              <div style={{ flex: 1, minHeight: 0, display: 'grid', gridTemplateColumns: studioGridColumns }}>
+                <aside style={{ borderRight: '1px solid #CDBF94', padding: '0.65rem', display: 'flex', flexDirection: 'column', gap: '0.7rem', minHeight: 0, minWidth: 0, overflowY: 'auto', overflowX: 'hidden' }}>
                   <PanelTitle>Components</PanelTitle>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                     {componentDefinitions.map((item) => (
@@ -606,6 +643,7 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                 </aside>
 
                 <main
+                  ref={designCanvasRef}
                   onPointerDown={onCanvasPointerDown}
                   onPointerMove={onCanvasPointerMove}
                   onPointerUp={stopCanvasPan}
@@ -633,7 +671,7 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                     }}
                   >
                     <div style={{ fontSize: '0.68rem', color: '#5A5548', fontWeight: 800 }}>{studio.mode === 'edit' ? 'Grab the canvas to pan; drag layers to arrange' : 'Prototype preview'}</div>
-                    <div style={{ padding: 12, borderRadius: 30, background: '#1E1E1A', boxShadow: '0 16px 36px rgba(0,0,0,0.24)', cursor: studio.mode === 'preview' ? 'default' : canvasPan ? 'grabbing' : 'grab' }}>
+                    <div style={{ padding: phoneShellPadding, borderRadius: phoneShellRadius, background: '#1E1E1A', boxShadow: '0 16px 36px rgba(0,0,0,0.24)', cursor: studio.mode === 'preview' ? 'default' : canvasPan ? 'grabbing' : 'grab' }}>
                       <div
                         ref={phoneRef}
                         onPointerMove={onPhonePointerMove}
@@ -642,17 +680,17 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                         onPointerDown={() => studio.mode === 'edit' && updateStudio({ selectedId: undefined })}
                         style={{
                           position: 'relative',
-                          width: 220,
-                          height: 458,
-                          borderRadius: 24,
+                          width: phoneCanvasWidth,
+                          height: phoneCanvasHeight,
+                          borderRadius: phoneCanvasRadius,
                           overflow: 'hidden',
                           background: '#FFFDF6',
                           border: '2px solid #000',
                           touchAction: 'none',
                         }}
                       >
-                        <div style={{ position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)', width: 72, height: 4, borderRadius: 99, background: '#D9CFB8' }} />
-                        <div style={{ position: 'absolute', inset: '18px 0 0 0', pointerEvents: 'none' }}>
+                        <div style={{ position: 'absolute', top: phoneNotchTop, left: '50%', transform: 'translateX(-50%)', width: phoneNotchWidth, height: 4, borderRadius: 99, background: '#D9CFB8' }} />
+                        <div style={{ position: 'absolute', inset: `${phoneContentTop}px 0 0 0`, pointerEvents: 'none' }}>
                           <div style={{ fontSize: '0.58rem', color: '#8A806E', textAlign: 'center', fontWeight: 800 }}>{studio.screenLabel}</div>
                         </div>
 
@@ -671,7 +709,7 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                                 height: `${element.h}%`,
                                 boxSizing: 'border-box',
                                 border: selected ? '2px solid #B87D6B' : `1px solid ${styles.border}`,
-                                borderRadius: element.kind.includes('button') || element.kind === 'status_chip' || element.kind === 'text_input' || element.kind === 'shape_horizontal' ? '999px' : element.kind.startsWith('shape_') ? '6px' : '8px',
+                                borderRadius: element.kind.includes('button') || element.kind === 'status_chip' || element.kind === 'text_input' || element.kind === 'shape_horizontal' ? '999px' : element.kind.startsWith('shape_') || element.kind.startsWith('freeform_') ? '6px' : '8px',
                       background: element.kind.includes('button') || element.kind === 'status_chip' || element.kind === 'text_input' ? 'transparent' : styles.bg,
                                 color: styles.text,
                                 boxShadow: selected ? '3px 3px 0 #B87D6B' : '0 2px 5px rgba(0,0,0,0.08)',
@@ -689,7 +727,7 @@ export default function ScreenDesignStudioScene({ node }: { node: ScreenDesignSt
                   </div>
                 </main>
 
-                <aside style={{ borderLeft: '1px solid #CDBF94', padding: '0.65rem', minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+                <aside style={{ borderLeft: '1px solid #CDBF94', padding: '0.65rem', minHeight: 0, minWidth: 0, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
                   <PanelTitle>Inspector</PanelTitle>
 
                   {selectedElement ? (

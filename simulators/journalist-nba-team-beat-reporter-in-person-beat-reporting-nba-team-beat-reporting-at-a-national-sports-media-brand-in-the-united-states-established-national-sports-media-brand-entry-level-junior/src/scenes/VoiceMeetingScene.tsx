@@ -28,7 +28,7 @@ function buildSystemPrompt(args: {
     ? 'Speak naturally, like a real colleague or client sitting or standing with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -96,15 +96,45 @@ function readTextField(item: Record<string, unknown>, key: string) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
+const structuredPlanLabels: Record<string, Record<string, string>> = {
+  'Coach availability question': {
+    need: 'Topic',
+    question: 'Question for Coach Harris',
+    risk: 'Why it matters',
+  },
+  'Reed postgame question': {
+    need: 'Topic',
+    question: 'Question for Reed',
+    risk: 'Why it matters',
+  },
+  'Confirmed fact from the given sources': {
+    need: 'Fact',
+    source: 'Given source',
+    question: 'Supports angle',
+  },
+  'Unconfirmed claim to leave out': {
+    need: 'Claim to avoid',
+    risk: 'Why not reportable',
+  },
+}
+
+function formatStructuredPlanField(item: Record<string, unknown>, key: string, fallbackLabel: string) {
+  const value = readTextField(item, key)
+  if (!value) return ''
+  const rowTitle = readTextField(item, 'rowTitle')
+  const label = structuredPlanLabels[rowTitle]?.[key] || fallbackLabel
+  return `${label}: ${value}`
+}
+
 function formatStructuredPlan(items: Array<Record<string, unknown>>) {
   return items
     .map((item, index) => {
       const lines = [
-        `Reporting Need #${index + 1}`,
-        readTextField(item, 'need') ? `Need: ${readTextField(item, 'need')}` : '',
-        readTextField(item, 'source') ? `Source: ${readTextField(item, 'source')}` : '',
-        readTextField(item, 'question') ? `Question or verification: ${readTextField(item, 'question')}` : '',
-        readTextField(item, 'risk') ? `Risk: ${readTextField(item, 'risk')}` : '',
+        readTextField(item, 'rowTitle') || `Plan Item #${index + 1}`,
+        formatStructuredPlanField(item, 'need', 'Need'),
+        formatStructuredPlanField(item, 'source', 'Source'),
+        formatStructuredPlanField(item, 'question', 'Question or verification'),
+        formatStructuredPlanField(item, 'risk', 'Risk'),
       ].filter(Boolean)
       return lines.join('\n')
     })
@@ -116,28 +146,13 @@ function formatPhysicalMemo(parsed: unknown) {
   if (!parsed || typeof parsed !== 'object') return ''
   const record = parsed as {
     observations?: Record<string, unknown>
-    actionLog?: Array<{ label?: unknown; observation?: unknown }>
   }
   const observations = record.observations && typeof record.observations === 'object'
     ? record.observations
     : {}
-  const runningNotes = typeof observations.__running_reporter_notes === 'string'
+  return typeof observations.__running_reporter_notes === 'string'
     ? observations.__running_reporter_notes.trim()
     : ''
-  const observationLines = Object.entries(observations)
-    .filter(([key, value]) => key !== '__running_reporter_notes' && typeof value === 'string' && value.trim() && value.trim() !== runningNotes)
-    .map(([key, value]) => `${humanizeKey(key)}: ${(value as string).trim()}`)
-  const actionLines = Array.isArray(record.actionLog)
-    ? record.actionLog
-      .filter((entry) => typeof entry.observation === 'string' && entry.observation.trim() && entry.observation.trim() !== runningNotes)
-      .map((entry) => `${typeof entry.label === 'string' ? entry.label : 'Observation'}: ${(entry.observation as string).trim()}`)
-    : []
-  const lines = [
-    runningNotes ? `Running reporter notes:\n${runningNotes}` : '',
-    observationLines.length ? `Inspection notes:\n${observationLines.join('\n')}` : '',
-    actionLines.length ? `Action log notes:\n${actionLines.join('\n')}` : '',
-  ].filter(Boolean)
-  return lines.join('\n\n')
 }
 
 function formatPossessionTimelineNotes(parsed: unknown) {
@@ -154,10 +169,9 @@ function formatPossessionTimelineNotes(parsed: unknown) {
     .map((id) => {
       const note = notes[id]
       if (!note || typeof note !== 'object' || Array.isArray(note)) return ''
-      const category = readTextField(note as Record<string, unknown>, 'categoryId')
       const text = readTextField(note as Record<string, unknown>, 'note')
       if (!text) return ''
-      return `${humanizeKey(id)}${category ? ` (${humanizeKey(category)})` : ''}: ${text}`
+      return `${humanizeKey(id)}: ${text}`
     })
     .filter(Boolean)
   return lines.join('\n')
@@ -171,7 +185,7 @@ function formatPrepNote(raw: string, key: string) {
       return formatStructuredPlan(parsed)
     }
     if (key === 'warmup_observation') {
-      return formatPhysicalMemo(parsed) || raw
+      return formatPhysicalMemo(parsed)
     }
     if (key === 'possession_timeline_notes') {
       return formatPossessionTimelineNotes(parsed) || raw
@@ -203,6 +217,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [liveNpc, setLiveNpc] = useState('')
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -213,6 +228,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const playerGoal = node.playerGoal ? interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }) : ''
   const endpoint = node.endpoint ? interpolate(node.endpoint, { playerName, branchFlags, mcSelections }) : ''
   const successCriteria = node.successCriteria ? interpolate(node.successCriteria, { playerName, branchFlags, mcSelections }) : ''
+  const preStartPrompt = node.preStartPrompt ? interpolate(node.preStartPrompt, { playerName, branchFlags, mcSelections }) : ''
   const prepReference = node.prepReferenceContent
     ? interpolate(node.prepReferenceContent, { playerName, branchFlags, mcSelections })
     : ''
@@ -231,7 +247,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const interviewNoteKey = node.noteBindingKey || ''
   const interviewNotes = interviewNoteKey ? freeTextResponses[interviewNoteKey] || '' : ''
   const interviewNotePrompt = node.notePrompt || 'Interview notes for your article'
-  const interviewNoteHelper = node.noteHelper || 'Take notes during this interview. You will write the fast gamer from these notes, your transcript, and the workplace source tabs.'
+  const interviewNoteHelper = node.noteHelper || 'Take notes during this interview. You will write the game article from these notes, your transcript, and the workplace tabs.'
   const interviewNotePlaceholder = node.notePlaceholder || 'Write exact quotes, useful paraphrases, follow-ups, and anything that needs verification before it becomes copy.'
   const hasReferenceContent = Boolean(prepReference || prepNotes.length)
   const minTurns = node.minTurns ?? 2
@@ -246,6 +262,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -392,8 +414,26 @@ export default function VoiceMeetingScene({ node }: Props) {
         <div style={{ fontSize: '0.75rem', opacity: 0.72 }}>{statusLabel}</div>
       </div>
 
+      {preStartPrompt && status === 'idle' && !meetingEnded && (
+        <div
+          style={{
+            marginTop: '0.875rem',
+            background: '#F7F1E3',
+            border: '1px solid #CDBF94',
+            borderLeft: '4px solid #B87D6B',
+            padding: '0.625rem 0.75rem',
+            fontSize: '0.8125rem',
+            lineHeight: 1.5,
+            color: '#3B3426',
+          }}
+        >
+          {preStartPrompt}
+        </div>
+      )}
+
       {/* Transcript */}
       <div
+        ref={transcriptRef}
         style={{
           flex: 1,
           marginTop: '0.875rem',
@@ -429,7 +469,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </div>
           </div>
         ))}
@@ -622,7 +662,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            {playerGoal && <div><strong>Your goal: </strong>{playerGoal}</div>}
+            {playerGoal && <div><strong>Your goal: </strong>{renderContentWithGlossary(playerGoal)}</div>}
             {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{endpoint}</div>}
             {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{successCriteria}</div>}
           </div>

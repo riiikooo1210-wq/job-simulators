@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -13,15 +13,22 @@ import { ChartIcon, CheckIcon, DocumentIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
 import type { CSSProperties, ReactNode } from 'react'
 import type { BriefingNode, BriefingSubStep, SlackMessageData, SourceInboxFile } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
 
+type BriefingContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
+
 function resolveSlackMessage(
   msg: SlackMessageData,
-  ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> },
+  ctx: BriefingContext,
 ): SlackMessageData {
   return {
     ...msg,
@@ -56,6 +63,63 @@ function BriefingReferenceCard({ title, content }: { title: string; content: str
   )
 }
 
+function CoworkerRecapTranscript({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const recap = node.coworkerRecap
+  const turns = recap?.turns || []
+
+  if (!recap || turns.length === 0) return null
+
+  const npc = recap.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap.speakerRole || npc?.role
+
+  return (
+    <section
+      style={{
+        border: '1px solid #000',
+        boxShadow: '4px 4px 0 #000',
+        backgroundColor: '#EFE8D2',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.85rem',
+      }}
+    >
+      <div>
+        <div style={{ fontSize: '0.6875rem', color: '#3A6B5E', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
+          Previous Chat
+        </div>
+        <h3 style={{ margin: '0.2rem 0 0', fontSize: '1rem', lineHeight: 1.3 }}>
+          {speakerName}'s recap
+        </h3>
+        {speakerRole && <div style={{ marginTop: '0.15rem', fontSize: '0.72rem', color: '#6f6758' }}>{speakerRole}</div>}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        {turns.map((turn, i) => (
+          <article
+            key={turn.id || i}
+            style={{
+              border: '1px solid #CDBF94',
+              backgroundColor: '#FBF7EA',
+              padding: '0.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.35rem',
+            }}
+          >
+            <div style={{ fontSize: '0.7rem', color: '#3A6B5E', fontWeight: 800 }}>
+              {turn.topic}
+            </div>
+            <div style={{ fontSize: '0.8125rem', lineHeight: 1.55, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+              {renderContentWithGlossary(interpolate(turn.coworkerLine, ctx))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export function BriefingDrawerContent({ node }: { node: BriefingNode }) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
@@ -72,6 +136,7 @@ export function BriefingDrawerContent({ node }: { node: BriefingNode }) {
           {renderContentWithGlossary(interpolate(node.content, ctx))}
         </p>
       )}
+      <CoworkerRecapTranscript node={node} ctx={ctx} />
       {referenceContent && (
         <BriefingReferenceCard title={node.referenceTitle || 'Reference'} content={referenceContent} />
       )}
@@ -204,6 +269,108 @@ function InlineIllustration({ src }: { src: string }) {
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           onError={() => setFailed(true)}
         />
+      )}
+    </div>
+  )
+}
+
+function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap?.speakerRole || npc?.role
+  const turns = recap?.turns || []
+  const [turnIndex, setTurnIndex] = useState(0)
+  const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
+  const messagesRef = useRef<HTMLDivElement | null>(null)
+  const complete = turns.length > 0 && turnIndex >= turns.length
+
+  useEffect(() => {
+    setTurnIndex(0)
+    setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
+  }, [node.id])
+
+  useEffect(() => {
+    const messagesEl = messagesRef.current
+    if (!messagesEl) return
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }, [messages])
+
+  if (!recap || turns.length === 0) return null
+
+  const advanceTurn = (nextMessages: { role: 'assistant' | 'user'; content: string }[]) => {
+    const nextIndex = turnIndex + 1
+    setTurnIndex(nextIndex)
+    if (nextIndex < turns.length) {
+      setMessages([...nextMessages, { role: 'assistant', content: turns[nextIndex].coworkerLine }])
+    } else {
+      setMessages(nextMessages)
+    }
+  }
+
+  const acknowledge = () => {
+    if (complete) return
+    advanceTurn([...messages, { role: 'user' as const, content: 'Okay' }])
+  }
+
+  return (
+    <div
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#EFE8D2',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.24)',
+        padding: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.7rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline' }}>
+        <div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>{speakerName}</div>
+          {speakerRole && <div style={{ fontSize: '0.68rem', color: '#6f6758' }}>{speakerRole}</div>}
+        </div>
+        <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 800 }}>
+          Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
+        </div>
+      </div>
+      <div ref={messagesRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            style={{
+              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+              maxWidth: '86%',
+              border: '1px solid #CDBF94',
+              backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
+              padding: '0.55rem 0.65rem',
+              fontSize: '0.8rem',
+              lineHeight: 1.45,
+              color: '#1E1E1A',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {renderContentWithGlossary(interpolate(message.content, ctx))}
+          </div>
+        ))}
+      </div>
+      {!complete && (
+        <button
+          type="button"
+          onClick={acknowledge}
+          style={{
+            alignSelf: 'flex-end',
+            border: '1px solid #000',
+            backgroundColor: '#F7F1E3',
+            color: '#1E1E1A',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.55rem 0.9rem',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          Okay
+        </button>
       )}
     </div>
   )
@@ -765,6 +932,7 @@ export default function BriefingScene({ node }: Props) {
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
   const goNext = useGoNext()
+  const ctx = { playerName, branchFlags, mcSelections }
 
   if (node.sourceInbox) {
     return <SourceInboxBriefing node={node} />
@@ -800,13 +968,14 @@ export default function BriefingScene({ node }: Props) {
             {node.illustration && <InlineIllustration src={node.illustration} />}
             {node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
-                {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
+                {renderContentWithGlossary(interpolate(node.content, ctx))}
               </p>
             )}
+            <CoworkerRecap node={node} ctx={ctx} />
             {node.referenceContent && (
               <BriefingReferenceCard
                 title={node.referenceTitle || 'Reference'}
-                content={interpolate(node.referenceContent, { playerName, branchFlags, mcSelections })}
+                content={interpolate(node.referenceContent, ctx)}
               />
             )}
             {node.slackMessages && node.slackMessages.length > 0 && (

@@ -58,6 +58,21 @@ export interface BriefingSubStep {
   quotes?: QuoteData[]
 }
 
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
+}
+
 export type NextRule =
   | string
   | null
@@ -150,6 +165,8 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  coworkerRecap?: CoworkerRecap
+  actionLabel?: string
   subSteps?: BriefingSubStep[]
   pages?: BriefingSubStep[]
   slackMessages?: SlackMessageData[]
@@ -169,6 +186,14 @@ export interface FreeTextNode extends BaseNode {
   minWords?: number
   maxWords?: number
   placeholder?: string
+  noteSections?: {
+    key: string
+    label: string
+    guidance: string
+    placeholder?: string
+    minRows?: number
+  }[]
+  wellNestAppMock?: boolean
 }
 
 export interface StructuredEntryNode extends BaseNode {
@@ -193,6 +218,7 @@ export interface ChatNode extends BaseNode {
   npcId: string
   goalPrompt: string
   playerGoal?: string
+  replyTargetLabel?: string
   maxTurns?: number
   initialMessages?: ChatMessage[]
   /**
@@ -242,6 +268,41 @@ export interface FinalReportNode extends BaseNode {
   type: 'final_report'
 }
 
+export type FlowDiagramNodeKind =
+  | 'entry_point'
+  | 'screen'
+  | 'action'
+  | 'decision_branch'
+  | 'final_interaction'
+
+export interface FlowDiagramNodeKindOption {
+  kind: FlowDiagramNodeKind
+  label: string
+  defaultLabel?: string
+}
+
+export interface FlowDiagramExampleStep {
+  kind: FlowDiagramNodeKind
+  label: string
+}
+
+export interface FlowDiagramLegendItem {
+  label: string
+  description: string
+}
+
+export interface FlowDiagramCompanionConfig {
+  npcId: string
+  title?: string
+  voiceName?: string
+  fallbackPrompt?: string
+  systemGuidance?: string
+  productFacts?: string[]
+  goodFlowCriteria?: string[]
+  directionGuide?: string[]
+  responsePolicy?: string[]
+}
+
 export interface FlowDiagramSceneNode extends BaseNode {
   type: 'flow_diagram'
   prompt: string
@@ -250,6 +311,16 @@ export interface FlowDiagramSceneNode extends BaseNode {
   rationaleBindingKey?: string
   minNodes?: number
   minEdges?: number
+  startNode?: {
+    id?: string
+    label: string
+    kind?: FlowDiagramNodeKind
+  }
+  nodeKinds?: FlowDiagramNodeKindOption[]
+  requiredNodeKinds?: FlowDiagramNodeKind[]
+  exampleFlow?: FlowDiagramExampleStep[]
+  legendItems?: FlowDiagramLegendItem[]
+  companion?: FlowDiagramCompanionConfig
 }
 
 export interface ScreenDesignStudioNode extends BaseNode {

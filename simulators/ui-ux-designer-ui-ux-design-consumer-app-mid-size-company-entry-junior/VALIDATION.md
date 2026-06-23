@@ -1,9 +1,9 @@
 # Validation report — ui-ux-designer-ui-ux-design-consumer-app-mid-size-company-entry-junior
 
-**Summary:** 13 pass · 5 warn · 0 fail (advisory)
+**Summary:** 13 pass · 3 warn · 0 fail (advisory)
 
 ## Next-rule references
-- ✅ All `next` references resolve (12 nodes).
+- ✅ All `next` references resolve (10 nodes).
 
 ## NPC references
 - ✅ All NPC references resolve (2 used).
@@ -15,7 +15,7 @@
 
 ## Scene mix
 - ✅ Constructed-response work present (4 scenes): scene_02_ideation, scene_03_checkin, scene_04_complications, scene_05_flow_diagram
-- ✅ Multiple-choice support present (1 scene(s)), for bounded decisions.
+- ✅ Multiple-choice support omitted; all active tasks are constructed-response, conversational, or tool-work scenes.
 - ✅ Voice meeting scene(s) present: scene_03_checkin.
 
 ## Action work mix
@@ -32,8 +32,7 @@
 - ✅ Typed message/chat NPC scene(s): scene_04_complications; verify these are realistic Slack/email/chat moments.
 
 ## MCQ branching
-- ⚠️ **MCQ branch/consequence issues:**
-  - scene_01_standup: branch case(s) missing for flag(s): research_sketch
+- (no findings)
 
 ## Source material visibility
 - (no findings)
@@ -48,17 +47,12 @@
 - ✅ Prep/reference materials avoid obvious answer-key phrasing.
 
 ## Scene images
-- ⚠️ **Missing scene images** (4 of 10):
-  - public/scenes/scene_01_standup.png
-  - public/scenes/scene_01b_meeting_redirect.png
-  - public/scenes/scene_01b_wait_redirect.png
+- ⚠️ **Missing scene images** (1 of 9):
   - public/scenes/scene_05_flow_diagram.png
 
 ## Citation markers
 - ✅ Citations: 23 unique sources, 18/22 paragraphs cited.
-- ⚠️ **1 factual-looking paragraphs without citation markers** (showing first 3):
-  - - **Story consequences by choice:**
-    - **A (high_fidelity) → Scene 1b-A:** Maya messages about an
+- (no findings)
 
 ## Rubric shape
 - ✅ Rubric has 5 criteria across 1 sections.

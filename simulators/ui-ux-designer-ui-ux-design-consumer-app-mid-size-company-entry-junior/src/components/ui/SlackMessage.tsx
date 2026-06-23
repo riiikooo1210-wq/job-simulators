@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { renderContentWithGlossary } from './JargonTerm'
 import type { SlackMessageData } from '../../types/game'
 
 interface SlackMessageProps {
@@ -43,7 +44,7 @@ export default function SlackMessage({ message, delay = 0 }: SlackMessageProps) 
           paddingLeft: '0.75rem',
         }}
       >
-        {message.content}
+        {renderContentWithGlossary(message.content)}
       </div>
     </motion.div>
   )

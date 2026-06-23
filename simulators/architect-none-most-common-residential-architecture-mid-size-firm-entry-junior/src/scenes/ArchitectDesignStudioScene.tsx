@@ -9,12 +9,15 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { storyline } from '../data/storyline'
 import { BriefingDrawerContent } from './BriefingScene'
-import type { ArchitectDesignStudioNode } from '../types/game'
+import { renderStructuredEntryAppTab } from './StructuredEntryScene'
+import type { ArchitectDesignStudioNode, StructuredEntryNode } from '../types/game'
+import type { StructuredEntryContext } from './StructuredEntryScene'
 
 type RoomLabelId = 'kitchen' | 'mudroom' | 'bedroom'
 type ActiveTool = 'select' | RoomLabelId
-type AppTabId = 'revit' | 'site' | 'photo' | 'slack'
+type AppTabId = 'revit' | 'verifyReplies' | 'replySummary'
 type RevitViewId = 'level1' | 'level2' | 'westElevation'
 
 interface Point {
@@ -54,10 +57,12 @@ const FEET_PER_SITE_UNIT = 1.4
 
 const appTabs: { id: AppTabId; label: string }[] = [
   { id: 'revit', label: 'Revit' },
-  { id: 'site', label: 'Site + Zoning' },
-  { id: 'photo', label: 'Riley Photo' },
-  { id: 'slack', label: 'Slack' },
+  { id: 'verifyReplies', label: 'Verify Replies' },
+  { id: 'replySummary', label: 'Reply Summary' },
 ]
+
+const reviewVerifyRepliesNode = storyline.nodes.review_verify_replies as StructuredEntryNode | undefined
+const verifyRepliesTab = reviewVerifyRepliesNode?.appTabs?.find((tab) => tab.id === 'verify_replies')
 
 const roomTools: { id: RoomLabelId; label: string; shortLabel: string; level: RevitViewId }[] = [
   { id: 'kitchen', label: 'Kitchen remodel area', shortLabel: 'Kitchen', level: 'level1' },
@@ -215,6 +220,21 @@ function toolButtonStyle(active: boolean): CSSProperties {
   }
 }
 
+function parseReplySummary(raw: string | undefined) {
+  if (!raw) return ''
+  try {
+    const parsed = JSON.parse(raw)
+    if (Array.isArray(parsed)) {
+      const firstSummary = parsed.find((item) => typeof item?.summary === 'string')?.summary
+      return firstSummary ?? ''
+    }
+    if (typeof parsed?.summary === 'string') return parsed.summary
+  } catch {
+    return raw
+  }
+  return ''
+}
+
 export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDesignStudioNode }) {
   const responses = useGameStore((s) => s.freeTextResponses)
   const setFreeTextResponse = useGameStore((s) => s.setFreeTextResponse)
@@ -233,11 +253,12 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
 
   const context = { playerName, branchFlags, mcSelections }
   const analysis = useMemo(() => analyzeState(studio), [studio])
+  const replySummary = useMemo(() => parseReplySummary(responses.verify_resolution_summary), [responses.verify_resolution_summary])
   const visibleRoomTools = roomTools.filter((tool) => tool.level === activeLevel)
   const minNotesWords = node.minNotesWords ?? Math.ceil((node.minNotesChars ?? 90) / 5)
   const noteWordCount = countNoteWords(studio.notes)
   const notesReady = noteWordCount >= minNotesWords
-  const windowReady = Boolean(studio.windowStrategy)
+  const windowReady = studio.windowStrategy === 'translucent_glass'
   const canSubmit = analysis.blockers.length === 0 && analysis.roomsPlaced && windowReady && notesReady
 
   const save = (next: StudioState) => {
@@ -493,7 +514,7 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                     >
                       <rect x={0} y={0} width={SITE.w} height={SITE.h} fill="#FBF7EA" />
                       <image
-                        href={activeLevel === 'level1' ? '/action-assets/revit/level1.png' : '/action-assets/revit/level2.jpeg'}
+                        href={activeLevel === 'level1' ? '/action-assets/revit/level1.png' : '/action-assets/revit/level2.png'}
                         x={planImageX}
                         y={planImageY}
                         width={planImageWidth}
@@ -585,7 +606,7 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                 </div>
                   )
                 ) : (
-                  <SourceTabContent activeTab={activeAppTab} />
+                  <SourceTabContent activeTab={activeAppTab} replySummary={replySummary} context={context} />
                 )}
               </main>
 
@@ -660,7 +681,7 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
             <div>
               <h2 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 900, color: '#3A6B5E' }}>Design Notes</h2>
               <div style={{ marginTop: '0.25rem', fontSize: '0.78rem', lineHeight: 1.55, color: '#555' }}>
-                Write a short note to Maya/Owen that explains the plan move, the room locations, the west-window privacy choice, and how the option handles setback, lot coverage, maple tree, and utility-clear constraints.
+                Write a short note to Maya/Owen that explains the plan move, the room locations, the translucent-glass privacy choice, and how the option handles setback, lot coverage, maple tree, and utility-clear constraints.
               </div>
             </div>
             <div style={{ fontSize: '0.72rem', color: notesReady ? '#3A6B5E' : '#6A604B', fontWeight: 800 }}>
@@ -691,7 +712,7 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
           <div style={{ flex: '1 1 360px' }}>
             <div style={{ fontSize: '0.78rem', fontWeight: 950, color: '#8B5E50', marginBottom: '0.25rem' }}>Submit Full Schematic Option</div>
             <div style={{ fontSize: '0.75rem', lineHeight: 1.45, color: canSubmit ? '#3A6B5E' : '#6A604B' }}>
-              Required: Level 1 kitchen/mudroom tags, Level 2 suite tag, window strategy, live constraints with no blockers, and design notes.
+              Required: Level 1 kitchen/mudroom tags, Level 2 suite tag, Translucent glass privacy strategy, live constraints with no blockers, and design notes.
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -752,121 +773,42 @@ function WestElevationCanvas({
           )}
         </svg>
         <div style={{ borderTop: '1px solid #CDBF94', padding: '0.6rem 0.75rem', fontSize: '0.75rem', lineHeight: 1.55, color: '#333' }}>
-          West bedroom window privacy review. Placed strategy: <strong>{selectedWindowStrategy ?? 'none yet'}</strong>. Use this to balance daylight for Dana against the west-neighbor privacy concern.
+          West bedroom window privacy review. Placed strategy: <strong>{selectedWindowStrategy ?? 'none yet'}</strong>. Dana wants privacy without losing daylight, so the resolved direction is translucent/privacy glass.
         </div>
       </div>
     </div>
   )
 }
 
-function SourceTabContent({ activeTab }: { activeTab: Exclude<AppTabId, 'revit'> }) {
-  if (activeTab === 'site') {
-    return (
-      <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-        <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.75rem', alignContent: 'start' }}>
-            <InfoBlock title="Zoning">
-              Rear setback: 25 ft minimum. Side setback: 5 ft minimum. Max lot coverage: 45%. Max height: 30 ft.
-            </InfoBlock>
-            <InfoBlock title="Design Priorities">
-              More daylight, a better kitchen, mudroom, bedroom suite, cost control, privacy, and preserving the mature maple.
-            </InfoBlock>
-            <InfoBlock title="How to use this">
-              Read these limits, return to Revit, and adjust the footprint before submitting. This tab is a reference note, not a live model view.
-            </InfoBlock>
-        </div>
-      </div>
-    )
-  }
-
-  if (activeTab === 'slack') {
-    return (
-      <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-        <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem' }}>
-          <StaticSlackMessage
-            sender="Maya Chen"
-            role="Project Architect"
-            timestamp="2:38 PM"
-            initials="MC"
-            content="Owen and I reviewed Riley's basement-window / utility concern. Treat the right-rear utility clear zone as fixed for this option: keep the addition footprint out of it and note that the clearance is already coordinated for this schematic study."
-          />
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-      <div style={{ minHeight: 420, height: '100%', border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', display: 'grid', gridTemplateRows: 'minmax(260px, 1fr) auto' }}>
-        <div style={{ padding: '0.75rem', minHeight: 0 }}>
-          <img
-            src="/scenes/site_observation.png"
-            alt="Riley site photo showing the proposed foundation area near the basement window and utility service"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', border: '1px solid #CDBF94', display: 'block' }}
-          />
-        </div>
-        <div style={{ borderTop: '1px solid #CDBF94', padding: '0.7rem 0.85rem', fontSize: '0.75rem', lineHeight: 1.55, color: '#333' }}>
-          Maya/Owen reviewed Riley's basement-window and utility concern before this study. Keep the footprint out of the right-rear utility clear zone.
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function StaticSlackMessage({
-  sender,
-  role,
-  timestamp,
-  initials,
-  content,
+function SourceTabContent({
+  activeTab,
+  replySummary,
+  context,
 }: {
-  sender: string
-  role: string
-  timestamp: string
-  initials: string
-  content: string
+  activeTab: Exclude<AppTabId, 'revit'>
+  replySummary: string
+  context: StructuredEntryContext
 }) {
-  return (
-    <div style={{ border: '1px solid #D8D1C1', background: '#F7F1E3', borderRadius: 6, overflow: 'hidden' }}>
-      <div style={{ borderBottom: '1px solid #D8D1C1', background: '#EFE8D2', padding: '0.45rem 0.65rem', fontSize: '0.68rem', fontWeight: 850, color: '#3F605C' }}>
-        #maple-street-addition
-      </div>
-      <div style={{ display: 'flex', gap: '0.625rem', padding: '0.65rem 0.75rem' }}>
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 6,
-            backgroundColor: '#3D405B',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            marginTop: 2,
-          }}
-        >
-          <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.02em' }}>{initials}</span>
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-            <span style={{ fontWeight: 800, fontSize: '0.86rem', color: '#1d1c1d' }}>{sender}</span>
-            <span style={{ fontSize: '0.68rem', color: '#616061', fontWeight: 650 }}>{role}</span>
-            <span style={{ fontSize: '0.68rem', color: '#9e9e9e', marginLeft: 'auto', whiteSpace: 'nowrap' }}>{timestamp}</span>
-          </div>
-          <div style={{ fontSize: '0.82rem', lineHeight: 1.55, color: '#1d1c1d', whiteSpace: 'pre-wrap', marginTop: '0.15rem' }}>
-            {content}
-          </div>
+  if (activeTab === 'replySummary') {
+    return (
+      <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
+        <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem', fontSize: '0.82rem', lineHeight: 1.6, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+          {replySummary.trim()}
         </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-function InfoBlock({ title, children }: { title: string; children: string }) {
+  if (verifyRepliesTab) {
+    return (
+      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', background: '#F7F1E3' }}>
+        {renderStructuredEntryAppTab(verifyRepliesTab, context)}
+      </div>
+    )
+  }
+
   return (
-    <div style={{ borderLeft: '4px solid #3A6B5E', background: '#F7F1E3', padding: '0.55rem 0.65rem' }}>
-      <div style={{ fontSize: '0.7rem', fontWeight: 950, color: '#3A6B5E', marginBottom: '0.3rem' }}>{title}</div>
-      <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#333' }}>{children}</div>
-    </div>
+    <div style={{ flex: 1, minHeight: 0, background: '#F7F1E3' }} />
   )
 }
 

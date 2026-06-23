@@ -14,6 +14,8 @@ import type { ChatMessage, VoiceMeetingNode } from '../types/game'
 
 interface Props { node: VoiceMeetingNode }
 
+const inPersonTranscriptHeight = 'clamp(180px, 30vh, 260px)'
+
 function buildSystemPrompt(args: {
   node: VoiceMeetingNode
   npc: { name: string; role: string; persona: string; voice?: string }
@@ -28,7 +30,7 @@ function buildSystemPrompt(args: {
     ? 'Speak naturally, like a real colleague or manager sitting with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -72,6 +74,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
+  const previousDesignNotes = useGameStore((s) => s.freeTextResponses.scene_02_ideation || '')
   const goNext = useGoNext()
 
   const [status, setStatus] = useState<LiveStatus>('idle')
@@ -83,6 +86,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [liveNpc, setLiveNpc] = useState('')
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -95,6 +99,8 @@ export default function VoiceMeetingScene({ node }: Props) {
   const userTurns = messages.filter((m) => m.role === 'user').length
   const canSubmit = meetingEnded && userTurns >= minTurns
   const isInPerson = (node.meetingMode || node.presentation) === 'in_person'
+  const showPreviousDesignNotes = node.id === 'scene_03_checkin'
+  const designNotesText = previousDesignNotes.trim()
 
   useEffect(() => {
     if (initializedRef.current) return
@@ -103,6 +109,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -234,7 +246,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                 color: '#444',
               }}
             >
-              <strong>Your goal: </strong>{interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
+              <strong>Your goal: </strong>{renderContentWithGlossary(interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }))}
             </div>
           )}
 
@@ -315,57 +327,85 @@ export default function VoiceMeetingScene({ node }: Props) {
             )}
           </div>
 
-          <div
-            style={{
-              background: '#FFF8E8',
-              border: '1px solid rgba(0,0,0,0.22)',
-              padding: '0.75rem',
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              minHeight: 150,
-              maxHeight: 260,
-              color: '#1E1E1A',
-            }}
-          >
-            {messages.length === 0 && !liveUser && !liveNpc && (
-              <div style={{ fontSize: '0.8125rem', opacity: 0.65 }}>
-                Press Speak when you are ready. Your spoken conversation with {npc.name} will appear here for grading.
-              </div>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
-                <div style={{ fontSize: '0.6875rem', opacity: 0.65, marginBottom: 2 }}>
-                  {m.role === 'user' ? 'You' : npc.name}
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: '0.75rem', minWidth: 0 }}>
+            <div
+              ref={transcriptRef}
+              style={{
+                flex: '1 1 0',
+                minWidth: 0,
+                height: inPersonTranscriptHeight,
+                background: '#FFF8E8',
+                border: '1px solid rgba(0,0,0,0.22)',
+                padding: '0.75rem',
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                color: '#1E1E1A',
+              }}
+            >
+              {messages.length === 0 && !liveUser && !liveNpc && (
+                <div style={{ fontSize: '0.8125rem', opacity: 0.65 }}>
+                  Press Speak when you are ready. Your spoken conversation with {npc.name} will appear here for grading.
                 </div>
-                <div
-                  style={{
-                    background: m.role === 'user' ? '#B87D6B' : '#F2EBD9',
-                    color: m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
-                    border: '1px solid rgba(0,0,0,0.18)',
-                    padding: '0.5rem 0.625rem',
-                    borderRadius: '4px',
-                    fontSize: '0.8125rem',
-                    lineHeight: 1.45,
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  {m.content}
+              )}
+              {messages.map((m, i) => (
+                <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
+                  <div style={{ fontSize: '0.6875rem', opacity: 0.65, marginBottom: 2 }}>
+                    {m.role === 'user' ? 'You' : npc.name}
+                  </div>
+                  <div
+                    style={{
+                      background: m.role === 'user' ? '#B87D6B' : '#F2EBD9',
+                      color: m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
+                      border: '1px solid rgba(0,0,0,0.18)',
+                      padding: '0.5rem 0.625rem',
+                      borderRadius: '4px',
+                      fontSize: '0.8125rem',
+                      lineHeight: 1.45,
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {renderContentWithGlossary(m.content)}
+                  </div>
                 </div>
-              </div>
-            ))}
-            {liveUser && (
-              <div style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.72 }}>
-                <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>You</div>
-                <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveUser}</div>
-              </div>
-            )}
-            {liveNpc && (
-              <div style={{ alignSelf: 'flex-start', maxWidth: '88%', opacity: 0.72 }}>
-                <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>{npc.name}</div>
-                <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveNpc}</div>
-              </div>
+              ))}
+              {liveUser && (
+                <div style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.72 }}>
+                  <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>You</div>
+                  <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveUser}</div>
+                </div>
+              )}
+              {liveNpc && (
+                <div style={{ alignSelf: 'flex-start', maxWidth: '88%', opacity: 0.72 }}>
+                  <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>{npc.name}</div>
+                  <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveNpc}</div>
+                </div>
+              )}
+            </div>
+
+            {showPreviousDesignNotes && (
+              <aside
+                aria-label="Earlier design notes"
+                style={{
+                  flex: '0 1 280px',
+                  minWidth: 220,
+                  maxWidth: '32%',
+                  height: inPersonTranscriptHeight,
+                  background: '#F7F1E3',
+                  border: '1px solid rgba(0,0,0,0.22)',
+                  padding: '0.75rem',
+                  overflowY: 'auto',
+                  color: '#1E1E1A',
+                }}
+              >
+                <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', marginBottom: '0.45rem' }}>
+                  Design note
+                </div>
+                <div style={{ fontSize: '0.8125rem', lineHeight: 1.55, whiteSpace: 'pre-wrap', color: designNotesText ? '#1E1E1A' : '#777' }}>
+                  {designNotesText || 'No design notes saved yet.'}
+                </div>
+              </aside>
             )}
           </div>
 
@@ -413,7 +453,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            <strong>Your goal: </strong>{interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
+            <strong>Your goal: </strong>{renderContentWithGlossary(interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }))}
           </div>
         )}
 
@@ -452,6 +492,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
               {/* Transcript */}
               <div
+                ref={transcriptRef}
                 style={{
                   flex: 1,
                   marginTop: '0.875rem',
@@ -487,7 +528,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                         whiteSpace: 'pre-wrap',
                       }}
                     >
-                      {m.content}
+                      {renderContentWithGlossary(m.content)}
                     </div>
                   </div>
                 ))}

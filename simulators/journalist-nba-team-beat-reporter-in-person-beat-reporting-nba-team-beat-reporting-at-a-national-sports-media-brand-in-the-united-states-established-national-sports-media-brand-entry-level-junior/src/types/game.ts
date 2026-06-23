@@ -79,6 +79,27 @@ export interface BriefingSubStep {
   cmsSidebarRules?: CmsSidebarRuleData[]
 }
 
+export interface BriefingMemoryCard {
+  title?: string
+  bullets: string[]
+}
+
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+  nextCue?: string
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
+}
+
 export type NextRule =
   | string
   | null
@@ -144,6 +165,13 @@ export interface StructuredEntryField {
 export interface StructuredEntryDefinition {
   itemLabel: string
   fields: StructuredEntryField[]
+  rowGuides?: {
+    title: string
+    sourceHint?: string
+    hiddenFields?: string[]
+    fieldOverrides?: Record<string, Partial<Omit<StructuredEntryField, 'key'>>>
+    fieldValues?: Record<string, string>
+  }[]
   initialCount?: number
   minItems?: number
   maxItems?: number
@@ -192,6 +220,9 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  memoryCard?: BriefingMemoryCard
+  coworkerRecap?: CoworkerRecap
+  referenceForSection?: boolean
   actionLabel?: string
   referenceTitle?: string
   referenceContent?: string
@@ -205,11 +236,24 @@ export interface BriefingNode extends BaseNode {
   cmsSidebarRules?: CmsSidebarRuleData[]
 }
 
+export interface StaticAppTab {
+  id: string
+  label: string
+  kind?: 'text' | 'editor_thread' | 'email' | 'game_materials' | 'social_media'
+  content?: string
+  slackMessages?: SlackMessageData[]
+  emails?: EmailData[]
+  metrics?: MetricRow[]
+  socialPosts?: SocialPostData[]
+  cmsSidebarRules?: CmsSidebarRuleData[]
+}
+
 export interface MultipleChoiceNode extends BaseNode {
   type: 'multiple_choice'
   options: MCOption[]
   prompt?: string
   slackMessages?: SlackMessageData[]
+  appTabs?: StaticAppTab[]
 }
 
 export interface FreeTextNode extends BaseNode {
@@ -253,6 +297,7 @@ export interface FreeTextNode extends BaseNode {
 export interface StructuredEntryNode extends BaseNode {
   type: 'structured_entry'
   prompt: string
+  appTabs?: StaticAppTab[]
   definition: StructuredEntryDefinition
 }
 
@@ -299,6 +344,7 @@ export interface VoiceMeetingNode extends BaseNode {
   endpoint?: string
   successCriteria?: string
   meetingContext?: string
+  preStartPrompt?: string
   /** Use in_person for colocated workplace conversations; omit/remote for video or phone calls. */
   meetingMode?: 'in_person' | 'remote'
   /** Legacy alias used by older generated simulators; prefer meetingMode in new configs. */
@@ -754,10 +800,17 @@ export interface PossessionTimelineNode extends BaseNode {
   categories: PossessionTimelineCategory[]
   events: PossessionTimelineEvent[]
   summaryPrompt: string
+  questionCount?: number
   questionPrompts?: string[]
   questionPlaceholders?: string[]
-  followUpPrompt?: string
-  followUpPlaceholder?: string
+  questionReference?: {
+    bindingKey: string
+    rowTitle: string
+    title?: string
+    helper?: string
+  }
+  questionGuidanceTitle?: string
+  questionGuidance?: string
   referenceTitle?: string
   referenceContent?: string
 }

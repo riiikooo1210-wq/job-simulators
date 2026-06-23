@@ -126,6 +126,48 @@ RULES:
   })
 }
 
+export async function coworkerRecapReply(args: {
+  speakerName: string
+  speakerRole?: string
+  topic: string
+  question: string
+  facts: string[]
+  fallback: string
+}): Promise<string> {
+  if (!args.facts.length) return args.fallback
+
+  const system = `You are ${args.speakerName}${args.speakerRole ? `, ${args.speakerRole}` : ''}, giving a short onboarding recap for a workplace simulator.
+
+RULES:
+- Answer only from the provided facts.
+- If the student's question cannot be answered from the facts, reply exactly with the fallback.
+- Keep the reply under 55 words.
+- Do not invent names, numbers, documents, deadlines, risks, or decisions.
+- Do not mention being an AI, a model, or a simulator.`
+
+  const prompt = `TOPIC:
+${args.topic}
+
+FACTS YOU MAY USE:
+${args.facts.map((fact) => `- ${fact}`).join('\n')}
+
+FALLBACK:
+${args.fallback}
+
+STUDENT QUESTION:
+${args.question}
+
+Reply as ${args.speakerName}.`
+
+  return callGemini({
+    models: NPC_MODELS,
+    prompt,
+    temperature: 0.2,
+    jsonMode: false,
+    systemInstruction: system,
+  })
+}
+
 // ============================================================================
 // Grading
 // ============================================================================
@@ -141,15 +183,22 @@ interface SerializedState {
 
 function tryFormatFlowDiagram(v: string): string | null {
   try {
-    const data = JSON.parse(v) as { nodes?: unknown[]; edges?: unknown[] }
+    const data = JSON.parse(v) as {
+      nodes?: Array<{ id?: string; label?: string; kind?: string }>
+      edges?: Array<{ source?: string; target?: string; label?: string }>
+    }
     if (!Array.isArray(data.nodes) || !Array.isArray(data.edges)) return null
-    const nodeMap = new Map(data.nodes.map((n: any) => [n.id, n.label as string]))
-    const lines = [`USER FLOW DIAGRAM (${data.nodes.length} screens, ${data.edges.length} transitions):`]
-    lines.push('Screens: ' + data.nodes.map((n: any) => `"${n.label}"`).join(', '))
-    for (const e of data.edges as any[]) {
+    const nodeMap = new Map(data.nodes.map((n) => [n.id, n.label as string]))
+    const lines = [`USER FLOW DIAGRAM (${data.nodes.length} nodes, ${data.edges.length} transitions):`]
+    lines.push('Nodes:')
+    for (const n of data.nodes) {
+      lines.push(`  ${n.kind ?? 'screen'}: "${n.label ?? ''}"`)
+    }
+    lines.push('Transitions:')
+    for (const e of data.edges) {
       const from = nodeMap.get(e.source) ?? e.source
       const to = nodeMap.get(e.target) ?? e.target
-      lines.push(`  "${from}" → "${to}" [button/link label: "${e.label || '→'}"]`)
+      lines.push(`  "${from}" → "${to}" [path label: "${e.label || 'unlabeled'}"]`)
     }
     return lines.join('\n')
   } catch {
@@ -157,11 +206,72 @@ function tryFormatFlowDiagram(v: string): string | null {
   }
 }
 
+type ScreenMockupElementForGrading = {
+  kind?: string
+  label?: string
+  detail?: string
+  variant?: string
+  x?: number
+  y?: number
+  w?: number
+  h?: number
+}
+
+const BUTTON_OVERLAP_RATIO_THRESHOLD = 0.02
+const explicitButtonKinds = new Set(['primary_button', 'secondary_button'])
+const customButtonKinds = new Set(['shape_square', 'shape_horizontal', 'shape_vertical', 'freeform_rectangle', 'freeform_vertical'])
+const actionLabelPattern = /(button|cta|tap|mark|message|send|invite|accept|view|complete|continue|start|share|remind|nudge|check|log|open|ボタン|記録|完了|送信|招待|承認|見る|表示|続ける|開始|共有|リマインド|メッセージ|チェック|開く)/i
+
+function hasElementBounds(item: ScreenMockupElementForGrading): item is ScreenMockupElementForGrading & { x: number; y: number; w: number; h: number } {
+  return [item.x, item.y, item.w, item.h].every((value) => typeof value === 'number' && Number.isFinite(value))
+}
+
+function isButtonLikeElement(item: ScreenMockupElementForGrading): boolean {
+  const kind = item.kind ?? ''
+  if (explicitButtonKinds.has(kind)) return true
+  if (!customButtonKinds.has(kind)) return false
+  return actionLabelPattern.test(`${item.label ?? ''} ${item.detail ?? ''}`)
+}
+
+function formatPercentNumber(value: number | undefined): string {
+  return typeof value === 'number' && Number.isFinite(value) ? `${Math.round(value * 10) / 10}%` : 'n/a'
+}
+
+function describeElement(item: ScreenMockupElementForGrading): string {
+  return `${item.kind ?? 'element'} "${item.label ?? ''}"`
+}
+
+function getOverlapRatio(
+  a: ScreenMockupElementForGrading & { x: number; y: number; w: number; h: number },
+  b: ScreenMockupElementForGrading & { x: number; y: number; w: number; h: number }
+): number {
+  const overlapW = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x))
+  const overlapH = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y))
+  const overlapArea = overlapW * overlapH
+  if (overlapArea <= 0) return 0
+  const smallerArea = Math.min(a.w * a.h, b.w * b.h)
+  return smallerArea > 0 ? overlapArea / smallerArea : 0
+}
+
+function findButtonOverlaps(elements: ScreenMockupElementForGrading[]): string[] {
+  const candidates = elements.filter(isButtonLikeElement).filter(hasElementBounds)
+  const overlaps: string[] = []
+  for (let i = 0; i < candidates.length; i++) {
+    for (let j = i + 1; j < candidates.length; j++) {
+      const ratio = getOverlapRatio(candidates[i], candidates[j])
+      if (ratio > BUTTON_OVERLAP_RATIO_THRESHOLD) {
+        overlaps.push(`${describeElement(candidates[i])} overlaps ${describeElement(candidates[j])} by ${Math.round(ratio * 100)}% of the smaller control`)
+      }
+    }
+  }
+  return overlaps
+}
+
 function tryFormatScreenMockup(v: string): string | null {
   try {
     const data = JSON.parse(v) as {
       screenLabel?: string
-      elements?: Array<{ kind?: string; label?: string; detail?: string; variant?: string }>
+      elements?: ScreenMockupElementForGrading[]
       notes?: string
       summary?: {
         selectedScreen?: string
@@ -177,6 +287,8 @@ function tryFormatScreenMockup(v: string): string | null {
     const buttonsAndShapes = data.summary?.buttonsAndShapes ?? elements
       .filter((item) => ['primary_button', 'secondary_button', 'shape_square', 'shape_horizontal', 'shape_vertical'].includes(item.kind ?? ''))
       .map((item) => ({ type: item.kind, text: item.label, notes: item.detail }))
+    const buttonCandidates = elements.filter(isButtonLikeElement)
+    const buttonOverlaps = findButtonOverlaps(elements)
 
     const lines = [`SCREEN MOCKUP (${data.summary?.elementCount ?? elements.length} layers):`]
     lines.push(`Fixed screen: "${selectedScreen}"`)
@@ -188,9 +300,23 @@ function tryFormatScreenMockup(v: string): string | null {
     } else {
       lines.push('Buttons/shapes created: none')
     }
+    lines.push('Button/CTA candidates considered for deterministic overlap check:')
+    if (buttonCandidates.length > 0) {
+      for (const item of buttonCandidates) {
+        lines.push(`  ${describeElement(item)} at x=${formatPercentNumber(item.x)} y=${formatPercentNumber(item.y)} w=${formatPercentNumber(item.w)} h=${formatPercentNumber(item.h)}`)
+      }
+    } else {
+      lines.push('  none')
+    }
+    if (buttonOverlaps.length > 0) {
+      lines.push(`DETERMINISTIC BUTTON/CTA OVERLAP CHECK: FAIL (threshold > ${Math.round(BUTTON_OVERLAP_RATIO_THRESHOLD * 100)}% of smaller control)`)
+      for (const overlap of buttonOverlaps) lines.push(`  ${overlap}`)
+    } else {
+      lines.push(`DETERMINISTIC BUTTON/CTA OVERLAP CHECK: PASS (no button/CTA candidates overlap above ${Math.round(BUTTON_OVERLAP_RATIO_THRESHOLD * 100)}% of smaller control)`)
+    }
     lines.push('All layers:')
     for (const item of elements) {
-      lines.push(`  ${item.kind ?? 'element'}: "${item.label ?? ''}" (${item.detail ?? ''}; variant: ${item.variant ?? 'n/a'})`)
+      lines.push(`  ${item.kind ?? 'element'}: "${item.label ?? ''}" (${item.detail ?? ''}; variant: ${item.variant ?? 'n/a'}; x=${formatPercentNumber(item.x)} y=${formatPercentNumber(item.y)} w=${formatPercentNumber(item.w)} h=${formatPercentNumber(item.h)})`)
     }
     lines.push(`Implementation note: ${data.summary?.implementationNote ?? data.notes ?? '(missing)'}`)
     return lines.join('\n')
@@ -236,6 +362,41 @@ function tryFormatPriorityMatrix(v: string): string | null {
   }
 }
 
+function responseSourceLabel(key: string): string {
+  const directNode = storyline.nodes[key]
+  if (directNode) return `[${key}] ${directNode.title}`
+
+  for (const node of Object.values(storyline.nodes)) {
+    const n = node as { id?: string; title?: string; bindingKey?: string; rationaleBindingKey?: string }
+    const rationaleKey = n.rationaleBindingKey ?? (n.bindingKey ? `${n.bindingKey}_rationale` : undefined)
+    if (n.bindingKey === key || rationaleKey === key) {
+      return `[${n.id ?? key} / ${key}] ${n.title ?? ''}`.trim()
+    }
+  }
+
+  return `[${key}]`
+}
+
+function conversationSourceLabel(conversationId: string): string {
+  const keyParts = conversationId.split(':')
+  const embeddedSceneId = keyParts.find((part) => Boolean(storyline.nodes[part]))
+  if (embeddedSceneId) {
+    const scene = storyline.nodes[embeddedSceneId]
+    return `${conversationId} | source scene: ${embeddedSceneId} (${scene.title})`
+  }
+
+  const matchingScenes = Object.values(storyline.nodes)
+    .map((node) => node as { id?: string; title?: string; npcId?: string })
+    .filter((node) => node.npcId === conversationId)
+
+  if (matchingScenes.length === 1) {
+    const scene = matchingScenes[0]
+    return `${conversationId} | source scene: ${scene.id} (${scene.title ?? ''})`
+  }
+
+  return conversationId
+}
+
 function serializeState(s: SerializedState): string {
   const parts: string[] = []
   parts.push(`PLAYER: ${s.playerName || 'Anonymous'}`)
@@ -261,7 +422,8 @@ function serializeState(s: SerializedState): string {
       tryFormatScreenMockup(v) ??
       tryFormatKanban(v) ??
       tryFormatPriorityMatrix(v)
-    parts.push(formatted ? `\n[${k}]\n${formatted}` : `\n[${k}]\n${v}`)
+    const source = responseSourceLabel(k)
+    parts.push(formatted ? `\n${source}\n${formatted}` : `\n${source}\n${v}`)
   }
 
   parts.push('\n=== NPC CONVERSATIONS ===')
@@ -270,7 +432,7 @@ function serializeState(s: SerializedState): string {
     const npcId = keyParts[keyParts.length - 1] || conversationId
     const npc = npcs[conversationId] || npcs[npcId]
     if (!msgs.length) continue
-    parts.push(`\n--- with ${npc?.name ?? conversationId} (${npc?.role ?? ''}) [${conversationId}] ---`)
+    parts.push(`\n--- with ${npc?.name ?? conversationId} (${npc?.role ?? ''}) [${conversationSourceLabel(conversationId)}] ---`)
     for (const m of msgs) {
       const speaker = m.role === 'user' ? 'CANDIDATE' : npc?.name ?? 'NPC'
       parts.push(`${speaker}: ${m.content}`)
@@ -323,7 +485,14 @@ INSTRUCTIONS:
 2. For EVERY criterion, provide a score (0-${rubric.max_score_per_criterion}) AND a one-sentence evidence-based comment that cites SPECIFIC details from the candidate's responses (their actual words, choices made, NPC interactions). Do NOT write generic comments.
 3. Calculate total_score (sum of all criteria), max_score (${maxScore}), and score_percentage (total / max, rounded to 2 decimals).
 4. Recommendation thresholds: 80–100% = "Strong Hire", 65–79% = "Hire", 45–64% = "Lean No Hire", 0–44% = "No Hire".
-5. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
+5. For the "画面案" criterion, use the SCREEN MOCKUP section and apply this stable Shared Streak functional contract:
+   A. It is the accepted/final Shared Streak screen for this feature.
+   B. It communicates a habit-specific two-person shared accountability relationship.
+   C. It communicates shared streak progress and/or today's same-day completion state.
+   D. It gives a clear main next action or next state.
+Layer labels, supporting details, layout, and the implementation note all count as evidence. Do not require every detail to appear as a separate visual layer if the accepted Shared Streak behavior is unambiguous. Score 9-10 when all four categories are clear and the hierarchy is coherent; 7-8 when at least three categories are clear and the remaining category is explicitly inferable from notes/context; 4-6 when at least two categories are clear but the screen would need clarification; 0-3 when it is not a Shared Streak screen or lacks a usable shared-streak action/state.
+6. For the "画面案" criterion, apply the DETERMINISTIC BUTTON/CTA OVERLAP CHECK exactly. If it is FAIL, cap the score at 6 even if the content is otherwise strong. If the overlap obscures the only clear main action, cap the score at 4.
+7. Write a 2–4 sentence overall_assessment grounded in the candidate's actual path and decisions.
 
 Return ONLY valid JSON matching this exact shape (no markdown, no preamble):
 
@@ -335,7 +504,7 @@ export async function gradeResponses(state: SerializedState): Promise<GradingRes
   const text = await callGemini({
     models: GRADING_MODELS,
     prompt,
-    temperature: 0.3,
+    temperature: 0.1,
     jsonMode: true,
   })
   // Strip code fences if a model leaks them

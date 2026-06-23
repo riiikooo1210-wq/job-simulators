@@ -7,6 +7,18 @@ Important: copy the whole prompt block for a scene. The subject comes first and 
 
 ---
 
+## final_score_board
+Filename: public/action-assets/final-score-board.png
+Reference image: use public/action-assets/possession_timeline_watch/final-high-screen.png as the reference image.
+
+COPY THIS WHOLE PROMPT.
+
+Scene-specific subject:
+Use the sixth possession image as the reference image for style, arena perspective, linework, palette, and late-game atmosphere. Create a first-person media-row view of the Harbor City Arena result display after the buzzer: a large in-arena LED scoreboard or jumbotron above the court shows "FINAL", "Harbor City Cyclones 112", "Denver Altitude 107", and a smaller official box-score strip reading "Malik Reed: 24 PTS, 6 AST, 2 STL". The scoreboard is the clear focal point; court staff, lower-bowl seats, and a few reporters can be visible below it for scale. Keep the text clean and readable, with no NBA logos, no real team branding, no extra player stats, and no celebratory confetti.
+
+Style:
+Generate an illustration in the exact same clean editorial 2D style as the reference image: confident dark-charcoal ink linework, flat cel-shaded color, muted warm arena palette, subtle paper-grain texture, no photorealism, no 3D render, no gradients, no bloom or lens flare. Preserve a 16:9 composition and leave enough negative space around the board so the app overlay can sit on top without hiding the score.
+
 ## intro
 Filename: public/scenes/intro.png
 

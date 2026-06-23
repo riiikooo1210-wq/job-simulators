@@ -20,6 +20,7 @@ import FlowDiagramScene from '../scenes/FlowDiagramScene'
 import KanbanBoardScene from '../scenes/KanbanBoardScene'
 import PriorityMatrixScene from '../scenes/PriorityMatrixScene'
 import ArchitectDesignStudioScene from '../scenes/ArchitectDesignStudioScene'
+import RedlineClickBoardScene from '../scenes/RedlineClickBoardScene'
 
 const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
   intro: IntroScene,
@@ -41,6 +42,7 @@ const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
   flow_diagram: FlowDiagramScene,
   kanban_board: KanbanBoardScene,
   priority_matrix: PriorityMatrixScene,
+  redline_click_board: RedlineClickBoardScene,
   architect_design_studio: ArchitectDesignStudioScene,
 }
 

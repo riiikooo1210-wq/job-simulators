@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { renderContentWithGlossary } from './JargonTerm'
 import type { SlackMessageData } from '../../types/game'
 
 interface Props {
@@ -99,7 +100,7 @@ export default function SlackMessageEnhanced({ message, delay = 0, initialExpand
                 minWidth: 0,
               }}
             >
-              {truncate(message.content.replace(/\n/g, ' '), 80)}
+              {truncate(message.content.replace(/\{\{([^}]+)\}\}/g, '$1').replace(/\n/g, ' '), 80)}
             </span>
           </div>
           {/* Timestamp */}
@@ -164,7 +165,7 @@ export default function SlackMessageEnhanced({ message, delay = 0, initialExpand
                     marginTop: '0.125rem',
                   }}
                 >
-                  {message.content}
+                  {renderContentWithGlossary(message.content)}
                 </div>
               </div>
             </div>

@@ -17,6 +17,8 @@ interface Props {
   goalPrompt: string
   /** Optional: player-facing objective shown above the chat when there are no messages yet */
   playerGoal?: string
+  /** Optional label for the compose placeholder when a thread is not a direct reply to the primary NPC */
+  replyTargetLabel?: string
   channel?: 'slack' | 'email' | 'chat'
   maxTurns?: number
   initialMessages?: ChatMessage[]
@@ -162,6 +164,7 @@ export default function NPCChatPanel({
   npcId,
   goalPrompt,
   playerGoal,
+  replyTargetLabel,
   channel = 'chat',
   maxTurns = 8,
   initialMessages = [],
@@ -250,6 +253,7 @@ export default function NPCChatPanel({
     label: p.label ?? (p.text.length > 60 ? p.text.slice(0, 60) + '…' : p.text),
   }))
   const isSlack = channel === 'slack'
+  const composeTarget = replyTargetLabel ?? npc.name
   const canComplete = !loading && (userTurns >= 1 || reachedMax)
   const presetsAvailable = visiblePresets.length > 0 && !reachedMax
   const emptyMessage = playerGoal || `Start the conversation with ${npc.name}.`
@@ -269,7 +273,7 @@ export default function NPCChatPanel({
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem', padding: '0.5rem 0' }}>
         {messages.length === 0 && (
           <p style={{ fontStyle: 'italic', color: '#616061', fontSize: '0.8125rem', margin: 0, padding: '0.375rem 0.875rem' }}>
-            {emptyMessage}
+            {renderContentWithGlossary(emptyMessage)}
           </p>
         )}
         {messages.map((m, i) => (
@@ -296,7 +300,7 @@ export default function NPCChatPanel({
       }}
     >
       {messages.length === 0 && (
-        <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{emptyMessage}</p>
+        <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{renderContentWithGlossary(emptyMessage)}</p>
       )}
       {messages.map((m, i) => (
         <motion.div
@@ -319,7 +323,7 @@ export default function NPCChatPanel({
           <div style={{ fontWeight: 700, fontSize: '0.6875rem', marginBottom: '0.125rem', opacity: 0.8 }}>
             {m.role === 'user' ? 'You' : (m.npcName ?? npc.name)}
           </div>
-          {m.content}
+          {renderContentWithGlossary(m.content)}
         </motion.div>
       ))}
       {loading && (
@@ -408,7 +412,7 @@ export default function NPCChatPanel({
                   }}
                 >
                   {used ? '✓ ' : ''}
-                  {p.label}
+                  {renderContentWithGlossary(p.label)}
                 </button>
               )
             })}
@@ -425,7 +429,7 @@ export default function NPCChatPanel({
           sendDisabled={loading || reachedMax || !input.trim()}
           showChannelHeader={!embedded}
           compact={embedded && isSlack}
-          placeholder={reachedMax ? 'Conversation complete. Click "Done" below.' : `Reply to ${npc.name}...`}
+          placeholder={reachedMax ? 'Conversation complete. Click "Done" below.' : `Reply to ${composeTarget}...`}
         />
       )}
 

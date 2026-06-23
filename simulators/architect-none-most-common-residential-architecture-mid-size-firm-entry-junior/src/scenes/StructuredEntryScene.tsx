@@ -10,13 +10,22 @@ import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
 import { BriefingDrawerContent } from './BriefingScene'
+import { VERIFY_REPLY_THREAD_COLORS, buildStructuredEntryCardThread, hasOriginalRedlineThread } from './structuredEntryCards'
 import type { LaptopFrameVariant } from '../components/ui/LaptopFrame'
 import type { StructuredEntryNode } from '../types/game'
+import type { StructuredEntryCardThreadEntry } from './structuredEntryCards'
 
 interface Props { node: StructuredEntryNode }
 
 type Item = Record<string, string>
-type AppTab = NonNullable<StructuredEntryNode['appTabs']>[number]
+export type StructuredEntryAppTab = NonNullable<StructuredEntryNode['appTabs']>[number]
+type AppTab = StructuredEntryAppTab
+type AppCard = NonNullable<AppTab['cards']>[number]
+export type StructuredEntryContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
 
 function parseItems(raw: string, fields: { key: string }[], initialCount: number): Item[] {
   if (!raw) return Array.from({ length: initialCount }, () =>
@@ -33,7 +42,161 @@ function parseItems(raw: string, fields: { key: string }[], initialCount: number
   )
 }
 
-function renderAppTab(tab: AppTab, ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> }) {
+function ThreadEntry({
+  entry,
+  ctx,
+  isLast,
+}: {
+  entry: StructuredEntryCardThreadEntry
+  ctx: StructuredEntryContext
+  isLast: boolean
+}) {
+  const isRedline = entry.kind === 'redline'
+  const entryBackground = isRedline
+    ? VERIFY_REPLY_THREAD_COLORS.redlineBackground
+    : VERIFY_REPLY_THREAD_COLORS.replyBackground
+  const entryBorder = isRedline
+    ? VERIFY_REPLY_THREAD_COLORS.redlineBorder
+    : VERIFY_REPLY_THREAD_COLORS.replyBorder
+  const accentColor = isRedline ? '#8A4A32' : '#3F605C'
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '2rem minmax(0, 1fr)', gap: '0.65rem', position: 'relative' }}>
+      {!isLast && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            left: '1rem',
+            top: '2.25rem',
+            bottom: '-0.65rem',
+            borderLeft: `2px solid ${VERIFY_REPLY_THREAD_COLORS.connector}`,
+          }}
+        />
+      )}
+      <div
+        style={{
+          width: '2rem',
+          height: '2rem',
+          borderRadius: '50%',
+          border: `1px solid ${entryBorder}`,
+          background: entryBackground,
+          color: accentColor,
+          display: 'grid',
+          placeItems: 'center',
+          fontSize: '0.62rem',
+          fontWeight: 900,
+          zIndex: 1,
+        }}
+      >
+        {isRedline ? 'RL' : 'RP'}
+      </div>
+      <div
+        style={{
+          border: `1px solid ${entryBorder}`,
+          borderRadius: 6,
+          background: entryBackground,
+          padding: '0.65rem 0.75rem',
+          minWidth: 0,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+          <strong style={{ fontSize: '0.72rem', color: accentColor }}>
+            {entry.label}
+          </strong>
+          {entry.ref && <span style={{ fontSize: '0.66rem', color: '#5F6368', fontWeight: 800 }}>{entry.ref}</span>}
+          {entry.status && (
+            <span
+              style={{
+                border: `1px solid ${entryBorder}`,
+                borderRadius: 4,
+                padding: '0.08rem 0.32rem',
+                fontSize: '0.6rem',
+                background: VERIFY_REPLY_THREAD_COLORS.largeBackground,
+                color: accentColor,
+                fontWeight: 900,
+              }}
+            >
+              {entry.status}
+            </span>
+          )}
+        </div>
+        <div style={{ marginTop: '0.3rem', fontSize: '0.78rem', fontWeight: 900, color: '#202124' }}>
+          {renderContentWithGlossary(interpolate(entry.title, ctx))}
+        </div>
+        <div style={{ marginTop: '0.25rem', fontSize: '0.78rem', lineHeight: 1.55, color: '#3C4043' }}>
+          {renderContentWithGlossary(interpolate(entry.body, ctx))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ThreadedCard({ card, ctx }: { card: AppCard; ctx: StructuredEntryContext }) {
+  const thread = buildStructuredEntryCardThread(card)
+
+  return (
+    <div
+      style={{
+        border: `1px solid ${VERIFY_REPLY_THREAD_COLORS.largeBorder}`,
+        background: VERIFY_REPLY_THREAD_COLORS.largeBackground,
+        borderRadius: 6,
+        padding: '0.75rem',
+        boxShadow: '0 1px 2px rgba(60,64,67,0.16)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.65rem' }}>
+        <strong style={{ fontSize: '0.78rem', color: '#202124' }}>{card.title}</strong>
+        {card.status && (
+          <span style={{ fontSize: '0.62rem', color: '#3F605C', fontWeight: 900 }}>
+            {card.status}
+          </span>
+        )}
+      </div>
+      <div style={{ display: 'grid', gap: '0.65rem' }}>
+        {thread.map((entry, index) => (
+          <ThreadEntry
+            key={`${entry.kind}-${entry.ref || 'entry'}-${entry.title}`}
+            entry={entry}
+            ctx={ctx}
+            isLast={index === thread.length - 1}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function StandardCard({ card, ctx }: { card: AppCard; ctx: StructuredEntryContext }) {
+  return (
+    <div
+      style={{
+        border: '1px solid #CDBF94',
+        background: '#FBF7EA',
+        borderRadius: 6,
+        padding: '0.75rem 0.85rem',
+        boxShadow: '2px 2px 0 rgba(0,0,0,0.12)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <strong style={{ fontSize: '0.82rem', color: '#1E1E1A' }}>{card.title}</strong>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+          {card.ref && <span style={{ fontSize: '0.68rem', color: '#6A604B', fontWeight: 800 }}>{card.ref}</span>}
+          {card.status && (
+            <span style={{ border: '1px solid #B87D6B', borderRadius: 4, padding: '0.1rem 0.35rem', fontSize: '0.62rem', color: '#8B5E50', fontWeight: 900 }}>
+              {card.status}
+            </span>
+          )}
+        </div>
+      </div>
+      <div style={{ marginTop: '0.35rem', fontSize: '0.78rem', lineHeight: 1.5, color: '#333' }}>
+        {renderContentWithGlossary(interpolate(card.body, ctx))}
+      </div>
+    </div>
+  )
+}
+
+export function renderStructuredEntryAppTab(tab: AppTab, ctx: StructuredEntryContext) {
   return (
     <div
       style={{
@@ -45,19 +208,35 @@ function renderAppTab(tab: AppTab, ctx: { playerName: string; branchFlags: Recor
         background: '#F7F1E3',
       }}
     >
-      <div
-        style={{
-          border: '1px solid #CDBF94',
-          background: '#FBF7EA',
-          padding: '0.85rem',
-          fontSize: '0.875rem',
-          lineHeight: 1.65,
-          color: '#1E1E1A',
-          whiteSpace: 'pre-wrap',
-        }}
-      >
-        {renderContentWithGlossary(interpolate(tab.content, ctx))}
-      </div>
+      {tab.content && (
+        <div
+          style={{
+            border: '1px solid #CDBF94',
+            background: '#FBF7EA',
+            padding: '0.85rem',
+            fontSize: '0.875rem',
+            lineHeight: 1.65,
+            color: '#1E1E1A',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {tab.heading && (
+            <div style={{ fontWeight: 900, marginBottom: '0.35rem' }}>
+              {renderContentWithGlossary(interpolate(tab.heading, ctx))}
+            </div>
+          )}
+          {renderContentWithGlossary(interpolate(tab.content, ctx))}
+        </div>
+      )}
+      {tab.cards && tab.cards.length > 0 && (
+        <div style={{ display: 'grid', gap: '0.65rem' }}>
+          {tab.cards.map((card) => (
+            hasOriginalRedlineThread(card)
+              ? <ThreadedCard key={`${card.ref || 'card'}-${card.title}`} card={card} ctx={ctx} />
+              : <StandardCard key={`${card.ref || 'card'}-${card.title}`} card={card} ctx={ctx} />
+          ))}
+        </div>
+      )}
       {tab.imagePath && (
         <div
           style={{
@@ -276,7 +455,7 @@ export default function StructuredEntryScene({ node }: Props) {
               onTitleTabChange={setActiveAppTab}
             >
               {activeSourceTab
-                ? renderAppTab(activeSourceTab, { playerName, branchFlags, mcSelections })
+                ? renderStructuredEntryAppTab(activeSourceTab, { playerName, branchFlags, mcSelections })
                 : formContent}
             </LaptopFrame>
           </DesktopOverlay>

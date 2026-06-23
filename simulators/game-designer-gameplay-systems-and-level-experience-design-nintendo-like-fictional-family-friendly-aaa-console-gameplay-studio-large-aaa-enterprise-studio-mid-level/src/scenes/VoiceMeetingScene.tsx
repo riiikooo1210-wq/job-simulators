@@ -28,7 +28,7 @@ function buildSystemPrompt(args: {
     ? 'Speak naturally, like a real colleague or client sitting or standing with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -106,6 +106,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const interpolationContext = { playerName, branchFlags, mcSelections, freeTextResponses }
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -132,6 +133,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -280,6 +287,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
       {/* Transcript */}
       <div
+        ref={transcriptRef}
         style={{
           flex: 1,
           marginTop: '0.875rem',
@@ -315,7 +323,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </div>
           </div>
         ))}
@@ -460,7 +468,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            {playerGoal && <div><strong>Your goal: </strong>{playerGoal}</div>}
+            {playerGoal && <div><strong>Your goal: </strong>{renderContentWithGlossary(playerGoal)}</div>}
             {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{endpoint}</div>}
             {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{successCriteria}</div>}
           </div>
