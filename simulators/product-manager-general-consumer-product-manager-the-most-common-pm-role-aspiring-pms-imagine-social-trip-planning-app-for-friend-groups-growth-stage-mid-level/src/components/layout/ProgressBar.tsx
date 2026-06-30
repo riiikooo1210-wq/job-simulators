@@ -24,9 +24,10 @@ export default function ProgressBar() {
       }}
     >
       {sections.map((s, idx) => {
-        const isComplete = submitted.includes(s.num)
         const isCurrent = currentSection === s.num
+        const isComplete = !isCurrent && s.num < currentSection && submitted.includes(s.num)
         const isFuture = !isComplete && !isCurrent
+        const progressState = isCurrent ? 'current' : isComplete ? 'complete' : 'future'
 
         let bg = '#E8DCC8'
         let color = '#999'
@@ -36,6 +37,8 @@ export default function ProgressBar() {
         return (
           <div
             key={s.num}
+            data-progress-state={progressState}
+            aria-current={isCurrent ? 'step' : undefined}
             style={{
               flex: 1,
               display: 'flex',

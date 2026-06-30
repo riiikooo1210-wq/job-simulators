@@ -6,7 +6,17 @@
   "scripts": {
     "dev": "vite",
     "test:app-audit-layout": "node scripts/test-app-audit-layout.mjs",
+    "test:artifact-continuity": "node scripts/test-artifact-continuity.mjs",
+    "test:docs-report-mobile-cleanup": "node scripts/test-docs-report-mobile-cleanup.mjs",
+    "test:four-task-flow": "node scripts/test-four-task-flow-config.mjs",
+    "test:grading-fallback": "node scripts/test-grading-fallback.mjs",
+    "test:interview-fallback": "node scripts/test-interview-fallback.mjs",
+    "test:persistence-repair": "node scripts/test-persistence-repair.mjs",
+    "test:prd-workspace": "node scripts/test-prd-slice-workspace.mjs",
+    "test:progress-state": "node scripts/test-progress-bar-section-state.mjs",
     "test:remove-roadmap-tasks": "node scripts/test-remove-roadmap-tasks.mjs",
+    "test:software-realism": "node scripts/test-software-realism.mjs",
+    "test:user-call-ui": "node scripts/test-user-call-meeting-ui.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

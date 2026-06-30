@@ -189,9 +189,9 @@ const DEFAULT_SIGNAL_IDS: CareerSignalId[] = ['evidence_use']
 const DISPLAY_TITLE_BY_RUBRIC_NAME: Record<string, string> = {
   'タスク別採点': 'Task Feedback',
   '現行画面調査': 'Current Flow Audit',
-  '問題要約': 'Problem Brief',
+  '面談準備': 'Interview Prep',
   '利用者面談': 'User Interview',
-  '要件文書': 'PRD Slice',
+  '要件文書': 'Product Plan',
   '最初の判断': 'Initial Product Judgment',
   '仕組みの問題整理': 'Mechanic Problem Framing',
   '試遊観察リスト': 'Playtest Watchlist',

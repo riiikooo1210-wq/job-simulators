@@ -4,12 +4,15 @@ interface Props {
   children: ReactNode
   width?: string
   height?: string
+  className?: string
+  contentClassName?: string
 }
 
 /** Laptop background with overlaid app window for computer-work scenes. */
-export default function DesktopOverlay({ children, width = '75%', height = '80%' }: Props) {
+export default function DesktopOverlay({ children, width = '75%', height = '80%', className, contentClassName }: Props) {
   return (
     <div
+      className={className}
       style={{
         position: 'relative',
         width: 'calc(100% + 6rem)',
@@ -32,6 +35,7 @@ export default function DesktopOverlay({ children, width = '75%', height = '80%'
         }}
       />
       <div
+        className={contentClassName}
         style={{
           position: 'absolute',
           inset: 0,

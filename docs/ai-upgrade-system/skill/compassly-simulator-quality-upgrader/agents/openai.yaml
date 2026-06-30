@@ -1,0 +1,6 @@
+interface:
+  display_name: "Compassly Simulator Quality Upgrader"
+  short_description: "Upgrade simulators to Compassly quality"
+  default_prompt: "Use $compassly-simulator-quality-upgrader to audit this simulator and produce an upgrade plan before editing."
+policy:
+  allow_implicit_invocation: true

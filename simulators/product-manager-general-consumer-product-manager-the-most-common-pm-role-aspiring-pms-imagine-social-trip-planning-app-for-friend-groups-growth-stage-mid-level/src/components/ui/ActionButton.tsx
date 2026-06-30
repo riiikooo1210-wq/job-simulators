@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { devtoolsEnabled } from '../../lib/devtools'
 
 interface ActionButtonProps {
   text: string
@@ -40,6 +41,9 @@ export default function ActionButton({
 }: ActionButtonProps) {
   const [pressed, setPressed] = useState(false)
   const style = variantStyles[variant]
+  const isDevSkip = text.trim().toLowerCase() === 'skip (dev)'
+
+  if (isDevSkip && !devtoolsEnabled()) return null
 
   return (
     <button

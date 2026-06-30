@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
@@ -8,8 +8,11 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { devtoolsEnabled } from '../lib/devtools'
 import { npcs } from '../data/npcs'
+import { npcReply } from '../services/gemini'
 import { GeminiLiveSession, type LiveStatus } from '../services/geminiLive'
+import { localNinaReply, typedBackupNotice } from '../services/ninaInterviewBackup'
 import type { ChatMessage, VoiceMeetingNode } from '../types/game'
 
 interface Props { node: VoiceMeetingNode }
@@ -67,18 +70,11 @@ function MicIcon({ muted }: { muted: boolean }) {
 
 function ReferenceBlock({ title, content }: { title: string; content: string }) {
   return (
-    <section style={{ minWidth: 0 }}>
-      <div style={{ fontSize: '0.6875rem', opacity: 0.72, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0, marginBottom: '0.35rem' }}>
+    <section className="voice-meeting-reference-section">
+      <div className="voice-meeting-reference-label">
         {title}
       </div>
-      <div
-        style={{
-          fontSize: '0.75rem',
-          lineHeight: 1.5,
-          whiteSpace: 'pre-wrap',
-          color: '#1E1E1A',
-        }}
-      >
+      <div className="voice-meeting-reference-body">
         {renderContentWithGlossary(content)}
       </div>
     </section>
@@ -88,6 +84,11 @@ function ReferenceBlock({ title, content }: { title: string; content: string }) 
 function includesDisclosure(text: string, matchAny: string[]) {
   const normalized = text.toLowerCase()
   return matchAny.some((match) => normalized.includes(match.toLowerCase()))
+}
+
+function hasConfiguredGeminiKey() {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
+  return Boolean(apiKey && apiKey !== 'your_gemini_api_key_here')
 }
 
 export default function VoiceMeetingScene({ node }: Props) {
@@ -100,6 +101,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const mcSelections = useGameStore((s) => s.mcSelections)
   const freeTextResponses = useGameStore((s) => s.freeTextResponses)
   const goNext = useGoNext()
+  const showDevControls = devtoolsEnabled()
 
   const [status, setStatus] = useState<LiveStatus>('idle')
   const [statusDetail, setStatusDetail] = useState('')
@@ -108,12 +110,17 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [npcSpeaking, setNpcSpeaking] = useState(false)
   const [liveUser, setLiveUser] = useState('')
   const [liveNpc, setLiveNpc] = useState('')
+  const [typedInput, setTypedInput] = useState('')
+  const [typedLoading, setTypedLoading] = useState(false)
+  const [typedError, setTypedError] = useState<string | null>(null)
+  const [turnLimitReached, setTurnLimitReached] = useState(false)
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
   const initializedRef = useRef(false)
+  const typedProviderUnavailableRef = useRef(false)
 
   const goalPrompt = interpolate(node.goalPrompt, { playerName, branchFlags, mcSelections })
   const meetingContext = interpolate(node.meetingContext || node.content || '', { playerName, branchFlags, mcSelections })
@@ -127,7 +134,13 @@ export default function VoiceMeetingScene({ node }: Props) {
   const minTurns = node.minTurns ?? 2
   const maxTurns = node.maxTurns ?? 8
   const userTurns = messages.filter((m) => m.role === 'user').length
+  const typedFallback = Boolean(node.typedFallback)
+  const reachedTurnLimit = userTurns >= maxTurns
+  const remainingTurns = Math.max(0, maxTurns - userTurns)
   const canSubmit = meetingEnded && userTurns >= minTurns
+  const inCall = status !== 'idle' && status !== 'closed' && status !== 'error'
+  const typedInterviewStarted = typedFallback && userTurns > 0
+  const canEndTypedMeeting = typedInterviewStarted && !inCall && !meetingEnded && !typedLoading && userTurns >= minTurns
 
   const appendRequiredDisclosureIfNeeded = (pendingText: string[]) => {
     if (!node.requiredDisclosure?.items.length) return
@@ -163,11 +176,11 @@ export default function VoiceMeetingScene({ node }: Props) {
   }, [])
 
   useEffect(() => {
-    if (userTurns >= maxTurns && status === 'connected' && !meetingEnded) {
-      endMeeting()
+    if (userTurns >= maxTurns && !meetingEnded) {
+      endMeeting({ limitReached: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTurns, maxTurns, status, meetingEnded])
+  }, [userTurns, maxTurns, meetingEnded])
 
   const flushPending = (role: 'user' | 'npc') => {
     const pending = role === 'user' ? pendingUserRef.current : pendingNpcRef.current
@@ -185,11 +198,13 @@ export default function VoiceMeetingScene({ node }: Props) {
   }
 
   const startMeeting = async () => {
-    if (!npc || sessionRef.current) return
+    if (!npc || sessionRef.current || reachedTurnLimit || meetingEnded) return
+    setTypedError(null)
+    setTurnLimitReached(false)
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY
     if (!apiKey || apiKey === 'your_gemini_api_key_here') {
       setStatus('error')
-      setStatusDetail('Gemini API key not configured. Set VITE_GEMINI_API_KEY in .env.')
+      setStatusDetail('Voice connection is unavailable. Use Typed backup to continue.')
       return
     }
 
@@ -227,7 +242,7 @@ export default function VoiceMeetingScene({ node }: Props) {
     })
   }
 
-  const endMeeting = () => {
+  const endMeeting = (options: { limitReached?: boolean } = {}) => {
     const pendingText = [pendingUserRef.current, pendingNpcRef.current, liveUser, liveNpc]
     flushPending('user')
     flushPending('npc')
@@ -235,13 +250,62 @@ export default function VoiceMeetingScene({ node }: Props) {
     sessionRef.current?.stop()
     sessionRef.current = null
     setMeetingEnded(true)
+    setTurnLimitReached(options.limitReached || userTurns >= maxTurns)
     setMuted(false)
+    setStatus('closed')
+    setStatusDetail('')
   }
 
   const toggleMuted = () => {
     const next = !muted
     setMuted(next)
     sessionRef.current?.setMuted(next)
+  }
+
+  const submitTypedQuestion = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const question = typedInput.trim()
+    if (!typedFallback || !npc || !question || typedLoading || meetingEnded || reachedTurnLimit || inCall) return
+
+    setTypedInput('')
+    setTypedError(null)
+    setTypedLoading(true)
+
+    const userMessage: ChatMessage = { role: 'user', content: question, ts: new Date().toISOString() }
+    const historyWithQuestion = [...messages, userMessage]
+    const nextUserTurn = userTurns + 1
+    appendNpcMessage(conversationKey, userMessage)
+
+    try {
+      const reply = hasConfiguredGeminiKey() && !typedProviderUnavailableRef.current
+        ? await npcReply({
+            npcId: node.npcId,
+            history: historyWithQuestion,
+            goalPrompt,
+            channel: 'chat',
+          })
+        : localNinaReply(question, nextUserTurn)
+      const npcMessage: ChatMessage = { role: 'npc', content: reply, ts: new Date().toISOString() }
+      appendNpcMessage(conversationKey, npcMessage)
+
+      if (nextUserTurn >= maxTurns) {
+        endMeeting({ limitReached: true })
+      }
+    } catch {
+      typedProviderUnavailableRef.current = true
+      const npcMessage: ChatMessage = {
+        role: 'npc',
+        content: localNinaReply(question, nextUserTurn),
+        ts: new Date().toISOString(),
+      }
+      appendNpcMessage(conversationKey, npcMessage)
+      setTypedError(typedBackupNotice)
+      if (nextUserTurn >= maxTurns) {
+        endMeeting({ limitReached: true })
+      }
+    } finally {
+      setTypedLoading(false)
+    }
   }
 
   if (!npc) {
@@ -261,162 +325,188 @@ export default function VoiceMeetingScene({ node }: Props) {
     ? 'Start the conversation when you are ready. Your spoken transcript will appear here and feed the final grading.'
     : 'Join the meeting when you are ready. Your spoken transcript will appear here and feed the final grading.'
 
+  const visibleTurnLimitReached = turnLimitReached || reachedTurnLimit
   const statusLabel =
-    status === 'connecting' ? 'Connecting...'
+    visibleTurnLimitReached ? `${maxTurns}-question limit reached`
+    : status === 'connecting' ? 'Connecting...'
     : status === 'connected' ? (muted ? 'Muted' : npcSpeaking ? `${npc.name} is speaking...` : 'Listening...')
     : status === 'closed' ? `${interactionLabel[0].toUpperCase()}${interactionLabel.slice(1)} ended`
-    : status === 'error' ? `Error: ${statusDetail}`
+    : status === 'error' ? (statusDetail || 'Voice connection is unavailable. Use Typed backup to continue.')
     : 'Ready'
 
-  const inCall = status !== 'idle' && status !== 'closed' && status !== 'error'
+  const turnCounterLabel = `Question ${Math.min(userTurns, maxTurns)}/${maxTurns}`
+  const typedDisabled = !typedFallback || typedLoading || meetingEnded || reachedTurnLimit || inCall
+  const typedHelper = inCall
+    ? 'Typing is available after you leave the live voice call.'
+    : visibleTurnLimitReached
+      ? `${maxTurns}-question limit reached. End the ${interactionLabel} to continue.`
+      : meetingEnded
+        ? `${interactionLabel[0].toUpperCase()}${interactionLabel.slice(1)} ended.`
+        : remainingTurns === 1
+          ? '1 question left. Keep it focused.'
+          : `${remainingTurns} questions left. Ask one clear question at a time.`
 
   const meetingInner = (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: isInPerson ? 360 : undefined, color: '#1E1E1A', padding: '0.875rem' }}>
+    <div className="voice-meeting-call-shell" data-testid="voice-meeting-shell">
+      <div className="voice-meeting-call-topbar">
+        <div>
+          <div className="voice-meeting-app-name">Roamly Video</div>
+          <div className="voice-meeting-room-name">{meetingTitle}</div>
+        </div>
+        <div className="voice-meeting-topbar-meta">
+          <span className="voice-meeting-turn-counter" data-testid="voice-meeting-turn-counter">
+            {turnCounterLabel}
+          </span>
+          <span className={`voice-meeting-status${inCall ? ' is-live' : ''}`}>{statusLabel}</span>
+        </div>
+      </div>
 
-      {/* NPC header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: '50%',
-              background: '#B87D6B',
-              color: '#F2EBD9',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              border: '1px solid rgba(242,235,217,0.4)',
-              boxShadow: npcSpeaking ? '0 0 0 5px rgba(184,125,107,0.45)' : 'none',
-              transition: 'box-shadow 0.2s',
-            }}
-          >
-            {npc.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()}
+      <div className="voice-meeting-call-body">
+        <div className="voice-meeting-prep-tray" data-testid="voice-meeting-prep-tray" aria-label="Interview plan">
+          <div>
+            <span>Prepared questions</span>
+            <strong>{Math.max(0, maxTurns - userTurns)} left</strong>
           </div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: '0.9375rem' }}>{npc.name}</div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.68 }}>{npc.role}</div>
+            <span>Listen for</span>
+            <strong>Decision friction</strong>
+          </div>
+          <div>
+            <span>Call rule</span>
+            <strong>No pitching</strong>
           </div>
         </div>
-        <div style={{ fontSize: '0.75rem', opacity: 0.72 }}>{statusLabel}</div>
-      </div>
 
-      {/* Transcript */}
-      <div
-        style={{
-          flex: 1,
-          marginTop: '0.875rem',
-          background: '#FBF7EA',
-          border: '1px solid #CDBF94',
-          padding: '0.75rem',
-          overflowY: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.5rem',
-          minHeight: 0,
-        }}
-      >
-        {messages.length === 0 && !liveUser && !liveNpc && (
-          <div style={{ fontSize: '0.8125rem', opacity: 0.65 }}>
-            {emptyTranscript}
+        <div className={`voice-meeting-video-tile${npcSpeaking ? ' is-speaking' : ''}`}>
+          <div className="voice-meeting-avatar">
+            {npc.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()}
           </div>
-        )}
-        {messages.map((m, i) => (
-          <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
-            <div style={{ fontSize: '0.6875rem', opacity: 0.65, marginBottom: 2 }}>
-              {m.role === 'user' ? 'You' : npc.name}
-            </div>
-            <div
-              style={{
-                background: m.role === 'user' ? '#B87D6B' : '#F7F1E3',
-                color: m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
-                border: m.role === 'user' ? '1px solid #B87D6B' : '1px solid #CDBF94',
-                padding: '0.5rem 0.625rem',
-                borderRadius: '4px',
-                fontSize: '0.8125rem',
-                lineHeight: 1.45,
-                whiteSpace: 'pre-wrap',
-              }}
-            >
-              {m.content}
-            </div>
+          <div className="voice-meeting-participant">
+            <div className="voice-meeting-participant-name">{npc.name}</div>
+            <div className="voice-meeting-participant-role">{npc.role}</div>
           </div>
-        ))}
-        {liveUser && (
-          <div style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.72 }}>
-            <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>You</div>
-            <div style={{ border: '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: '#1E1E1A' }}>{liveUser}</div>
-          </div>
-        )}
-        {liveNpc && (
-          <div style={{ alignSelf: 'flex-start', maxWidth: '88%', opacity: 0.72 }}>
-            <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>{npc.name}</div>
-            <div style={{ border: '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: '#1E1E1A' }}>{liveNpc}</div>
-          </div>
-        )}
-      </div>
+          <div className="voice-meeting-participant-chip">Target customer</div>
+        </div>
 
-      {/* In-screen controls */}
-      <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: '0.75rem', flexShrink: 0 }}>
-          <button
-            onClick={() => goNext(node)}
-            style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
-          >
-            Skip (dev)
-          </button>
-        {!inCall && !meetingEnded && (
-          <button
-            onClick={startMeeting}
-            style={{ background: '#B87D6B', color: '#F2EBD9', border: '1px solid #000000', borderRadius: '24px', padding: '0.55rem 1.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
-          >
-            {startLabel}
-          </button>
+        <div className="voice-meeting-transcript" aria-label={`${meetingTitle} transcript`}>
+          <div className="voice-meeting-transcript-header">
+            <span>Live transcript</span>
+            <span>{messages.length} saved turns</span>
+          </div>
+          {messages.length === 0 && !liveUser && !liveNpc && (
+            <div className="voice-meeting-empty">
+              {emptyTranscript}
+            </div>
+          )}
+          {messages.map((m, i) => (
+            <div key={i} className={`voice-meeting-message ${m.role === 'user' ? 'is-user' : 'is-npc'}`}>
+              <div className="voice-meeting-message-label">
+                {m.role === 'user' ? 'You' : npc.name}
+              </div>
+              <div className="voice-meeting-message-bubble">
+                {m.content}
+              </div>
+            </div>
+          ))}
+          {liveUser && (
+            <div className="voice-meeting-message is-user is-live">
+              <div className="voice-meeting-message-label">You</div>
+              <div className="voice-meeting-message-bubble">{liveUser}</div>
+            </div>
+          )}
+          {liveNpc && (
+            <div className="voice-meeting-message is-npc is-live">
+              <div className="voice-meeting-message-label">{npc.name}</div>
+              <div className="voice-meeting-message-bubble">{liveNpc}</div>
+            </div>
+          )}
+        </div>
+
+        {visibleTurnLimitReached && (
+          <div className="voice-meeting-limit-alert">
+            <strong>{maxTurns}-question limit reached.</strong> End the {interactionLabel} and continue with what you learned.
+          </div>
         )}
-        {inCall && (
-          <>
-            <button
-              onClick={toggleMuted}
-              style={{
-                background: muted ? '#D2A39A' : '#F7F1E3',
-                color: '#1E1E1A',
-                border: muted ? '1px solid #B87D6B' : '1px solid #CDBF94',
-                borderRadius: '50px',
-                padding: '0.45rem 1rem',
-                fontSize: '0.8125rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
-            >
-              <MicIcon muted={muted} />
-              {muted ? 'Unmute' : 'Mute'}
+
+        <div className="voice-meeting-call-toolbar" data-testid="voice-meeting-call-toolbar">
+          {showDevControls && (
+            <button className="voice-meeting-control ghost" onClick={() => goNext(node)}>
+              Skip (dev)
             </button>
-            <button
-              onClick={endMeeting}
-              style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: '50px', padding: '0.45rem 1rem', fontSize: '0.8125rem', fontWeight: 500, cursor: 'pointer' }}
-            >
+          )}
+          {!canEndTypedMeeting && !inCall && !meetingEnded && !reachedTurnLimit && (
+            <button className="voice-meeting-control primary" onClick={startMeeting}>
+              {startLabel}
+            </button>
+          )}
+          {canEndTypedMeeting && (
+            <button className="voice-meeting-control danger" onClick={() => endMeeting()}>
               {endLabel}
             </button>
-          </>
+          )}
+          {inCall && (
+            <>
+              <button className={`voice-meeting-control ${muted ? 'muted' : 'ghost'}`} onClick={toggleMuted}>
+                <MicIcon muted={muted} />
+                {muted ? 'Unmute' : 'Mute'}
+              </button>
+              <button className="voice-meeting-control danger" onClick={() => endMeeting()}>
+                {endLabel}
+              </button>
+            </>
+          )}
+          <span className="voice-meeting-toolbar-note">Transcript on</span>
+        </div>
+
+        {typedFallback && (
+          <form className="voice-meeting-typed-fallback" data-testid="voice-meeting-typed-fallback" onSubmit={submitTypedQuestion}>
+            <div className="voice-meeting-typed-header">
+              <div>
+                <strong>Typed backup</strong>
+                <span>{typedHelper}</span>
+              </div>
+              {typedLoading && <span className="voice-meeting-typing-status">Nina is replying...</span>}
+            </div>
+            <div className="voice-meeting-typed-row">
+              <textarea
+                value={typedInput}
+                onChange={(event) => setTypedInput(event.target.value)}
+                placeholder="Type a question to Nina"
+                rows={2}
+                disabled={typedDisabled}
+              />
+              <button
+                type="submit"
+                className="voice-meeting-typed-send"
+                disabled={typedDisabled || !typedInput.trim()}
+              >
+                Send
+              </button>
+            </div>
+            {typedError && <div className="voice-meeting-typed-error">{typedError}</div>}
+          </form>
         )}
       </div>
     </div>
   )
 
   const referenceContent = (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-      {prepReference && (
-        <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} />
-      )}
-      {prepReference && prepNote && (
-        <div style={{ height: 1, background: '#CDBF94', opacity: 0.8 }} />
-      )}
-      {prepNote && (
-        <ReferenceBlock title={node.prepNoteTitle || 'Prep note'} content={prepNote} />
-      )}
+    <div className="voice-meeting-reference-file" data-testid="voice-meeting-reference-file">
+      <div className="voice-meeting-reference-file-toolbar">
+        <span>Interview guide</span>
+        <span>{userTurns}/{maxTurns} questions</span>
+      </div>
+      <div className="voice-meeting-reference-file-body">
+        {prepReference && (
+          <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} />
+        )}
+        {prepReference && prepNote && (
+          <div className="voice-meeting-reference-divider" />
+        )}
+        {prepNote && (
+          <ReferenceBlock title={node.prepNoteTitle || 'Prep note'} content={prepNote} />
+        )}
+      </div>
     </div>
   )
 
@@ -499,7 +589,7 @@ export default function VoiceMeetingScene({ node }: Props) {
             </div>
           </>
         ) : (
-          <DesktopOverlay>
+          <DesktopOverlay className="voice-meeting-desktop-overlay" contentClassName="voice-meeting-desktop-content">
             <div className={`voice-meeting-workspace${(prepReference || prepNote) ? '' : ' voice-meeting-workspace--solo'}`}>
               {meetingPanel}
               {referencePanel}
@@ -517,7 +607,7 @@ export default function VoiceMeetingScene({ node }: Props) {
           />
           {!canSubmit && (
             <span style={{ fontSize: '0.75rem', color: '#666' }}>
-              Speak at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then end the {interactionLabel} to continue.
+              Speak or type at least {minTurns} question{minTurns === 1 ? '' : 's'}, then end the {interactionLabel} to continue.
             </span>
           )}
         </div>

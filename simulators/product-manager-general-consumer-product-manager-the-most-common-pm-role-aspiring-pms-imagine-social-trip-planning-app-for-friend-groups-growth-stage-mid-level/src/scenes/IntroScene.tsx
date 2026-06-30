@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
@@ -68,7 +68,14 @@ export default function IntroScene({ node }: Props) {
             <p style={{ fontSize: '0.875rem', lineHeight: 1.7, marginBottom: '1rem', color: '#333' }}>
               Enter the name you'd like to go by in this office.
             </p>
+            <label
+              htmlFor="player-name-input"
+              style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, marginBottom: '0.4rem', color: '#1E1E1A' }}
+            >
+              Your name
+            </label>
             <input
+              id="player-name-input"
               type="text"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
@@ -157,26 +164,23 @@ export default function IntroScene({ node }: Props) {
           </div>
         )}
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              border: '1px solid #000',
-              boxShadow: '4px 4px 0 #000',
-              backgroundColor: '#F2EBD9',
-              padding: '1.5rem',
-            }}
-          >
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>{steps[step].label}</h2>
-            <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
-              {renderContentWithGlossary(steps[step].content)}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            border: '1px solid #000',
+            boxShadow: '4px 4px 0 #000',
+            backgroundColor: '#F2EBD9',
+            padding: '1.5rem',
+          }}
+        >
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>{steps[step].label}</h2>
+          <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
+            {renderContentWithGlossary(steps[step].content)}
+          </div>
+        </motion.div>
 
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           {step > 0 && (

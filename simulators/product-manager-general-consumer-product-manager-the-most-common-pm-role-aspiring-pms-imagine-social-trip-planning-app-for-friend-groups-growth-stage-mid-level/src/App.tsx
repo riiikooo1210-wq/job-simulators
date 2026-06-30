@@ -2,10 +2,11 @@ import SceneEngine from './engine/SceneEngine'
 import ProgressBar from './components/layout/ProgressBar'
 import { useGameStore } from './store/gameStore'
 import { storyline, sampleAnswers } from './data/storyline'
+import { devtoolsEnabled } from './lib/devtools'
 
 export default function App() {
   const resetGame = useGameStore((s) => s.resetGame)
-  const isDev = import.meta.env.DEV
+  const showDevControls = devtoolsEnabled()
 
   const applyPrefillBlock = (block: any) => {
     const store = useGameStore.getState()
@@ -43,7 +44,7 @@ export default function App() {
     }
     store.setGradingError(null)
     store.setGradingStatus('idle')
-    store.navigateTo(targetNodeId)
+    store.navigateTo(targetNodeId, { markSectionSubmitted: false })
   }
 
   const handleSampleReport = () => {
@@ -61,7 +62,7 @@ export default function App() {
     for (const nodeId of path.slice(1)) store.navigateTo(nodeId)
   }
 
-  const devSkips = (storyline.devSkips || []).filter((skip) => !["assessment_gate", "grading"].includes(skip.targetNodeId) && !/assessment|grading/i.test(skip.label)).slice(0, 3)
+  const devSkips = (storyline.devSkips || []).filter((skip) => !["assessment_gate", "grading"].includes(skip.targetNodeId) && !/assessment|grading/i.test(skip.label)).slice(0, 4)
   const hasSampleReport = Boolean((sampleAnswers as any).career_report_sample)
 
   return (
@@ -71,7 +72,7 @@ export default function App() {
         <SceneEngine />
       </div>
 
-      {isDev && devSkips.map((skip, i) => (
+      {showDevControls && devSkips.map((skip, i) => (
         <button
           key={skip.targetNodeId}
           onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
@@ -95,7 +96,7 @@ export default function App() {
         </button>
       ))}
 
-      {isDev && hasSampleReport && (
+      {showDevControls && hasSampleReport && (
         <button
           onClick={handleSampleReport}
           style={{
@@ -118,26 +119,28 @@ export default function App() {
         </button>
       )}
 
-      <button
-        onClick={resetGame}
-        style={{
-          position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          zIndex: 200,
-          backgroundColor: '#E8DCC8',
-          border: '1px solid #000',
-          boxShadow: '2px 2px 0 #000',
-          padding: '0.375rem 0.75rem',
-          fontSize: '0.6875rem',
-          fontWeight: 600,
-          color: '#333',
-          cursor: 'pointer',
-          fontFamily: 'Inter, system-ui, sans-serif',
-        }}
-      >
-        Restart
-      </button>
+      {showDevControls && (
+        <button
+          onClick={resetGame}
+          style={{
+            position: 'fixed',
+            bottom: '1rem',
+            right: '1rem',
+            zIndex: 200,
+            backgroundColor: '#E8DCC8',
+            border: '1px solid #000',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.375rem 0.75rem',
+            fontSize: '0.6875rem',
+            fontWeight: 600,
+            color: '#333',
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+          }}
+        >
+          Restart
+        </button>
+      )}
     </>
   )
 }

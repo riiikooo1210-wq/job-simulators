@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useGameStore } from '../store/gameStore'
 import { storyline } from '../data/storyline'
 import type { SceneNode, SceneType } from '../types/game'
@@ -54,13 +55,18 @@ const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
 
 export default function SceneEngine() {
   const currentNodeId = useGameStore((s) => s.currentNodeId)
+  const recoverInvalidRoute = useGameStore((s) => s.recoverInvalidRoute)
   useScrollToTopOnChange(currentNodeId)
   const node = storyline.nodes[currentNodeId] as SceneNode | undefined
 
+  useEffect(() => {
+    if (!node) recoverInvalidRoute()
+  }, [node, recoverInvalidRoute])
+
   if (!node) {
     return (
-      <div className="flex items-center justify-center min-h-[100dvh] text-game-danger">
-        Error: Node "{currentNodeId}" not found in storyline.
+      <div className="flex items-center justify-center min-h-[100dvh] px-6 text-center text-game-text">
+        Restarting this simulator from the first step because your saved place is from an older version.
       </div>
     )
   }

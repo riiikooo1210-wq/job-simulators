@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -150,7 +150,15 @@ function fallbackRecapAnswer(turn: CoworkerRecapTurn, fallback: string) {
   return `${fallback} ${turn.answerFacts[0]}`
 }
 
-function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+function CoworkerRecap({
+  node,
+  ctx,
+  variant = 'briefing',
+}: {
+  node: BriefingNode
+  ctx: BriefingContext
+  variant?: 'briefing' | 'slack'
+}) {
   const recap = node.coworkerRecap
   const npc = recap?.npcId ? npcs[recap.npcId] : undefined
   const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
@@ -161,8 +169,19 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
   const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
   const [draft, setDraft] = useState('')
   const [loading, setLoading] = useState(false)
+  const messageScrollRef = useRef<HTMLDivElement>(null)
   const complete = turns.length > 0 && turnIndex >= turns.length
   const currentTurn = turns[turnIndex]
+  const isSlack = variant === 'slack'
+  const showChatMessages = messages.length > 0
+  const visibleMessages = messages
+  const briefBullets = node.id === 'briefing_kickoff'
+    ? [
+        'Your job: find where friend groups get stuck.',
+        'Use Slack first, then check the trip numbers in Analytics.',
+        'Do not suggest a feature yet. Find the problem first.',
+      ]
+    : (node.memoryCard?.bullets || []).slice(0, 3)
 
   useEffect(() => {
     setTurnIndex(0)
@@ -170,6 +189,16 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
     setLoading(false)
     setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
   }, [node.id])
+
+  useEffect(() => {
+    if (isSlack) return undefined
+    if (!showChatMessages || !messageScrollRef.current) return undefined
+    const frame = window.requestAnimationFrame(() => {
+      const scroller = messageScrollRef.current
+      if (scroller) scroller.scrollTop = scroller.scrollHeight
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [loading, messages, showChatMessages])
 
   if (!recap || turns.length === 0) return null
 
@@ -180,7 +209,11 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
       setMessages([...nextMessages, { role: 'assistant', content: turns[nextIndex].coworkerLine }])
     } else {
       setTurnIndex(nextIndex)
-      setMessages([...nextMessages, { role: 'assistant', content: 'Great. That is all the context you need before opening the workspace.' }])
+      if (isSlack) {
+        setMessages(nextMessages)
+        return
+      }
+      setMessages([...nextMessages, { role: 'assistant', content: "Great. You have Maya's brief now. Next, open Analytics and check the trip numbers." }])
     }
   }
 
@@ -215,106 +248,162 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
     }
   }
 
+  const confirmCurrentMessage = () => {
+    if (!currentTurn || loading) return
+    if (isSlack) {
+      advanceTurn([...messages, { role: 'user', content: 'OK' }])
+      return
+    }
+    void submitText('Yes, I understand.')
+  }
+
   return (
     <div
       style={{
-        border: '1px solid #000',
-        backgroundColor: '#EFE8D2',
-        boxShadow: '4px 4px 0 rgba(0,0,0,0.24)',
-        padding: '0.85rem',
+        border: isSlack ? '1px solid #E5E0D4' : '1px solid #000',
+        borderRadius: isSlack ? '8px' : 0,
+        backgroundColor: isSlack ? '#FFFFFF' : '#EFE8D2',
+        boxShadow: isSlack ? '0 1px 3px rgba(0,0,0,0.08)' : '4px 4px 0 rgba(0,0,0,0.24)',
+        padding: isSlack ? '0.38rem' : '0.85rem',
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.7rem',
+        gap: isSlack ? '0.26rem' : '0.7rem',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline' }}>
-        <div>
-          <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>{speakerName}</div>
-          {speakerRole && <div style={{ fontSize: '0.68rem', color: '#6f6758' }}>{speakerRole}</div>}
+        <div style={{ display: isSlack ? 'flex' : 'block', alignItems: 'baseline', gap: '0.4rem', minWidth: 0 }}>
+          <div style={{ fontSize: isSlack ? '0.76rem' : '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>
+            {speakerName}
+          </div>
+          {speakerRole && <div style={{ fontSize: isSlack ? '0.62rem' : '0.68rem', color: '#6f6758', whiteSpace: 'nowrap' }}>{speakerRole}</div>}
         </div>
         <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 800 }}>
           Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
         </div>
       </div>
       {!complete && (
-        <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#6f6758' }}>
-          Click "I understand" or ask a question if anything is unclear.
+        <div style={{ fontSize: isSlack ? '0.62rem' : '0.72rem', lineHeight: isSlack ? 1.25 : 1.45, color: '#6f6758' }}>
+          {isSlack ? 'Click OK after each message.' : 'Click "I understand" or ask a question if anything is unclear.'}
         </div>
       )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
-        {messages.map((message, i) => (
-          <div
-            key={i}
-            style={{
-              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '86%',
-              border: '1px solid #CDBF94',
-              backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
-              padding: '0.55rem 0.65rem',
-              fontSize: '0.8rem',
-              lineHeight: 1.45,
-              color: '#1E1E1A',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            {renderContentWithGlossary(interpolate(message.content, ctx))}
-          </div>
-        ))}
-        {loading && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerName} is answering...</div>}
-      </div>
-      {!complete && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') void submitText(draft)
-              }}
-              placeholder={'Click "I understand" or ask a question if anything is unclear.'}
+      {showChatMessages && (
+        <div
+          ref={messageScrollRef}
+          aria-live="polite"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isSlack ? '0.2rem' : '0.5rem',
+            maxHeight: isSlack ? undefined : '15rem',
+            overflowY: isSlack ? 'visible' : 'auto',
+            scrollBehavior: isSlack ? undefined : 'smooth',
+          }}
+        >
+          {visibleMessages.map((message, i) => (
+            <div
+              key={`${messages.length - visibleMessages.length + i}-${message.role}`}
               style={{
-                flex: 1,
-                border: '1px solid #CDBF94',
-                backgroundColor: '#FBF7EA',
-                padding: '0.55rem 0.65rem',
-                font: 'inherit',
-                fontSize: '0.8rem',
-                minWidth: 0,
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => void submitText(draft)}
-              disabled={loading || !draft.trim()}
-              style={{
-                border: '1px solid #000',
-                backgroundColor: '#3A6B5E',
-                color: '#F7F1E3',
-                boxShadow: '2px 2px 0 #000',
-                padding: '0 0.8rem',
-                fontWeight: 900,
-                cursor: loading || !draft.trim() ? 'not-allowed' : 'pointer',
+                alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+                maxWidth: isSlack ? '96%' : '86%',
+                border: isSlack ? '1px solid #E5E0D4' : '1px solid #CDBF94',
+                borderRadius: isSlack ? '8px' : 0,
+                backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
+                padding: isSlack ? (message.role === 'user' ? '0.16rem 0.42rem' : '0.28rem 0.42rem') : '0.55rem 0.65rem',
+                fontSize: isSlack ? '0.64rem' : '0.8rem',
+                lineHeight: isSlack ? 1.23 : 1.45,
+                color: '#1E1E1A',
+                whiteSpace: 'pre-wrap',
               }}
             >
-              Send
-            </button>
+              {renderContentWithGlossary(interpolate(message.content, ctx))}
+            </div>
+          ))}
+          {loading && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerName} is answering...</div>}
+        </div>
+      )}
+      {!complete && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isSlack ? '0.22rem' : '0.5rem', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: isSlack ? '0.35rem' : '0.5rem', alignItems: 'stretch', justifyContent: isSlack ? 'flex-end' : 'stretch' }}>
+            {!isSlack && (
+              <>
+                <input
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') void submitText(draft)
+                  }}
+                  placeholder={'Click "I understand" or ask a question if anything is unclear.'}
+                  style={{
+                    flex: 1,
+                    border: '1px solid #CDBF94',
+                    backgroundColor: '#FBF7EA',
+                    padding: '0.55rem 0.65rem',
+                    font: 'inherit',
+                    fontSize: '0.8rem',
+                    minWidth: 0,
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => void submitText(draft)}
+                  disabled={loading || !draft.trim()}
+                  style={{
+                    border: '1px solid #000',
+                    backgroundColor: '#3A6B5E',
+                    color: '#F7F1E3',
+                    boxShadow: '2px 2px 0 #000',
+                    padding: '0 0.8rem',
+                    fontWeight: 900,
+                    cursor: loading || !draft.trim() ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  Send
+                </button>
+              </>
+            )}
             <button
               type="button"
-              onClick={() => void submitText('Yes, I understand.')}
+              onClick={confirmCurrentMessage}
               disabled={loading}
               style={{
                 border: '1px solid #000',
                 backgroundColor: '#F7F1E3',
                 color: '#1E1E1A',
                 boxShadow: '2px 2px 0 #000',
-                padding: '0 0.75rem',
+                minHeight: isSlack ? '1.65rem' : undefined,
+                padding: isSlack ? '0.22rem 0.9rem' : '0 0.75rem',
                 fontWeight: 900,
+                fontSize: isSlack ? '0.68rem' : undefined,
                 cursor: loading ? 'not-allowed' : 'pointer',
               }}
             >
-              I understand
+              {isSlack ? 'OK' : 'I understand'}
             </button>
           </div>
+        </div>
+      )}
+      {complete && isSlack && briefBullets.length > 0 && (
+        <div
+          style={{
+            border: '1px solid #D7CDBA',
+            borderRadius: '8px',
+            backgroundColor: '#F7F1E3',
+            padding: '0.36rem 0.46rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.16rem',
+          }}
+        >
+          <div style={{ fontSize: '0.6rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+            Maya's brief
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '0.88rem', display: 'flex', flexDirection: 'column', gap: '0.08rem' }}>
+            {briefBullets.map((bullet, i) => (
+              <li key={i} style={{ fontSize: '0.64rem', lineHeight: 1.24, color: '#1E1E1A' }}>
+                {renderContentWithGlossary(interpolate(bullet, ctx))}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
@@ -832,7 +921,8 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
 function workspaceAppVariant(kind: SourceWorkspaceApp['kind']) {
   if (kind === 'email') return 'email'
   if (kind === 'slack') return 'slack'
-  if (kind === 'spreadsheet' || kind === 'dashboard' || kind === 'analytics') return 'spreadsheet'
+  if (kind === 'spreadsheet') return 'spreadsheet'
+  if (kind === 'dashboard' || kind === 'analytics') return 'analytics'
   if (kind === 'crm' || kind === 'ats' || kind === 'ticket' || kind === 'build_tracker') return 'kanban'
   if (kind === 'gis') return 'miro'
   return 'doc'
@@ -892,6 +982,448 @@ function renderWorkspaceRows(app: SourceWorkspaceApp, compact = false) {
   )
 }
 
+function parsePercentValue(value?: string) {
+  const parsed = Number(String(value || '').replace(/[^\d.]/g, ''))
+  if (!Number.isFinite(parsed)) return 0
+  return Math.max(0, Math.min(100, parsed))
+}
+
+function resolveStatusColor(status?: string) {
+  const normalized = (status || '').toLowerCase()
+  if (normalized.includes('track') || normalized.includes('good')) return { bg: '#DCE6D2', fg: '#315D50' }
+  if (normalized.includes('warn') || normalized.includes('risk')) return { bg: '#F6E2B8', fg: '#775A16' }
+  return { bg: '#E8DCC8', fg: '#5F5749' }
+}
+
+function SlackWorkspaceContext({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const hasMayaThread = Boolean(node.coworkerRecap?.turns?.length)
+  if (!hasMayaThread) return null
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: 0 }}>
+      <CoworkerRecap node={node} ctx={ctx} variant="slack" />
+    </div>
+  )
+}
+
+function renderSlackWorkspaceApp(
+  app: SourceWorkspaceApp,
+  node: BriefingNode,
+  ctx: BriefingContext,
+  workspaceFiles: SourceInboxFile[],
+  openFile: (fileId: string) => void,
+) {
+  const messages = app.messages || []
+  const channelName = interpolate(messages.find((message) => message.channel === 'slack')?.channelName || app.title || '#product', ctx)
+  const displayChannel = channelName.startsWith('#') ? channelName : `#${channelName}`
+  const channelLabel = displayChannel.replace(/^#/, '')
+  const hasMayaThread = Boolean(node.coworkerRecap?.turns?.length)
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(8.8rem, 27%) minmax(0, 1fr)',
+        height: '100%',
+        minHeight: 0,
+        backgroundColor: '#FFFFFF',
+      }}
+    >
+      <aside
+        style={{
+          minHeight: 0,
+          backgroundColor: '#3F605C',
+          color: '#F7F1E3',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRight: '1px solid rgba(0,0,0,0.18)',
+        }}
+      >
+        <div style={{ padding: hasMayaThread ? '0.44rem 0.62rem' : '0.8rem 0.85rem', borderBottom: '1px solid rgba(247,241,227,0.18)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem', alignItems: 'center' }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 900, lineHeight: 1.2 }}>Roamly HQ</div>
+              <div style={{ marginTop: '0.16rem', fontSize: '0.62rem', color: 'rgba(247,241,227,0.76)' }}>3 online</div>
+            </div>
+            <div
+              aria-hidden="true"
+              style={{
+                width: '1.45rem',
+                height: '1.45rem',
+                borderRadius: '6px',
+                display: 'grid',
+                placeItems: 'center',
+                backgroundColor: 'rgba(247,241,227,0.15)',
+                border: '1px solid rgba(247,241,227,0.28)',
+                fontSize: '0.85rem',
+                fontWeight: 900,
+              }}
+            >
+              R
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding: hasMayaThread ? '0.36rem 0.42rem' : '0.7rem 0.55rem', display: 'flex', flexDirection: 'column', gap: hasMayaThread ? '0.18rem' : '0.4rem', minHeight: 0 }}>
+          <div style={{ padding: '0 0.35rem', fontSize: '0.62rem', color: 'rgba(247,241,227,0.64)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
+            Channels
+          </div>
+          {['social-trip-planning', 'product-review', 'design-feedback'].map((channel) => {
+            const active = channel === channelLabel.replace(/^social-/, 'social-')
+              || displayChannel.toLowerCase().includes(channel.toLowerCase())
+            return (
+              <div
+                key={channel}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  borderRadius: '5px',
+                  padding: hasMayaThread ? '0.28rem 0.38rem' : '0.38rem 0.42rem',
+                  backgroundColor: active ? 'rgba(247,241,227,0.22)' : 'transparent',
+                  color: active ? '#FFFFFF' : 'rgba(247,241,227,0.82)',
+                  fontSize: '0.7rem',
+                  fontWeight: active ? 900 : 700,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                <span aria-hidden="true">#</span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{channel}</span>
+              </div>
+            )
+          })}
+
+          <div style={{ marginTop: hasMayaThread ? '0.18rem' : '0.55rem', padding: '0 0.35rem', fontSize: '0.62rem', color: 'rgba(247,241,227,0.64)', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
+            Direct messages
+          </div>
+          {['Maya Patel', 'Jordan Lee'].map((name) => (
+            <div key={name} style={{ display: 'flex', alignItems: 'center', gap: '0.42rem', padding: '0.32rem 0.42rem', fontSize: '0.7rem', color: 'rgba(247,241,227,0.82)' }}>
+              <span style={{ width: '0.45rem', height: '0.45rem', borderRadius: '999px', backgroundColor: '#DCE6D2', flexShrink: 0 }} />
+              <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      <section style={{ minWidth: 0, minHeight: 0, display: 'flex', flexDirection: 'column', backgroundColor: '#FFFFFF' }}>
+        <header
+          style={{
+            flexShrink: 0,
+            padding: hasMayaThread ? '0.32rem 0.62rem' : '0.72rem 0.95rem',
+            borderBottom: '1px solid #E5E0D4',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.75rem',
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: hasMayaThread ? '0.82rem' : '0.95rem', fontWeight: 900, color: '#1D1C1D', lineHeight: 1.15 }}>{displayChannel}</div>
+            <div style={{ marginTop: hasMayaThread ? '0.08rem' : '0.18rem', fontSize: hasMayaThread ? '0.61rem' : '0.66rem', color: '#6F6758' }}>
+              {hasMayaThread ? 'Start with Maya, then open Analytics.' : 'Product lead handoff - today'}
+            </div>
+          </div>
+          {!hasMayaThread && (
+            <div
+              style={{
+                border: '1px solid #D8D2C6',
+                borderRadius: '999px',
+                padding: '0.28rem 0.55rem',
+                color: '#6F6758',
+                fontSize: '0.64rem',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Search
+            </div>
+          )}
+        </header>
+
+        <div style={{ flex: '1 1 auto', minHeight: 0, overflowY: 'auto', padding: hasMayaThread ? '0.28rem 0.5rem' : '0.8rem 0.9rem', display: 'flex', flexDirection: 'column', gap: hasMayaThread ? '0.28rem' : '0.65rem' }}>
+          {!hasMayaThread && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#7A7162', fontSize: '0.66rem', fontWeight: 800 }}>
+              <span style={{ height: '1px', backgroundColor: '#E3DDD2', flex: 1 }} />
+              Today
+              <span style={{ height: '1px', backgroundColor: '#E3DDD2', flex: 1 }} />
+            </div>
+          )}
+
+          <SlackWorkspaceContext node={node} ctx={ctx} />
+
+          {!hasMayaThread && messages.map((message, i) => {
+            const resolved = resolveWorkspaceSlackMessage(message, ctx)
+            return (
+              <article
+                key={message.id}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2.2rem minmax(0, 1fr)',
+                  gap: '0.65rem',
+                  padding: '0.45rem 0.2rem',
+                }}
+              >
+                <div
+                  style={{
+                    width: '2.1rem',
+                    height: '2.1rem',
+                    borderRadius: '7px',
+                    backgroundColor: i % 2 === 0 ? '#B87D6B' : '#3A6B5E',
+                    color: '#FFFFFF',
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontSize: '0.72rem',
+                    fontWeight: 900,
+                  }}
+                >
+                  {resolved.sender.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()}
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.45rem', flexWrap: 'wrap' }}>
+                    <strong style={{ fontSize: '0.82rem', color: '#1D1C1D' }}>{resolved.sender}</strong>
+                    <span style={{ fontSize: '0.64rem', color: '#7A7162' }}>{resolved.timestamp}</span>
+                  </div>
+                  <div style={{ marginTop: '0.16rem', fontSize: '0.78rem', lineHeight: 1.48, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+                    {renderContentWithGlossary(resolved.content)}
+                  </div>
+                  {message.lookFor && (
+                    <div style={{ marginTop: '0.55rem', border: '1px solid #D7CDBA', borderRadius: '6px', backgroundColor: '#F7F1E3', padding: '0.55rem 0.65rem' }}>
+                      <div style={{ fontSize: '0.62rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0, marginBottom: '0.2rem' }}>
+                        What to look for
+                      </div>
+                      <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#1E1E1A' }}>{renderContentWithGlossary(interpolate(message.lookFor, ctx))}</div>
+                    </div>
+                  )}
+                  {message.linkedFileIds && message.linkedFileIds.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', marginTop: '0.55rem' }}>
+                      {message.linkedFileIds.map((fileId) => {
+                        const linkedFile = workspaceFiles.find((file) => file.id === fileId)
+                        if (!linkedFile) return null
+                        return (
+                          <button
+                            key={fileId}
+                            type="button"
+                            onClick={() => openFile(fileId)}
+                            style={{
+                              border: '1px solid #CDBF94',
+                              backgroundColor: '#EFE8D2',
+                              borderRadius: '5px',
+                              padding: '0.34rem 0.5rem',
+                              fontSize: '0.68rem',
+                              fontWeight: 800,
+                              color: '#1E1E1A',
+                              cursor: 'pointer',
+                              fontFamily: 'Inter, system-ui, sans-serif',
+                            }}
+                          >
+                            Open {linkedFile.name}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </article>
+            )
+          })}
+        </div>
+
+        {!hasMayaThread && (
+          <div style={{ flexShrink: 0, padding: '0.65rem 0.9rem', borderTop: '1px solid #E5E0D4', backgroundColor: '#FFFFFF' }}>
+            <div style={{ border: '1px solid #D8D2C6', borderRadius: '8px', padding: '0.52rem 0.7rem', color: '#9A9083', fontSize: '0.72rem' }}>
+              Message {displayChannel}
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+  )
+}
+
+function renderAnalyticsWorkspaceApp(app: SourceWorkspaceApp, ctx: BriefingContext) {
+  const rows = app.rows || []
+  const columns = app.columns || (rows[0] ? Object.keys(rows[0]).filter(Boolean) : [])
+  const chartRows = rows.map((row) => ({
+    label: row.metric || row.name || '',
+    value: row.actual || '',
+    percent: parsePercentValue(row.actual),
+    status: row.status || '',
+  }))
+  const cardRows = [rows[0], rows[1], rows[3] || rows[2]].filter(Boolean)
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'minmax(8rem, 23%) minmax(0, 1fr)',
+        minHeight: '100%',
+        backgroundColor: '#F6F2E8',
+      }}
+    >
+      <aside
+        style={{
+          borderRight: '1px solid #D7CDBA',
+          backgroundColor: '#EFE8D2',
+          padding: '0.85rem 0.65rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.8rem',
+        }}
+      >
+        <div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 900, color: '#315D50' }}>Roamly Analytics</div>
+          <div style={{ marginTop: '0.2rem', fontSize: '0.62rem', color: '#6F6758' }}>Product workspace</div>
+        </div>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.28rem' }} aria-label="Analytics navigation">
+          {['Overview', 'Step chart', 'Actions', 'Groups'].map((item) => {
+            const active = item === 'Step chart'
+            return (
+              <div
+                key={item}
+                style={{
+                  border: active ? '1px solid #AFC2B7' : '1px solid transparent',
+                  borderRadius: '6px',
+                  backgroundColor: active ? '#DCE6D2' : 'transparent',
+                  color: active ? '#315D50' : '#5F5749',
+                  padding: '0.42rem 0.5rem',
+                  fontSize: '0.7rem',
+                  fontWeight: active ? 900 : 700,
+                }}
+              >
+                {item}
+              </div>
+            )
+          })}
+        </nav>
+        <div style={{ marginTop: 'auto', border: '1px solid #D7CDBA', borderRadius: '6px', backgroundColor: '#F7F1E3', padding: '0.55rem' }}>
+          <div style={{ fontSize: '0.62rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>Showing</div>
+          <div style={{ marginTop: '0.2rem', fontSize: '0.7rem', color: '#1E1E1A' }}>People who started a trip</div>
+        </div>
+      </aside>
+
+      <main style={{ minWidth: 0, minHeight: 0, padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontSize: '0.62rem', color: '#6F6758', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>Trip step chart</div>
+            <h3 style={{ margin: '0.15rem 0 0', color: '#1E1E1A', fontSize: '1rem', lineHeight: 1.2 }}>{interpolate(app.title || app.label, ctx)}</h3>
+          </div>
+          <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
+            {['Last 30 days', 'All platforms'].map((filter) => (
+              <span
+                key={filter}
+                style={{
+                  border: '1px solid #D7CDBA',
+                  borderRadius: '999px',
+                  backgroundColor: '#FFFFFF',
+                  color: '#5F5749',
+                  padding: '0.28rem 0.55rem',
+                  fontSize: '0.64rem',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {filter}
+              </span>
+            ))}
+          </div>
+        </header>
+
+        {app.lookFor && (
+          <div style={{ border: '1px solid #AFC2B7', borderLeft: '5px solid #3A6B5E', borderRadius: '6px', backgroundColor: '#E7F0EA', padding: '0.55rem 0.65rem' }}>
+            <div style={{ fontSize: '0.62rem', fontWeight: 900, color: '#315D50', textTransform: 'uppercase', letterSpacing: 0, marginBottom: '0.18rem' }}>
+              How to read this
+            </div>
+            <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#1E1E1A' }}>{renderContentWithGlossary(interpolate(app.lookFor, ctx))}</div>
+          </div>
+        )}
+
+        <section style={{ border: '1px solid #D7CDBA', borderRadius: '8px', backgroundColor: '#FFFFFF', padding: '0.7rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.75rem' }}>
+            <h4 style={{ margin: 0, fontSize: '0.82rem', color: '#1E1E1A' }}>Where people stop</h4>
+            <span style={{ fontSize: '0.62rem', color: '#6F6758' }}>Out of 100 people who start a trip</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.42rem' }}>
+            {chartRows.map((row, index) => (
+              <div key={`${row.label}-${index}`} style={{ display: 'grid', gridTemplateColumns: 'minmax(8.8rem, 39%) minmax(0, 1fr) 2.5rem', gap: '0.5rem', alignItems: 'center' }}>
+                <div style={{ fontSize: '0.66rem', lineHeight: 1.2, color: '#4A443A', minWidth: 0, overflow: 'visible', whiteSpace: 'normal' }}>
+                  {row.label}
+                </div>
+                <div style={{ height: '0.7rem', borderRadius: '999px', backgroundColor: '#EFE8D2', overflow: 'hidden', border: '1px solid #E1D6C3' }}>
+                  <div
+                    style={{
+                      width: `${Math.max(row.percent, 3)}%`,
+                      height: '100%',
+                      borderRadius: '999px',
+                      backgroundColor: index < 2 ? '#3A6B5E' : index < 4 ? '#B87D6B' : '#6B9EA6',
+                    }}
+                  />
+                </div>
+                <strong style={{ fontSize: '0.66rem', color: '#1E1E1A', textAlign: 'right' }}>{row.value}</strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.55rem' }}>
+          {cardRows.map((row, index) => {
+            const status = resolveStatusColor(row.status)
+            return (
+              <div key={`${row.metric}-${index}`} style={{ border: '1px solid #D7CDBA', borderRadius: '7px', backgroundColor: '#FFFFFF', padding: '0.58rem 0.65rem', minWidth: 0 }}>
+                <div style={{ fontSize: '0.6rem', fontWeight: 900, color: '#6F6758', textTransform: 'uppercase', letterSpacing: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {row.metric}
+                </div>
+                <div style={{ marginTop: '0.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.35rem' }}>
+                  <strong style={{ fontSize: '1.12rem', color: '#1E1E1A', lineHeight: 1 }}>{row.actual}</strong>
+                  <span style={{ borderRadius: '999px', backgroundColor: status.bg, color: status.fg, padding: '0.12rem 0.38rem', fontSize: '0.56rem', fontWeight: 900 }}>
+                    {String(row.status || '').replace(/_/g, ' ')}
+                  </span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {columns.length > 0 && rows.length > 0 && (
+          <div style={{ border: '1px solid #D7CDBA', borderRadius: '7px', backgroundColor: '#FFFFFF', overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', fontSize: '0.66rem' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#EFE8D2' }}>
+                  {columns.map((column) => (
+                    <th key={column} style={{ padding: '0.42rem 0.48rem', textAlign: 'left', color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0, borderBottom: '1px solid #D7CDBA' }}>
+                      {formatSourceColumnLabel(column)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, rowIndex) => (
+                  <tr key={rowIndex} style={{ backgroundColor: rowIndex % 2 === 0 ? '#FFFFFF' : '#FBF7EE' }}>
+                    {columns.map((column) => {
+                      const status = column === 'status' ? resolveStatusColor(row[column]) : null
+                      return (
+                        <td key={column} style={{ padding: '0.42rem 0.48rem', borderBottom: '1px solid #EEE7DA', color: '#1E1E1A', wordBreak: 'break-word' }}>
+                          {status ? (
+                            <span style={{ display: 'inline-block', borderRadius: '999px', backgroundColor: status.bg, color: status.fg, padding: '0.12rem 0.38rem', fontWeight: 900 }}>
+                              {String(row[column] || '').replace(/_/g, ' ')}
+                            </span>
+                          ) : (
+                            row[column] || ''
+                          )}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </main>
+    </div>
+  )
+}
+
 function groupSourceFiles(files: SourceInboxFile[]) {
   const groups: { category: string; files: SourceInboxFile[] }[] = []
   for (const file of files) {
@@ -906,6 +1438,105 @@ function groupSourceFiles(files: SourceInboxFile[]) {
   return groups
 }
 
+type SourceWorkspaceMission = {
+  title: string
+  body: string
+  steps: string[]
+  startLabel: string
+  workspaceIntro: string
+}
+
+function getSourceWorkspaceMission(node: BriefingNode): SourceWorkspaceMission {
+  if (node.id === 'briefing_kickoff') {
+    return {
+      title: 'Find why Roamly trips get stuck.',
+      body: 'Roamly helps friends plan weekend trips. Your first job is to read two sources and spot where group planning slows down.',
+      steps: [
+        "Read Maya's message.",
+        'Check the trip planning numbers.',
+        'Then review the current app flow.',
+      ],
+      startLabel: 'Open workspace',
+      workspaceIntro: 'Open Slack and Analytics. Those two sources are enough before you review the app flow.',
+    }
+  }
+
+  return {
+    title: node.title,
+    body: 'Start with the source materials, then move to the next task.',
+    steps: ['Open the source apps.', 'Look for the main user problem.', 'Continue when the key sources are reviewed.'],
+    startLabel: 'Open workspace',
+    workspaceIntro: 'Open the required source apps before moving on.',
+  }
+}
+
+function SourceWorkspaceMissionCard({
+  node,
+  onStart,
+}: {
+  node: BriefingNode
+  onStart: () => void
+}) {
+  const mission = getSourceWorkspaceMission(node)
+
+  return (
+    <section
+      className="source-workspace-mission-card"
+    >
+      <div>
+        <div style={{ fontSize: '0.72rem', color: '#3A6B5E', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
+          Section {node.section}
+        </div>
+        <h2 style={{ margin: '0.2rem 0 0', fontSize: '1.55rem', lineHeight: 1.18, color: '#000' }}>
+          {mission.title}
+        </h2>
+      </div>
+
+      <p style={{ margin: 0, maxWidth: '42rem', fontSize: '0.95rem', lineHeight: 1.58, color: '#1E1E1A' }}>
+        {mission.body}
+      </p>
+
+      <div className="source-workspace-mission-steps" aria-label="Mission steps">
+        {mission.steps.map((step, index) => (
+          <div
+            key={step}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1.8rem minmax(0, 1fr)',
+              gap: '0.65rem',
+              alignItems: 'center',
+              minHeight: '2rem',
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: '1.55rem',
+                height: '1.55rem',
+                display: 'grid',
+                placeItems: 'center',
+                border: '1px solid #000',
+                borderRadius: '999px',
+                backgroundColor: index === 0 ? '#DCE6D2' : '#E8DCC8',
+                color: '#1E1E1A',
+                fontSize: '0.78rem',
+                fontWeight: 900,
+              }}
+            >
+              {index + 1}
+            </span>
+            <span style={{ minWidth: 0, fontSize: '0.92rem', lineHeight: 1.35, color: '#1E1E1A' }}>{step}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="source-workspace-mission-action">
+        <ActionButton text={mission.startLabel} onClick={onStart} fullWidth={false} />
+      </div>
+    </section>
+  )
+}
+
 function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
@@ -917,6 +1548,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
   const sourceWorkspace = node.sourceWorkspace!
   const apps = sourceWorkspace.apps
   const workspaceFiles = apps.flatMap((app) => app.files || [])
+  const [workspaceStarted, setWorkspaceStarted] = useState(false)
   const [activeAppId, setActiveAppId] = useState<string | null>(null)
   const [activeFileId, setActiveFileId] = useState<string | null>(null)
   const activeApp = apps.find((app) => app.id === activeAppId) || null
@@ -933,6 +1565,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
   const activeAppNeedsContentMargin = activeApp ? ['ticket', 'build_tracker', 'crm', 'ats'].includes(activeApp.kind) : false
   const activeFileGroups = activeApp?.files ? groupSourceFiles(activeApp.files) : []
   const activeAppHasFiles = Boolean(activeApp?.files?.length)
+  const mission = getSourceWorkspaceMission(node)
 
   const openApp = (appId: string) => {
     setActiveAppId(appId)
@@ -956,36 +1589,53 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
   }
 
   return (
-    <SceneWrapper illustration={node.illustration}>
+    <SceneWrapper illustration={node.illustration} hideIllustration>
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
       >
-        <div>
-          <span style={{ fontSize: '0.7rem', color: '#555' }}>Section {node.section}</span>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#000', lineHeight: 1.3 }}>
-            {node.title}
-          </h2>
-        </div>
-
-        {node.content && (
-          <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000', margin: 0 }}>
-            {renderContentWithGlossary(interpolate(node.content, ctx))}
-          </p>
-        )}
-
-        <BriefingLeadIn node={node} ctx={ctx} />
+        {!workspaceStarted ? (
+          <SourceWorkspaceMissionCard node={node} onStart={() => setWorkspaceStarted(true)} />
+        ) : (
+          <>
+            <div>
+              <span style={{ fontSize: '0.7rem', color: '#555' }}>Section {node.section}</span>
+              <h2 style={{ margin: '0.2rem 0 0', fontSize: '1.25rem', fontWeight: 700, color: '#000', lineHeight: 1.3 }}>
+                {node.title}
+              </h2>
+              <p style={{ margin: '0.45rem 0 0', fontSize: '0.875rem', lineHeight: 1.6, color: '#1E1E1A' }}>
+                {mission.workspaceIntro}
+              </p>
+            </div>
 
         <DesktopOverlay width={sourceWorkspace.desktop?.width || '75%'} height={sourceWorkspace.desktop?.height || '80%'}>
-          <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 0 }}>
+          <div
+            className="pm-source-workspace"
+            data-testid="pm-source-workspace-shell"
+            style={{ position: 'relative', width: '100%', height: '100%', minHeight: 0 }}
+          >
+            <header className="pm-source-topbar">
+              <div className="pm-source-brand">
+                <span aria-hidden="true">R</span>
+                <div>
+                  <strong>Roamly Product Workspace</strong>
+                  <small>Discovery sources · Monday 9:12 AM</small>
+                </div>
+              </div>
+              <div className="pm-source-search" aria-label="Workspace search">Search sources</div>
+              <div className="pm-source-progress" data-testid="pm-source-progress">
+                Evidence checked {openedRequiredCount}/{requiredSourceIds.length}
+              </div>
+            </header>
             <div
               aria-label={sourceWorkspace.introLabel || 'Source apps'}
+              className="pm-source-app-rail"
               style={{
                 position: 'absolute',
                 left: '0.75rem',
-                top: '0.85rem',
+                top: '4.15rem',
                 bottom: '0.85rem',
                 zIndex: 2,
                 width: '5.15rem',
@@ -1007,6 +1657,8 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                     type="button"
                     onClick={() => openApp(app.id)}
                     title={`${app.label}${fileCount ? ` (${fileCount} item${fileCount === 1 ? '' : 's'})` : ''}`}
+                    className="pm-source-app-button"
+                    data-testid={`pm-source-app-${app.id}`}
                     style={{
                       position: 'relative',
                       width: '4.65rem',
@@ -1079,9 +1731,10 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
 
             {activeApp ? (
               <div
+                className="pm-source-active-window"
                 style={{
                   position: 'absolute',
-                  inset: '0.75rem 0.85rem 0.95rem 6.6rem',
+                  inset: '4.15rem 0.85rem 0.95rem 6.6rem',
                   display: 'flex',
                   minWidth: 0,
                   minHeight: 0,
@@ -1093,6 +1746,11 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                   scrollable
                   fill
                 >
+                  {activeApp.kind === 'slack' ? (
+                    renderSlackWorkspaceApp(activeApp, node, ctx, workspaceFiles, openFile)
+                  ) : activeApp.kind === 'analytics' || activeApp.kind === 'dashboard' ? (
+                    renderAnalyticsWorkspaceApp(activeApp, ctx)
+                  ) : (
                   <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.9rem', height: activeAppHasFiles ? '100%' : undefined, minHeight: 0, overflow: activeAppHasFiles ? 'hidden' : undefined }}>
                     <div
                       style={{
@@ -1107,7 +1765,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                         boxSizing: 'border-box',
                       }}
                     >
-                    {!((activeApp.kind === 'slack' || activeApp.kind === 'email') && activeApp.messages?.length) && (
+                    {!(activeApp.kind === 'email' && activeApp.messages?.length) && (
                       <div>
                         <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
                           {activeApp.kind.replace(/_/g, ' ')}
@@ -1120,47 +1778,6 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                     )}
 
                     {activeApp.messages && activeApp.messages.length > 0 && (
-                      activeApp.kind === 'slack' ? (
-                        <div style={{ padding: '0.875rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-                          {activeApp.messages.map((message, i) => (
-                            <div key={message.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                              <SlackMessageEnhanced
-                                message={resolveWorkspaceSlackMessage(message, ctx)}
-                                delay={i * 0.12}
-                                initialExpanded
-                                showUnreadDot={i === activeApp.messages!.length - 1}
-                              />
-                              {message.linkedFileIds && message.linkedFileIds.length > 0 && (
-                                <div style={{ marginLeft: '3.25rem', display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
-                                  {message.linkedFileIds.map((fileId) => {
-                                    const linkedFile = workspaceFiles.find((file) => file.id === fileId)
-                                    if (!linkedFile) return null
-                                    return (
-                                      <button
-                                        key={fileId}
-                                        type="button"
-                                        onClick={() => openFile(fileId)}
-                                        style={{
-                                          border: '1px solid #000',
-                                          backgroundColor: '#E8DCC8',
-                                          boxShadow: '2px 2px 0 #000',
-                                          padding: '0.35rem 0.55rem',
-                                          fontSize: '0.72rem',
-                                          fontWeight: 800,
-                                          cursor: 'pointer',
-                                          fontFamily: 'Inter, system-ui, sans-serif',
-                                        }}
-                                      >
-                                        Open {linkedFile.name}
-                                      </button>
-                                    )
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
                         activeApp.messages.map((message) => {
                           const title = message.channel === 'slack' ? (message.channelName || 'Slack') : (message.subject || 'Email')
                           if (message.channel === 'email' || activeApp.kind === 'email') {
@@ -1223,7 +1840,6 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                             </div>
                           )
                         })
-                      )
                     )}
 
                     {activeApp.files && activeApp.files.length > 0 && (
@@ -1288,13 +1904,15 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
                     {renderWorkspaceRows(activeApp, activeAppNeedsContentMargin)}
                     </div>
                   </div>
+                  )}
                 </LaptopFrame>
               </div>
             ) : (
               <div
+                className="pm-source-empty-window"
                 style={{
                   position: 'absolute',
-                  inset: '0.75rem 0.85rem 0.95rem 6.6rem',
+                  inset: '4.15rem 0.85rem 0.95rem 6.6rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1324,6 +1942,8 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
           variant={canContinue ? 'primary' : 'secondary'}
         />
         <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
+          </>
+        )}
       </motion.div>
     </SceneWrapper>
   )

@@ -20,6 +20,7 @@ interface Props {
   action?: AppAuditAction
   observation?: AppAuditObservation
   note: string
+  chrome?: 'window' | 'plain'
 }
 
 function screenContext(screen: AppAuditScreen, action?: AppAuditAction, observation?: AppAuditObservation, note?: string) {
@@ -93,7 +94,7 @@ function MicIcon({ muted }: { muted: boolean }) {
   )
 }
 
-export default function AppAuditCompanionPanel({ node, companion, screen, action, observation, note }: Props) {
+export default function AppAuditCompanionPanel({ node, companion, screen, action, observation, note, chrome = 'window' }: Props) {
   const npc = npcs[companion.npcId]
   const conversationKey = `companion:${node.id}:${companion.npcId}`
   const messages = useGameStore((s) => s.npcConversations[conversationKey] || [])
@@ -151,7 +152,7 @@ export default function AppAuditCompanionPanel({ node, companion, screen, action
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY
     if (!apiKey || apiKey === 'your_gemini_api_key_here') {
       setStatus('error')
-      setStatusDetail('Gemini API key not configured.')
+      setStatusDetail('Voice unavailable. Type to Jordan instead.')
       return
     }
 
@@ -219,8 +220,8 @@ export default function AppAuditCompanionPanel({ node, companion, screen, action
       const history: ChatMessage[] = [...messages, { role: 'user', content: trimmed, ts: new Date().toISOString() }]
       const reply = await npcReply({ npcId: companion.npcId, history, goalPrompt, channel: 'chat' })
       appendNpcMessage(conversationKey, { role: 'npc', content: reply, ts: new Date().toISOString() })
-    } catch (err) {
-      setTypedError(err instanceof Error ? err.message : 'Jordan reply failed')
+    } catch {
+      setTypedError('Jordan could not answer live. Use the visible screen, related number, and your note prompt to keep going.')
     } finally {
       setTypedLoading(false)
     }
@@ -241,10 +242,8 @@ export default function AppAuditCompanionPanel({ node, companion, screen, action
     : status === 'error' ? `Voice unavailable`
     : 'Ready'
 
-  return (
-    <aside data-testid="app-audit-companion" style={{ minHeight: 0, display: 'flex' }}>
-      <LaptopFrame variant="slack" title={companion.title || `Ask ${npc.name.split(' ')[0]}`} fill scrollable>
-        <div data-testid="app-audit-companion-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', minHeight: 0, padding: '0.75rem', boxSizing: 'border-box' }}>
+  const body = (
+    <div data-testid="app-audit-companion-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem', minHeight: 0, padding: '0.75rem', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', gap: '0.55rem', alignItems: 'center' }}>
             <div
               style={{
@@ -378,7 +377,21 @@ export default function AppAuditCompanionPanel({ node, companion, screen, action
               {typedError && <div style={{ fontSize: '0.68rem', color: '#7B3D32' }}>{typedError}</div>}
             </div>
           )}
-        </div>
+    </div>
+  )
+
+  if (chrome === 'plain') {
+    return (
+      <aside data-testid="app-audit-companion" style={{ minHeight: 0, display: 'block' }}>
+        {body}
+      </aside>
+    )
+  }
+
+  return (
+    <aside data-testid="app-audit-companion" style={{ minHeight: 0, display: 'flex' }}>
+      <LaptopFrame variant="slack" title={companion.title || `Ask ${npc.name.split(' ')[0]}`} fill scrollable>
+        {body}
       </LaptopFrame>
     </aside>
   )

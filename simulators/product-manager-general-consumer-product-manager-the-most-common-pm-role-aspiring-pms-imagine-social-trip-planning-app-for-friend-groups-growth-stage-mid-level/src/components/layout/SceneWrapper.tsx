@@ -38,6 +38,7 @@ export default function SceneWrapper({ children, illustration, showBack = false,
 
   return (
     <div
+      className="scene-wrapper-shell"
       style={{
         width: '100%',
         minHeight: '100dvh',
@@ -52,6 +53,7 @@ export default function SceneWrapper({ children, illustration, showBack = false,
       }}
     >
       <div
+        className="scene-wrapper-card"
         style={{
           width: 'min(calc(100vw - 2rem), 1800px)',
           backgroundColor: '#F2EBD9',
@@ -80,6 +82,7 @@ export default function SceneWrapper({ children, illustration, showBack = false,
           </div>
         )}
         <div
+          className="scene-wrapper-content"
           ref={contentRef}
           style={{
             padding: '2.5rem 3rem',

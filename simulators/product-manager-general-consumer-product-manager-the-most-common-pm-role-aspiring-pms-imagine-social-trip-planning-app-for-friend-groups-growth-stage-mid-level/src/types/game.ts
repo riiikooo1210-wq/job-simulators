@@ -258,6 +258,7 @@ export interface StructuredEntryField {
   key: string
   label: string
   placeholder?: string
+  helperText?: string
   multiline?: boolean
   rows?: number
   maxWords?: number
@@ -293,6 +294,9 @@ export interface WorkSurfaceTab {
   sourceBindingTitle?: string
   sourceBindingEmptyText?: string
   sourceBindingLabels?: Record<string, string>
+  conversationBindingKey?: string
+  conversationBindingTitle?: string
+  conversationBindingEmptyText?: string
   name?: string
   kind?: SourceInboxFile['kind']
   modified?: string
@@ -322,6 +326,9 @@ export interface StructuredEntryDefinition {
   itemLabel: string
   itemTitles?: string[]
   fields: StructuredEntryField[]
+  example?: Record<string, string>
+  sourceBindingKey?: string
+  itemSourceKeys?: string[]
   initialCount?: number
   minItems?: number
   maxItems?: number
@@ -334,6 +341,7 @@ export interface StructuredEntryDefinition {
     | 'issue_list'
     | 'comment_queue'
     | 'spreadsheet'
+    | 'guided_problem_notes'
 }
 
 export interface BaseNode {
@@ -409,6 +417,7 @@ export interface MultipleChoiceNode extends BaseNode {
 export interface FreeTextNode extends BaseNode {
   type: 'free_text'
   prompt: string
+  presentation?: 'guided_prd_slice'
   minWords?: number
   maxWords?: number
   placeholder?: string
@@ -417,11 +426,7 @@ export interface FreeTextNode extends BaseNode {
     to: string
     subject: string
   }
-  appTabs?: {
-    id: string
-    label: string
-    content: string
-  }[]
+  appTabs?: WorkSurfaceTab[]
 }
 
 export interface StructuredEntryNode extends BaseNode {
@@ -479,6 +484,7 @@ export interface VoiceMeetingNode extends BaseNode {
   prepNoteTitle?: string
   minTurns?: number
   maxTurns?: number
+  typedFallback?: boolean
   voiceName?: string
   initialMessages?: ChatMessage[]
   requiredDisclosure?: {
@@ -505,11 +511,31 @@ export interface AppAuditScreenSection {
   tone?: 'neutral' | 'warning' | 'success'
 }
 
+export interface AppAuditInteraction {
+  id?: string
+  kind: 'sheet' | 'navigate' | 'copy' | 'input_sheet' | 'generate' | 'share'
+  targetScreenId?: string
+  title?: string
+  body?: string
+  buttonLabel?: string
+  successMessage?: string
+  successBody?: string
+  inputKey?: string
+  inputLabel?: string
+  inputPlaceholder?: string
+}
+
+export interface AppAuditChip {
+  label: string
+  interaction?: AppAuditInteraction
+}
+
 export interface AppAuditAction {
   id: string
   label: string
   resultTitle: string
   resultBody: string
+  interaction?: AppAuditInteraction
   resultItems?: {
     label: string
     detail?: string
@@ -524,17 +550,25 @@ export interface AppAuditScreen {
   stepLabel?: string
   primaryAction?: string
   secondaryAction?: string
+  primaryInteraction?: AppAuditInteraction
+  secondaryInteraction?: AppAuditInteraction
   progressLabel?: string
   sections?: AppAuditScreenSection[]
-  chips?: string[]
+  chips?: (string | AppAuditChip)[]
   listItems?: {
     label: string
     detail?: string
     status?: 'complete' | 'pending' | 'quiet' | 'warning'
+    interaction?: AppAuditInteraction
   }[]
   emptyStateTitle?: string
   emptyStateBody?: string
   textBoxPlaceholder?: string
+  phoneTextInput?: {
+    id: string
+    label: string
+    placeholder: string
+  }
   footerNote?: string
   actions?: AppAuditAction[]
 }

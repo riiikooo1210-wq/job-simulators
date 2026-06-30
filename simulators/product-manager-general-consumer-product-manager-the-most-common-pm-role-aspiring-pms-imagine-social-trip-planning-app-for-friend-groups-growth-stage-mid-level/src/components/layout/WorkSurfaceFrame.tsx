@@ -250,7 +250,7 @@ export default function WorkSurfaceFrame({
   }
 
   return (
-    <DesktopOverlay width={width} height={height}>
+    <DesktopOverlay width={width} height={height} className="work-surface-desktop-overlay" contentClassName="work-surface-desktop-content">
       <LaptopFrame
         variant={resolvedVariant}
         title={resolvedTitle}

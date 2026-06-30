@@ -33,6 +33,7 @@ interface JargonTermProps {
 
 export default function JargonTerm({ term, children }: JargonTermProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [tooltipPosition, setTooltipPosition] = useState({ left: 12, bottom: 0, arrowLeft: 130 })
   const ref = useRef<HTMLSpanElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
   const trackDefinitionClick = useGameStore((s) => s.trackDefinitionClick)
@@ -49,6 +50,20 @@ export default function JargonTerm({ term, children }: JargonTermProps) {
 
   useEffect(() => {
     if (!isOpen) return
+    const updateTooltipPosition = () => {
+      if (!ref.current) return
+      const rect = ref.current.getBoundingClientRect()
+      const tooltipWidth = Math.min(260, window.innerWidth - 24)
+      const preferredLeft = rect.left + rect.width / 2 - tooltipWidth / 2
+      const left = Math.min(Math.max(preferredLeft, 12), window.innerWidth - tooltipWidth - 12)
+      setTooltipPosition({
+        left,
+        bottom: Math.max(8, window.innerHeight - rect.top + 6),
+        arrowLeft: Math.min(Math.max(rect.left + rect.width / 2 - left, 12), tooltipWidth - 12),
+      })
+    }
+    updateTooltipPosition()
+    window.addEventListener('resize', updateTooltipPosition)
     const handleOutside = (e: MouseEvent) => {
       if (
         ref.current && !ref.current.contains(e.target as Node) &&
@@ -58,7 +73,10 @@ export default function JargonTerm({ term, children }: JargonTermProps) {
       }
     }
     document.addEventListener('mousedown', handleOutside)
-    return () => document.removeEventListener('mousedown', handleOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleOutside)
+      window.removeEventListener('resize', updateTooltipPosition)
+    }
   }, [isOpen])
 
   return (
@@ -93,10 +111,9 @@ export default function JargonTerm({ term, children }: JargonTermProps) {
         <div
           ref={tooltipRef}
           style={{
-            position: 'absolute',
-            bottom: 'calc(100% + 6px)',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            position: 'fixed',
+            bottom: `${tooltipPosition.bottom}px`,
+            left: `${tooltipPosition.left}px`,
             backgroundColor: '#1d1c1d',
             color: '#fff',
             padding: '0.625rem 0.75rem',
@@ -104,7 +121,7 @@ export default function JargonTerm({ term, children }: JargonTermProps) {
             fontSize: '0.75rem',
             lineHeight: 1.5,
             width: '260px',
-            maxWidth: '80vw',
+            maxWidth: 'calc(100vw - 24px)',
             zIndex: 100,
             boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
           }}
@@ -118,7 +135,7 @@ export default function JargonTerm({ term, children }: JargonTermProps) {
             style={{
               position: 'absolute',
               bottom: '-5px',
-              left: '50%',
+              left: `${tooltipPosition.arrowLeft}px`,
               transform: 'translateX(-50%)',
               width: 0,
               height: 0,

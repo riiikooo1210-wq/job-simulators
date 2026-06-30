@@ -28,13 +28,13 @@ The student is a mid-level PM owning the "group momentum" product area. They do 
 
 ## Work-Mix Design
 
-This is a desk-tool job. Physical/procedural work is rare; the concrete work happens through dashboards, research notes, roadmaps, docs, Slack/email, meetings, and product artifacts [onet][yt:Dnh0jP-GA0o][yt:4rA_vADcD6Q]. The active simulator should therefore use realistic digital surfaces rather than physical playgrounds.
+This is a desk-tool job. Physical/procedural work is rare; the concrete work happens through dashboards, research notes, roadmaps, docs, Slack/email, meetings, and product artifacts [onet][yt:Dnh0jP-GA0o][yt:4rA_vADcD6Q]. The active simulator should therefore use realistic software surfaces rather than physical playgrounds or generic writing boxes. The current route must preserve the PM source workspace shell, app-audit review console, Roamly Research Hub, interview console, and Product Plan doc editor as visible work tools.
 
 The dominant activity is cognitive analysis and decision-making: the PM must turn ambiguous quantitative and qualitative signals into a problem frame, choose what to learn or build next, and explain tradeoffs [yt:4rA_vADcD6Q][reddit:1pzi8aq][reddit:18bh5bb].
 
-Digital artifact work is major: PMs read dashboards, feedback digests, current-product screens, roadmap cards, design notes, and documents; then they create structured notes, prioritization boards, PRD sections, and stakeholder updates [yt:U-lYLSlYU1o][yt:4Pee58mbotE][reddit:eb0766].
+Digital artifact work is major: PMs read dashboards, feedback digests, current-product screens, design notes, and documents; then they create app-audit notes, interview guides, PRD sections, and stakeholder updates [yt:U-lYLSlYU1o][yt:4Pee58mbotE][reddit:eb0766].
 
-Written documentation is major because the PM's decisions need to travel across teams in concise artifacts: problem briefs, experiment plans, PRD sections, decision memos, Slack updates, and launch notes [onet][yt:4rA_vADcD6Q][reddit:1rqtj0g].
+Written documentation is major because the PM's decisions need to travel across teams in concise artifacts: interview prep notes, experiment plans, PRD sections, decision memos, Slack updates, and launch notes [onet][yt:4rA_vADcD6Q][reddit:1rqtj0g].
 
 Spoken/interpersonal communication is secondary-to-major. PMs talk to design, engineering, data, customers, and leadership, often to negotiate scope or clarify what the team is learning [yt:Dnh0jP-GA0o][reddit:1lddn5l][reddit:17h8g46].
 
@@ -42,27 +42,23 @@ Passive monitoring and context switching are real but should not dominate the pl
 
 ## Scenario Arc
 
-### Section 1 — Diagnose the Drop-Off
+### Task 1 — Audit the Current Roamly Flow
 
 The day starts with a product source workspace. Activation is weak for friend-group trips: many users create a trip and invite friends, but fewer groups complete dates, budget, and itinerary decisions. After reviewing the source workspace, the PM goes straight into auditing the current Roamly flow so the first active task is grounded in the product experience [yt:U-lYLSlYU1o][reddit:121egoe].
 
-Before narrowing the product problem, the student audits the current Roamly app flow. They inspect invite status, date/budget preferences, saved-place voting, and the AI itinerary draft that creates a full plan from current trip information without separating confirmed choices from unresolved group decisions. A peer PM companion can help them read the visible evidence, but the student still has to write the cause-hypothesis notes in their own words [yt:4rA_vADcD6Q][reddit:1no5voo].
+Before narrowing the product problem, the student audits the current Roamly app flow. They inspect invite status, date/budget preferences, saved-place voting, and the AI itinerary draft that creates a full plan from current trip information without separating confirmed choices from unresolved group decisions. A peer PM companion can help them read the visible evidence, but the student still has to write lightweight screen notes in their own words [yt:4rA_vADcD6Q][reddit:1no5voo].
 
-The first structured problem-note task then asks the student to refine each current-app observation into a PM note with observed friction, why it may matter, a cause hypothesis, and one question for the user call. This mirrors PM work where early evidence is kept testable before the team decides which problem deserves a solution bet [yt:4rA_vADcD6Q][reddit:1no5voo].
+### Task 2 — Prepare Interview Questions
 
-### Section 2 — Learn and Prioritize
+The student then prepares research questions for a remote call with a frequent trip organizer. The prep task teaches them to turn app-audit notes into five non-leading questions and one learning goal. The app audit should be treated as a set of hypotheses to test, not facts to force onto the user [reddit:1608f0b][reddit:15b10ix].
 
-The student prepares research questions for a remote call with a frequent trip organizer. The prep note remains visible during the voice meeting so the student can reference their own artifact rather than winging it. The app audit should be treated as a set of hypotheses to test, not facts to force onto the user [reddit:1608f0b][reddit:15b10ix].
+### Task 3 — Interview Nina
 
 In the remote voice meeting, the NPC user reveals details only when the student asks useful, non-leading questions: friends do not respond, too many choices pile up, budgets are awkward, and the organizer does not know when to nudge. The student must ask clarifying questions, avoid leading the user, and identify the job-to-be-done behind the feature request [reddit:1rffj80][reddit:1oaqnlv][yt:Dnh0jP-GA0o].
 
-After the call, the student places candidate initiatives on an impact/effort matrix. Options include a shared availability poll, budget preference cards, smart nudges, AI itinerary auto-build, social voting, and a booking integration. The matrix forces product tradeoffs rather than generic feature enthusiasm [reddit:18bh5bb][reddit:1s7zcvr].
+### Task 4 — Write the Product Plan
 
-### Section 3 — Align and Communicate
-
-The PM then triages roadmap cards on a kanban board, balancing activation impact, engineering feasibility, risk, and learning value. This makes the student manipulate realistic roadmap artifacts instead of only writing about prioritization [onet][reddit:1eqibu6].
-
-Finally, the student drafts a PRD slice/decision memo for the recommended next bet. It should name the problem, target users, hypothesis, success metric, non-goals, rollout plan, and unresolved risks [yt:4rA_vADcD6Q][reddit:1rqtj0g].
+Finally, the student drafts a short Product Plan for one focused Roamly improvement. It should use the app audit and Nina interview as evidence, name the problem, explain who it helps, describe the idea, and say why it should work. The simulator can explain that PMs often call this kind of plan a PRD, but the learner-facing task label should stay Product Plan [yt:4rA_vADcD6Q][reddit:1rqtj0g].
 
 The period ends with a project-complete gate. Only the `View Assessment` button leads to grading.
 

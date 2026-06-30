@@ -1,11 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { AssessmentResult, ChatMessage } from '../types/game'
+import { SIMULATOR_STORAGE_KEY } from '../data/simulatorIdentity'
 import { storyline } from '../data/storyline'
-
-// Persist key is set per-job at scaffold time via STORE_PERSIST_KEY constant.
-// In dev/non-scaffolded contexts it falls back to a generic name.
-declare const STORE_PERSIST_KEY: string | undefined
 
 interface GameState {
   // Navigation
@@ -33,7 +30,7 @@ interface GameState {
   gradingError: string | null
 
   // Actions — navigation
-  navigateTo: (nodeId: string) => void
+  navigateTo: (nodeId: string, options?: { markSectionSubmitted?: boolean }) => void
   goBack: () => void
 
   // Actions — identity
@@ -59,13 +56,14 @@ interface GameState {
   setGradingError: (error: string | null) => void
 
   resetGame: () => void
+  recoverInvalidRoute: () => void
 }
 
 const initialState: Omit<GameState,
   | 'navigateTo' | 'goBack' | 'setPlayerName' | 'setMcSelection' | 'setBranchFlag'
   | 'setFreeTextResponse' | 'appendNpcMessage' | 'resetNpcConversation' | 'markZoneVisited'
   | 'setSceneCompleted' | 'markSectionSubmitted' | 'setCurrentSection' | 'trackDefinitionClick'
-  | 'setGradingStatus' | 'setGradingResult' | 'setGradingError' | 'resetGame'
+  | 'setGradingStatus' | 'setGradingResult' | 'setGradingError' | 'resetGame' | 'recoverInvalidRoute'
 > = {
   currentNodeId: storyline.startNode,
   visitedNodes: [storyline.startNode],
@@ -83,24 +81,130 @@ const initialState: Omit<GameState,
   gradingError: null,
 }
 
-const persistKey =
-  typeof STORE_PERSIST_KEY !== 'undefined' && STORE_PERSIST_KEY
-    ? STORE_PERSIST_KEY
-    : 'job-simulator-storage'
+export const GAME_STORE_VERSION = 2
+
+const validNodeIds = new Set(Object.keys(storyline.nodes))
+const validGradingStatuses = new Set<GameState['gradingStatus']>(['idle', 'loading', 'complete', 'error'])
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value))
+}
+
+function sanitizeStringRecord(value: unknown): Record<string, string> {
+  if (!isRecord(value)) return {}
+  return Object.entries(value).reduce<Record<string, string>>((acc, [key, item]) => {
+    if (typeof item === 'string') acc[key] = item
+    return acc
+  }, {})
+}
+
+function sanitizeStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+  return value.filter((item): item is string => typeof item === 'string')
+}
+
+function sanitizeNumberArray(value: unknown): number[] {
+  if (!Array.isArray(value)) return []
+  return [...new Set(value.filter((item): item is number => Number.isFinite(item)))]
+}
+
+function sanitizeMessages(value: unknown): ChatMessage[] {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((item): ChatMessage[] => {
+    if (!isRecord(item)) return []
+    if (item.role !== 'npc' && item.role !== 'user') return []
+    if (typeof item.content !== 'string') return []
+    return [{
+      role: item.role,
+      content: item.content,
+      ...(typeof item.ts === 'string' ? { ts: item.ts } : {}),
+      ...(typeof item.npcName === 'string' ? { npcName: item.npcName } : {}),
+    }]
+  })
+}
+
+function sanitizeConversationRecord(value: unknown): Record<string, ChatMessage[]> {
+  if (!isRecord(value)) return {}
+  return Object.entries(value).reduce<Record<string, ChatMessage[]>>((acc, [key, item]) => {
+    const messages = sanitizeMessages(item)
+    if (messages.length) acc[key] = messages
+    return acc
+  }, {})
+}
+
+function sanitizeInteractiveCanvasState(value: unknown): GameState['interactiveCanvasState'] {
+  if (!isRecord(value)) return {}
+  return Object.entries(value).reduce<GameState['interactiveCanvasState']>((acc, [sceneId, item]) => {
+    if (!isRecord(item)) return acc
+    acc[sceneId] = {
+      visited: sanitizeStringArray(item.visited),
+      completed: item.completed === true,
+    }
+    return acc
+  }, {})
+}
+
+export function repairPersistedGameState(persistedState: unknown): typeof initialState {
+  if (!isRecord(persistedState)) return initialState
+
+  const requestedNodeId = typeof persistedState.currentNodeId === 'string' ? persistedState.currentNodeId : ''
+  const hasValidCurrentNode = validNodeIds.has(requestedNodeId)
+  const currentNodeId = hasValidCurrentNode ? requestedNodeId : storyline.startNode
+  const visitedNodes = hasValidCurrentNode
+    ? sanitizeStringArray(persistedState.visitedNodes).filter((nodeId) => validNodeIds.has(nodeId))
+    : [storyline.startNode]
+  if (!visitedNodes.length) visitedNodes.push(storyline.startNode)
+  if (!visitedNodes.includes(currentNodeId)) visitedNodes.push(currentNodeId)
+
+  return {
+    ...initialState,
+    currentNodeId,
+    visitedNodes,
+    currentSection: storyline.nodes[currentNodeId]?.section ?? initialState.currentSection,
+    sectionsSubmitted: sanitizeNumberArray(persistedState.sectionsSubmitted),
+    playerName: typeof persistedState.playerName === 'string' ? persistedState.playerName : '',
+    mcSelections: sanitizeStringRecord(persistedState.mcSelections),
+    freeTextResponses: sanitizeStringRecord(persistedState.freeTextResponses),
+    npcConversations: sanitizeConversationRecord(persistedState.npcConversations),
+    branchFlags: sanitizeStringRecord(persistedState.branchFlags),
+    interactiveCanvasState: sanitizeInteractiveCanvasState(persistedState.interactiveCanvasState),
+    definitionClicks: isRecord(persistedState.definitionClicks)
+      ? Object.entries(persistedState.definitionClicks).reduce<Record<string, number>>((acc, [key, value]) => {
+          if (Number.isFinite(value)) acc[key] = value as number
+          return acc
+        }, {})
+      : {},
+    gradingStatus: validGradingStatuses.has(persistedState.gradingStatus as GameState['gradingStatus'])
+      ? persistedState.gradingStatus as GameState['gradingStatus']
+      : initialState.gradingStatus,
+    gradingResult: isRecord(persistedState.gradingResult) ? persistedState.gradingResult as unknown as AssessmentResult : null,
+    gradingError: typeof persistedState.gradingError === 'string' ? persistedState.gradingError : null,
+  }
+}
+
+function routeResetState() {
+  return {
+    currentNodeId: storyline.startNode,
+    visitedNodes: [storyline.startNode],
+    currentSection: storyline.nodes[storyline.startNode]?.section ?? initialState.currentSection,
+    sectionsSubmitted: [],
+  }
+}
 
 export const useGameStore = create<GameState>()(
   persist(
     (set) => ({
       ...initialState,
 
-      navigateTo: (nodeId) =>
+      navigateTo: (nodeId, options) =>
         set((state) => {
           const next = storyline.nodes[nodeId]
           const newSection = next?.section ?? state.currentSection
           // Mark section submitted when crossing into a new section
           let sectionsSubmitted = state.sectionsSubmitted
           const prev = storyline.nodes[state.currentNodeId]
-          if (prev && next && prev.section !== newSection && prev.section > 0) {
+          const shouldMarkSectionSubmitted = options?.markSectionSubmitted !== false
+          if (shouldMarkSectionSubmitted && prev && next && newSection > prev.section && prev.section > 0) {
             if (!sectionsSubmitted.includes(prev.section)) {
               sectionsSubmitted = [...sectionsSubmitted, prev.section]
             }
@@ -202,8 +306,17 @@ export const useGameStore = create<GameState>()(
         set(error != null ? { gradingError: error, gradingStatus: 'error' } : { gradingError: null }),
 
       resetGame: () => set(initialState),
+      recoverInvalidRoute: () => set(routeResetState()),
     }),
-    { name: persistKey }
+    {
+      name: SIMULATOR_STORAGE_KEY,
+      version: GAME_STORE_VERSION,
+      migrate: (persistedState) => repairPersistedGameState(persistedState),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...repairPersistedGameState(persistedState),
+      }),
+    }
   )
 )
 

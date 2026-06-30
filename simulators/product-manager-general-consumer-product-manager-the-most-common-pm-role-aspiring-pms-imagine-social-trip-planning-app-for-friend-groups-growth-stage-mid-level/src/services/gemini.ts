@@ -12,6 +12,7 @@ import {
   ASSESSMENT_VERSION,
   buildAssessmentResult,
   canonicalizeAssessmentState,
+  displayTitleForRubricName,
   stableStringifyForAssessment,
   type AssessmentState,
 } from './assessment'
@@ -377,22 +378,121 @@ Return ONLY valid JSON matching this exact shape (no markdown, no preamble):
 ${JSON.stringify(schema, null, 2)}`
 }
 
-export async function gradeResponses(state: SerializedState): Promise<AssessmentResult> {
-  const prompt = buildGradingPrompt(state)
-  const { responseSchema } = buildResponseTemplate()
-  const text = await callGemini({
-    models: GRADING_MODELS,
-    prompt,
-    temperature: 0,
-    jsonMode: true,
-    responseSchema,
-    seed: ASSESSMENT_SEED,
-  })
-  // Strip code fences if a model leaks them
-  let cleaned = text.trim()
-  if (cleaned.startsWith('```')) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '')
+function responseTextForEvidence(state: SerializedState, sceneId: string): string {
+  if (sceneId === 'scene_04_user_call') {
+    return Object.entries(state.npcConversations)
+      .filter(([conversationId]) => conversationId.includes('scene_04_user_call'))
+      .flatMap(([, messages]) => messages.map((message) => message.content))
+      .join(' ')
   }
-  const parsed = JSON.parse(cleaned) as GradingResult
-  return buildAssessmentResult(parsed, rubric, state)
+  if (sceneId === 'scene_02_app_audit') {
+    return state.freeTextResponses.appAuditNotes || ''
+  }
+  return state.freeTextResponses[sceneId] || ''
+}
+
+function countMeaningfulArtifactParts(sceneId: string, raw: string): number {
+  if (!raw.trim()) return 0
+  if (sceneId === 'scene_02_app_audit') {
+    try {
+      const parsed = JSON.parse(raw)
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return 1
+      return Object.values(parsed).filter((value) => typeof value === 'string' && value.trim().length >= 12).length
+    } catch {
+      return 1
+    }
+  }
+  return raw.trim().split(/\s+/).length >= 50 ? 2 : 1
+}
+
+function fallbackScoreForCriterion(state: SerializedState, evidenceSceneIds: string[] = []): number {
+  if (evidenceSceneIds.includes('scene_04_user_call')) {
+    const userTurns = Object.entries(state.npcConversations)
+      .filter(([conversationId]) => conversationId.includes('scene_04_user_call'))
+      .flatMap(([, messages]) => messages)
+      .filter((message) => message.role === 'user' && message.content.trim().length > 0).length
+    if (userTurns >= 5) return 8
+    if (userTurns >= 2) return 5
+    return 2
+  }
+
+  const partCount = evidenceSceneIds.reduce((sum, sceneId) => (
+    sum + countMeaningfulArtifactParts(sceneId, responseTextForEvidence(state, sceneId))
+  ), 0)
+
+  if (partCount >= 5) return 8
+  if (partCount >= 2) return 6
+  if (partCount >= 1) return 4
+  return 2
+}
+
+function fallbackCommentForCriterion(state: SerializedState, criterionName: string, evidenceSceneIds: string[] = []): string {
+  const evidenceText = evidenceSceneIds
+    .map((sceneId) => responseTextForEvidence(state, sceneId))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const preview = evidenceText.length > 140 ? `${evidenceText.slice(0, 137)}...` : evidenceText
+
+  if (!preview) {
+    return `Backup assessment found little saved work for ${displayTitleForRubricName(criterionName)}, so this is an early practice signal.`
+  }
+  return `Backup assessment used your saved work for ${displayTitleForRubricName(criterionName)}: "${preview}".`
+}
+
+function buildFallbackGradeResult(state: SerializedState): GradingResult {
+  const scenarios = rubric.sections.map((section) => ({
+    scenario_number: section.section_number,
+    scenario_title: section.section_title,
+    criteria: section.criteria.map((criterion) => {
+      const evidenceSceneIds = criterion.evidenceSceneIds || []
+      return {
+        criterion: criterion.name,
+        score: fallbackScoreForCriterion(state, evidenceSceneIds),
+        comment: fallbackCommentForCriterion(state, criterion.name, evidenceSceneIds),
+      }
+    }),
+  }))
+  const totalScore = scenarios.reduce((sum, scenario) => (
+    sum + scenario.criteria.reduce((inner, criterion) => inner + criterion.score, 0)
+  ), 0)
+  const criteriaCount = scenarios.reduce((sum, scenario) => sum + scenario.criteria.length, 0)
+  const maxScore = criteriaCount * rubric.max_score_per_criterion
+  const scorePercentage = maxScore ? Number((totalScore / maxScore).toFixed(2)) : 0
+
+  return {
+    candidate_id: 'student_backup_assessment',
+    simulation: rubric.simulation_id,
+    graded_at: ASSESSMENT_VERSION,
+    scenarios,
+    total_score: totalScore,
+    max_score: maxScore,
+    score_percentage: scorePercentage,
+    recommendation: scorePercentage >= 0.8 ? 'Strong Hire' : scorePercentage >= 0.65 ? 'Hire' : scorePercentage >= 0.45 ? 'Lean No Hire' : 'No Hire',
+    overall_assessment: 'A backup assessment was used because the live reviewer was unavailable. The report is based on the saved notes, interview transcript, and Product Plan draft from this run.',
+  }
+}
+
+export async function gradeResponses(state: SerializedState): Promise<AssessmentResult> {
+  try {
+    const prompt = buildGradingPrompt(state)
+    const { responseSchema } = buildResponseTemplate()
+    const text = await callGemini({
+      models: GRADING_MODELS,
+      prompt,
+      temperature: 0,
+      jsonMode: true,
+      responseSchema,
+      seed: ASSESSMENT_SEED,
+    })
+    // Strip code fences if a model leaks them
+    let cleaned = text.trim()
+    if (cleaned.startsWith('```')) {
+      cleaned = cleaned.replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '')
+    }
+    const parsed = JSON.parse(cleaned) as GradingResult
+    return buildAssessmentResult(parsed, rubric, state)
+  } catch {
+    return buildAssessmentResult(buildFallbackGradeResult(state), rubric, state)
+  }
 }

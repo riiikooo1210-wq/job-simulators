@@ -8,6 +8,16 @@ import type { CareerProfileItem, FinalReportNode } from '../types/game'
 
 interface Props { node: FinalReportNode }
 
+function studentFacingCopy(text: string): string {
+  return text
+    .replace(/\bcandidate's responses\b/gi, 'your responses')
+    .replace(/\bcandidate responses\b/gi, 'your responses')
+    .replace(/\bthe candidate's\b/gi, 'your')
+    .replace(/\bcandidate's\b/gi, 'your')
+    .replace(/\bthe candidate\b/gi, 'you')
+    .replace(/\bcandidate\b/gi, 'you')
+}
+
 function ProfileCard({ item }: { item: CareerProfileItem }) {
   return (
     <div
@@ -21,10 +31,10 @@ function ProfileCard({ item }: { item: CareerProfileItem }) {
         gap: '0.5rem',
       }}
     >
-      <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1E1E1A' }}>{item.title}</h4>
-      <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: '#333' }}>{item.body}</p>
+      <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#1E1E1A' }}>{studentFacingCopy(item.title)}</h4>
+      <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: '#333' }}>{studentFacingCopy(item.body)}</p>
       <p style={{ fontSize: '0.78rem', lineHeight: 1.55, color: '#5B5146', fontStyle: 'italic' }}>
-        {item.evidence}
+        {studentFacingCopy(item.evidence)}
       </p>
     </div>
   )
@@ -36,7 +46,7 @@ function TextList({ items }: { items: string[] }) {
     <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingLeft: '1.1rem', margin: 0 }}>
       {items.map((item, index) => (
         <li key={index} style={{ fontSize: '0.85rem', lineHeight: 1.6, color: '#333' }}>
-          {item}
+          {studentFacingCopy(item)}
         </li>
       ))}
     </ul>
@@ -58,9 +68,10 @@ export default function FinalReportScene({ node }: Props) {
   const { career_profile: profile, task_feedback } = assessment
   const displayTaskFeedback = task_feedback.map((item) => ({
     ...item,
-    task: displayTitleForRubricName(item.task),
-    section_title: displayTitleForRubricName(item.section_title),
-  }))
+          task: displayTitleForRubricName(item.task),
+          section_title: displayTitleForRubricName(item.section_title),
+          evidence: studentFacingCopy(item.evidence),
+        }))
   const feedbackBySection = displayTaskFeedback.reduce((acc, item) => {
     acc[item.section_title] = [...(acc[item.section_title] || []), item]
     return acc
@@ -79,7 +90,7 @@ export default function FinalReportScene({ node }: Props) {
             Career Exploration Report
           </h2>
           <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: '#333' }}>
-            {profile.headline}
+            {studentFacingCopy(profile.headline)}
           </p>
         </div>
 

@@ -14,13 +14,30 @@ import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
 import { BriefingDrawerContent } from './BriefingScene'
+import { organizeSourceTabs, renderSourceTab } from './sourceTabs'
 import type { LaptopFrameVariant } from '../components/ui/LaptopFrame'
 import type { FreeTextNode } from '../types/game'
 
 interface Props { node: FreeTextNode }
 
+const productPlanParts = [
+  'Problem',
+  'Who it helps',
+  'My idea',
+  'Why it should work',
+]
+
+const researchQuestionSlots = [
+  'Recent trip moment',
+  'Group decision',
+  'Dates or budget',
+  'Outside workaround',
+  'AI plan reaction',
+]
+
 export default function FreeTextScene({ node }: Props) {
   const responses = useGameStore((s) => s.freeTextResponses)
+  const npcConversations = useGameStore((s) => s.npcConversations) || {}
   const setFreeTextResponse = useGameStore((s) => s.setFreeTextResponse)
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
@@ -29,19 +46,30 @@ export default function FreeTextScene({ node }: Props) {
   const briefing = useSectionBriefing()
   const [refOpen, setRefOpen] = useState(false)
   const [activeAppTab, setActiveAppTab] = useState('editor')
+  const isGuidedPrd = node.presentation === 'guided_prd_slice'
+  const isResearchPrep = node.id === 'scene_03_research_prep'
 
   const value = responses[node.id] || ''
   const wordCount = value.trim() ? value.trim().split(/\s+/).length : 0
   const meetsMin = !node.minWords || wordCount >= node.minWords
   const underMax = !node.maxWords || wordCount <= node.maxWords
   const canSubmit = meetsMin && underMax
+  const wordStatusText = !meetsMin && node.minWords
+    ? `${node.minWords - wordCount} more words to submit`
+    : !underMax && node.maxWords
+      ? `${wordCount - node.maxWords} words too long`
+      : 'Ready to submit'
 
   const appWindow = resolveWorkSurfaceVariant(node, 'notion') as LaptopFrameVariant
   const isEmailCompose = appWindow === 'email'
-  const appTabs = mergeWorkSurfaceTabs(node, node.appTabs || [])
-  const titleTabs = appTabs.length > 0
+  const sourceTabContext = { playerName, branchFlags, mcSelections, freeTextResponses: responses, npcConversations }
+  const appTabs = organizeSourceTabs(mergeWorkSurfaceTabs(node, node.appTabs || []))
+  const titleTabs = !isGuidedPrd && !isResearchPrep && appTabs.length > 0
     ? [{ id: 'editor', label: node.workSurface?.title || node.windowTitle || node.title }, ...appTabs.map((tab) => ({ id: tab.id, label: tab.label }))]
     : undefined
+  const profileTab = appTabs.find((tab) => tab.id === 'profile')
+  const guardrailsTab = appTabs.find((tab) => tab.id === 'research_guardrails')
+  const appAuditNotesTab = appTabs.find((tab) => tab.id === 'app_audit_notes' || tab.id === 'app_audit_evidence')
 
   const emailHeaders = {
     from: interpolate(node.emailHeaders?.from || '{{playerName}}', { playerName, branchFlags, mcSelections }),
@@ -101,6 +129,169 @@ export default function FreeTextScene({ node }: Props) {
     </>
   )
 
+  const guidedPrdContent = (
+    <div className="prd-plan-workspace" data-testid="guided-prd-workspace">
+      <div className="prd-plan-toolbar" data-testid="prd-plan-toolbar">
+        <div>
+          <div className="prd-plan-app-name">Roamly Docs</div>
+          <div className="prd-plan-file-name">{node.windowTitle || node.title}</div>
+        </div>
+        <div className="prd-plan-toolbar-actions" aria-hidden="true">
+          <span>Saved</span>
+          <span>Comment</span>
+          <span>Share</span>
+          <span>Aa</span>
+        </div>
+      </div>
+
+      <div className="prd-plan-layout">
+        <aside className="prd-plan-evidence" data-testid="prd-evidence-rail" aria-label="Quick evidence">
+          <div className="prd-plan-panel-heading">Evidence Rail</div>
+          {appTabs.map((tab) => (
+            <section className="prd-plan-evidence-card" key={tab.id}>
+              <div className="prd-plan-evidence-source">Source</div>
+              <h2>{tab.label}</h2>
+              <div className="prd-plan-evidence-card-body">
+                {renderSourceTab(tab, sourceTabContext)}
+              </div>
+            </section>
+          ))}
+        </aside>
+
+        <main className="prd-plan-document" data-testid="guided-prd-editor-panel">
+          <div className="prd-plan-page">
+            <div className="prd-plan-doc-header">
+              <div>
+                <div className="prd-plan-doc-kicker">Roamly product workspace</div>
+                <h2>One small next improvement</h2>
+              </div>
+              <div className="prd-plan-doc-status">Owner: {playerName || 'Student'} · Draft</div>
+            </div>
+            <div className="prd-plan-page-meta">
+              <span>Product plan</span>
+              <span>{wordCount} / {node.maxWords || 260} words</span>
+            </div>
+            <div className="prd-plan-section-strip" aria-label="Product plan sections">
+              {productPlanParts.map((part) => (
+                <span key={part}>{part}</span>
+              ))}
+            </div>
+            <textarea
+              className="prd-plan-textarea"
+              data-testid="guided-prd-editor"
+              aria-label="Write your product plan"
+              value={value}
+              onChange={(event) => setFreeTextResponse(node.id, event.target.value)}
+              placeholder={node.placeholder}
+            />
+          </div>
+        </main>
+
+        <aside className="prd-plan-guide" data-testid="prd-plan-guide" aria-label="Product plan guide">
+          <div className="prd-plan-panel-heading">Four Short Parts</div>
+          <ol>
+            {productPlanParts.map((part) => (
+              <li key={part}>{part}</li>
+            ))}
+          </ol>
+          <p>Use one or two sentences for each part.</p>
+          <div className="prd-plan-submit-area">
+            <div className={canSubmit ? 'prd-plan-word-status is-ready' : 'prd-plan-word-status'}>
+              {wordStatusText}
+            </div>
+            <ActionButton
+              text="Submit"
+              onClick={() => goNext(node)}
+              disabled={!canSubmit}
+              variant={canSubmit ? 'primary' : 'secondary'}
+            />
+            <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+          </div>
+        </aside>
+      </div>
+    </div>
+  )
+
+  const researchPrepContent = (
+    <div className="research-prep-workspace" data-testid="research-prep-workspace">
+      <header className="research-prep-toolbar">
+        <div>
+          <div className="research-prep-app-name">Roamly Research Hub</div>
+          <div className="research-prep-file-name">{node.windowTitle || node.title}</div>
+        </div>
+        <div className="research-prep-toolbar-meta" aria-label="Research prep status">
+          <span>Prep doc</span>
+          <span>{wordCount} / {node.maxWords || 220} words</span>
+          <span>{canSubmit ? 'Ready' : 'Drafting'}</span>
+        </div>
+      </header>
+
+      <div className="research-prep-layout">
+        <aside className="research-prep-context" aria-label="Research context">
+          <section className="research-prep-panel" data-testid="research-prep-profile-card">
+            <div className="research-prep-panel-heading">Participant Profile</div>
+            <div className="research-prep-panel-body">
+              {profileTab ? renderSourceTab(profileTab, sourceTabContext) : 'Nina Brooks is the target customer for this call.'}
+            </div>
+          </section>
+          <section className="research-prep-panel research-prep-saved-notes" data-testid="research-prep-saved-audit-notes">
+            <div className="research-prep-panel-heading">Your App Audit Notes</div>
+            <div className="research-prep-panel-body">
+              {appAuditNotesTab ? renderSourceTab(appAuditNotesTab, sourceTabContext) : 'No audit notes are available yet.'}
+            </div>
+          </section>
+        </aside>
+
+        <main className="research-prep-editor" data-testid="research-prep-editor-panel">
+          <div className="research-prep-doc-header">
+            <div>
+              <div className="research-prep-doc-kicker">Interview guide</div>
+              <h2>Five questions for Nina</h2>
+            </div>
+            <div className="research-prep-doc-status">Do not pitch a solution</div>
+          </div>
+          <div className="research-prep-question-list" aria-label="Question focus areas">
+            {researchQuestionSlots.map((slot, index) => (
+              <div className="research-prep-question-row" key={slot}>
+                <span>{index + 1}</span>
+                <strong>{slot}</strong>
+              </div>
+            ))}
+          </div>
+          <textarea
+            className="research-prep-textarea"
+            data-testid="research-prep-editor"
+            aria-label="Write exactly five user interview questions and one learning goal"
+            value={value}
+            onChange={(event) => setFreeTextResponse(node.id, event.target.value)}
+            placeholder={node.placeholder}
+          />
+        </main>
+
+        <aside className="research-prep-guardrails" aria-label="Research guardrails">
+          <section className="research-prep-panel">
+            <div className="research-prep-panel-heading">Research Guardrails</div>
+            <div className="research-prep-panel-body">
+              {guardrailsTab ? renderSourceTab(guardrailsTab, sourceTabContext) : 'Ask about what happened. Avoid leading Nina toward a feature.'}
+            </div>
+          </section>
+          <section className="research-prep-submit-card">
+            <div className={canSubmit ? 'research-prep-word-status is-ready' : 'research-prep-word-status'}>
+              {wordStatusText}
+            </div>
+            <ActionButton
+              text="Submit"
+              onClick={() => goNext(node)}
+              disabled={!canSubmit}
+              variant={canSubmit ? 'primary' : 'secondary'}
+            />
+            <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+          </section>
+        </aside>
+      </div>
+    </div>
+  )
+
   const tabbedWindowContent = activeAppTab === 'editor' ? (
     editorContent
   ) : (
@@ -119,7 +310,7 @@ export default function FreeTextScene({ node }: Props) {
             minHeight: '100%',
           }}
         >
-          {renderContentWithGlossary(interpolate(tab.content, { playerName, branchFlags, mcSelections }))}
+          {renderSourceTab(tab, sourceTabContext)}
         </div>
       )
     ))
@@ -163,7 +354,7 @@ export default function FreeTextScene({ node }: Props) {
           activeTitleTabId={activeAppTab}
           onTitleTabChange={setActiveAppTab}
         >
-          {appTabs.length > 0 ? tabbedWindowContent : editorContent}
+          {isGuidedPrd ? guidedPrdContent : isResearchPrep ? researchPrepContent : appTabs.length > 0 ? tabbedWindowContent : editorContent}
         </WorkSurfaceFrame>
       </motion.div>
       {briefing && (

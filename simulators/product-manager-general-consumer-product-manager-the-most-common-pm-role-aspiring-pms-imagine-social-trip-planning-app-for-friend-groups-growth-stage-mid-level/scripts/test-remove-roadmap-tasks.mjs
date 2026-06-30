@@ -17,14 +17,27 @@ const synthesisBlueprintUrl = new URL(
   import.meta.url,
 )
 
+const readOptionalText = async (url) => {
+  try {
+    return await readFile(url, 'utf8')
+  } catch (error) {
+    if (error?.code === 'ENOENT') return null
+    throw error
+  }
+}
+
 const readJson = async (url) => JSON.parse(await readFile(url, 'utf8'))
+const readOptionalJson = async (url) => {
+  const text = await readOptionalText(url)
+  return text ? JSON.parse(text) : null
+}
 const readText = async (url) => readFile(url, 'utf8')
 
 const simulatorConfig = await readJson(simulatorConfigUrl)
-const synthesisConfig = await readJson(synthesisConfigUrl)
+const synthesisConfig = await readOptionalJson(synthesisConfigUrl)
 const simulatorRubric = await readJson(simulatorRubricUrl)
 const simulatorBlueprint = await readText(simulatorBlueprintUrl)
-const synthesisBlueprint = await readText(synthesisBlueprintUrl)
+const synthesisBlueprint = await readOptionalText(synthesisBlueprintUrl)
 const simulatorImagePrompts = await readText(simulatorImagePromptsUrl)
 
 const assertRemovedFromConfig = (config, label) => {
@@ -36,7 +49,7 @@ const assertRemovedFromConfig = (config, label) => {
   assert.equal(
     nodes.scene_04_user_call.next,
     'scene_07_prd_slice',
-    `${label} should route from the user interview directly to the PRD slice`,
+    `${label} should route from the user interview directly to the Product Plan`,
   )
 
   const serialized = JSON.stringify(config)
@@ -49,7 +62,9 @@ const assertRemovedFromConfig = (config, label) => {
 }
 
 assertRemovedFromConfig(simulatorConfig, 'simulator scene config')
-assertRemovedFromConfig(synthesisConfig, 'synthesis scene config')
+if (synthesisConfig) {
+  assertRemovedFromConfig(synthesisConfig, 'synthesis scene config')
+}
 
 const rubricText = JSON.stringify(simulatorRubric)
 for (const sceneId of removedSceneIds) {
@@ -57,7 +72,8 @@ for (const sceneId of removedSceneIds) {
 }
 for (const title of removedTitles) {
   assert.doesNotMatch(simulatorBlueprint, new RegExp(title), `simulator blueprint should not list "${title}"`)
-  assert.doesNotMatch(synthesisBlueprint, new RegExp(title), `synthesis blueprint should not list "${title}"`)
+  if (synthesisBlueprint) {
+    assert.doesNotMatch(synthesisBlueprint, new RegExp(title), `synthesis blueprint should not list "${title}"`)
+  }
   assert.doesNotMatch(simulatorImagePrompts, new RegExp(title), `image prompts should not list "${title}"`)
 }
-

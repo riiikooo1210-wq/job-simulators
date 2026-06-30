@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
+export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'analytics' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
 
 interface LaptopFrameProps {
   children: ReactNode
@@ -23,6 +23,7 @@ const menuItems: Partial<Record<LaptopFrameVariant, string[]>> = {
   email: ['File', 'Edit', 'View', 'Format'],
   'email-read': [],
   slack: [],
+  analytics: [],
   figma: [],
   notion: [],
   spreadsheet: ['File', 'Edit', 'View', 'Insert', 'Format', 'Data'],
@@ -37,6 +38,7 @@ const titleBarColors: Record<LaptopFrameVariant, string> = {
   email: '#EFE8D2',
   'email-read': '#EFE8D2',
   slack: '#EFE8D2',
+  analytics: '#EFE8D2',
   figma: '#F2EBD9',
   notion: '#EFE8D2',
   spreadsheet: '#EFE8D2',
@@ -51,6 +53,7 @@ const titleTextColors: Record<LaptopFrameVariant, string> = {
   email: '#3F605C',
   'email-read': '#3F605C',
   slack: '#3F605C',
+  analytics: '#3F605C',
   figma: '#3F605C',
   notion: '#3F605C',
   spreadsheet: '#3F605C',
@@ -65,6 +68,7 @@ const contentBgColors: Record<LaptopFrameVariant, string> = {
   email: '#F7F1E3',
   'email-read': '#F7F1E3',
   slack: '#F7F1E3',
+  analytics: '#F6F2E8',
   figma: '#F7F1E3',
   notion: '#F7F1E3',
   spreadsheet: '#F7F1E3',
@@ -79,6 +83,7 @@ const defaultTitles: Record<LaptopFrameVariant, string> = {
   email: 'New Message',
   'email-read': 'Message',
   slack: 'Slack',
+  analytics: 'Analytics',
   figma: 'Untitled.fig',
   notion: 'Untitled',
   spreadsheet: 'Untitled spreadsheet',
@@ -234,7 +239,7 @@ export default function LaptopFrame({
         )}
 
         {/* Default (doc, email, slack, meeting): centered title */}
-        {!hasTitleTabs && (variant === 'doc' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'meeting') && (
+        {!hasTitleTabs && (variant === 'doc' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'analytics' || variant === 'meeting') && (
           <>
             <span
               style={{
@@ -416,7 +421,7 @@ export default function LaptopFrame({
       {/* Content area */}
       <div
         style={{
-          padding: variant === 'slack' || variant === 'figma' || variant === 'kanban' || variant === 'meeting' ? '0' : '1.25rem',
+          padding: variant === 'slack' || variant === 'analytics' || variant === 'figma' || variant === 'kanban' || variant === 'meeting' ? '0' : '1.25rem',
           backgroundColor: contentBg,
           flex: '1 1 auto',
           minHeight: 0,

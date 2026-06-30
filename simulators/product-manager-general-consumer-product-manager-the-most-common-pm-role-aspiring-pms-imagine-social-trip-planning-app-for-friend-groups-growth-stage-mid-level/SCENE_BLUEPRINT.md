@@ -1,29 +1,33 @@
-# Scene Blueprint — product-manager-general-consumer-product-manager-the-most-common-pm-role-aspiring-pms-imagine-social-trip-planning-app-for-friend-groups-growth-stage-mid-level
+# Scene Blueprint
 
-Use this as the Phase 2 approval artifact before scaffolding. It shows the practical chain that reduces manual repair: visible input artifact → student action → output artifact → rubric evidence.
+Simulator: `product-manager-general-consumer-product-manager-the-most-common-pm-role-aspiring-pms-imagine-social-trip-planning-app-for-friend-groups-growth-stage-mid-level`
+
+This blueprint describes the current active Product Manager route. It supersedes older generated drafts that included removed intermediate nodes.
 
 ## Work Mix
 
-- Summary: The collected PM sources show a mid-level consumer Product Manager working mostly through digital artifacts, analysis, written communication, and stakeholder conversation. The real work is not physical manipulation; it is reading messy dashboards and feedback, framing the product problem, choosing focused bets, writing decision artifacts, and aligning design, engineering, data, support, and leadership around tradeoffs.
-- `physicalProceduralTool`: rare — No physical playground is needed; realistic action should happen through dashboard, document, Slack, and voice-meeting scenes.
-- `digitalToolArtifactWork`: major — Include multiple desk-work scenes with visible source artifacts and realistic app windows.
-- `cognitiveAnalysisDecision`: dominant — The core graded tasks should require synthesis, prioritization, hypothesis framing, and tradeoff reasoning.
-- `writtenDocumentationArtifact`: major — Require the student to produce a problem brief, research prep, PRD slice, and stakeholder Slack response.
-- `spokenInterpersonalCommunication`: secondary — Include a remote voice meeting with a user and async alignment with engineering/design.
-- `passiveMonitoringWaitingContextSwitching`: secondary — Use briefing context to show time pressure, but grade active artifacts rather than waiting.
+- `digitalToolArtifactWork`: major. The student works in Slack, Analytics, a Roamly phone mock, a research note, a video-call transcript, and a product-plan doc.
+- `cognitiveAnalysisDecision`: dominant. The key judgment is connecting current-flow evidence, user interview evidence, and a scoped next product step.
+- `writtenDocumentationArtifact`: major. The student writes app-audit notes, user-call prep, and a short Product Plan.
+- `spokenInterpersonalCommunication`: secondary. The student interviews Nina and uses the transcript as product evidence.
+- `physicalProceduralTool`: rare. No physical-playground task is active.
+- Realistic software quality gate: each active PM task must expose workplace-like software chrome and source context. Current surfaces are the PM source workspace shell, Roamly app-audit review console, Roamly Research Hub, interview console, and Product Plan doc editor.
 
 ## Scene Table
 
 | Scene | Type / Surface | Visible Inputs | Student Action | Output Artifact | Rubric Evidence | Next |
 | --- | --- | --- | --- | --- | --- | --- |
-| `intro`<br>Welcome to Roamly | `intro` | — | — | — | not explicitly mapped | briefing_kickoff |
-| `briefing_kickoff`<br>Monday Product Source Workspace | `briefing` | Roamly product source workspace | Open the source apps before auditing the current flow. | Source materials reviewed | not explicitly mapped | scene_02_app_audit |
-| `scene_02_app_audit`<br>Audit the Current Roamly Flow | `app_audit` / current app flow | Current Roamly app screens: create trip, invite status, dates/budget, saved places, AI itinerary draft; per-observation hint buttons | Inspect the current app and write cause-hypothesis notes for invite follow-through, budget/date pressure, saved-place overload, and the AI full-plan jump that makes unresolved choices look decided. | Current app audit notes | Evidence-based problem framing, Risk and unknown identification, Clarity under ambiguity | scene_02_problem_brief |
-| `scene_02_problem_brief`<br>Synthesize the Problem | `structured_entry` / `notion` | In-window source tabs: Analytics and Current App Audit notes | Refine the analytics funnel and current-app observations into four concise PM problem notes. | Problem notes | Evidence-based problem framing, Risk and unknown identification, Clarity under ambiguity | transition_research |
-| `transition_research`<br>Stand-up Ends with One Open Question | `section_transition` | — | — | — | not explicitly mapped | scene_03_research_prep |
-| `scene_03_research_prep`<br>Prepare the User Call | `free_text` / `notion` | tab: User Profile, tab: Research Guardrails, tab: Your Problem Brief, Nina user profile (scene_03_research_prep.appTabs.profile), Research guardrails (scene_03_research_prep.appTabs.research_guardrails) | Draft non-leading user interview questions and a learning goal. | User-call prep questions | User research quality, Clarity under ambiguity | scene_04_user_call |
-| `scene_04_user_call`<br>Remote User Interview with Nina | `voice_meeting` | Compact user context, prep note from `scene_03_research_prep`, Student's user-call prep (scene_04_user_call.prepNoteKey), Compact user context (scene_04_user_call.prepReferenceContent) | Conduct a spoken user interview that explores behavior and motivation without leading the user. | User interview transcript | User research quality | scene_07_prd_slice |
-| `scene_07_prd_slice`<br>Draft the PRD Slice | `free_text` / `doc` | tab: Problem Brief, tab: Decision Notes, tab: PRD Checklist, Problem brief reminder (scene_07_prd_slice.appTabs.problem_brief), Decision notes (scene_07_prd_slice.appTabs.prioritization), PRD checklist (scene_07_prd_slice.appTabs.prd_checklist) | Draft a concise PRD slice / decision memo. | PRD slice | Risk and unknown identification, PRD and decision memo quality, Clarity under ambiguity | assessment_gate |
-| `assessment_gate`<br>The Product Planning Day Is Complete | `section_transition` | — | — | — | not explicitly mapped | grading |
-| `grading`<br>Assessment in Progress | `grading` | — | — | — | not explicitly mapped | final_report |
-| `final_report`<br>Product Manager Simulation Report | `final_report` | — | — | — | not explicitly mapped | null |
+| `intro` Welcome to Roamly | `intro` | Scenario setup and name field | Enter name and read the setup. | Player name | not graded | `briefing_kickoff` |
+| `briefing_kickoff` Monday Product Source Workspace | `briefing` | PM source workspace shell, Maya Slack, Analytics funnel, evidence progress | Open the required source apps before auditing. | Source-review state | not graded | `scene_02_app_audit` |
+| `scene_02_app_audit` Check the Current Roamly Flow | `app_audit` | Five Roamly screens, app-audit review console, related funnel numbers, Jordan help | Save one grounded note for each screen. | Current app-audit notes | Current Flow Audit | `scene_03_research_prep` |
+| `scene_03_research_prep` Prepare the User Call | `free_text` / Roamly Research Hub | Nina profile, research guardrails, saved app-audit notes, five question rows | Write exactly five interview questions and one learning goal. | User-call prep | Interview Prep | `scene_04_user_call` |
+| `scene_04_user_call` Remote User Interview with Nina | `voice_meeting` | Interview console, prep tray, compact user context, prep note, transcript, typed backup | Ask Nina at least five questions without pitching a solution. | User interview transcript | User Interview | `scene_07_prd_slice` |
+| `scene_07_prd_slice` Write the Product Plan | `free_text` / Product Plan doc editor | Saved audit notes, Nina transcript, product-plan checklist, document section strip | Write a four-part Product Plan. | Product Plan draft | Product Plan | `assessment_gate` |
+| `assessment_gate` The Product Planning Day Is Complete | `section_transition` | Completed task summary | Start assessment. | none | not graded | `grading` |
+| `grading` Assessment in Progress | `grading` | Saved artifacts and transcript | Wait for scoring. | Career report data | all rubric criteria | `final_report` |
+| `final_report` Product Manager Simulation Report | `final_report` | Grading result | Review feedback and restart if desired. | displayed report | not graded | null |
+
+## Removed Active Nodes
+
+- `scene_02_problem_brief` and `transition_research` are not active.
+- Roadmap and priority-matrix scenes are not active in this Product Manager route.
