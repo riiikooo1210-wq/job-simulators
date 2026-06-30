@@ -86,7 +86,7 @@ const initialState: Omit<GameState,
 const persistKey =
   typeof STORE_PERSIST_KEY !== 'undefined' && STORE_PERSIST_KEY
     ? STORE_PERSIST_KEY
-    : 'job-simulator-storage'
+    : 'game-designer-gameplay-systems-and-level-experience-design-nintendo-like-fictional-family-friendly-aaa-console-gameplay-studio-large-aaa-enterprise-studio-mid-level-simulator-storage'
 
 export const useGameStore = create<GameState>()(
   persist(

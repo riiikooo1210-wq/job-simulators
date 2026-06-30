@@ -83,7 +83,7 @@
         "type": "intro",
         "section": 0,
         "title": "Welcome to Starling Grove Studios",
-        "content": "You are the mid-level Game Designer on Sproutbound, a fictional family-friendly AAA console adventure. Today you need to make the new Wind Bud traversal mechanic easier to learn without blowing up the milestone scope.",
+        "content": "You are the mid-level Game Designer on Sproutbound, a fictional family-friendly AAA console adventure. Today you need to make the new Wind Bud movement mechanic easier to learn without making the milestone bigger than the team can build.",
         "imageBrief": "A bright, polished AAA game studio design area with warm wood desks, concept art of cute forest guardians on the walls, a console controller, design notebooks, and a large screen showing a whimsical green platforming level. No real company logos.",
         "next": "morning_briefing",
         "illustration": "/scenes/intro.png"
@@ -94,7 +94,7 @@
         "section": 1,
         "briefingMode": "simple",
         "title": "Morning Recap",
-        "content": "Your job today: understand the Wind Bud teaching problem, then decide how to improve the room. The detailed debugging notes and statistics are available as tabs in the Teaching Note workspace.",
+        "content": "You will start by looking at a small game room. Maya will help you notice the simple problem before you choose a change.",
         "actionLabel": "Start the Task",
         "deskWorkDesign": {
           "roleFamily": "game design",
@@ -108,9 +108,9 @@
             },
             {
               "id": "teaching_note_tabs",
-              "label": "Teaching Note source tabs",
+              "label": "Teaching Note debugging tab",
               "whereVisible": "mechanic_hook_sheet.workSurface.sourceTabs",
-              "summary": "Debugging notes and the moved morning statistics are available when the player starts the design note."
+              "summary": "Debugging notes and playtest numbers are together when the player starts the design note."
             }
           ],
           "studentAction": "Read the recap before choosing the first design-note move.",
@@ -124,7 +124,7 @@
             "Playtest Evidence Use"
           ],
           "continuity": [
-            "Recap facts reappear in later app tabs, work surfaces, and conversation prep."
+            "Recap facts reappear in the later app workspace and conversation prep."
           ],
           "authenticityCheck": "The player starts from a coworker recap, then reads the detailed debugging and statistics inside the actual design-note workspace."
         },
@@ -132,11 +132,11 @@
         "next": "mechanic_hook_sheet",
         "illustration": "/scenes/morning_briefing.png",
         "memoryCard": {
-          "title": "Build memory",
+          "title": "What happens next",
           "bullets": [
-            "Wind Bud is a tutorial-room mechanic, not a full level redesign.",
-            "Players are missing the cue or using the gust incorrectly.",
-            "Today tests whether the room teaches the mechanic clearly enough."
+            "Look at the room.",
+            "Pick one helpful change.",
+            "Later, check what players do."
           ]
         },
         "coworkerRecap": {
@@ -180,8 +180,7 @@
         "type": "structured_entry",
         "section": 1,
         "title": "Wind Bud Teaching Note",
-        "content": "Build context: first Wind Bud room with a safe start platform, one bud, second platform, optional coin trail, and a tutorial hint that triggers too late. Current confusion: players miss the bud, approach the gust from the wrong side, or chase coins before learning the core movement. Pick one place you think needs the most improvement, then write what cue/effect you would add and what feedback would prove the rule worked.",
-        "prompt": "Make one playable design note. Choose one level area, then answer only what cue/effect you would add and what success feedback would prove the rule. The five map areas are choices, not a checklist; unused areas can stay plain.",
+        "prompt": "Look at the room. Pick one room part, one small change, one success sign, and one confusion sign that the 4 PM playtest can actually watch.",
         "appWindow": "notion",
         "windowTitle": "Wind Bud Teaching Note",
         "definition": {
@@ -193,13 +192,13 @@
           "fields": [
             {
               "key": "stage_focus",
-              "label": "Level area",
-              "placeholder": "Choose the level area this note focuses on.",
+              "label": "Room part",
+              "placeholder": "Choose one room part to improve.",
               "inputType": "select",
               "options": [
                 {
                   "value": "safe_start",
-                  "label": "Safe start platform"
+                  "label": "Start platform"
                 },
                 {
                   "value": "wind_bud",
@@ -207,7 +206,7 @@
                 },
                 {
                   "value": "gust_cone",
-                  "label": "Gust cone"
+                  "label": "Wind path"
                 },
                 {
                   "value": "landing",
@@ -215,39 +214,67 @@
                 },
                 {
                   "value": "coin_trail",
-                  "label": "Optional coin trail"
+                  "label": "Coins"
                 }
               ]
             },
             {
               "key": "attention_effect",
-              "label": "Cue/effect you add",
-              "placeholder": "Think about what should catch the player's eye, and what should separate it from the background.",
-              "multiline": true,
-              "rows": 2
+              "label": "Helpful change",
+              "placeholder": "Choose the change the playtest will check.",
+              "inputType": "select",
+              "options": [
+                "Add motion and a soft sound to the Wind Bud so players notice it before the game message.",
+                "Add moving leaves in the wind path so players know to travel with the gust.",
+                "Add a landing glow so players know where the gust should carry them.",
+                "Soften the optional coin trail until after the player learns the Wind Bud."
+              ]
             },
             {
               "key": "success_feedback",
-              "label": "Success feedback you add",
-              "placeholder": "Think about what should change after success so the player can tell the rule worked.",
-              "multiline": true,
-              "rows": 3
+              "label": "How they know it worked",
+              "placeholder": "Choose the success sign the tester should watch.",
+              "inputType": "select",
+              "options": [
+                "Player turns toward the Wind Bud before the game message appears.",
+                "Player strikes the Wind Bud and moves with the gust instead of backing away.",
+                "Player reaches the landing platform without verbal help.",
+                "Player reaches the landing before chasing optional coins."
+              ]
+            },
+            {
+              "key": "confusion_signal",
+              "label": "Confusion sign to watch",
+              "placeholder": "Choose the confusion sign the tester should watch.",
+              "inputType": "select",
+              "options": [
+                "Player waits for the game message before striking the Wind Bud.",
+                "Player looks toward optional coins before learning the Wind Bud.",
+                "Player backs away from the active wind path and falls.",
+                "Player enters the gust but misses the landing platform."
+              ]
             }
           ],
           "presentation": "tutorial_beat_board",
           "visualBoard": {
             "title": "Wind Bud tutorial slice",
-            "stageTitle": "Clickable level slice",
-            "subtitle": "Click the place you think needs the most improvement. The current image is static, so your note is the cue/effect and feedback you would add.",
-            "helperText": "You are not describing finished UI. You are choosing where to add a cue, motion, sound, layout change, or success feedback. The five areas are possible targets, not required fields; unused areas can stay plain.",
+            "stageTitle": "Room map",
+            "subtitle": "Click one part of the room to improve.",
+            "helperText": "You only need one part. The other parts can stay the same.",
             "imagePath": "/scenes/wind_bud_tutorial_level_slice.png",
-            "imageAlt": "A simple side-view tutorial room with a safe start platform, Wind Bud, gust cone, landing platform, and optional coins.",
+            "imageAlt": "A simple side-view room with a start platform, Wind Bud, wind path, landing platform, and coins.",
+            "demo": {
+              "type": "wind_bud_playable_room",
+              "playLabel": "Play",
+              "resetLabel": "Reset",
+              "backLabel": "Back to labels"
+            },
             "hotspots": [
               {
                 "id": "safe_start",
-                "label": "Safe start platform",
+                "label": "Start platform",
                 "shortLabel": "Start",
-                "description": "Where the player can stop, look, and experiment safely.",
+                "description": "A safe place where the player can stop and look.",
                 "xPct": 5,
                 "yPct": 36,
                 "wPct": 15,
@@ -257,7 +284,7 @@
                 "id": "wind_bud",
                 "label": "Wind Bud",
                 "shortLabel": "Bud",
-                "description": "The object the player must notice and strike.",
+                "description": "The object the player needs to notice and hit.",
                 "xPct": 27,
                 "yPct": 47,
                 "wPct": 12,
@@ -265,9 +292,9 @@
               },
               {
                 "id": "gust_cone",
-                "label": "Gust cone",
-                "shortLabel": "Gust",
-                "description": "The wind path that shows where to enter and travel.",
+                "label": "Wind path",
+                "shortLabel": "Wind",
+                "description": "The wind that carries the player across the gap.",
                 "xPct": 42,
                 "yPct": 44,
                 "wPct": 28,
@@ -277,7 +304,7 @@
                 "id": "landing",
                 "label": "Landing platform",
                 "shortLabel": "Land",
-                "description": "The safe proof that the lift worked.",
+                "description": "The safe place the player should reach.",
                 "xPct": 62,
                 "yPct": 38,
                 "wPct": 24,
@@ -285,9 +312,9 @@
               },
               {
                 "id": "coin_trail",
-                "label": "Optional coin trail",
+                "label": "Coins",
                 "shortLabel": "Coins",
-                "description": "A reward path that should not distract before the lesson.",
+                "description": "A reward path that can pull attention away too early.",
                 "xPct": 77,
                 "yPct": 30,
                 "wPct": 18,
@@ -297,7 +324,7 @@
             "beats": [
               {
                 "label": "Teaching note",
-                "helper": "Think about what should draw the player's eye first, then what should change after success so the player knows the Wind Bud rule worked."
+                "helper": "Choose fixed signs that the 4 PM playtest can actually show."
               }
             ]
           }
@@ -310,22 +337,22 @@
               "id": "feature_brief",
               "label": "Feature Brief - Wind Bud Tutorial",
               "whereVisible": "Debugging Notes tab",
-              "summary": "Mechanic rule, current room layout, player confusion, and constraints."
+              "summary": "What should happen and where players get confused."
             },
             {
               "id": "quick_metrics",
               "label": "Playtest data",
-              "whereVisible": "Playtest Data tab",
-              "summary": "Recognition, retry, landing, and telemetry data."
+              "whereVisible": "Debugging Notes tab",
+              "summary": "Two quick pieces of evidence about where players get stuck while crossing."
             },
             {
               "id": "mini_level_slice",
               "label": "Clickable Wind Bud level slice",
               "whereVisible": "teaching note board",
-              "summary": "A side-view map of the safe start, Wind Bud, gust cone, landing platform, and optional coin trail."
+              "summary": "A side-view map of the start, Wind Bud, wind path, landing platform, and coins."
             }
           ],
-          "studentAction": "Pick one useful map area, then write the cue/effect and success feedback the designer would add.",
+          "studentAction": "Pick one room part, one buildable change, and the fixed success/confusion signs the 4 PM playtest can check.",
           "outputArtifact": {
             "id": "wind_bud_teaching_note",
             "label": "Wind Bud teaching note",
@@ -336,9 +363,9 @@
             "Learnable Level Pacing"
           ],
           "continuity": [
-            "The visual teaching note informs the playtest watchlist and implementation handoff."
+            "The bounded teaching note informs the playtest watchlist and implementation handoff without asking the fixed playtest to handle unrelated open-ended inputs."
           ],
-          "authenticityCheck": "A designer annotates the playable slice so the team can see how the mechanic is taught in the room."
+          "authenticityCheck": "A designer marks the playable slice so the team can see how the mechanic is taught in the room."
         },
         "next": "playtest_watchlist",
         "workSurface": {
@@ -349,48 +376,25 @@
             {
               "id": "debugging_notes",
               "label": "Debugging Notes",
-              "content": "Feature Brief - Wind Bud Tutorial\n\nMechanic rule: strike the Wind Bud, read the short gust cone, and enter it from the safe side so the player can lift or glide across the gap.\n\nCurrent room: safe start platform, one Wind Bud, second platform, optional coin trail, and a tutorial hint that triggers too late.\n\nCurrent confusion:\n- Some first-time players treat the bud like background.\n- Some players jump the gap and fall before reading the mechanic.\n- Some players trigger the gust but run away because it spawns behind them.\n- The optional coin trail can distract players before they prove the core movement rule.\n\nPlayer comments:\nPlaytester A: \"I thought the flower was background until the tutorial hint popped up.\"\nPlaytester C: \"The gust starts behind me, so I jump away from the thing I need.\""
-            },
-            {
-              "id": "playtest_data",
-              "label": "Playtest Data",
-              "content": "Existing playtest results and build telemetry from the current Wind Bud room. Use this table to connect player confusion with measurable room behavior before proposing a fix.",
+              "content": "Quick notes\n\nWhat should happen: the player notices the Wind Bud, hits it, follows the wind, and reaches the next platform.\n\nWhat is going wrong:\n- Some players do not notice the Wind Bud.\n- Some players jump across the gap before using the wind.\n- Some players chase coins before learning the main move.\n\nPlayer test results\nThese two boxes show where players get stuck while crossing the room.\n\nYour job: fix one part of the room, not the whole level.",
               "metrics": [
                 {
-                  "metric": "Players who noticed first Wind Bud without hint",
-                  "target": "80%",
-                  "actual": "42%",
-                  "status": "critical"
-                },
-                {
-                  "metric": "Average retries before first successful glide",
+                  "areaLabel": "Wind path",
+                  "metric": "Tries before the wind carried players across",
                   "target": "2 or fewer",
                   "actual": "4.3",
-                  "status": "critical"
+                  "status": "critical",
+                  "meaning": "Players needed more than four tries on average before the wind helped them cross. The path may be hard to understand.",
+                  "roomNote": "This points to the blue wind between the Bud and the landing platform. A helpful change could show where the player should go."
                 },
                 {
-                  "metric": "Players who reached the second platform",
+                  "areaLabel": "Landing platform",
+                  "metric": "Players reached the next platform",
                   "target": "90%",
                   "actual": "68%",
-                  "status": "warning"
-                },
-                {
-                  "metric": "Fall repeats at second gap",
-                  "target": "low",
-                  "actual": "high",
-                  "status": "critical"
-                },
-                {
-                  "metric": "Optional coin route before core lesson",
-                  "target": "after lesson",
-                  "actual": "before lesson",
-                  "status": "warning"
-                },
-                {
-                  "metric": "Wind Bud cue noticed",
-                  "target": "clear",
-                  "actual": "missed by several players",
-                  "status": "warning"
+                  "status": "warning",
+                  "meaning": "Some players got into the wind but still did not land safely. The safe landing spot may need to be easier to see.",
+                  "roomNote": "This points to the platform on the right. A helpful change could make success feel clear."
                 }
               ]
             }
@@ -402,9 +406,9 @@
         "type": "structured_entry",
         "section": 1,
         "title": "Wind Bud Playtest Watchlist",
-        "content": "Maya wants the 4 PM playtest to check whether your Teaching Note helps first-time players. Watch for the repeated confusion: whether players notice the bud, enter the gust from the useful side, stop falling at the second gap, and avoid chasing coins before learning the movement. Do not pitch another feature here.",
-        "prompt": "Write one watchlist item for the next playtest. Keep it observable: a tester should be able to mark it while watching the player, without asking the player to explain the design.",
-        "appWindow": "notion",
+        "content": "At 4 PM, Maya will watch first-time players try the Wind Bud room. Make a {{playtest watchlist}} for Maya to use during the test. It tells the tester what to watch, what counts as success, what counts as confusion, and what should not count as proof. Use actions the tester can see on screen. Do not ask the player to explain their thinking, and do not pitch a new feature.",
+        "prompt": "Fill in one Watch Item. Each box should name a visible action, such as \"turns toward the Wind Bud before the game message\" or \"backs away from the wind and falls.\"",
+        "appWindow": "doc",
         "windowTitle": "Wind Bud Playtest Watchlist",
         "definition": {
           "itemLabel": "Watch Item",
@@ -417,49 +421,70 @@
             "title": "Your Wind Bud Teaching Note",
             "emptyText": "Submit the Teaching Note first to see it here.",
             "fieldLabels": {
-              "stage_focus": "Level area",
-              "attention_effect": "Cue/effect you add",
-              "success_feedback": "Success feedback you add"
+              "stage_focus": "Room part",
+              "attention_effect": "Helpful change",
+              "success_feedback": "How they know it worked",
+              "confusion_signal": "Confusion sign to watch"
             },
             "valueLabels": {
-              "safe_start": "Safe start platform",
+              "safe_start": "Start platform",
               "wind_bud": "Wind Bud",
-              "gust_cone": "Gust cone",
+              "gust_cone": "Wind path",
               "landing": "Landing platform",
-              "coin_trail": "Optional coin trail"
+              "coin_trail": "Coins"
             }
           },
           "fields": [
             {
               "key": "observed_behavior",
               "label": "Behavior to watch",
-              "placeholder": "What should the player do on their own if the cue is working?",
-              "multiline": true,
-              "rows": 2
+              "placeholder": "Choose the behavior Maya should look for.",
+              "inputType": "select",
+              "options": [
+                "Player turns toward the Wind Bud before the game message.",
+                "Player follows the wind path after striking the Wind Bud.",
+                "Player aims for the landing platform after entering the gust.",
+                "Player looks at coins before learning the main move."
+              ]
             },
             {
               "key": "success_signal",
               "label": "Success signal",
-              "placeholder": "What visible action proves the Wind Bud rule made sense?",
-              "multiline": true,
-              "rows": 2
+              "placeholder": "Choose what counts as success.",
+              "inputType": "select",
+              "options": [
+                "Player strikes the Wind Bud, rides the gust, and reaches the landing without help.",
+                "Player uses the gust from the safe side after noticing the Bud.",
+                "Player reaches the landing before chasing optional coins.",
+                "Player recovers after one retry and uses the gust correctly."
+              ]
             },
             {
               "key": "failure_signal",
               "label": "Confusion signal",
-              "placeholder": "What visible action shows the player is still misreading the room?",
-              "multiline": true,
-              "rows": 2
+              "placeholder": "Choose what counts as confusion.",
+              "inputType": "select",
+              "options": [
+                "Player waits for the game message before striking the Bud.",
+                "Player backs away from the active wind path and falls.",
+                "Player follows the coin path before learning the Wind Bud.",
+                "Player enters the gust but misses the landing."
+              ]
             },
             {
               "key": "ignore_noise",
-              "label": "Do not over-read",
-              "placeholder": "What comment or behavior might sound positive but should not count as proof?",
-              "multiline": true,
-              "rows": 2
+              "label": "Do not count as proof",
+              "placeholder": "Choose what Maya should not over-read.",
+              "inputType": "select",
+              "options": [
+                "Do not count a late Bud strike after the game message as clean first-read success.",
+                "Do not count saying the Bud looks cute unless movement shows understanding.",
+                "Do not count reaching coins after success as a first-use failure.",
+                "Do not treat one recovery retry as proof that the first lesson was clear."
+              ]
             }
           ],
-          "presentation": "cards"
+          "presentation": "google_doc"
         },
         "deskWorkDesign": {
           "roleFamily": "game design",
@@ -478,7 +503,7 @@
               "summary": "Observe whether first-time players read the Wind Bud without being told."
             }
           ],
-          "studentAction": "Turn the teaching note into observable playtest signals.",
+          "studentAction": "Turn the teaching note into playtest signs the team can watch.",
           "outputArtifact": {
             "id": "wind_bud_playtest_watchlist",
             "label": "Wind Bud playtest watchlist",
@@ -491,7 +516,7 @@
           "continuity": [
             "The Run the Playtest scene asks the player to observe those same signals in tester behavior."
           ],
-          "authenticityCheck": "Designers often translate design intent into observable playtest questions before judging whether a change worked."
+          "authenticityCheck": "Designers often turn design ideas into watchable playtest questions before judging whether a change worked."
         },
         "next": "playtest_workspace",
         "workSurface": {
@@ -504,8 +529,8 @@
         "id": "spec_update",
         "type": "free_text",
         "section": 2,
-        "title": "Implementation Spec Update",
-        "content": "Priya and Leo need a compact spec update they can act on, and Owen and Emi need clear QA and scope notes. Write it as an email so the implementation decision can move through the team.",
+        "title": "Build Spec Update",
+        "content": "Priya and Leo need a short spec update they can act on, and Owen and Emi need clear QA and amount-of-work notes. Write it as an email so the build decision can move through the team.",
         "prompt": "Draft a 90-220 word email. Include: player problem, proposed change, exact expected behavior, acceptance criteria, risk or open question, and QA check.",
         "appWindow": "email",
         "windowTitle": "New Message - Wind Bud Spec Update",
@@ -521,17 +546,17 @@
           {
             "id": "playtest",
             "label": "Playtest Evidence",
-            "content": "Your Wind Bud Playtest Watchlist:\n{{response.wind_bud_playtest_watchlist}}\n\nYour Run the Playtest observation log:\n{{response.playtest_observation_log}}\n\nYour fix-priority ranking:\n{{response.playtest_fix_priority}}\n\nUse these inputs as the evidence base for the email. Do not replace them with generic tester notes."
+            "content": "Your Wind Bud Playtest Watchlist:\n{{response.wind_bud_playtest_watchlist}}\n\nYour Run the Playtest observation log:\n{{response.playtest_observation_log}}\n\nYour fix-priority ranking:\n{{response.playtest_fix_priority}}\n\nUse these notes as the proof for the email. Do not replace them with generic tester notes."
           },
           {
             "id": "watchlist",
             "label": "Watchlist Focus",
-            "content": "Use your Wind Bud Playtest Watchlist, observation log, and fix-priority ranking. The spec should turn observed behavior into a buildable change and testable QA criteria, not just describe how the room feels."
+            "content": "Use your Wind Bud Playtest Watchlist, observation log, and fix-priority ranking. The spec should turn observed behavior into a change the team can build and QA checks they can run, not just describe how the room feels."
           },
           {
             "id": "team",
             "label": "Team Needs",
-            "content": "Priya needs clear behavior and edge cases. Leo needs the intended player path. Owen needs testable acceptance criteria. Emi needs risk and owner clarity."
+            "content": "Priya needs clear behavior and edge cases. Leo needs the intended player path. Owen needs testable acceptance criteria. Emi needs risk notes and who owns each next step."
           }
         ],
         "deskWorkDesign": {
@@ -548,7 +573,7 @@
               "id": "watchlist_focus_tab",
               "label": "Watchlist Focus",
               "whereVisible": "app tab",
-              "summary": "Reminder to connect the watchlist signal to buildable behavior and QA criteria."
+              "summary": "Reminder to connect the watchlist signal to behavior the team can build and QA checks they can run."
             },
             {
               "id": "team_needs_tab",
@@ -557,10 +582,10 @@
               "summary": "What engineering, level design, QA, and production need from the spec."
             }
           ],
-          "studentAction": "Write an implementation-ready spec update email.",
+          "studentAction": "Write a spec update email the team can build from.",
           "outputArtifact": {
             "id": "spec_update",
-            "label": "Wind Bud implementation spec update",
+            "label": "Wind Bud build spec update",
             "format": "email draft"
           },
           "rubricEvidence": [
@@ -571,7 +596,7 @@
           "continuity": [
             "The spec is used as context for engineering handoff prep and the live handoff."
           ],
-          "authenticityCheck": "Design spec emails must translate player evidence into buildable behavior and testable criteria for the whole implementation group."
+          "authenticityCheck": "Design spec emails must turn player evidence into behavior the team can build and checks the team can test."
         },
         "next": "design_review_prep",
         "workSurface": {
@@ -585,17 +610,17 @@
         "type": "free_text",
         "section": 3,
         "title": "Prepare the Engineering Handoff",
-        "content": "Priya read your spec email and priority ranking. Prepare for the implementation gaps she is most likely to ask about before she touches gameplay code.",
-        "prompt": "Optional: jot a prep note up to 150 words. If you write one, focus on whichever implementation gaps your specific patch still needs: player-facing behavior, edge cases, reset or tuning details, ownership boundaries, or QA checks.",
+        "content": "Priya read your spec email and priority ranking. Prepare for the missing build details she is most likely to ask about before she touches gameplay code.",
+        "prompt": "Optional: jot a prep note up to 150 words. If you write one, focus on whichever build details your specific fix still needs: player-facing behavior, edge cases, reset or tuning details, who owns which choices, or QA checks.",
         "appWindow": "doc",
         "windowTitle": "Prep Note (optional)",
         "maxWords": 150,
-        "placeholder": "Missing implementation detail:\nLikely Priya question:\nAnswer / boundary:\nQA or tuning note:",
+        "placeholder": "Missing build detail:\nLikely Priya question:\nAnswer / boundary:\nQA or tuning note:",
         "appTabs": [
           {
             "id": "handoff_agenda",
             "label": "Prep Checklist",
-            "content": "Priya's agenda is driven by your email and priority ranking. Use these checks as prep prompts, not as a script for the call.\n\nPossible gap checks Priya may adapt:\n- What behavior is required for your chosen fix to work?\n- Which edge cases or retries could break that behavior?\n- What should reset, persist, refresh, or remain tunable?\n- What acceptance criteria would let QA verify the patch?\n- Which details are design intent, and which can Priya choose while implementing?\nTeam need: keep the patch small, tunable, and QA-verifiable."
+            "content": "Priya's questions are driven by your email and priority ranking. Use these checks as prep prompts, not as a script for the call.\n\nPossible questions Priya may ask:\n- What behavior is required for your chosen fix to work?\n- Which edge cases or retries could break that behavior?\n- What should reset, stay saved, refresh, or remain adjustable?\n- What acceptance criteria would let QA check the fix?\n- Which details are must-have design rules, and which can Priya choose while building?\nTeam need: keep the fix small, adjustable, and easy for QA to check."
           },
           {
             "id": "priority_ranking",
@@ -616,7 +641,7 @@
               "id": "handoff_agenda",
               "label": "Prep Checklist",
               "whereVisible": "app tab",
-              "summary": "Implementation gaps Priya may need clarified."
+              "summary": "Missing build details Priya may need clarified."
             },
             {
               "id": "priority_ranking",
@@ -641,7 +666,7 @@
           "continuity": [
             "If written, the prep note appears inside the in-person engineering conversation."
           ],
-          "authenticityCheck": "Designers often jot quick implementation-facing reminders before handing work to engineering."
+          "authenticityCheck": "Designers often jot quick build-facing reminders before handing work to engineering."
         },
         "next": "design_review",
         "workSurface": {
@@ -656,12 +681,12 @@
         "type": "voice_meeting",
         "section": 3,
         "title": "Engineering Handoff with Priya",
-        "content": "You meet Priya in the huddle room beside the playtest lab. She is ready to implement the direction from your email, but she needs any remaining gameplay rules and edge cases clarified before coding.",
+        "content": "You meet Priya in the huddle room beside the playtest lab. She is ready to build the change from your email, but she needs any remaining gameplay rules and edge cases clarified before coding.",
         "npcId": "priya",
         "meetingMode": "in_person",
-        "playerGoal": "Clarify the implementation gaps in your spec update so Priya can build the patch without guessing what is design intent, what is tunable, and what acceptance criteria should prove the change works.",
-        "endpoint": "Priya should close the conversation once she has clear answers to the most important implementation gaps raised by the student's email and priority ranking.",
-        "successCriteria": "A strong handoff separates player-facing intent from implementation detail, names relevant edge cases or tuning rules, gives QA-verifiable criteria, and keeps the scope small enough to build.",
+        "playerGoal": "Clarify the missing build details in your spec update so Priya can build the fix without guessing what the design needs, what can be adjusted, and what acceptance criteria should prove the change works.",
+        "endpoint": "Priya should close the conversation once she has clear answers to the most important missing build details raised by the student's email and priority ranking.",
+        "successCriteria": "A strong handoff explains the player-facing goal, names relevant edge cases or tuning rules, gives criteria QA can check, and keeps the work small enough to build.",
         "goalPrompt": "Act as Priya Raman, Gameplay Engineer, in an in-person engineering handoff. Base your questions on the student's spec update email and fix-priority ranking in the meeting context. Do not ask them to re-argue playtest priority; treat that as decided. Instead, ask engineering-facing questions only where the student's own email or ranking leaves implementation gaps. Choose from topics such as player-facing behavior, edge cases, reset or persistence behavior, tuning ownership, acceptance criteria, and what is strict design intent versus implementation choice. Do not force every topic if it is already clear or irrelevant. React cooperatively but push for precision. End once the most important gaps are covered by summarizing what you will implement and one open risk if the student's answers were unclear.",
         "meetingContext": "The student has sent this Wind Bud spec update email:\n{{response.spec_update}}\n\nThe student ranked fixes this way:\n{{response.playtest_fix_priority}}\n\nThe team no longer needs another pitch about why the fix matters. Priya should adapt the agenda to these artifacts and ask about the implementation gaps that remain: buildable behavior, relevant edge cases, reset or tuning rules, acceptance criteria, and implementation boundaries.",
         "prepReferenceTitle": "Priority Note and Email",
@@ -671,6 +696,19 @@
         "minTurns": 2,
         "maxTurns": 5,
         "voiceName": "Aoede",
+        "typedFallback": {
+          "enabled": true,
+          "startLabel": "Use typing instead",
+          "inputLabel": "Typed handoff response",
+          "placeholder": "Explain the build rule, edge case, tuning boundary, or QA check Priya needs.",
+          "sendLabel": "Send typed turn",
+          "endLabel": "End typed handoff",
+          "npcPrompts": [
+            "That helps. Can you clarify how the gust should reset or stay tunable after a fall?",
+            "Got it. What should QA check to confirm the change worked?",
+            "That gives me enough to build the first pass. End the handoff when you're ready."
+          ]
+        },
         "deskWorkDesign": {
           "roleFamily": "game design",
           "workSurface": "in-person engineering handoff with reference workspace",
@@ -679,7 +717,7 @@
               "id": "engineering_handoff_workspace",
               "label": "Engineering Handoff Workspace",
               "whereVisible": "meeting reference card",
-              "summary": "Email-driven implementation gaps, relevant edge cases, tuning rules, acceptance criteria, and implementation boundaries."
+              "summary": "Email-driven build gaps, relevant edge cases, tuning rules, acceptance criteria, and build boundaries."
             },
             {
               "id": "design_review_prep",
@@ -688,7 +726,7 @@
               "summary": "The player's optional prep note from the previous scene, if provided."
             }
           ],
-          "studentAction": "Clarify buildable gameplay rules and answer engineering edge-case questions.",
+          "studentAction": "Clarify gameplay rules the team can build and answer engineering edge-case questions.",
           "outputArtifact": {
             "id": "voice:design_review:priya",
             "label": "Engineering handoff transcript",
@@ -742,7 +780,7 @@
         "section": 2,
         "title": "Run the Playtest",
         "content": "You are in the playtest lab watching three first-time players run the Wind Bud room after your Teaching Note. Use the watchlist you wrote earlier, but do not assume your fix worked. Watch each moment, then record only behavior you can actually observe.",
-        "prompt": "Create the observation log from the playtest. For each tester, write one conclusion with evidence: what you observed, whether it proves success/confusion/noise, and the design implication you would carry into your priority ranking.",
+        "prompt": "Create the observation log from the playtest. For each tester, write one conclusion with evidence: what you observed, whether it proves success, confusion, or not enough proof, and what it means for your priority ranking.",
         "bindingKey": "playtest_observation_log",
         "priorityBindingKey": "playtest_fix_priority",
         "priorityPrompt": "Rank the fixes you wrote in the tester notes, from highest priority to lowest priority, and justify the order.",
@@ -780,7 +818,7 @@
             "testerLabel": "Tester A",
             "stepLabel": "Moment 2",
             "headline": "Looks toward the optional coins",
-            "description": "Tester A turns attention toward the optional coin trail before engaging the core Wind Bud rule. This may be a reward-placement distraction, not proof that the bud cue worked.",
+            "description": "Tester A moves off the safe start and looks toward the optional coin path before using the Wind Bud. This may be a reward-placement distraction, not proof that the bud cue worked.",
             "image": "/action-assets/tester_A.png",
             "layers": [
               {
@@ -798,27 +836,27 @@
             "focusY": 55
           },
           {
-            "id": "tester_a_waits_tutorial_hint",
+            "id": "tester_a_waits_game_message",
             "testerId": "tester_a",
             "testerLabel": "Tester A",
             "stepLabel": "Moment 3",
-            "headline": "Ignores the Wind Bud until the tutorial hint",
-            "description": "The tutorial hint appears before Tester A notices the bud. That means the readable cue may still depend on instruction instead of player discovery.",
+            "headline": "Waits for the game message beside the Bud",
+            "description": "Tester A gets close enough for the game message to appear, then pauses instead of hitting the Bud right away. That means the Bud was reached, but the cue still may not clearly say what to do.",
             "image": "/action-assets/tester_A.png",
             "layers": [
               {
                 "id": "avatar",
                 "image": "/action-assets/avator.png",
-                "xPct": 16.5,
-                "yPct": 70,
+                "xPct": 32.5,
+                "yPct": 55,
                 "wPct": 10.8,
                 "anchor": "bottom",
                 "zIndex": 2
               }
             ],
-            "fallbackLabel": "Tutorial hint reveals the bud",
-            "focusX": 26,
-            "focusY": 55
+            "fallbackLabel": "Game message appears beside the bud",
+            "focusX": 40,
+            "focusY": 50
           },
           {
             "id": "tester_a_strikes_late",
@@ -826,7 +864,7 @@
             "testerLabel": "Tester A",
             "stepLabel": "Moment 4",
             "headline": "Strikes the Wind Bud late",
-            "description": "Tester A eventually strikes the bud, but only after the hint. Log this as late comprehension, not a clean first-read success.",
+            "description": "Tester A eventually strikes the Bud and the wind appears, but only after the message. Log this as late understanding, not a clean first-read success.",
             "image": "/action-assets/tester_A.png",
             "layers": [
               {
@@ -847,7 +885,7 @@
                 "zIndex": 2
               }
             ],
-            "fallbackLabel": "Late bud strike after hint",
+            "fallbackLabel": "Late bud strike after game message",
             "focusX": 40,
             "focusY": 50
           },
@@ -857,7 +895,7 @@
             "testerLabel": "Tester B",
             "stepLabel": "Moment 1",
             "headline": "Notices the Wind Bud quickly",
-            "description": "Tester B turns toward the Wind Bud almost immediately. This is a positive recognition signal, but it does not yet prove the movement rule is readable.",
+            "description": "Tester B turns toward the Wind Bud almost immediately. This is a positive recognition sign, but it does not yet prove the movement rule is clear.",
             "image": "/action-assets/tester_B.png",
             "layers": [
               {
@@ -880,7 +918,7 @@
             "testerLabel": "Tester B",
             "stepLabel": "Moment 2",
             "headline": "Strikes the Wind Bud quickly",
-            "description": "Tester B strikes the bud without waiting for the tutorial hint. This supports the object cue, but the next moments decide whether the gust behavior is clear.",
+            "description": "Tester B strikes the bud without waiting for the game message. This supports the object cue, but the next moments show whether the gust behavior is clear.",
             "image": "/action-assets/tester_B.png",
             "layers": [
               {
@@ -911,7 +949,7 @@
             "testerLabel": "Tester B",
             "stepLabel": "Moment 3",
             "headline": "Runs away from the gust",
-            "description": "When the gust appears behind them, Tester B runs away from it. The object was readable, but the gust direction or safe-side entry is not.",
+            "description": "When the wind turns on, Tester B backs away from the active wind path instead of moving with it toward the landing. The object was readable, but the wind path was not.",
             "image": "/action-assets/tester_B.png",
             "layers": [
               {
@@ -932,7 +970,7 @@
                 "zIndex": 2
               }
             ],
-            "fallbackLabel": "Player exits away from gust",
+            "fallbackLabel": "Player backs away from wind",
             "focusX": 34,
             "focusY": 56
           },
@@ -942,7 +980,7 @@
             "testerLabel": "Tester B",
             "stepLabel": "Moment 4",
             "headline": "Falls before recovering",
-            "description": "Tester B falls after misreading the gust entry. This is higher-impact than a preference note because it blocks progression through the first teach.",
+            "description": "Tester B falls after backing away from the wind path instead of riding it across. This matters more than a preference note because it blocks progress through the first lesson.",
             "image": "/action-assets/tester_B.png",
             "layers": [
               {
@@ -964,7 +1002,7 @@
                 "zIndex": 2
               }
             ],
-            "fallbackLabel": "Fall after wrong-side exit",
+            "fallbackLabel": "Fall after backing away",
             "focusX": 52,
             "focusY": 72
           },
@@ -974,7 +1012,7 @@
             "testerLabel": "Tester B",
             "stepLabel": "Moment 5",
             "headline": "Retries after the fall",
-            "description": "Tester B resets and tries again. Recovery is possible, but the first attempt still shows the teaching beat did not fully explain how to use the gust.",
+            "description": "Tester B resets and tries again. Recovery is possible, but the first attempt still shows the lesson did not fully explain how to use the gust.",
             "image": "/action-assets/tester_B.png",
             "layers": [
               {
@@ -997,14 +1035,14 @@
             "testerLabel": "Tester C",
             "stepLabel": "Moment 1",
             "headline": "Turns toward the bud",
-            "description": "Tester C notices the Wind Bud and turns toward it from the safe start. This is the cleanest first-read recognition in the session.",
+            "description": "Tester C notices the Wind Bud and turns toward it from the safe start. This is the clearest first-read success in the session.",
             "image": "/action-assets/tester_c.png",
             "layers": [
               {
                 "id": "avatar",
                 "image": "/action-assets/avator.png",
-                "xPct": 32.5,
-                "yPct": 55,
+                "xPct": 16.5,
+                "yPct": 70,
                 "wPct": 10.8,
                 "anchor": "bottom",
                 "zIndex": 2
@@ -1020,7 +1058,7 @@
             "testerLabel": "Tester C",
             "stepLabel": "Moment 2",
             "headline": "Uses the gust from the safe side",
-            "description": "Tester C enters the gust from the intended safe side. This is evidence that the core rule can work for some players.",
+            "description": "Tester C enters the gust from the intended safe side. This is evidence that the main rule can work for some players.",
             "image": "/action-assets/tester_c.png",
             "layers": [
               {
@@ -1050,7 +1088,7 @@
             "testerLabel": "Tester C",
             "stepLabel": "Moment 3",
             "headline": "Reaches the landing",
-            "description": "Tester C lands on the next platform. This is a success signal for the room's core progression path.",
+            "description": "Tester C lands on the next platform. This is a success sign for the room's main path.",
             "image": "/action-assets/tester_c.png",
             "layers": [
               {
@@ -1081,8 +1119,8 @@
             "testerId": "tester_c",
             "testerLabel": "Tester C",
             "stepLabel": "Moment 4",
-            "headline": "Asks whether the reward ledge is optional",
-            "description": "After success, Tester C asks about the reward ledge. Because the core rule already worked, this is likely backlog or reward clarity, not the main priority driver.",
+            "headline": "Asks whether the coin path is optional",
+            "description": "After success, Tester C asks whether the coins on the right are optional. Because the main rule already worked, this is likely a later coin-path clarity issue, not the main priority.",
             "image": "/action-assets/tester_c.png",
             "layers": [
               {
@@ -1095,7 +1133,7 @@
                 "zIndex": 2
               }
             ],
-            "fallbackLabel": "Reward ledge question after success",
+            "fallbackLabel": "Coin path question after success",
             "focusX": 82,
             "focusY": 43
           }
@@ -1104,17 +1142,17 @@
           {
             "id": "tester_a",
             "tester": "Tester A",
-            "prompt": "Summarize the safe-start pause, coin attention, tutorial-hint dependency, and late bud strike."
+            "prompt": "Summarize the safe-start pause, coin attention, game message beside the Bud, and late Bud strike."
           },
           {
             "id": "tester_b",
             "tester": "Tester B",
-            "prompt": "Summarize the quick bud recognition, wrong-side gust read, fall, and retry."
+            "prompt": "Summarize the quick Bud recognition, backing away from the wind path, fall, and retry."
           },
           {
             "id": "tester_c",
             "tester": "Tester C",
-            "prompt": "Summarize the successful core path and decide how much weight to give the reward ledge question."
+            "prompt": "Summarize the successful core path and decide how much weight to give the optional coin-path question."
           }
         ],
         "deskWorkDesign": {
@@ -1125,7 +1163,7 @@
               "id": "wind_bud_playtest_watchlist",
               "label": "Wind Bud Playtest Watchlist",
               "whereVisible": "reference card",
-              "summary": "The player's observable success/failure/noise criteria from the prior scene."
+              "summary": "The player's success, confusion, and not-enough-proof rules from the prior scene."
             },
             {
               "id": "tester_runs",
@@ -1134,11 +1172,11 @@
               "summary": "Moment-by-moment observed behavior from Tester A, Tester B, and Tester C."
             }
           ],
-          "studentAction": "Record observed tester behavior, separate success, confusion, and noise, then rank fix priorities with justification.",
+          "studentAction": "Record tester behavior, separate success, confusion, and not-enough-proof moments, then rank fix priorities with reasons.",
           "outputArtifact": {
             "id": "playtest_observation_log",
             "label": "Run the Playtest observation log",
-            "format": "one conclusion-with-evidence note per tester plus fix-priority ranking"
+            "format": "one conclusion with evidence per tester plus fix-priority ranking"
           },
           "rubricEvidence": [
             "Playtest Evidence Use",
@@ -1172,7 +1210,11 @@
         "label": "Assessment Gate",
         "targetNodeId": "assessment_gate"
       }
-    ]
+    ],
+    "staleNodeRedirects": {
+      "issue_priority_matrix": "spec_update",
+      "final_handoff_email": "assessment_gate"
+    }
   },
   "npcs": {
     "maya": {
@@ -1218,7 +1260,7 @@
   },
   "intro": {
     "welcomeTitle": "Wind Bud Milestone",
-    "welcomeBody": "Step into a mid-level Game Designer role at Starling Grove Studios. You will turn playtest confusion into a readable, testable design change for a fictional AAA console adventure.",
+    "welcomeBody": "Step into a mid-level Game Designer role at Starling Grove Studios. You will turn playtest confusion into a clear design change the team can test for a fictional AAA console adventure.",
     "steps": [
       {
         "label": "Read the build",
@@ -1226,55 +1268,64 @@
       },
       {
         "label": "Make the work",
-        "content": "Create a teaching note, a playtest watchlist, a fix-priority ranking, a spec update, and a handoff."
+        "content": "Create a teaching note, a playtest watchlist, a ranked fix list, a spec update, and a handoff."
       },
       {
         "label": "Align the team",
-        "content": "Clarify implementation rules in an in-person engineering handoff and close the loop with a clear email."
+        "content": "Clarify build rules in an in-person or typed engineering handoff."
       }
     ]
   },
   "glossary": {
     "blockout": "A rough, ugly playable version of a level used to test layout and flow before art polish.",
     "hook": "The first clear reason a player wants to try a mechanic.",
-    "affordance": "A visual or audio cue that suggests how an object can be used.",
-    "fail-safe": "A design choice that lets players recover after a mistake without frustration.",
-    "acceptance criteria": "Specific conditions that tell the team whether a design change is implemented correctly.",
-    "telemetry": "Data from playtests or builds that shows what players did.",
-    "milestone": "A scheduled development checkpoint with agreed deliverables.",
-    "priority ranking": "Ordering fixes by urgency, player impact, evidence strength, and feasibility."
+    "affordance": "A visual or audio clue that shows how an object can be used. In this simulation, the Wind Bud needs clues that tell players it can create wind.",
+    "fail-safe": "A design choice that helps players recover after a mistake without getting stuck or frustrated.",
+    "acceptance criteria": "Clear checks that tell the team whether a design change works. QA can use them to test the Wind Bud fix.",
+    "telemetry": "Data from a playtest or game build that shows what players did, such as retries, falls, or successful landings.",
+    "milestone": "A planned checkpoint in game development. By that date, the team agrees which work should be ready.",
+    "priority ranking": "A ranked list of fixes, from most important to least important, based on player impact, proof, and how hard the work is.",
+    "spec": "A short design plan that tells the team what to build, why it matters, and how to check whether it worked.",
+    "edge case": "A less common situation that can still break the design, such as a player backing away from the wind instead of riding it across.",
+    "QA": "Quality Assurance. The people who test the game and check whether a change works as intended.",
+    "AAA": "A large-budget game made by a large professional studio, usually for consoles or PC.",
+    "playtest watchlist": "A short list of player actions to watch during a playtest. It helps the team record what happened instead of guessing what the player was thinking.",
+    "cue": "A clue in the game, such as motion, color, sound, or placement, that helps the player know what to try.",
+    "success signal": "A visible action that shows the player understood the room, such as hitting the Wind Bud and reaching the next platform without help.",
+    "confusion signal": "A visible action that shows the player is still unsure, such as walking past the Wind Bud or backing away from the wind and falling."
   },
   "sample_answers": {
     "wind_bud_teaching_note": [
       {
         "stage_focus": "wind_bud",
-        "attention_effect": "Add gentle Wind Bud motion while the rest of the flowers stay still, with leaves drifting toward the gap.",
-        "success_feedback": "Add a bud-opening animation, gust reveal, and short sound cue so the player knows this object caused the wind."
+        "attention_effect": "Add motion and a soft sound to the Wind Bud so players notice it before the game message.",
+        "success_feedback": "Player turns toward the Wind Bud before the game message appears.",
+        "confusion_signal": "Player waits for the game message before striking the Wind Bud."
       }
     ],
     "wind_bud_playtest_watchlist": [
       {
-        "observed_behavior": "Watch whether the player turns toward the Wind Bud and approaches it before the tutorial hint.",
-        "success_signal": "The player strikes the bud, enters the gust from the safe side, and reaches the next platform without verbal help.",
-        "failure_signal": "The player walks past the bud, treats it as background art, or enters the gust from the wrong side.",
-        "ignore_noise": "Do not count a player saying the bud is cute as proof unless their movement shows they understood what it does."
+        "observed_behavior": "Player turns toward the Wind Bud before the game message.",
+        "success_signal": "Player strikes the Wind Bud, rides the gust, and reaches the landing without help.",
+        "failure_signal": "Player backs away from the active wind path and falls.",
+        "ignore_noise": "Do not count a late Bud strike after the game message as clean first-read success."
       }
     ],
     "playtest_observation_log": [
       {
         "tester": "Tester A",
-        "conclusion_with_evidence": "Confusion signal: Tester A paused on the safe start, looked toward the coins, and only noticed the Wind Bud after the tutorial hint. In the priority ranking, treat the first-read cue as not solved; do not count the late strike as clean success."
+        "conclusion_with_evidence": "Confusion signal: Tester A paused on the safe start, looked toward the coins, and waited for the game message beside the Bud before striking it. In the priority ranking, treat the first-read cue as not solved; do not count the late strike as clean success."
       },
       {
         "tester": "Tester B",
-        "conclusion_with_evidence": "Mixed signal: Tester B recognized and struck the bud quickly, but ran away when the gust appeared behind them and fell before retrying. In the priority ranking, put gust orientation or safe-side entry feedback before reward polish."
+        "conclusion_with_evidence": "Mixed signal: Tester B recognized and struck the Bud quickly, but backed away from the active wind path and fell before retrying. In the priority ranking, put wind-path direction feedback before the optional coin-path fix."
       },
       {
         "tester": "Tester C",
-        "conclusion_with_evidence": "Success for the core rule: Tester C turned toward the bud, used the gust from the safe side, and reached the landing. The reward ledge question came after success, so keep it as backlog/noise unless it affects first-use comprehension."
+        "conclusion_with_evidence": "Success for the core rule: Tester C turned toward the Bud, used the wind from the safe side, and reached the landing. The optional coin-path question came after success, so keep it as backlog/noise unless it affects first-use comprehension."
       }
     ],
-    "playtest_fix_priority": "A strong priority ranking puts the observed gust-read/entry problem first because Tester B recognized the bud but still failed the core movement rule, then names first-read cue or coin-pull concerns above lower-impact reward ledge feedback.",
+    "playtest_fix_priority": "A strong priority ranking puts the observed wind-path direction problem first because Tester B recognized the Bud but still failed the core movement rule, then names first-read cue or coin-pull concerns above lower-impact optional coin-path feedback.",
     "spec_update": "A strong spec update names the observed player confusion, describes the cue or feedback change, gives expected behavior, defines acceptance criteria, and notes QA checks.",
     "design_review_prep": "If provided, a strong prep note states the intended player-facing behavior, names at least one edge case, defines reset or persistence behavior, and separates design intent from implementation choice."
   },
@@ -1284,14 +1335,14 @@
     "sections": [
       {
         "section_number": 1,
-        "section_title": "タスク別採点",
+        "section_title": "Task Scoring",
         "criteria": [
           {
-            "name": "仕組みの問題整理",
+            "name": "Mechanic Problem Framing",
             "evidenceSceneIds": [
               "mechanic_hook_sheet"
             ],
-            "rubric_text": "9-10: 遊びの仕組み、プレイヤーがつまずく理由、学ばせたい体験、改善仮説を具体的に整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "rubric_text": "9-10: Chooses a room part, buildable change, success sign, and confusion sign that all fit the Wind Bud playtest evidence. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or chooses signs the playtest cannot observe.",
             "careerSignalIds": [
               "problem_framing",
               "systems_thinking",
@@ -1299,11 +1350,11 @@
             ]
           },
           {
-            "name": "試遊観察リスト",
+            "name": "Playtest Watchlist",
             "evidenceSceneIds": [
               "playtest_watchlist"
             ],
-            "rubric_text": "9-10: 試遊で観察する行動、成功条件、混乱サイン、聞くべき確認を事前に明確化できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "rubric_text": "9-10: Selects observable behavior, success, confusion, and do-not-over-read signals that the fixed tester timeline can actually show. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or picks signals unrelated to the playtest evidence.",
             "careerSignalIds": [
               "quality_control",
               "evidence_use",
@@ -1311,11 +1362,11 @@
             ]
           },
           {
-            "name": "試遊実行",
+            "name": "Playtest Observation",
             "evidenceSceneIds": [
               "playtest_workspace"
             ],
-            "rubric_text": "9-10: 試遊中の観察事実と解釈を分け、プレイヤーの学習、失敗、楽しさの変化を記録できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "rubric_text": "9-10: Separates observed facts from interpretation and records how player learning, failure, or fun changed during the playtest. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
             "careerSignalIds": [
               "evidence_use",
               "adaptability",
@@ -1323,11 +1374,11 @@
             ]
           },
           {
-            "name": "仕様更新",
+            "name": "Spec Update",
             "evidenceSceneIds": [
               "spec_update"
             ],
-            "rubric_text": "9-10: 試遊で得た根拠をもとに、仕様変更、残す挙動、開発上の注意、未確認事項を明確に書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "rubric_text": "9-10: Uses playtest evidence to clearly describe the spec change, kept behavior, implementation notes, open questions, and QA checks. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
             "careerSignalIds": [
               "craft_iteration",
               "technical_translation",
@@ -1335,11 +1386,11 @@
             ]
           },
           {
-            "name": "設計説明通話",
+            "name": "Engineering Handoff",
             "evidenceSceneIds": [
               "design_review"
             ],
-            "rubric_text": "9-10: 準備メモではなく実際の通話で、設計意図、仕様変更の理由、実装上の制約、未決事項を開発者へ説明できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+            "rubric_text": "9-10: In the actual handoff transcript, not the prep note alone, explains design intent, why the spec changed, implementation constraints, and open decisions to engineering. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
             "careerSignalIds": [
               "technical_translation",
               "collaboration",

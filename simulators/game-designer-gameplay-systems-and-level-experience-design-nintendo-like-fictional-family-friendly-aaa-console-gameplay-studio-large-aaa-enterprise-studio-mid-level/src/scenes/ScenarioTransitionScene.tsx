@@ -5,6 +5,7 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import type { SectionTransitionNode } from '../types/game'
 
 interface Props { node: SectionTransitionNode }
@@ -15,6 +16,7 @@ export default function SectionTransitionScene({ node }: Props) {
   const mcSelections = useGameStore((s) => s.mcSelections)
   const goNext = useGoNext()
   const actionLabel = node.actionLabel || node.ctaLabel || 'Continue'
+  const showDevtools = isDevtoolsEnabled()
 
   return (
     <SceneWrapper illustration={node.illustration} hideIllustration>
@@ -36,7 +38,7 @@ export default function SectionTransitionScene({ node }: Props) {
           </div>
         )}
         <ActionButton text={actionLabel} onClick={() => goNext(node)} />
-          <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+        {showDevtools && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
       </motion.div>
     </SceneWrapper>
   )

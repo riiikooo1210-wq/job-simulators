@@ -2,10 +2,12 @@ import SceneEngine from './engine/SceneEngine'
 import ProgressBar from './components/layout/ProgressBar'
 import { useGameStore } from './store/gameStore'
 import { storyline, sampleAnswers } from './data/storyline'
+import { isDevtoolsEnabled } from './lib/devtools'
 
 export default function App() {
   const resetGame = useGameStore((s) => s.resetGame)
-  const isDev = import.meta.env.DEV
+  const currentNodeId = useGameStore((s) => s.currentNodeId)
+  const showDevtools = isDevtoolsEnabled()
 
   const handleDevSkip = (targetNodeId: string, prefillKey?: string) => {
     const store = useGameStore.getState()
@@ -30,6 +32,8 @@ export default function App() {
   }
 
   const devSkips = (storyline.devSkips || []).filter((skip) => !["assessment_gate", "grading"].includes(skip.targetNodeId) && !/assessment|grading/i.test(skip.label)).slice(0, 3)
+  const showDevSkips = showDevtools && !['playtest_watchlist', 'playtest_workspace'].includes(currentNodeId)
+  const showRestart = !['playtest_watchlist', 'playtest_workspace'].includes(currentNodeId)
 
   return (
     <>
@@ -38,7 +42,7 @@ export default function App() {
         <SceneEngine />
       </div>
 
-      {isDev && devSkips.map((skip, i) => (
+      {showDevSkips && devSkips.map((skip, i) => (
         <button
           key={skip.targetNodeId}
           onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
@@ -62,26 +66,28 @@ export default function App() {
         </button>
       ))}
 
-      <button
-        onClick={resetGame}
-        style={{
-          position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          zIndex: 200,
-          backgroundColor: '#E8DCC8',
-          border: '1px solid #000',
-          boxShadow: '2px 2px 0 #000',
-          padding: '0.375rem 0.75rem',
-          fontSize: '0.6875rem',
-          fontWeight: 600,
-          color: '#333',
-          cursor: 'pointer',
-          fontFamily: 'Inter, system-ui, sans-serif',
-        }}
-      >
-        Restart
-      </button>
+      {showRestart && (
+        <button
+          onClick={resetGame}
+          style={{
+            position: 'fixed',
+            bottom: '1rem',
+            right: '1rem',
+            zIndex: 200,
+            backgroundColor: '#E8DCC8',
+            border: '1px solid #000',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.375rem 0.75rem',
+            fontSize: '0.6875rem',
+            fontWeight: 600,
+            color: '#333',
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+          }}
+        >
+          Restart
+        </button>
+      )}
     </>
   )
 }

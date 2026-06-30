@@ -8,6 +8,7 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import { npcs } from '../data/npcs'
 import { GeminiLiveSession, type LiveStatus } from '../services/geminiLive'
 import type { ChatMessage, VoiceMeetingNode } from '../types/game'
@@ -28,7 +29,7 @@ function buildSystemPrompt(args: {
     ? 'Speak naturally, like a real colleague or client sitting or standing with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -103,9 +104,12 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [npcSpeaking, setNpcSpeaking] = useState(false)
   const [liveUser, setLiveUser] = useState('')
   const [liveNpc, setLiveNpc] = useState('')
+  const [typedMode, setTypedMode] = useState(false)
+  const [typedDraft, setTypedDraft] = useState('')
   const interpolationContext = { playerName, branchFlags, mcSelections, freeTextResponses }
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -124,6 +128,15 @@ export default function VoiceMeetingScene({ node }: Props) {
   const maxTurns = node.maxTurns ?? 8
   const userTurns = messages.filter((m) => m.role === 'user').length
   const canSubmit = meetingEnded && userTurns >= minTurns
+  const showDevtools = isDevtoolsEnabled()
+  const typedFallbackEnabled = node.typedFallback?.enabled === true
+  const typedPrompts = node.typedFallback?.npcPrompts?.length
+    ? node.typedFallback.npcPrompts
+    : [
+        'That helps. Can you clarify how the gust should reset or stay tunable after a fall?',
+        'Got it. What should QA check to confirm the change worked?',
+        "That gives me enough to build the first pass. End the conversation when you're ready.",
+      ]
 
   useEffect(() => {
     if (initializedRef.current) return
@@ -132,6 +145,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -214,6 +233,54 @@ export default function VoiceMeetingScene({ node }: Props) {
     setMuted(false)
   }
 
+  const startTypedConversation = () => {
+    if (!typedFallbackEnabled || typedMode || meetingEnded) return
+    sessionRef.current?.stop()
+    sessionRef.current = null
+    setStatus('closed')
+    setStatusDetail('')
+    setMuted(false)
+    setTypedMode(true)
+    if (messages.length === 0) {
+      appendNpcMessage(conversationKey, {
+        role: 'npc',
+        content: typedPrompts[0],
+        ts: new Date().toISOString(),
+      })
+    }
+  }
+
+  const sendTypedTurn = () => {
+    const trimmed = typedDraft.trim()
+    if (!typedMode || meetingEnded || !trimmed) return
+    const nextUserTurnCount = userTurns + 1
+
+    appendNpcMessage(conversationKey, {
+      role: 'user',
+      content: trimmed,
+      ts: new Date().toISOString(),
+    })
+    setTypedDraft('')
+
+    if (nextUserTurnCount >= maxTurns) {
+      setMeetingEnded(true)
+      return
+    }
+
+    const promptIndex = Math.min(nextUserTurnCount, typedPrompts.length - 1)
+    appendNpcMessage(conversationKey, {
+      role: 'npc',
+      content: typedPrompts[promptIndex],
+      ts: new Date().toISOString(),
+    })
+  }
+
+  const endTypedConversation = () => {
+    if (!typedMode) return
+    setMeetingEnded(true)
+    setStatus('closed')
+  }
+
   const toggleMuted = () => {
     const next = !muted
     setMuted(next)
@@ -233,18 +300,21 @@ export default function VoiceMeetingScene({ node }: Props) {
   const startLabel = isInPerson ? 'Start conversation' : 'Join meeting'
   const endLabel = isInPerson ? 'End conversation' : 'End meeting'
   const meetingTitle = isInPerson ? `In-person conversation - ${npc.name}` : `Live meeting - ${npc.name}`
-  const emptyTranscript = isInPerson
+  const emptyTranscript = typedMode
+    ? 'Use typed turns to complete the same handoff. Your transcript will feed the final grading.'
+    : isInPerson
     ? 'Start the conversation when you are ready. Your spoken transcript will appear here and feed the final grading.'
     : 'Join the meeting when you are ready. Your spoken transcript will appear here and feed the final grading.'
 
   const statusLabel =
-    status === 'connecting' ? 'Connecting...'
+    typedMode ? (meetingEnded ? 'Typed handoff ended' : 'Typed handoff')
+    : status === 'connecting' ? 'Connecting...'
     : status === 'connected' ? (muted ? 'Muted' : npcSpeaking ? `${npc.name} is speaking...` : 'Listening...')
     : status === 'closed' ? `${interactionLabel[0].toUpperCase()}${interactionLabel.slice(1)} ended`
     : status === 'error' ? `Error: ${statusDetail}`
     : 'Ready'
 
-  const inCall = status !== 'idle' && status !== 'closed' && status !== 'error'
+  const inCall = !typedMode && status !== 'idle' && status !== 'closed' && status !== 'error'
 
   const meetingInner = (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: isInPerson ? 360 : undefined, color: '#1E1E1A', padding: '0.875rem' }}>
@@ -280,6 +350,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
       {/* Transcript */}
       <div
+        ref={transcriptRef}
         style={{
           flex: 1,
           marginTop: '0.875rem',
@@ -315,7 +386,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </div>
           </div>
         ))}
@@ -334,23 +405,86 @@ export default function VoiceMeetingScene({ node }: Props) {
       </div>
 
       {/* In-screen controls */}
-      <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: '0.75rem', flexShrink: 0 }}>
-          <button
-            onClick={() => goNext(node)}
-            style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
-          >
-            Skip (dev)
-          </button>
-        {!inCall && !meetingEnded && (
-          <button
-            onClick={startMeeting}
-            style={{ background: '#B87D6B', color: '#F2EBD9', border: '1px solid #000000', borderRadius: '24px', padding: '0.55rem 1.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
-          >
-            {startLabel}
-          </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem', paddingTop: '0.75rem', flexShrink: 0 }}>
+        {typedMode && !meetingEnded && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+            <label htmlFor={`typed-${node.id}`} style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#3F605C', textTransform: 'uppercase', letterSpacing: 0 }}>
+              {node.typedFallback?.inputLabel || 'Typed handoff response'}
+            </label>
+            <textarea
+              id={`typed-${node.id}`}
+              value={typedDraft}
+              onChange={(e) => setTypedDraft(e.target.value)}
+              placeholder={node.typedFallback?.placeholder || 'Type your response for the handoff.'}
+              rows={3}
+              style={{
+                width: '100%',
+                resize: 'vertical',
+                border: '1px solid #CDBF94',
+                background: '#FBF7EA',
+                color: '#1E1E1A',
+                borderRadius: 4,
+                padding: '0.55rem 0.65rem',
+                fontSize: '0.8125rem',
+                lineHeight: 1.45,
+                fontFamily: 'Inter, system-ui, sans-serif',
+              }}
+            />
+          </div>
         )}
-        {inCall && (
-          <>
+        <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+          {showDevtools && (
+            <button
+              onClick={() => goNext(node)}
+              style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
+            >
+              Skip (dev)
+            </button>
+          )}
+          {typedMode && !meetingEnded && (
+            <>
+            <button
+              onClick={sendTypedTurn}
+              disabled={!typedDraft.trim()}
+              style={{
+                background: typedDraft.trim() ? '#B87D6B' : '#F7F1E3',
+                color: typedDraft.trim() ? '#F2EBD9' : '#777',
+                border: typedDraft.trim() ? '1px solid #000000' : '1px solid #CDBF94',
+                borderRadius: '24px',
+                padding: '0.5rem 1rem',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                cursor: typedDraft.trim() ? 'pointer' : 'not-allowed',
+              }}
+            >
+              {node.typedFallback?.sendLabel || 'Send typed turn'}
+            </button>
+            <button
+              onClick={endTypedConversation}
+              style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '24px', padding: '0.5rem 1rem', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer' }}
+            >
+              {node.typedFallback?.endLabel || 'End typed handoff'}
+            </button>
+            </>
+          )}
+          {!typedMode && typedFallbackEnabled && !inCall && !meetingEnded && (
+            <button
+              onClick={startTypedConversation}
+              style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '24px', padding: '0.55rem 1rem', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer' }}
+            >
+              {node.typedFallback?.startLabel || 'Use typing instead'}
+            </button>
+          )}
+          {!typedMode && !inCall && !meetingEnded && (
+            <button
+              onClick={startMeeting}
+              style={{ background: '#B87D6B', color: '#F2EBD9', border: '1px solid #000000', borderRadius: '24px', padding: '0.55rem 1.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+            >
+              {startLabel}
+            </button>
+          )}
+          {inCall && (
+            <>
             <button
               onClick={toggleMuted}
               style={{
@@ -376,8 +510,9 @@ export default function VoiceMeetingScene({ node }: Props) {
             >
               {endLabel}
             </button>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -460,7 +595,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            {playerGoal && <div><strong>Your goal: </strong>{playerGoal}</div>}
+            {playerGoal && <div><strong>Your goal: </strong>{renderContentWithGlossary(playerGoal)}</div>}
             {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{endpoint}</div>}
             {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{successCriteria}</div>}
           </div>
@@ -493,7 +628,9 @@ export default function VoiceMeetingScene({ node }: Props) {
           />
           {!canSubmit && (
             <span style={{ fontSize: '0.75rem', color: '#666' }}>
-              Speak at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then end the {interactionLabel} to continue.
+              {typedMode
+                ? `Add at least ${minTurns} typed turn${minTurns === 1 ? '' : 's'}, then end the handoff to continue.`
+                : `Speak at least ${minTurns} turn${minTurns === 1 ? '' : 's'}, then end the ${interactionLabel} to continue.`}
             </span>
           )}
         </div>

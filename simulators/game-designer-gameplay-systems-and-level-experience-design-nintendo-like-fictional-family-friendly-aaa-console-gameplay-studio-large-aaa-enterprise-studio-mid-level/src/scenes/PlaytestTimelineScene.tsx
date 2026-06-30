@@ -287,6 +287,7 @@ export default function PlaytestTimelineScene({ node }: { node: PlaytestTimeline
   const allRowsComplete = observationRows.every((row) => row.conclusion_with_evidence.trim())
   const priorityComplete = !node.priorityPrompt || Boolean(priorityResponse.trim())
   const canSubmit = allViewed && allRowsComplete && priorityComplete
+  const showInlineDevSkip = import.meta.env.DEV && new URLSearchParams(window.location.search).get('devtools') === '1'
 
   const saveTimelineState = (next: TimelineState) => {
     setFreeTextResponse(stateKey, JSON.stringify(next, null, 2))
@@ -556,7 +557,7 @@ export default function PlaytestTimelineScene({ node }: { node: PlaytestTimeline
             </span>
           )}
           <ActionButton text="Submit observation log" onClick={() => goNext(node)} disabled={!canSubmit} variant={canSubmit ? 'primary' : 'secondary'} />
-            <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+          {showInlineDevSkip && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
         </section>
       </motion.div>
     </SceneWrapper>

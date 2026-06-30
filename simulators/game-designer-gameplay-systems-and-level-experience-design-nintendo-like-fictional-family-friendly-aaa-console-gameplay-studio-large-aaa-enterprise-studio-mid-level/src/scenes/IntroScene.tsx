@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
@@ -7,6 +7,7 @@ import { CheckIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { intro, storyline } from '../data/storyline'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import type { IntroNode } from '../types/game'
 
 interface Props { node: IntroNode }
@@ -25,6 +26,7 @@ export default function IntroScene({ node }: Props) {
   const goNext = useGoNext()
   const [step, setStep] = useState(0)
   const [nameEntered, setNameEntered] = useState(playerName.trim().length > 0)
+  const showDevtools = isDevtoolsEnabled()
 
   const handleNameSubmit = () => {
     if (playerName.trim().length > 0) setNameEntered(true)
@@ -94,7 +96,7 @@ export default function IntroScene({ node }: Props) {
             onClick={handleNameSubmit}
             variant={playerName.trim().length > 0 ? 'primary' : 'secondary'}
           />
-            <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />
+            {showDevtools && <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />}
         </motion.div>
       </SceneWrapper>
     )
@@ -157,26 +159,23 @@ export default function IntroScene({ node }: Props) {
           </div>
         )}
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              border: '1px solid #000',
-              boxShadow: '4px 4px 0 #000',
-              backgroundColor: '#F2EBD9',
-              padding: '1.5rem',
-            }}
-          >
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>{steps[step].label}</h2>
-            <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
-              {renderContentWithGlossary(steps[step].content)}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            border: '1px solid #000',
+            boxShadow: '4px 4px 0 #000',
+            backgroundColor: '#F2EBD9',
+            padding: '1.5rem',
+          }}
+        >
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>{steps[step].label}</h2>
+          <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
+            {renderContentWithGlossary(steps[step].content)}
+          </div>
+        </motion.div>
 
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           {step > 0 && (
@@ -188,7 +187,7 @@ export default function IntroScene({ node }: Props) {
             <ActionButton text="Next" onClick={() => setStep(step + 1)} variant="secondary" />
           )}
         </div>
-          <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />
+          {showDevtools && <ActionButton text="Skip (dev)" onClick={handleStart} variant="secondary" fullWidth={false} />}
       </motion.div>
     </SceneWrapper>
   )

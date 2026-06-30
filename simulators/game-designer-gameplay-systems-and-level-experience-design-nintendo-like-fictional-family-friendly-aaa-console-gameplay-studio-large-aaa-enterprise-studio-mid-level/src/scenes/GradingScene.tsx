@@ -5,6 +5,7 @@ import ActionButton from '../components/ui/ActionButton'
 import { CheckIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import { gradeResponses } from '../services/gemini'
 import type { GradingNode } from '../types/game'
 
@@ -15,6 +16,7 @@ export default function GradingScene({ node }: Props) {
   const goNext = useGoNext()
   const gradingStatus = useGameStore((s) => s.gradingStatus)
   const gradingError = useGameStore((s) => s.gradingError)
+  const showDevtools = isDevtoolsEnabled()
   const setGradingStatus = useGameStore((s) => s.setGradingStatus)
   const setGradingResult = useGameStore((s) => s.setGradingResult)
   const setGradingError = useGameStore((s) => s.setGradingError)
@@ -121,7 +123,7 @@ export default function GradingScene({ node }: Props) {
             <ActionButton text="View Results" onClick={() => goNext(node)} />
           </>
         )}
-          <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+          {showDevtools && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
       </motion.div>
     </SceneWrapper>
   )

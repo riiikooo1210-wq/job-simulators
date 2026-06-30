@@ -14,6 +14,7 @@ import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import { BriefingDrawerContent } from './BriefingScene'
 import type { LaptopFrameVariant } from '../components/ui/LaptopFrame'
 import type { FreeTextNode } from '../types/game'
@@ -30,6 +31,7 @@ export default function FreeTextScene({ node }: Props) {
   const briefing = useSectionBriefing()
   const [refOpen, setRefOpen] = useState(false)
   const [activeAppTab, setActiveAppTab] = useState('editor')
+  const showDevtools = isDevtoolsEnabled()
   const interpolationContext = { playerName, branchFlags, mcSelections, freeTextResponses: responses }
 
   const value = responses[node.id] || ''
@@ -99,7 +101,7 @@ export default function FreeTextScene({ node }: Props) {
           disabled={!canSubmit}
           variant={canSubmit ? 'primary' : 'secondary'}
         />
-          <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+          {showDevtools && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
       </div>
     </>
   )

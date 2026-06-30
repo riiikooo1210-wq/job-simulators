@@ -3,6 +3,7 @@ import { storyline } from '../data/storyline'
 import type { SceneNode, SceneType } from '../types/game'
 import SceneTransition from './SceneTransition'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
+import { useEffect } from 'react'
 
 import IntroScene from '../scenes/IntroScene'
 import BriefingScene from '../scenes/BriefingScene'
@@ -54,10 +55,23 @@ const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
 
 export default function SceneEngine() {
   const currentNodeId = useGameStore((s) => s.currentNodeId)
+  const navigateTo = useGameStore((s) => s.navigateTo)
   useScrollToTopOnChange(currentNodeId)
   const node = storyline.nodes[currentNodeId] as SceneNode | undefined
+  const redirectedNodeId = storyline.staleNodeRedirects?.[currentNodeId]
+
+  useEffect(() => {
+    if (!node && redirectedNodeId) navigateTo(redirectedNodeId)
+  }, [navigateTo, node, redirectedNodeId])
 
   if (!node) {
+    if (redirectedNodeId) {
+      return (
+        <div className="flex items-center justify-center min-h-[100dvh] text-game-ink">
+          Redirecting to the current task...
+        </div>
+      )
+    }
     return (
       <div className="flex items-center justify-center min-h-[100dvh] text-game-danger">
         Error: Node "{currentNodeId}" not found in storyline.

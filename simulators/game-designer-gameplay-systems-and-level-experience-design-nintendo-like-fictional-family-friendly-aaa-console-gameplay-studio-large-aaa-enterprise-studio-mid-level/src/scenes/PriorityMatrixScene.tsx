@@ -300,7 +300,7 @@ export default function PriorityMatrixScene({ node }: { node: PriorityMatrixNode
                   <textarea
                     value={rationale}
                     onChange={(e) => setFreeTextResponse(rationaleKey, e.target.value)}
-                    placeholder="e.g. I put the wrong-side approach issue in high impact / low risk because it blocks first-time Wind Bud readability and can be tested with one cue change..."
+                    placeholder="e.g. I put the wind-path direction issue in high impact / low risk because it blocks first-time Wind Bud readability and can be tested with one cue change..."
                     rows={3}
                     style={{
                       padding: '0.5rem 0.625rem',

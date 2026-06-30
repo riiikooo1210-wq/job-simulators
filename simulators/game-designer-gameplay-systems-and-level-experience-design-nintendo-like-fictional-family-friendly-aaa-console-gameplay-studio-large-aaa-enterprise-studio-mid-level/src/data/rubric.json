@@ -4,14 +4,14 @@
   "sections": [
     {
       "section_number": 1,
-      "section_title": "タスク別採点",
+      "section_title": "Task Scoring",
       "criteria": [
         {
-          "name": "仕組みの問題整理",
+          "name": "Mechanic Problem Framing",
           "evidenceSceneIds": [
             "mechanic_hook_sheet"
           ],
-          "rubric_text": "9-10: 遊びの仕組み、プレイヤーがつまずく理由、学ばせたい体験、改善仮説を具体的に整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+          "rubric_text": "9-10: Chooses a room part, buildable change, success sign, and confusion sign that all fit the Wind Bud playtest evidence. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or chooses signs the playtest cannot observe.",
           "careerSignalIds": [
             "problem_framing",
             "systems_thinking",
@@ -19,11 +19,11 @@
           ]
         },
         {
-          "name": "試遊観察リスト",
+          "name": "Playtest Watchlist",
           "evidenceSceneIds": [
             "playtest_watchlist"
           ],
-          "rubric_text": "9-10: 試遊で観察する行動、成功条件、混乱サイン、聞くべき確認を事前に明確化できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+          "rubric_text": "9-10: Selects observable behavior, success, confusion, and do-not-over-read signals that the fixed tester timeline can actually show. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or picks signals unrelated to the playtest evidence.",
           "careerSignalIds": [
             "quality_control",
             "evidence_use",
@@ -31,11 +31,11 @@
           ]
         },
         {
-          "name": "試遊実行",
+          "name": "Playtest Observation",
           "evidenceSceneIds": [
             "playtest_workspace"
           ],
-          "rubric_text": "9-10: 試遊中の観察事実と解釈を分け、プレイヤーの学習、失敗、楽しさの変化を記録できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+          "rubric_text": "9-10: Separates observed facts from interpretation and records how player learning, failure, or fun changed during the playtest. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
           "careerSignalIds": [
             "evidence_use",
             "adaptability",
@@ -43,11 +43,11 @@
           ]
         },
         {
-          "name": "仕様更新",
+          "name": "Spec Update",
           "evidenceSceneIds": [
             "spec_update"
           ],
-          "rubric_text": "9-10: 試遊で得た根拠をもとに、仕様変更、残す挙動、開発上の注意、未確認事項を明確に書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+          "rubric_text": "9-10: Uses playtest evidence to clearly describe the spec change, kept behavior, implementation notes, open questions, and QA checks. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
           "careerSignalIds": [
             "craft_iteration",
             "technical_translation",
@@ -55,11 +55,11 @@
           ]
         },
         {
-          "name": "設計説明通話",
+          "name": "Engineering Handoff",
           "evidenceSceneIds": [
             "design_review"
           ],
-          "rubric_text": "9-10: 準備メモではなく実際の通話で、設計意図、仕様変更の理由、実装上の制約、未決事項を開発者へ説明できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。",
+          "rubric_text": "9-10: In the actual handoff transcript, not the prep note alone, explains design intent, why the spec changed, implementation constraints, and open decisions to engineering. Score only this task; do not use later tasks, prep notes, or follow-up artifacts as evidence. 7-8: Covers the main ideas with minor gaps in evidence, specificity, priority, notes, or response quality. 4-6: Partly complete, but several important judgments, checks, explanations, records, or next actions are missing. 0-3: Misses the task goal, ignores evidence, creates unsafe or confusing promises, or is too incomplete to use.",
           "careerSignalIds": [
             "technical_translation",
             "collaboration",

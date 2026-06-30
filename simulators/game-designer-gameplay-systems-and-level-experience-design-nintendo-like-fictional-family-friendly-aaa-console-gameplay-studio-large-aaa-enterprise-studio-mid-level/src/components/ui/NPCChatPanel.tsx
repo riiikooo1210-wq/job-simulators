@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import ActionButton from './ActionButton'
 import LaptopFrame from './LaptopFrame'
 import SlackCompose from './SlackCompose'
+import { renderContentWithGlossary } from './JargonTerm'
 import { useGameStore } from '../../store/gameStore'
 import { npcs } from '../../data/npcs'
 import { npcReply } from '../../services/gemini'
@@ -149,7 +150,7 @@ export default function NPCChatPanel({
           }}
         >
           {messages.length === 0 && playerGoal && (
-            <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{playerGoal}</p>
+            <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{renderContentWithGlossary(playerGoal)}</p>
           )}
           {messages.map((m, i) => (
             <motion.div
@@ -172,7 +173,7 @@ export default function NPCChatPanel({
               <div style={{ fontWeight: 700, fontSize: '0.6875rem', marginBottom: '0.125rem', opacity: 0.8 }}>
                 {m.role === 'user' ? 'You' : (m.npcName ?? npc.name)}
               </div>
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </motion.div>
           ))}
           {loading && (
@@ -204,7 +205,7 @@ export default function NPCChatPanel({
             }}
           >
             {messages.length === 0 && (
-              <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{goalPrompt}</p>
+              <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{renderContentWithGlossary(goalPrompt)}</p>
             )}
             {messages.map((m, i) => (
               <motion.div
@@ -227,7 +228,7 @@ export default function NPCChatPanel({
                 <div style={{ fontWeight: 700, fontSize: '0.6875rem', marginBottom: '0.125rem', opacity: 0.8 }}>
                   {m.role === 'user' ? 'You' : (m.npcName ?? npc.name)}
                 </div>
-                {m.content}
+                {renderContentWithGlossary(m.content)}
               </motion.div>
             ))}
             {loading && (
@@ -273,7 +274,7 @@ export default function NPCChatPanel({
                   }}
                 >
                   {used ? '✓ ' : ''}
-                  {p.label}
+                  {renderContentWithGlossary(p.label)}
                 </button>
               )
             })}

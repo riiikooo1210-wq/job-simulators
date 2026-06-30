@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
+export type LaptopFrameVariant = 'doc' | 'google-docs' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
 
 interface LaptopFrameProps {
   children: ReactNode
@@ -20,6 +20,7 @@ interface LaptopFrameTab {
 
 const menuItems: Partial<Record<LaptopFrameVariant, string[]>> = {
   doc: ['File', 'Edit', 'View', 'Insert', 'Format', 'Tools'],
+  'google-docs': [],
   email: [],
   'email-read': [],
   slack: [],
@@ -34,6 +35,7 @@ const menuItems: Partial<Record<LaptopFrameVariant, string[]>> = {
 
 const titleBarColors: Record<LaptopFrameVariant, string> = {
   doc: '#EFE8D2',
+  'google-docs': '#F8FAFD',
   email: '#EFE8D2',
   'email-read': '#EFE8D2',
   slack: '#EFE8D2',
@@ -48,6 +50,7 @@ const titleBarColors: Record<LaptopFrameVariant, string> = {
 
 const titleTextColors: Record<LaptopFrameVariant, string> = {
   doc: '#3F605C',
+  'google-docs': '#3C4043',
   email: '#3F605C',
   'email-read': '#3F605C',
   slack: '#3F605C',
@@ -62,6 +65,7 @@ const titleTextColors: Record<LaptopFrameVariant, string> = {
 
 const contentBgColors: Record<LaptopFrameVariant, string> = {
   doc: '#F7F1E3',
+  'google-docs': '#F8FAFD',
   email: '#F7F1E3',
   'email-read': '#F7F1E3',
   slack: '#F7F1E3',
@@ -76,6 +80,7 @@ const contentBgColors: Record<LaptopFrameVariant, string> = {
 
 const defaultTitles: Record<LaptopFrameVariant, string> = {
   doc: 'Untitled document',
+  'google-docs': 'Untitled document',
   email: 'New Message',
   'email-read': 'Message',
   slack: 'Slack',
@@ -235,7 +240,7 @@ export default function LaptopFrame({
         )}
 
         {/* Default (doc, email, slack, meeting): centered title */}
-        {!hasTitleTabs && (variant === 'doc' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'meeting') && (
+        {!hasTitleTabs && (variant === 'doc' || variant === 'google-docs' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'meeting') && (
           <>
             <span
               style={{
@@ -383,7 +388,7 @@ export default function LaptopFrame({
       {/* Content area */}
       <div
         style={{
-          padding: variant === 'slack' || variant === 'figma' || variant === 'kanban' || variant === 'meeting'
+          padding: variant === 'slack' || variant === 'figma' || variant === 'kanban' || variant === 'meeting' || variant === 'google-docs'
             ? '0'
             : tightContentPadding
               ? '0.35rem'

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -13,10 +13,10 @@ import { ChartIcon, CheckIcon, DocumentIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import { npcs } from '../data/npcs'
-import { coworkerRecapReply } from '../services/gemini'
 import type { CSSProperties, ReactNode } from 'react'
-import type { BriefingNode, BriefingSubStep, CoworkerRecapTurn, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
+import type { BriefingNode, BriefingSubStep, EmailData, SlackMessageData, SourceInboxFile, SourceWorkspaceApp, SourceWorkspaceMessage } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
@@ -109,14 +109,6 @@ function SourceAttachmentButtons({
   )
 }
 
-function isLikelyAck(text: string) {
-  const cleaned = text.trim().toLowerCase()
-  if (!cleaned) return false
-  if (cleaned.includes('?') || cleaned.includes('？')) return false
-  const ackWords = ['yes', 'yeah', 'yep', 'ok', 'okay', 'got it', 'understood', 'i understand', 'makes sense', 'はい', 'うん', '了解', 'わかった', '分かった', '大丈夫']
-  return cleaned.length <= 40 && ackWords.some((word) => cleaned.includes(word))
-}
-
 function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
   if (!node.memoryCard?.bullets?.length) return null
   return (
@@ -145,31 +137,27 @@ function MemoryCard({ node, ctx }: { node: BriefingNode; ctx: BriefingContext })
   )
 }
 
-function fallbackRecapAnswer(turn: CoworkerRecapTurn, fallback: string) {
-  if (!turn.answerFacts?.length) return fallback
-  return `${fallback} ${turn.answerFacts[0]}`
-}
-
 function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
   const recap = node.coworkerRecap
   const npc = recap?.npcId ? npcs[recap.npcId] : undefined
   const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
   const speakerRole = recap?.speakerRole || npc?.role
-  const fallback = recap?.fallback || "You don't need that extra context for this moment. Focus on the point I just gave you."
   const turns = recap?.turns || []
   const [turnIndex, setTurnIndex] = useState(0)
   const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
-  const [draft, setDraft] = useState('')
-  const [loading, setLoading] = useState(false)
+  const messagesRef = useRef<HTMLDivElement | null>(null)
   const complete = turns.length > 0 && turnIndex >= turns.length
-  const currentTurn = turns[turnIndex]
 
   useEffect(() => {
     setTurnIndex(0)
-    setDraft('')
-    setLoading(false)
     setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
   }, [node.id])
+
+  useEffect(() => {
+    const messagesEl = messagesRef.current
+    if (!messagesEl) return
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }, [messages])
 
   if (!recap || turns.length === 0) return null
 
@@ -184,35 +172,9 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
     }
   }
 
-  const submitText = async (text: string) => {
-    if (!currentTurn || loading) return
-    const trimmed = text.trim()
-    if (!trimmed) return
-    const withUser = [...messages, { role: 'user' as const, content: trimmed }]
-    setMessages(withUser)
-    setDraft('')
-
-    if (isLikelyAck(trimmed)) {
-      advanceTurn(withUser)
-      return
-    }
-
-    setLoading(true)
-    try {
-      const answer = await coworkerRecapReply({
-        speakerName,
-        speakerRole,
-        topic: currentTurn.topic,
-        question: trimmed,
-        facts: currentTurn.answerFacts || [],
-        fallback,
-      })
-      setMessages([...withUser, { role: 'assistant', content: answer }])
-    } catch {
-      setMessages([...withUser, { role: 'assistant', content: fallbackRecapAnswer(currentTurn, fallback) }])
-    } finally {
-      setLoading(false)
-    }
+  const acknowledge = () => {
+    if (complete) return
+    advanceTurn([...messages, { role: 'user' as const, content: 'Okay' }])
   }
 
   return (
@@ -236,12 +198,7 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
           Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
         </div>
       </div>
-      {!complete && (
-        <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#6f6758' }}>
-          Click "I understand" or ask a question if anything is unclear.
-        </div>
-      )}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+      <div ref={messagesRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
         {messages.map((message, i) => (
           <div
             key={i}
@@ -260,62 +217,24 @@ function CoworkerRecap({ node, ctx }: { node: BriefingNode; ctx: BriefingContext
             {renderContentWithGlossary(interpolate(message.content, ctx))}
           </div>
         ))}
-        {loading && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerName} is answering...</div>}
       </div>
       {!complete && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') void submitText(draft)
-              }}
-              placeholder={'Click "I understand" or ask a question if anything is unclear...'}
-              style={{
-                flex: 1,
-                border: '1px solid #CDBF94',
-                backgroundColor: '#FBF7EA',
-                padding: '0.55rem 0.65rem',
-                font: 'inherit',
-                fontSize: '0.8rem',
-                minWidth: 0,
-              }}
-            />
-            <button
-              type="button"
-              onClick={() => void submitText(draft)}
-              disabled={loading || !draft.trim()}
-              style={{
-                border: '1px solid #000',
-                backgroundColor: '#3A6B5E',
-                color: '#F7F1E3',
-                boxShadow: '2px 2px 0 #000',
-                padding: '0 0.8rem',
-                fontWeight: 900,
-                cursor: loading || !draft.trim() ? 'not-allowed' : 'pointer',
-              }}
-            >
-              Send
-            </button>
-            <button
-              type="button"
-              onClick={() => void submitText('Yes, I understand.')}
-              disabled={loading}
-              style={{
-                border: '1px solid #000',
-                backgroundColor: '#F7F1E3',
-                color: '#1E1E1A',
-                boxShadow: '2px 2px 0 #000',
-                padding: '0 0.75rem',
-                fontWeight: 900,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
-              I understand
-            </button>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={acknowledge}
+          style={{
+            alignSelf: 'flex-end',
+            border: '1px solid #000',
+            backgroundColor: '#F7F1E3',
+            color: '#1E1E1A',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.55rem 0.9rem',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          Okay
+        </button>
       )}
     </div>
   )
@@ -327,6 +246,89 @@ function BriefingLeadIn({ node, ctx }: { node: BriefingNode; ctx: BriefingContex
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <MemoryCard node={node} ctx={ctx} />
       <CoworkerRecap node={node} ctx={ctx} />
+    </div>
+  )
+}
+
+function MorningRecapGuide({
+  node,
+  actionLabel,
+  onAdvance,
+}: {
+  node: BriefingNode
+  actionLabel: string
+  onAdvance: () => void
+}) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Maya Chen'
+  const speakerRole = recap?.speakerRole || npc?.role || 'Lead Gameplay Designer'
+  const taskSteps = [
+    'Look at the room.',
+    'Pick one helpful change.',
+    'Later, check what players do.',
+  ]
+
+  const sectionStyle: CSSProperties = {
+    border: '1px solid #000000',
+    backgroundColor: '#EFE8D2',
+    boxShadow: '4px 4px 0 rgba(0,0,0,0.2)',
+    padding: '1rem 1.1rem',
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+      <section style={sectionStyle}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+              Quick note from Maya
+            </div>
+            <h3 style={{ margin: '0.25rem 0 0', fontSize: '1rem', lineHeight: 1.35, color: '#1E1E1A' }}>
+              {speakerName}
+            </h3>
+            <div style={{ fontSize: '0.78rem', color: '#6f6758', marginTop: '0.15rem' }}>
+              {speakerRole}
+            </div>
+          </div>
+          <div style={{ fontSize: '0.72rem', color: '#3A6B5E', fontWeight: 900 }}>
+            Start simple
+          </div>
+        </div>
+
+        <p style={{ margin: '0.8rem 0 0', fontSize: '0.95rem', lineHeight: 1.55, color: '#1E1E1A' }}>
+          You will look at a small game room and choose one change that helps new players understand what to do.
+        </p>
+        <div
+          style={{
+            border: '1px solid #CDBF94',
+            backgroundColor: '#FBF7EA',
+            padding: '0.65rem 0.75rem',
+            marginTop: '0.8rem',
+            fontSize: '0.82rem',
+            lineHeight: 1.5,
+            color: '#1E1E1A',
+          }}
+        >
+          You do not need to know everything yet. The next screen will show the room.
+        </div>
+      </section>
+
+      <section style={{ ...sectionStyle, backgroundColor: '#F7F1E3' }}>
+        <div style={{ fontSize: '0.72rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+          What happens next
+        </div>
+        <ol style={{ margin: '0.65rem 0 0', paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+          {taskSteps.map((step) => (
+            <li key={step} style={{ fontSize: '0.88rem', lineHeight: 1.45, color: '#1E1E1A' }}>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <ActionButton text={actionLabel} onClick={onAdvance} />
+      {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />}
     </div>
   )
 }
@@ -823,7 +825,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
           disabled={!canContinue}
           variant={canContinue ? 'primary' : 'secondary'}
         />
-        <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
+        {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />}
       </motion.div>
     </SceneWrapper>
   )
@@ -1323,7 +1325,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
           disabled={!canContinue}
           variant={canContinue ? 'primary' : 'secondary'}
         />
-        <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />
+        {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={continueNext} variant="secondary" fullWidth={false} />}
       </motion.div>
     </SceneWrapper>
   )
@@ -1484,7 +1486,7 @@ function SequentialBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance
           <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
-      <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
+      {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />}
     </>
   )
 }
@@ -1525,7 +1527,7 @@ function PaginatedBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance:
           <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
-      <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
+      {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />}
     </>
   )
 }
@@ -1539,6 +1541,8 @@ export default function BriefingScene({ node }: Props) {
   const onAdvance = () => goNext(node)
   const mode = node.briefingMode || 'simple'
   const actionLabel = node.actionLabel || 'Start the Task'
+  const ctx = { playerName, branchFlags, mcSelections }
+  const isMorningRecapGuide = node.id === 'morning_briefing' && mode === 'simple'
 
   if (node.sourceInbox) {
     return <SourceInboxBriefing node={node} />
@@ -1549,7 +1553,7 @@ export default function BriefingScene({ node }: Props) {
   }
 
   return (
-    <SceneWrapper illustration={node.illustration}>
+    <SceneWrapper illustration={node.illustration} hideIllustration={isMorningRecapGuide}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -1565,65 +1569,71 @@ export default function BriefingScene({ node }: Props) {
           </h2>
         </div>
 
-        {mode === 'simple' && node.illustration && <InlineIllustration src={node.illustration} />}
+        {mode === 'simple' && node.illustration && !isMorningRecapGuide && <InlineIllustration src={node.illustration} />}
 
-        <BriefingLeadIn node={node} ctx={{ playerName, branchFlags, mcSelections }} />
-
-        {mode === 'sequential' ? (
-          <SequentialBriefing node={node} onAdvance={onAdvance} />
-        ) : mode === 'paginated' ? (
-          <PaginatedBriefing node={node} onAdvance={onAdvance} />
+        {isMorningRecapGuide ? (
+          <MorningRecapGuide node={node} actionLabel={actionLabel} onAdvance={onAdvance} />
         ) : (
           <>
-            {node.content && (
-              <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
-                {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
-              </p>
+            <BriefingLeadIn node={node} ctx={ctx} />
+
+            {mode === 'sequential' ? (
+              <SequentialBriefing node={node} onAdvance={onAdvance} />
+            ) : mode === 'paginated' ? (
+              <PaginatedBriefing node={node} onAdvance={onAdvance} />
+            ) : (
+              <>
+                {node.content && (
+                  <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
+                    {renderContentWithGlossary(interpolate(node.content, ctx))}
+                  </p>
+                )}
+                {node.referenceContent && (
+                  <BriefingReferenceCard
+                    title={node.referenceTitle || 'Reference'}
+                    content={interpolate(node.referenceContent, ctx)}
+                  />
+                )}
+                {node.slackMessages && node.slackMessages.length > 0 && (
+                  <DesktopOverlay>
+                    <LaptopFrame variant="slack" title="Slack" scrollable fill>
+                      {node.slackMessages.map((msg, i) => (
+                        <SlackMessageEnhanced
+                          key={i}
+                          message={resolveSlackMessage(msg, ctx)}
+                          delay={i * 0.12}
+                          showUnreadDot={i === (node.slackMessages?.length ?? 0) - 1}
+                        />
+                      ))}
+                    </LaptopFrame>
+                  </DesktopOverlay>
+                )}
+                {node.emails && node.emails.length > 0 && (
+                  <DesktopOverlay>
+                    <LaptopFrame variant="email" title={node.emails[0].subject} scrollable fill>
+                      {node.emails.map((email, i) => (
+                        <EmailBlock
+                          key={i}
+                          email={{ ...email, content: interpolate(email.content, ctx) }}
+                          delay={i * 0.12}
+                          initialExpanded={i === 0}
+                        />
+                      ))}
+                    </LaptopFrame>
+                  </DesktopOverlay>
+                )}
+                {node.metrics && <MetricsTable metrics={node.metrics} />}
+                {node.quotes?.map((q, i) => (
+                  <QuoteBlock
+                    key={i}
+                    quote={{ ...q, text: interpolate(q.text, ctx) }}
+                    delay={i * 0.1}
+                  />
+                ))}
+                <ActionButton text={actionLabel} onClick={onAdvance} />
+                {isDevtoolsEnabled() && <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />}
+              </>
             )}
-            {node.referenceContent && (
-              <BriefingReferenceCard
-                title={node.referenceTitle || 'Reference'}
-                content={interpolate(node.referenceContent, { playerName, branchFlags, mcSelections })}
-              />
-            )}
-            {node.slackMessages && node.slackMessages.length > 0 && (
-              <DesktopOverlay>
-                <LaptopFrame variant="slack" title="Slack" scrollable fill>
-                  {node.slackMessages.map((msg, i) => (
-                    <SlackMessageEnhanced
-                      key={i}
-                      message={resolveSlackMessage(msg, { playerName, branchFlags, mcSelections })}
-                      delay={i * 0.12}
-                      showUnreadDot={i === (node.slackMessages?.length ?? 0) - 1}
-                    />
-                  ))}
-                </LaptopFrame>
-              </DesktopOverlay>
-            )}
-            {node.emails && node.emails.length > 0 && (
-              <DesktopOverlay>
-                <LaptopFrame variant="email" title={node.emails[0].subject} scrollable fill>
-                  {node.emails.map((email, i) => (
-                    <EmailBlock
-                      key={i}
-                      email={{ ...email, content: interpolate(email.content, { playerName, branchFlags, mcSelections }) }}
-                      delay={i * 0.12}
-                      initialExpanded={i === 0}
-                    />
-                  ))}
-                </LaptopFrame>
-              </DesktopOverlay>
-            )}
-            {node.metrics && <MetricsTable metrics={node.metrics} />}
-            {node.quotes?.map((q, i) => (
-              <QuoteBlock
-                key={i}
-                quote={{ ...q, text: interpolate(q.text, { playerName, branchFlags, mcSelections }) }}
-                delay={i * 0.1}
-              />
-            ))}
-            <ActionButton text={actionLabel} onClick={onAdvance} />
-            <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
           </>
         )}
       </motion.div>

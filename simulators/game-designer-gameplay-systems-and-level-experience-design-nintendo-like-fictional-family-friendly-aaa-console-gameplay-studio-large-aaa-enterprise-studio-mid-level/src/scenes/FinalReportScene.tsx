@@ -4,6 +4,7 @@ import ActionButton from '../components/ui/ActionButton'
 import GradingCard from '../components/ui/GradingCard'
 import { displayTitleForRubricName } from '../services/assessment'
 import { useGameStore } from '../store/gameStore'
+import { isDevtoolsEnabled } from '../lib/devtools'
 import type { CareerProfileItem, FinalReportNode } from '../types/game'
 
 interface Props { node: FinalReportNode }
@@ -46,6 +47,7 @@ function TextList({ items }: { items: string[] }) {
 export default function FinalReportScene({ node }: Props) {
   const assessment = useGameStore((s) => s.gradingResult)
   const resetGame = useGameStore((s) => s.resetGame)
+  const showDevtools = isDevtoolsEnabled()
 
   if (!assessment) {
     return (
@@ -137,7 +139,7 @@ export default function FinalReportScene({ node }: Props) {
 
         <div style={{ marginTop: '1.5rem', paddingBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <ActionButton text="Restart" onClick={resetGame} />
-          <ActionButton text="Skip (dev)" onClick={resetGame} variant="secondary" fullWidth={false} />
+          {showDevtools && <ActionButton text="Skip (dev)" onClick={resetGame} variant="secondary" fullWidth={false} />}
         </div>
       </motion.div>
     </SceneWrapper>

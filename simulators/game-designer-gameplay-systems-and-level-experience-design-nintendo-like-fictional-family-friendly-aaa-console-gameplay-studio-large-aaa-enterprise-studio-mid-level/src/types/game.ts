@@ -49,6 +49,9 @@ export interface MetricRow {
   target: string
   actual: string
   status: 'on_track' | 'warning' | 'critical'
+  areaLabel?: string
+  meaning?: string
+  roomNote?: string
 }
 
 export interface QuoteData {
@@ -286,6 +289,13 @@ export interface StructuredEntryVisualBeat {
   helper?: string
 }
 
+export interface StructuredEntryVisualBoardDemo {
+  type: 'wind_bud_playable_room'
+  playLabel?: string
+  resetLabel?: string
+  backLabel?: string
+}
+
 export interface StructuredEntryVisualBoard {
   title?: string
   subtitle?: string
@@ -293,6 +303,7 @@ export interface StructuredEntryVisualBoard {
   helperText?: string
   imagePath?: string
   imageAlt?: string
+  demo?: StructuredEntryVisualBoardDemo
   hotspots: StructuredEntryVisualHotspot[]
   beats?: StructuredEntryVisualBeat[]
 }
@@ -364,6 +375,7 @@ export interface StructuredEntryDefinition {
     | 'comment_queue'
     | 'spreadsheet'
     | 'tutorial_beat_board'
+    | 'google_doc'
   visualBoard?: StructuredEntryVisualBoard
   previousResponseReference?: StructuredEntryPreviousResponseReference
 }
@@ -513,6 +525,15 @@ export interface VoiceMeetingNode extends BaseNode {
   maxTurns?: number
   voiceName?: string
   initialMessages?: ChatMessage[]
+  typedFallback?: {
+    enabled?: boolean
+    startLabel?: string
+    inputLabel?: string
+    placeholder?: string
+    sendLabel?: string
+    endLabel?: string
+    npcPrompts?: string[]
+  }
 }
 
 export interface InteractiveCanvasNode extends BaseNode {
@@ -1117,6 +1138,7 @@ export interface Storyline {
   sections: Section[]
   nodes: Record<string, SceneNode>
   devSkips?: DevSkip[]
+  staleNodeRedirects?: Record<string, string>
 }
 
 // Legacy numeric grading shapes are retained as an internal archive only.
