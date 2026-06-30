@@ -83,6 +83,47 @@ const initialState: Omit<GameState,
   gradingError: null,
 }
 
+const removedSceneIds = new Set([
+  'scene_01_standup',
+  'scene_01b_hifi_redirect',
+  'scene_01b_meeting_redirect',
+  'scene_01b_wait_redirect',
+])
+
+function freshInitialState() {
+  return {
+    ...initialState,
+    visitedNodes: [...initialState.visitedNodes],
+    sectionsSubmitted: [...initialState.sectionsSubmitted],
+    mcSelections: {},
+    freeTextResponses: {},
+    npcConversations: {},
+    branchFlags: {},
+    interactiveCanvasState: {},
+    definitionClicks: {},
+  }
+}
+
+function isValidActiveNodeId(nodeId: unknown): nodeId is string {
+  return typeof nodeId === 'string' && Boolean(storyline.nodes[nodeId]) && !removedSceneIds.has(nodeId)
+}
+
+function sanitizeHydratedState(state: Partial<GameState>) {
+  if (!isValidActiveNodeId(state.currentNodeId)) {
+    return freshInitialState()
+  }
+
+  const visitedNodes = Array.isArray(state.visitedNodes)
+    ? state.visitedNodes.filter(isValidActiveNodeId)
+    : []
+
+  return {
+    ...state,
+    visitedNodes: visitedNodes.length ? visitedNodes : [state.currentNodeId],
+    currentSection: storyline.nodes[state.currentNodeId]?.section ?? initialState.currentSection,
+  }
+}
+
 const persistKey =
   typeof STORE_PERSIST_KEY !== 'undefined' && STORE_PERSIST_KEY
     ? STORE_PERSIST_KEY
@@ -96,6 +137,7 @@ export const useGameStore = create<GameState>()(
       navigateTo: (nodeId) =>
         set((state) => {
           const next = storyline.nodes[nodeId]
+          if (!next) return freshInitialState()
           const newSection = next?.section ?? state.currentSection
           // Mark section submitted when crossing into a new section
           let sectionsSubmitted = state.sectionsSubmitted
@@ -203,7 +245,13 @@ export const useGameStore = create<GameState>()(
 
       resetGame: () => set(initialState),
     }),
-    { name: persistKey }
+    {
+      name: persistKey,
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...sanitizeHydratedState((persistedState || {}) as Partial<GameState>),
+      }),
+    }
   )
 )
 

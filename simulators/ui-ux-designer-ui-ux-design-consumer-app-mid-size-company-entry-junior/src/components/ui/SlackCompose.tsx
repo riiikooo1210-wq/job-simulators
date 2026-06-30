@@ -11,6 +11,7 @@ interface SlackComposeProps {
   sendDisabled?: boolean
   showChannelHeader?: boolean
   compact?: boolean
+  helperText?: string
 }
 
 export default function SlackCompose({
@@ -24,6 +25,7 @@ export default function SlackCompose({
   sendDisabled = false,
   showChannelHeader = true,
   compact = false,
+  helperText,
 }: SlackComposeProps) {
   const wordCount = maxWords ? countWords(value) : 0
   const overLimit = maxWords ? wordCount > maxWords : false
@@ -95,7 +97,7 @@ export default function SlackCompose({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {maxWords && (
+              {maxWords ? (
                 <span
                   style={{
                     fontSize: '0.6875rem',
@@ -105,7 +107,11 @@ export default function SlackCompose({
                 >
                   {wordCount}/{maxWords} words
                 </span>
-              )}
+              ) : helperText ? (
+                <span style={{ fontSize: '0.6875rem', color: '#6f6a60', lineHeight: 1.35 }}>
+                  {helperText}
+                </span>
+              ) : null}
             </div>
             <button
               onClick={onSend}

@@ -38,6 +38,8 @@ export default function LiveChatScene({ node }: Props) {
       npcId={node.npcId}
       goalPrompt={node.goalPrompt}
       playerGoal={node.playerGoal}
+      replyTargetLabel={node.replyTargetLabel}
+      slackWorkspace={node.slackWorkspace}
       channel={channel}
       maxTurns={node.maxTurns ?? 8}
       initialMessages={node.initialMessages}
@@ -79,6 +81,26 @@ export default function LiveChatScene({ node }: Props) {
           >
             <strong>Your goal: </strong>
             {interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
+          </div>
+        )}
+        {node.taskChecklist && node.taskChecklist.length > 0 && (
+          <div
+            style={{
+              backgroundColor: '#fff',
+              border: '1px solid #CDBF94',
+              padding: '0.75rem 1rem',
+              fontSize: '0.8125rem',
+              color: '#333',
+            }}
+          >
+            <div style={{ fontWeight: 800, marginBottom: '0.45rem' }}>Before you send, include all three:</div>
+            <ol style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              {node.taskChecklist.map((item) => (
+                <li key={item} style={{ lineHeight: 1.5 }}>
+                  {renderContentWithGlossary(interpolate(item, { playerName, branchFlags, mcSelections }))}
+                </li>
+              ))}
+            </ol>
           </div>
         )}
 

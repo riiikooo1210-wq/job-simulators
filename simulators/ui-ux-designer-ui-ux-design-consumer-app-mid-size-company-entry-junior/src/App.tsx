@@ -63,6 +63,7 @@ export default function App() {
       ))}
 
       <button
+        className="simulator-restart-button"
         onClick={resetGame}
         style={{
           position: 'fixed',

@@ -31,3 +31,11 @@ body {
 ::-webkit-scrollbar {
   width: 0;
 }
+
+@media (max-width: 520px) {
+  .simulator-restart-button {
+    top: 2.75rem !important;
+    bottom: auto !important;
+    right: 0.75rem !important;
+  }
+}

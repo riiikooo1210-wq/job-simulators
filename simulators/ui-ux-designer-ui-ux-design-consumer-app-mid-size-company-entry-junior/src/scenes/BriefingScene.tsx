@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
@@ -13,11 +13,18 @@ import { ChartIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
 import type { ReactNode } from 'react'
 import type { BriefingNode, BriefingSubStep } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
+
+type BriefingContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
 
 export function BriefingDrawerContent({ node }: { node: BriefingNode }) {
   const playerName = useGameStore((s) => s.playerName)
@@ -102,6 +109,118 @@ function InlineIllustration({ src }: { src: string }) {
   )
 }
 
+function CoworkerRecap({
+  node,
+  ctx,
+  onCompleteChange,
+}: {
+  node: BriefingNode
+  ctx: BriefingContext
+  onCompleteChange?: (complete: boolean) => void
+}) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap?.speakerRole || npc?.role
+  const turns = recap?.turns || []
+  const [turnIndex, setTurnIndex] = useState(0)
+  const [messages, setMessages] = useState<{ role: 'assistant' | 'user'; content: string }[]>([])
+  const messagesRef = useRef<HTMLDivElement | null>(null)
+  const complete = turns.length > 0 && turnIndex >= turns.length
+
+  useEffect(() => {
+    setTurnIndex(0)
+    setMessages(turns[0] ? [{ role: 'assistant', content: turns[0].coworkerLine }] : [])
+    onCompleteChange?.(false)
+  }, [node.id, onCompleteChange])
+
+  useEffect(() => {
+    const messagesEl = messagesRef.current
+    if (!messagesEl) return
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }, [messages])
+
+  if (!recap || turns.length === 0) return null
+
+  const advanceTurn = (nextMessages: { role: 'assistant' | 'user'; content: string }[]) => {
+    const nextIndex = turnIndex + 1
+    setTurnIndex(nextIndex)
+    if (nextIndex < turns.length) {
+      setMessages([...nextMessages, { role: 'assistant', content: turns[nextIndex].coworkerLine }])
+    } else {
+      setMessages(nextMessages)
+      onCompleteChange?.(true)
+    }
+  }
+
+  const acknowledge = () => {
+    if (complete) return
+    advanceTurn([...messages, { role: 'user' as const, content: 'Okay' }])
+  }
+
+  return (
+    <div
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#EFE8D2',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.24)',
+        padding: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.7rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline' }}>
+        <div>
+          <div style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1E1E1A' }}>{speakerName}</div>
+          {speakerRole && <div style={{ fontSize: '0.68rem', color: '#6f6758' }}>{speakerRole}</div>}
+        </div>
+        <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 800 }}>
+          Context {Math.min(turnIndex + 1, turns.length)}/{turns.length}
+        </div>
+      </div>
+      <div ref={messagesRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
+        {messages.map((message, i) => (
+          <div
+            key={i}
+            style={{
+              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+              maxWidth: '86%',
+              border: '1px solid #CDBF94',
+              backgroundColor: message.role === 'user' ? '#DCE6D2' : '#F7F1E3',
+              padding: '0.55rem 0.65rem',
+              fontSize: '0.8rem',
+              lineHeight: 1.45,
+              color: '#1E1E1A',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {renderContentWithGlossary(interpolate(message.content, ctx))}
+          </div>
+        ))}
+      </div>
+      {!complete && (
+        <button
+          type="button"
+          onClick={acknowledge}
+          style={{
+            alignSelf: 'flex-end',
+            border: '1px solid #000',
+            backgroundColor: '#F7F1E3',
+            color: '#1E1E1A',
+            boxShadow: '2px 2px 0 #000',
+            padding: '0.55rem 0.9rem',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          Okay
+        </button>
+      )}
+    </div>
+  )
+}
+
 function renderSubStep(s: BriefingSubStep, playerName: string, branchFlags: Record<string, string>, mcSelections: Record<string, string>): ReactNode {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -164,6 +283,7 @@ function SequentialBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance
 
   const subSteps = node.subSteps || []
   const total = subSteps.length
+  const actionLabel = node.actionLabel || 'Start the Task'
 
   useEffect(() => {
     subSteps.forEach((s) => {
@@ -227,7 +347,7 @@ function SequentialBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance
         {step < total - 1 ? (
           <ActionButton text="Next" onClick={() => setStep(step + 1)} variant="secondary" />
         ) : (
-          <ActionButton text="Start the Task" onClick={onAdvance} />
+          <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
       {import.meta.env.DEV && (
@@ -243,6 +363,7 @@ function PaginatedBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance:
   const mcSelections = useGameStore((s) => s.mcSelections)
   const [page, setPage] = useState(0)
   const pages = node.pages || []
+  const actionLabel = node.actionLabel || 'Start the Task'
   useScrollToTopOnChange(page)
 
   if (pages.length === 0) return null
@@ -263,7 +384,7 @@ function PaginatedBriefing({ node, onAdvance }: { node: BriefingNode; onAdvance:
         {page < pages.length - 1 ? (
           <ActionButton text="Next" onClick={() => setPage(page + 1)} variant="secondary" />
         ) : (
-          <ActionButton text="Start the Task" onClick={onAdvance} />
+          <ActionButton text={actionLabel} onClick={onAdvance} />
         )}
       </div>
       {import.meta.env.DEV && (
@@ -277,10 +398,20 @@ export default function BriefingScene({ node }: Props) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
+  const [recapComplete, setRecapComplete] = useState(false)
   const goNext = useGoNext()
 
   const onAdvance = () => goNext(node)
   const mode = node.briefingMode || 'simple'
+  const ctx = { playerName, branchFlags, mcSelections }
+  const actionLabel = node.actionLabel || 'Start the Task'
+  const recapTurnCount = node.coworkerRecap?.turns?.length ?? 0
+  const requiresRecapCompletion = mode === 'simple' && recapTurnCount > 0
+  const startDisabled = requiresRecapCompletion && !recapComplete
+
+  useEffect(() => {
+    setRecapComplete(false)
+  }, [node.id])
 
   return (
     <SceneWrapper illustration={node.illustration} hideIllustration>
@@ -308,16 +439,17 @@ export default function BriefingScene({ node }: Props) {
             {node.illustration && <InlineIllustration src={node.illustration} />}
             {node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
-                {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
+                {renderContentWithGlossary(interpolate(node.content, ctx))}
               </p>
             )}
+            <CoworkerRecap node={node} ctx={ctx} onCompleteChange={setRecapComplete} />
             {node.slackMessages && node.slackMessages.length > 0 && (
               <DesktopOverlay>
                 <LaptopFrame variant="slack" title="Slack" scrollable fill>
                   {node.slackMessages.map((msg, i) => (
                     <SlackMessageEnhanced
                       key={i}
-                      message={{ ...msg, content: interpolate(msg.content, { playerName, branchFlags, mcSelections }) }}
+                      message={{ ...msg, content: interpolate(msg.content, ctx) }}
                       delay={i * 0.12}
                     />
                   ))}
@@ -330,7 +462,7 @@ export default function BriefingScene({ node }: Props) {
                   {node.emails.map((email, i) => (
                     <EmailBlock
                       key={i}
-                      email={{ ...email, content: interpolate(email.content, { playerName, branchFlags, mcSelections }) }}
+                      email={{ ...email, content: interpolate(email.content, ctx) }}
                       delay={i * 0.12}
                       initialExpanded={i === 0}
                     />
@@ -342,11 +474,16 @@ export default function BriefingScene({ node }: Props) {
             {node.quotes?.map((q, i) => (
               <QuoteBlock
                 key={i}
-                quote={{ ...q, text: interpolate(q.text, { playerName, branchFlags, mcSelections }) }}
+                quote={{ ...q, text: interpolate(q.text, ctx) }}
                 delay={i * 0.1}
               />
             ))}
-            <ActionButton text="Start the Task" onClick={onAdvance} />
+            {startDisabled && (
+              <div style={{ fontSize: '0.75rem', color: '#6f6758', textAlign: 'center', fontWeight: 800 }}>
+                Finish all {recapTurnCount} context updates to start the task.
+              </div>
+            )}
+            <ActionButton text={actionLabel} onClick={onAdvance} disabled={startDisabled} />
             {import.meta.env.DEV && (
               <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
             )}

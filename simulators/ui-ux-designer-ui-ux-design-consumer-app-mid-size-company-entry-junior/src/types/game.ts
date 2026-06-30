@@ -58,6 +58,21 @@ export interface BriefingSubStep {
   quotes?: QuoteData[]
 }
 
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
+}
+
 export type NextRule =
   | string
   | null
@@ -80,6 +95,28 @@ export interface ChatMessage {
   ts?: string
   /** Override the display name for this NPC message (e.g. a third party chiming in on a thread) */
   npcName?: string
+}
+
+export interface SlackSidebarItem {
+  name: string
+  active?: boolean
+  unread?: boolean
+}
+
+export interface SlackDirectMessageItem {
+  name: string
+  status?: 'online' | 'away' | 'offline'
+  active?: boolean
+}
+
+export interface SlackWorkspaceContext {
+  workspaceName?: string
+  channelName?: string
+  channelPurpose?: string
+  threadLabel?: string
+  activeMembers?: string[]
+  sidebarChannels?: SlackSidebarItem[]
+  directMessages?: SlackDirectMessageItem[]
 }
 
 export interface CanvasZoneAction {
@@ -150,6 +187,8 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  coworkerRecap?: CoworkerRecap
+  actionLabel?: string
   subSteps?: BriefingSubStep[]
   pages?: BriefingSubStep[]
   slackMessages?: SlackMessageData[]
@@ -169,6 +208,17 @@ export interface FreeTextNode extends BaseNode {
   minWords?: number
   maxWords?: number
   placeholder?: string
+  noteSections?: {
+    key: string
+    label: string
+    guidance: string
+    exampleAnswer?: string
+    placeholder?: string
+    minRows?: number
+    minChars?: number
+    minNonEmptyLines?: number
+  }[]
+  wellNestAppMock?: boolean
 }
 
 export interface StructuredEntryNode extends BaseNode {
@@ -193,6 +243,9 @@ export interface ChatNode extends BaseNode {
   npcId: string
   goalPrompt: string
   playerGoal?: string
+  taskChecklist?: string[]
+  replyTargetLabel?: string
+  slackWorkspace?: SlackWorkspaceContext
   maxTurns?: number
   initialMessages?: ChatMessage[]
   /**
@@ -216,6 +269,7 @@ export interface VoiceMeetingNode extends BaseNode {
   presentation?: 'in_person' | 'remote'
   minTurns?: number
   maxTurns?: number
+  typedFallback?: boolean
   voiceName?: string
   initialMessages?: ChatMessage[]
 }
@@ -242,14 +296,57 @@ export interface FinalReportNode extends BaseNode {
   type: 'final_report'
 }
 
+export type FlowDiagramNodeKind =
+  | 'entry_point'
+  | 'step'
+  | 'screen'
+  | 'action'
+  | 'decision_branch'
+  | 'final_interaction'
+
+export interface FlowDiagramNodeKindOption {
+  kind: FlowDiagramNodeKind
+  label: string
+  defaultLabel?: string
+}
+
+export interface FlowDiagramExampleStep {
+  kind: FlowDiagramNodeKind
+  label: string
+}
+
+export interface FlowDiagramLegendItem {
+  label: string
+  description: string
+}
+
+export interface FlowDiagramKindRequirement {
+  kind: FlowDiagramNodeKind
+  min: number
+  hint?: string
+}
+
 export interface FlowDiagramSceneNode extends BaseNode {
   type: 'flow_diagram'
   prompt: string
   bindingKey: string
   rationalePrompt?: string
+  rationalePlaceholder?: string
   rationaleBindingKey?: string
   minNodes?: number
   minEdges?: number
+  startNode?: {
+    id?: string
+    label: string
+    kind?: FlowDiagramNodeKind
+  }
+  nodeKinds?: FlowDiagramNodeKindOption[]
+  requiredNodeKinds?: FlowDiagramNodeKind[]
+  requiredKindCounts?: FlowDiagramKindRequirement[]
+  exampleFlow?: FlowDiagramExampleStep[]
+  exampleBranch?: string
+  legendItems?: FlowDiagramLegendItem[]
+  wellNestAppMock?: boolean
 }
 
 export interface ScreenDesignStudioNode extends BaseNode {
@@ -326,6 +423,12 @@ export interface Section {
   label: string
 }
 
+export interface ProgressTask {
+  id: string
+  label: string
+  nodeIds: string[]
+}
+
 export interface NPC {
   id: string
   name: string
@@ -345,6 +448,7 @@ export interface Storyline {
   gameTitle: string
   startNode: string
   sections: Section[]
+  progressTasks?: ProgressTask[]
   nodes: Record<string, SceneNode>
   devSkips?: DevSkip[]
 }

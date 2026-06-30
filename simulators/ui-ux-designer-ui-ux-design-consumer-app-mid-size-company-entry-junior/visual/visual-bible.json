@@ -71,10 +71,6 @@
       ],
       "sceneIds": [
         "intro",
-        "scene_01_standup",
-        "scene_01b_hifi_redirect",
-        "scene_01b_meeting_redirect",
-        "scene_01b_wait_redirect",
         "grading",
         "final_report"
       ],
@@ -118,8 +114,6 @@
       "appearancePrompt": "A simple, sturdy ceramic mug with a slightly matte finish in a solid, muted color like sage green or charcoal gray. It has a clean, minimalist design with no logos or text.",
       "sceneIds": [
         "intro",
-        "scene_01b_hifi_redirect",
-        "scene_01b_wait_redirect",
         "grading",
         "final_report"
       ]
@@ -130,10 +124,6 @@
       "appearancePrompt": "A spiral-bound notebook or a Moleskine-style sketchbook with a plain black or dark gray cover. When open, it shows off-white paper, sometimes with faint dot grids. It is often seen with a simple pen.",
       "sceneIds": [
         "intro",
-        "scene_01_standup",
-        "scene_01b_hifi_redirect",
-        "scene_01b_meeting_redirect",
-        "scene_01b_wait_redirect",
         "scene_03_checkin",
         "grading",
         "final_report"
@@ -144,8 +134,6 @@
       "name": "Player's Laptop",
       "appearancePrompt": "A modern, slim laptop with a minimalist design, similar to a MacBook Pro or Dell XPS, in a silver or dark gray metallic finish. It has a clean, unadorned lid with no visible logos.",
       "sceneIds": [
-        "scene_01_standup",
-        "scene_01b_wait_redirect",
         "grading",
         "final_report"
       ]

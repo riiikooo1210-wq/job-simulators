@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
@@ -9,10 +9,13 @@ import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
 import { npcs } from '../data/npcs'
+import { npcReply } from '../services/gemini'
 import { GeminiLiveSession, type LiveStatus } from '../services/geminiLive'
 import type { ChatMessage, VoiceMeetingNode } from '../types/game'
 
 interface Props { node: VoiceMeetingNode }
+
+const inPersonWorkspaceHeight = 'clamp(340px, calc(100dvh - 520px), 520px)'
 
 function buildSystemPrompt(args: {
   node: VoiceMeetingNode
@@ -28,7 +31,7 @@ function buildSystemPrompt(args: {
     ? 'Speak naturally, like a real colleague or manager sitting with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -72,6 +75,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
+  const previousDesignNotes = useGameStore((s) => s.freeTextResponses.scene_02_ideation || '')
   const goNext = useGoNext()
 
   const [status, setStatus] = useState<LiveStatus>('idle')
@@ -81,8 +85,13 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [npcSpeaking, setNpcSpeaking] = useState(false)
   const [liveUser, setLiveUser] = useState('')
   const [liveNpc, setLiveNpc] = useState('')
+  const [typedInput, setTypedInput] = useState('')
+  const [typedLoading, setTypedLoading] = useState(false)
+  const [typedError, setTypedError] = useState<string | null>(null)
+  const [turnLimitReached, setTurnLimitReached] = useState(false)
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -93,8 +102,22 @@ export default function VoiceMeetingScene({ node }: Props) {
   const minTurns = node.minTurns ?? 2
   const maxTurns = node.maxTurns ?? 8
   const userTurns = messages.filter((m) => m.role === 'user').length
+  const typedFallback = Boolean(node.typedFallback)
+  const reachedTurnLimit = userTurns >= maxTurns
   const canSubmit = meetingEnded && userTurns >= minTurns
   const isInPerson = (node.meetingMode || node.presentation) === 'in_person'
+  const showPreviousDesignNotes = node.id === 'scene_03_checkin'
+  const designNotesText = previousDesignNotes.trim()
+  const designNoteBlocks = designNotesText
+    ? designNotesText.split(/\n{2,}/).map((block) => {
+      const lines = block.split('\n')
+      const heading = lines[0]?.trim()
+      const body = lines.slice(1).join('\n').trim()
+      return body && heading
+        ? { heading, body }
+        : { heading: 'Design notes', body: block.trim() }
+    })
+    : []
 
   useEffect(() => {
     if (initializedRef.current) return
@@ -103,6 +126,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -134,7 +163,9 @@ export default function VoiceMeetingScene({ node }: Props) {
   }
 
   const startMeeting = async () => {
-    if (!npc || sessionRef.current) return
+    if (!npc || sessionRef.current || reachedTurnLimit || meetingEnded) return
+    setTypedError(null)
+    setTurnLimitReached(false)
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY
     if (!apiKey || apiKey === 'your_gemini_api_key_here') {
       setStatus('error')
@@ -176,19 +207,74 @@ export default function VoiceMeetingScene({ node }: Props) {
     })
   }
 
-  const endMeeting = () => {
+  const endMeeting = (options: { limitReached?: boolean } = {}) => {
     flushPending('user')
     flushPending('npc')
     sessionRef.current?.stop()
     sessionRef.current = null
     setMeetingEnded(true)
+    setTurnLimitReached(Boolean(options.limitReached) || userTurns >= maxTurns)
     setMuted(false)
+    setStatus('closed')
+    setStatusDetail('')
   }
 
   const toggleMuted = () => {
     const next = !muted
     setMuted(next)
     sessionRef.current?.setMuted(next)
+  }
+
+  const submitTypedMessage = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const question = typedInput.trim()
+    if (!typedFallback || !npc || !question || typedLoading || meetingEnded || reachedTurnLimit || inCall) return
+
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY
+    if (!apiKey || apiKey === 'your_gemini_api_key_here') {
+      const detail = 'Gemini API key not configured. Set VITE_GEMINI_API_KEY in .env.'
+      setStatus('error')
+      setStatusDetail(detail)
+      setTypedError(detail)
+      return
+    }
+
+    setTypedInput('')
+    setTypedError(null)
+    setTypedLoading(true)
+    setStatus('connecting')
+    setStatusDetail('')
+
+    const userMessage: ChatMessage = { role: 'user', content: question, ts: new Date().toISOString() }
+    const historyWithQuestion = [...messages, userMessage]
+
+    try {
+      const reply = await npcReply({
+        npcId: node.npcId,
+        history: historyWithQuestion,
+        goalPrompt: [
+          goalPrompt,
+          meetingContext ? `Meeting context:\n${meetingContext}` : '',
+          designNotesText ? `Learner's earlier design notes:\n${designNotesText}` : '',
+          'Typed fallback rules: respond as the same Maya check-in, keep the reply under 90 words, ask one focused follow-up, and do not give a script or final answer.',
+        ].filter(Boolean).join('\n\n'),
+        channel: 'chat',
+      })
+      appendNpcMessage(conversationKey, userMessage)
+      appendNpcMessage(conversationKey, { role: 'npc', content: reply, ts: new Date().toISOString() })
+      setStatus('idle')
+      if (userTurns + 1 >= maxTurns) {
+        endMeeting({ limitReached: true })
+      }
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : `Could not reach ${npc.name} right now.`
+      setTypedInput(question)
+      setStatus('error')
+      setStatusDetail(detail)
+      setTypedError(detail)
+    } finally {
+      setTypedLoading(false)
+    }
   }
 
   if (!npc) {
@@ -199,175 +285,458 @@ export default function VoiceMeetingScene({ node }: Props) {
     )
   }
 
+  const typedStarted = typedFallback && userTurns > 0
+  const inCall = status !== 'idle' && status !== 'closed' && status !== 'error' && !typedLoading
+  const canEndTypedMeeting = typedStarted && !inCall && !meetingEnded && !typedLoading && userTurns >= minTurns
+  const remainingTurns = Math.max(0, maxTurns - userTurns)
+  const visibleTurnLimitReached = turnLimitReached || reachedTurnLimit
   const statusLabel =
-    status === 'connecting' ? 'Connecting...'
+    visibleTurnLimitReached ? `${maxTurns}-turn limit reached`
+    : typedLoading ? `${npc.name} is replying...`
+    : status === 'connecting' ? 'Connecting...'
     : status === 'connected' ? (muted ? 'Muted' : npcSpeaking ? `${npc.name} is speaking...` : 'Listening...')
     : status === 'closed' ? (isInPerson ? 'Conversation ended' : 'Meeting ended')
-    : status === 'error' ? `Error: ${statusDetail}`
+    : status === 'error' ? (statusDetail ? 'Gemini error' : 'Error')
     : 'Ready'
 
-  const inCall = status !== 'idle' && status !== 'closed' && status !== 'error'
+  const npcInitials = npc.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
+  const typedDisabled = !typedFallback || typedLoading || meetingEnded || visibleTurnLimitReached || inCall
+  const typedHelper =
+    inCall ? 'Typing is available after you finish the voice conversation.'
+    : visibleTurnLimitReached ? `${maxTurns}-turn limit reached. Finish the conversation to continue.`
+    : meetingEnded ? 'Conversation ended.'
+    : remainingTurns === 1 ? '1 turn left. Keep it focused.'
+    : `${remainingTurns} turns left. Type one clear reply or question at a time.`
+
+  const typedComposer = typedFallback ? (
+    <form
+      onSubmit={submitTypedMessage}
+      data-testid="maya-typed-fallback"
+      style={{
+        borderTop: '1px solid #E0D3AE',
+        background: '#FBF7EA',
+        padding: '0.75rem 0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ fontSize: '0.76rem', color: '#4B4538', lineHeight: 1.4 }}>
+          <strong>Typed backup</strong>
+          <span style={{ marginLeft: 6 }}>{typedHelper}</span>
+        </div>
+        {typedLoading && <div style={{ fontSize: '0.72rem', color: '#3A6B5E', fontWeight: 800 }}>{npc.name} is replying...</div>}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: '0.5rem', alignItems: 'end' }}>
+        <textarea
+          value={typedInput}
+          onChange={(event) => setTypedInput(event.target.value)}
+          placeholder={`Type to ${npc.name}`}
+          rows={2}
+          disabled={typedDisabled}
+          style={{
+            width: '100%',
+            minWidth: 0,
+            boxSizing: 'border-box',
+            border: '1px solid #CDBF94',
+            borderRadius: 6,
+            padding: '0.58rem 0.65rem',
+            fontSize: '0.82rem',
+            lineHeight: 1.45,
+            resize: 'vertical',
+            color: '#1E1E1A',
+            background: typedDisabled ? '#F2EBD9' : '#FFFFFF',
+          }}
+        />
+        <button
+          type="submit"
+          disabled={typedDisabled || !typedInput.trim()}
+          style={{
+            background: typedDisabled || !typedInput.trim() ? '#D9CAA3' : '#3A6B5E',
+            color: typedDisabled || !typedInput.trim() ? '#6A604B' : '#F2EBD9',
+            border: '1px solid #000',
+            borderRadius: 6,
+            padding: '0.58rem 0.82rem',
+            fontSize: '0.8rem',
+            fontWeight: 800,
+            cursor: typedDisabled || !typedInput.trim() ? 'not-allowed' : 'pointer',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Send
+        </button>
+      </div>
+      {typedError && (
+        <div style={{ border: '1px solid #B87D6B', background: '#F4E2D9', color: '#7B3D32', borderRadius: 6, padding: '0.48rem 0.6rem', fontSize: '0.76rem', lineHeight: 1.4 }}>
+          {typedError}
+        </div>
+      )}
+    </form>
+  ) : null
 
   if (isInPerson) {
     return (
       <SceneWrapper illustration={node.illustration} hideIllustration showBack backLabel="Back">
+        <style>{`
+          .maya-meeting-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 1rem;
+            align-items: stretch;
+          }
+          .maya-meeting-toolbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+          }
+          .maya-meeting-workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
+            gap: 0.875rem;
+            align-items: stretch;
+            min-height: ${inPersonWorkspaceHeight};
+          }
+          .maya-workspace-panel {
+            min-height: ${inPersonWorkspaceHeight};
+            max-height: ${inPersonWorkspaceHeight};
+            overflow-y: auto;
+          }
+          .maya-meeting-workspace-single {
+            grid-template-columns: 1fr;
+          }
+          @media (max-width: 920px) {
+            .maya-meeting-hero {
+              grid-template-columns: 1fr;
+            }
+            .maya-context-thumbnail {
+              max-width: 260px;
+            }
+            .maya-meeting-workspace {
+              grid-template-columns: 1fr;
+              min-height: 0;
+            }
+            .maya-workspace-panel {
+              min-height: 300px;
+              max-height: 430px;
+            }
+            .maya-design-notes-panel {
+              min-height: 260px;
+            }
+          }
+          @media (max-width: 640px) {
+            .maya-context-thumbnail {
+              max-width: none;
+            }
+            .maya-meeting-toolbar {
+              align-items: stretch;
+            }
+            .maya-meeting-actions {
+              width: 100%;
+              justify-content: flex-start;
+            }
+          }
+        `}</style>
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
           style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
         >
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3 }}>{node.title}</h1>
-          {node.content && (
-            <div style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#333', whiteSpace: 'pre-wrap' }}>
-              {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
-            </div>
-          )}
+          <section className="maya-meeting-hero">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 0 }}>
+              <h1 style={{ fontSize: '1.35rem', fontWeight: 800, lineHeight: 1.25, color: '#1E1E1A' }}>{node.title}</h1>
+              {node.content && (
+                <div style={{ fontSize: '0.9rem', lineHeight: 1.65, color: '#333', whiteSpace: 'pre-wrap', maxWidth: 980 }}>
+                  {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
+                </div>
+              )}
 
-          {node.playerGoal && (
-            <div
-              style={{
-                backgroundColor: '#fff',
-                border: '1px solid #000',
-                padding: '0.75rem 1rem',
-                fontSize: '0.8125rem',
-                color: '#444',
-              }}
-            >
-              <strong>Your goal: </strong>{interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
-            </div>
-          )}
-
-          {node.illustration && (
-            <div
-              style={{
-                width: 'calc(100% + 6rem)',
-                marginLeft: '-3rem',
-                aspectRatio: '16 / 9',
-                overflow: 'hidden',
-                borderTop: '1px solid #000',
-                borderBottom: '1px solid #000',
-                background: '#E8DCC8',
-              }}
-            >
-              <img
-                src={node.illustration}
-                alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
-              />
-            </div>
-          )}
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700 }}>{npc.name}</div>
-              <div style={{ fontSize: '0.75rem', color: '#555' }}>{npc.role}</div>
-            </div>
-            <div style={{ fontSize: '0.75rem', color: status === 'error' ? '#9b2d20' : '#555' }}>{statusLabel}</div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-            {import.meta.env.DEV && (
-              <button
-                onClick={() => goNext(node)}
-                style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
-              >
-                Skip (dev)
-              </button>
-            )}
-            {!inCall && !meetingEnded && (
-              <button
-                onClick={startMeeting}
-                style={{ background: '#3A6B5E', color: '#F2EBD9', border: '1px solid #000000', borderRadius: '4px', padding: '0.65rem 1.75rem', fontSize: '0.875rem', fontWeight: 700, cursor: 'pointer', boxShadow: '3px 3px 0 #000' }}
-              >
-                Speak
-              </button>
-            )}
-            {inCall && (
-              <>
-                <button
-                  onClick={toggleMuted}
+              {node.playerGoal && (
+                <div
                   style={{
-                    background: muted ? '#D2A39A' : '#F7F1E3',
-                    color: '#1E1E1A',
-                    border: muted ? '1px solid #B87D6B' : '1px solid #CDBF94',
-                    borderRadius: '4px',
-                    padding: '0.55rem 1rem',
+                    backgroundColor: '#FFF8E8',
+                    border: '1px solid #CDBF94',
+                    borderRadius: 8,
+                    padding: '0.75rem 0.875rem',
                     fontSize: '0.8125rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
+                    lineHeight: 1.55,
+                    color: '#3B3427',
                   }}
                 >
-                  <MicIcon muted={muted} />
-                  {muted ? 'Unmute' : 'Mute'}
-                </button>
-                <button
-                  onClick={endMeeting}
-                  style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: '4px', padding: '0.55rem 1rem', fontSize: '0.8125rem', fontWeight: 700, cursor: 'pointer' }}
-                >
-                  Finish conversation
-                </button>
-              </>
-            )}
-          </div>
+                  <strong>Your goal: </strong>{renderContentWithGlossary(interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }))}
+                </div>
+              )}
+            </div>
 
-          <div
+            {node.illustration && (
+              <figure
+                className="maya-context-thumbnail"
+                style={{
+                  margin: 0,
+                  border: '1px solid rgba(0,0,0,0.22)',
+                  borderRadius: 8,
+                  overflow: 'hidden',
+                  background: '#E8DCC8',
+                  minHeight: 132,
+                  boxShadow: '2px 2px 0 rgba(0,0,0,0.28)',
+                }}
+              >
+                <img
+                  src={node.illustration}
+                  alt=""
+                  style={{ width: '100%', height: '100%', minHeight: 132, objectFit: 'cover', display: 'block' }}
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                />
+              </figure>
+            )}
+          </section>
+
+          <section
+            className="maya-meeting-toolbar"
             style={{
-              background: '#FFF8E8',
+              background: '#F7F1E3',
               border: '1px solid rgba(0,0,0,0.22)',
+              borderRadius: 8,
               padding: '0.75rem',
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              minHeight: 150,
-              maxHeight: 260,
               color: '#1E1E1A',
             }}
           >
-            {messages.length === 0 && !liveUser && !liveNpc && (
-              <div style={{ fontSize: '0.8125rem', opacity: 0.65 }}>
-                Press Speak when you are ready. Your spoken conversation with {npc.name} will appear here for grading.
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+              <div
+                aria-hidden="true"
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: '50%',
+                  border: '1px solid #000',
+                  background: '#3A6B5E',
+                  color: '#F2EBD9',
+                  display: 'grid',
+                  placeItems: 'center',
+                  fontSize: '0.75rem',
+                  fontWeight: 900,
+                  boxShadow: npcSpeaking ? '0 0 0 5px rgba(58,107,94,0.22)' : 'none',
+                  flexShrink: 0,
+                }}
+              >
+                {npcInitials}
               </div>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
-                <div style={{ fontSize: '0.6875rem', opacity: 0.65, marginBottom: 2 }}>
-                  {m.role === 'user' ? 'You' : npc.name}
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '0.9rem', fontWeight: 800 }}>{npc.name}</div>
+                <div style={{ fontSize: '0.74rem', color: '#615844' }}>{npc.role}</div>
+              </div>
+              <div
+                style={{
+                  border: status === 'error' ? '1px solid #B87D6B' : '1px solid #CDBF94',
+                  background: status === 'error' ? '#F4E2D9' : '#FFF8E8',
+                  color: status === 'error' ? '#7B3D32' : '#4B4538',
+                  borderRadius: 999,
+                  padding: '0.28rem 0.55rem',
+                  fontSize: '0.7rem',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {statusLabel}
+              </div>
+            </div>
+
+            <div className="maya-meeting-actions" style={{ display: 'flex', gap: '0.625rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              {import.meta.env.DEV && (
+                <button
+                  onClick={() => goNext(node)}
+                  style={{ background: '#FFF8E8', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: 999, padding: '0.45rem 0.7rem', fontSize: '0.7rem', cursor: 'pointer', fontWeight: 800 }}
+                >
+                  Skip (dev)
+                </button>
+              )}
+              {!typedStarted && !inCall && !meetingEnded && !visibleTurnLimitReached && (
+                <button
+                  onClick={startMeeting}
+                  style={{ background: '#3A6B5E', color: '#F2EBD9', border: '1px solid #000000', borderRadius: 6, padding: '0.62rem 1.2rem', fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', boxShadow: '2px 2px 0 #000' }}
+                >
+                  Speak
+                </button>
+              )}
+              {canEndTypedMeeting && (
+                <button
+                  onClick={() => endMeeting()}
+                  style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: 6, padding: '0.55rem 0.85rem', fontSize: '0.8125rem', fontWeight: 800, cursor: 'pointer' }}
+                >
+                  Finish conversation
+                </button>
+              )}
+              {inCall && (
+                <>
+                  <button
+                    onClick={toggleMuted}
+                    style={{
+                      background: muted ? '#D2A39A' : '#FFF8E8',
+                      color: '#1E1E1A',
+                      border: muted ? '1px solid #B87D6B' : '1px solid #CDBF94',
+                      borderRadius: 6,
+                      padding: '0.55rem 0.85rem',
+                      fontSize: '0.8125rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                    }}
+                  >
+                    <MicIcon muted={muted} />
+                    {muted ? 'Unmute' : 'Mute'}
+                  </button>
+                  <button
+                    onClick={() => endMeeting()}
+                    style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: 6, padding: '0.55rem 0.85rem', fontSize: '0.8125rem', fontWeight: 800, cursor: 'pointer' }}
+                  >
+                    Finish conversation
+                  </button>
+                </>
+              )}
+            </div>
+          </section>
+
+          <section className={showPreviousDesignNotes ? 'maya-meeting-workspace' : 'maya-meeting-workspace maya-meeting-workspace-single'}>
+            <div
+              className="maya-workspace-panel maya-conversation-panel"
+              ref={transcriptRef}
+              style={{
+                background: '#FFF8E8',
+                border: '1px solid rgba(0,0,0,0.22)',
+                borderRadius: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                color: '#1E1E1A',
+              }}
+            >
+              <div
+                style={{
+                  position: 'sticky',
+                  top: 0,
+                  zIndex: 1,
+                  background: '#FFF8E8',
+                  borderBottom: '1px solid #E0D3AE',
+                  padding: '0.75rem 0.85rem',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '0.75rem',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase' }}>Live conversation</div>
+                  <div style={{ fontSize: '0.72rem', color: '#6A604B', marginTop: 2 }}>Transcript appears here while you talk.</div>
                 </div>
+                <div style={{ fontSize: '0.72rem', color: '#6A604B', whiteSpace: 'nowrap' }}>
+                  {userTurns}/{minTurns} turns
+                </div>
+              </div>
+
+              <div style={{ padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                {messages.length === 0 && !liveUser && !liveNpc && (
+                  <div style={{ border: '1px dashed #CDBF94', background: '#FBF7EA', borderRadius: 8, padding: '0.85rem', fontSize: '0.8125rem', lineHeight: 1.55, color: '#6A604B' }}>
+                    Use Speak or type to {npc.name} when you are ready. The conversation will appear here for grading.
+                  </div>
+                )}
+                {messages.map((m, i) => (
+                  <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '82%' }}>
+                    <div style={{ fontSize: '0.7rem', color: '#6A604B', marginBottom: 3, textAlign: m.role === 'user' ? 'right' : 'left' }}>
+                      {m.role === 'user' ? 'You' : npc.name}
+                    </div>
+                    <div
+                      style={{
+                        background: m.role === 'user' ? '#B87D6B' : '#F2EBD9',
+                        color: m.role === 'user' ? '#FFF8E8' : '#1E1E1A',
+                        border: '1px solid rgba(0,0,0,0.16)',
+                        padding: '0.62rem 0.72rem',
+                        borderRadius: 8,
+                        fontSize: '0.84rem',
+                        lineHeight: 1.5,
+                        whiteSpace: 'pre-wrap',
+                        boxShadow: '1px 1px 0 rgba(0,0,0,0.12)',
+                      }}
+                    >
+                      {renderContentWithGlossary(m.content)}
+                    </div>
+                  </div>
+                ))}
+                {liveUser && (
+                  <div style={{ alignSelf: 'flex-end', maxWidth: '82%', opacity: 0.82 }}>
+                    <div style={{ fontSize: '0.7rem', color: '#6A604B', marginBottom: 3, textAlign: 'right' }}>You</div>
+                    <div style={{ border: '1px dashed #B87D6B', background: '#FFFDF5', borderRadius: 8, padding: '0.62rem 0.72rem', fontSize: '0.84rem', lineHeight: 1.5 }}>{liveUser}</div>
+                  </div>
+                )}
+                {liveNpc && (
+                  <div style={{ alignSelf: 'flex-start', maxWidth: '82%', opacity: 0.82 }}>
+                    <div style={{ fontSize: '0.7rem', color: '#6A604B', marginBottom: 3 }}>{npc.name}</div>
+                    <div style={{ border: '1px dashed #CDBF94', background: '#FFFDF5', borderRadius: 8, padding: '0.62rem 0.72rem', fontSize: '0.84rem', lineHeight: 1.5 }}>{liveNpc}</div>
+                  </div>
+                )}
+              </div>
+              {typedComposer}
+            </div>
+
+            {showPreviousDesignNotes && (
+              <aside
+                className="maya-workspace-panel maya-design-notes-panel"
+                aria-label="Earlier design notes"
+                style={{
+                  background: '#F7F1E3',
+                  border: '1px solid rgba(0,0,0,0.22)',
+                  borderRadius: 8,
+                  color: '#1E1E1A',
+                }}
+              >
                 <div
                   style={{
-                    background: m.role === 'user' ? '#B87D6B' : '#F2EBD9',
-                    color: m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
-                    border: '1px solid rgba(0,0,0,0.18)',
-                    padding: '0.5rem 0.625rem',
-                    borderRadius: '4px',
-                    fontSize: '0.8125rem',
-                    lineHeight: 1.45,
-                    whiteSpace: 'pre-wrap',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 1,
+                    background: '#F7F1E3',
+                    borderBottom: '1px solid #D9CAA3',
+                    padding: '0.75rem 0.85rem',
                   }}
                 >
-                  {m.content}
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase' }}>
+                    Earlier design notes
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: '#6A604B', marginTop: 2 }}>
+                    Saved from your ideation task.
+                  </div>
                 </div>
-              </div>
-            ))}
-            {liveUser && (
-              <div style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.72 }}>
-                <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>You</div>
-                <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveUser}</div>
-              </div>
+
+                <div style={{ padding: '0.85rem 0.85rem 3.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {designNoteBlocks.length ? designNoteBlocks.map((block, index) => (
+                    <section
+                      key={`${block.heading}-${index}`}
+                      style={{
+                        border: '1px solid #D9CAA3',
+                        background: '#FFF8E8',
+                        borderRadius: 8,
+                        padding: '0.7rem 0.75rem',
+                      }}
+                    >
+                      <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#3A6B5E', marginBottom: '0.45rem' }}>
+                        {block.heading}
+                      </div>
+                      <div style={{ fontSize: '0.82rem', lineHeight: 1.58, whiteSpace: 'pre-wrap', color: '#2F2A20' }}>
+                        {block.body}
+                      </div>
+                    </section>
+                  )) : (
+                    <div style={{ border: '1px dashed #CDBF94', background: '#FFF8E8', borderRadius: 8, padding: '0.85rem', fontSize: '0.8125rem', lineHeight: 1.55, color: '#6A604B' }}>
+                      No design notes saved yet.
+                    </div>
+                  )}
+                </div>
+              </aside>
             )}
-            {liveNpc && (
-              <div style={{ alignSelf: 'flex-start', maxWidth: '88%', opacity: 0.72 }}>
-                <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>{npc.name}</div>
-                <div style={{ border: '1px dashed rgba(0,0,0,0.4)', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem' }}>{liveNpc}</div>
-              </div>
-            )}
-          </div>
+          </section>
 
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <ActionButton
@@ -379,7 +748,7 @@ export default function VoiceMeetingScene({ node }: Props) {
             />
             {!canSubmit && (
               <span style={{ fontSize: '0.75rem', color: '#666' }}>
-                Speak at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then finish the conversation to continue.
+                Speak or type at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then finish the conversation to continue.
               </span>
             )}
           </div>
@@ -413,7 +782,7 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            <strong>Your goal: </strong>{interpolate(node.playerGoal, { playerName, branchFlags, mcSelections })}
+            <strong>Your goal: </strong>{renderContentWithGlossary(interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }))}
           </div>
         )}
 
@@ -452,6 +821,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
               {/* Transcript */}
               <div
+                ref={transcriptRef}
                 style={{
                   flex: 1,
                   marginTop: '0.875rem',
@@ -487,7 +857,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                         whiteSpace: 'pre-wrap',
                       }}
                     >
-                      {m.content}
+                      {renderContentWithGlossary(m.content)}
                     </div>
                   </div>
                 ))}
@@ -545,7 +915,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                       {muted ? 'Unmute' : 'Mute'}
                     </button>
                     <button
-                      onClick={endMeeting}
+                      onClick={() => endMeeting()}
                       style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: '50px', padding: '0.45rem 1rem', fontSize: '0.8125rem', fontWeight: 500, cursor: 'pointer' }}
                     >
                       End meeting

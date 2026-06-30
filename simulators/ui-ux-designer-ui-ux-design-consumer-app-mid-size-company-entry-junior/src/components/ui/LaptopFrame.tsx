@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
 
@@ -9,6 +9,15 @@ interface LaptopFrameProps {
   scrollable?: boolean
   fill?: boolean
   showSlackChannelHeader?: boolean
+  showFigmaToolbar?: boolean
+  titleTabs?: LaptopFrameTab[]
+  activeTitleTabId?: string
+  onTitleTabChange?: (id: string) => void
+}
+
+interface LaptopFrameTab {
+  id: string
+  label: string
 }
 
 const menuItems: Partial<Record<LaptopFrameVariant, string[]>> = {
@@ -30,8 +39,8 @@ const titleBarColors: Record<LaptopFrameVariant, string> = {
   email: '#e8e8e8',
   'email-read': '#e8e8e8',
   slack: '#3F0E40',
-  figma: '#F2EBD9',
-  notion: '#ffffff',
+  figma: '#F7F8FA',
+  notion: '#F2EBD9',
   spreadsheet: '#0F9D58',
   code: '#1E1E1E',
   miro: '#F9F0FF',
@@ -44,7 +53,7 @@ const titleTextColors: Record<LaptopFrameVariant, string> = {
   email: '#666',
   'email-read': '#666',
   slack: '#e8d5e0',
-  figma: '#555',
+  figma: '#374151',
   notion: '#555',
   spreadsheet: '#fff',
   code: '#aaa',
@@ -58,8 +67,8 @@ const contentBgColors: Record<LaptopFrameVariant, string> = {
   email: '#F7F1E3',
   'email-read': '#F7F1E3',
   slack: '#F7F1E3',
-  figma: '#F7F1E3',
-  notion: '#ffffff',
+  figma: '#F3F4F6',
+  notion: '#F7F1E3',
   spreadsheet: '#ffffff',
   code: '#1E1E1E',
   miro: '#F5F0FF',
@@ -88,6 +97,10 @@ export default function LaptopFrame({
   scrollable = false,
   fill = false,
   showSlackChannelHeader = true,
+  showFigmaToolbar = true,
+  titleTabs = [],
+  activeTitleTabId,
+  onTitleTabChange,
 }: LaptopFrameProps) {
   const displayTitle = title || defaultTitles[variant]
   const menus = menuItems[variant] ?? []
@@ -95,6 +108,25 @@ export default function LaptopFrame({
   const titleTextColor = titleTextColors[variant]
   const contentBg = contentBgColors[variant]
   const isDark = variant === 'code' || variant === 'kanban' || variant === 'meeting'
+  const hasTitleTabs = titleTabs.length > 0
+
+  const titleTabStyle = (active: boolean): CSSProperties => ({
+    border: active ? `1px solid ${isDark ? '#30363D' : '#CDBF94'}` : '1px solid transparent',
+    borderBottomColor: active ? contentBg : 'transparent',
+    background: active ? contentBg : 'transparent',
+    color: active ? (isDark ? '#F7F1E3' : '#1E1E1A') : titleTextColor,
+    borderRadius: '6px 6px 0 0',
+    padding: '0.35rem 0.7rem',
+    fontSize: '0.72rem',
+    fontWeight: active ? 800 : 600,
+    cursor: 'pointer',
+    minWidth: 0,
+    maxWidth: active ? '11rem' : '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    transform: active ? 'translateY(1px)' : 'none',
+  })
 
   return (
     <div
@@ -116,7 +148,7 @@ export default function LaptopFrame({
           display: 'flex',
           alignItems: 'center',
           gap: '0.5rem',
-          padding: '0.5rem 0.75rem',
+          padding: hasTitleTabs ? '0.4rem 0.75rem 0' : '0.5rem 0.75rem',
           backgroundColor: titleBarBg,
           borderBottom: isDark ? '1px solid #555' : '1px solid #ccc',
           flexShrink: 0,
@@ -128,16 +160,46 @@ export default function LaptopFrame({
           <span style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#28c840', display: 'inline-block' }} />
         </div>
 
+        {hasTitleTabs && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '0.125rem',
+              flex: 1,
+              minWidth: 0,
+              overflowX: 'auto',
+              marginLeft: '0.5rem',
+              paddingTop: '0.1rem',
+            }}
+          >
+            {titleTabs.map((tab) => {
+              const active = tab.id === activeTitleTabId
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => onTitleTabChange?.(tab.id)}
+                  style={titleTabStyle(active)}
+                  title={tab.label}
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
         {/* Figma: left sidebar strip indicator */}
-        {variant === 'figma' && (
+        {!hasTitleTabs && variant === 'figma' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, marginLeft: '0.5rem' }}>
-            <span style={{ fontSize: '0.7rem', color: '#888', fontWeight: 500 }}>Drafts /</span>
-            <span style={{ fontSize: '0.75rem', color: '#333', fontWeight: 500 }}>{displayTitle}</span>
+            <span style={{ fontSize: '0.7rem', color: '#6B7280', fontWeight: 600 }}>Drafts /</span>
+            <span style={{ fontSize: '0.75rem', color: '#111827', fontWeight: 700 }}>{displayTitle}</span>
           </div>
         )}
 
         {/* Notion: page icon + breadcrumb */}
-        {variant === 'notion' && (
+        {!hasTitleTabs && variant === 'notion' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, marginLeft: '0.5rem' }}>
             <span style={{ fontSize: '0.85rem' }}>📄</span>
             <span style={{ fontSize: '0.75rem', color: '#555', fontWeight: 500 }}>{displayTitle}</span>
@@ -145,14 +207,14 @@ export default function LaptopFrame({
         )}
 
         {/* Spreadsheet: file name centered */}
-        {variant === 'spreadsheet' && (
+        {!hasTitleTabs && variant === 'spreadsheet' && (
           <span style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 600, marginLeft: '0.5rem', flex: 1, textAlign: 'center' }}>
             {displayTitle}
           </span>
         )}
 
         {/* Code: file tab */}
-        {variant === 'code' && (
+        {!hasTitleTabs && variant === 'code' && (
           <div style={{ display: 'flex', alignItems: 'center', marginLeft: '0.5rem', flex: 1 }}>
             <span style={{ fontSize: '0.7rem', color: '#ccc', backgroundColor: '#2d2d2d', padding: '0.2rem 0.75rem', borderRadius: '4px 4px 0 0' }}>
               {displayTitle}
@@ -161,7 +223,7 @@ export default function LaptopFrame({
         )}
 
         {/* Miro: toolbar stub */}
-        {variant === 'miro' && (
+        {!hasTitleTabs && variant === 'miro' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, marginLeft: '0.5rem' }}>
             <span style={{ fontSize: '0.85rem' }}>🟡</span>
             <span style={{ fontSize: '0.75rem', color: '#6B4FA0', fontWeight: 600 }}>{displayTitle}</span>
@@ -169,14 +231,14 @@ export default function LaptopFrame({
         )}
 
         {/* Kanban: project name */}
-        {variant === 'kanban' && (
+        {!hasTitleTabs && variant === 'kanban' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, marginLeft: '0.5rem' }}>
             <span style={{ fontSize: '0.75rem', color: '#8899aa', fontWeight: 600 }}>{displayTitle}</span>
           </div>
         )}
 
         {/* Default (doc, email, slack, meeting): centered title */}
-        {(variant === 'doc' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'meeting') && (
+        {!hasTitleTabs && (variant === 'doc' || variant === 'email' || variant === 'email-read' || variant === 'slack' || variant === 'meeting') && (
           <>
             <span
               style={{
@@ -280,20 +342,36 @@ export default function LaptopFrame({
       )}
 
       {/* Figma toolbar strip */}
-      {variant === 'figma' && (
+      {variant === 'figma' && showFigmaToolbar && (
         <div
+          data-ui-surface="figma-inspired-toolbar"
           style={{
-            backgroundColor: '#EFE8D2',
-            borderBottom: '1px solid #ccc',
-            padding: '0.375rem 0.75rem',
+            backgroundColor: '#FFFFFF',
+            borderBottom: '1px solid #E5E7EB',
+            padding: '0.42rem 0.75rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '1rem',
+            gap: '0.35rem',
             flexShrink: 0,
           }}
         >
           {['Move', 'Frame', 'Shape', 'Text', 'Component'].map((tool) => (
-            <span key={tool} style={{ fontSize: '0.65rem', color: '#555', cursor: 'default', userSelect: 'none' }}>{tool}</span>
+            <span
+              key={tool}
+              style={{
+                fontSize: '0.65rem',
+                color: tool === 'Move' ? '#111827' : '#4B5563',
+                background: tool === 'Move' ? '#EEF2FF' : 'transparent',
+                border: tool === 'Move' ? '1px solid #C7D2FE' : '1px solid transparent',
+                borderRadius: 6,
+                padding: '0.22rem 0.45rem',
+                cursor: 'default',
+                userSelect: 'none',
+                fontWeight: tool === 'Move' ? 800 : 600,
+              }}
+            >
+              {tool}
+            </span>
           ))}
         </div>
       )}
