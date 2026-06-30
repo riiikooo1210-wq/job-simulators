@@ -21,6 +21,8 @@ export type SceneType =
   | 'flow_diagram'
   | 'kanban_board'
   | 'priority_matrix'
+  | 'redline_click_board'
+  | 'client_question_checklist'
   | 'architect_design_studio'
 
 export interface SlackMessageData {
@@ -60,6 +62,21 @@ export interface BriefingSubStep {
   emails?: EmailData[]
   metrics?: MetricRow[]
   quotes?: QuoteData[]
+}
+
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
 }
 
 export interface SourceInboxEntryMessage {
@@ -280,6 +297,7 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  coworkerRecap?: CoworkerRecap
   actionLabel?: string
   referenceTitle?: string
   referenceContent?: string
@@ -329,11 +347,47 @@ export interface StructuredEntryNode extends BaseNode {
   appTabs?: {
     id: string
     label: string
-    content: string
+    heading?: string
+    content?: string
+    cards?: {
+      ref?: string
+      title: string
+      body: string
+      status?: string
+      originalRedline?: {
+        ref?: string
+        title: string
+        body: string
+        status?: string
+      }
+    }[]
     imagePath?: string
     imageAlt?: string
     imagePrompt?: string
   }[]
+}
+
+export interface ClientQuestionChecklistOption {
+  id: string
+  label: string
+  source?: string
+  focusGroup: string
+  validForClient: boolean
+  why?: string
+  teamCheckReason?: string
+}
+
+export interface ClientQuestionChecklistNode extends BaseNode {
+  type: 'client_question_checklist'
+  prompt: string
+  bindingKey: string
+  requiredSelections: number
+  requiredFocusGroups: string[]
+  windowTitle?: string
+  defaultAppTabId?: string
+  appTabs?: StructuredEntryNode['appTabs']
+  options: ClientQuestionChecklistOption[]
+  successFeedback?: string
 }
 
 export interface PresetReply {
@@ -366,8 +420,8 @@ export interface ChatNode extends BaseNode {
   }[]
   /**
    * Optional canned replies the user can pick instead of typing.
-   * Use when the realistic move is to choose between 2–4 stock responses
-   * (e.g., a customer-service script) — typing is still available as a fallback.
+   * Use when the realistic move is to choose between 2-4 stock responses
+   * (e.g., a customer-service script) - typing is still available as a fallback.
    * If all replies have a `branchFlag`, this scene effectively gates a structural branch.
    */
   presetReplies?: PresetReply[]
@@ -782,6 +836,53 @@ export interface KanbanBoardNode extends BaseNode {
   hideRationale?: boolean
 }
 
+export interface RedlineClickCategory {
+  id: string
+  label: string
+  description?: string
+}
+
+export interface RedlineClickTab {
+  id: string
+  label: string
+  imagePath?: string
+  sheetTitle?: string
+}
+
+export interface RedlineClickCallout {
+  id: string
+  sheetId: string
+  ref: string
+  title: string
+  text: string
+  sourceLabel?: string
+  sourceLine?: string
+  sourceRows?: Array<{ label: string; value: string }>
+  x: number
+  y: number
+  width?: number
+  anchorX?: number
+  anchorY?: number
+  correctCategoryId: string
+  owenNote: string
+}
+
+export interface RedlineClickBoardNode extends BaseNode {
+  type: 'redline_click_board'
+  bindingKey: string
+  tabs: RedlineClickTab[]
+  categories: RedlineClickCategory[]
+  callouts: RedlineClickCallout[]
+  inlineBriefingTitle?: string
+  inlineBriefingContent?: string
+  decisionGuideTitle?: string
+  decisionGuideContent?: string
+  referenceTitle?: string
+  referenceContent?: string
+  reviewerIntro?: string
+  requireAllCalloutsAnswered?: boolean
+}
+
 export interface MatrixAxis {
   label: string
   lowLabel: string
@@ -810,6 +911,12 @@ export interface ArchitectDesignStudioNode extends BaseNode {
   toolModel?: string
   referenceTitle?: string
   referenceContent?: string
+  referenceTabs?: {
+    id: string
+    label: string
+    heading?: string
+    content: string
+  }[]
   notesPlaceholder?: string
   minNotesChars?: number
   minNotesWords?: number
@@ -831,6 +938,8 @@ export type SceneNode =
   | FinalReportNode
   | FlowDiagramSceneNode
   | KanbanBoardNode
+  | RedlineClickBoardNode
+  | ClientQuestionChecklistNode
   | PriorityMatrixNode
   | ArchitectDesignStudioNode
 

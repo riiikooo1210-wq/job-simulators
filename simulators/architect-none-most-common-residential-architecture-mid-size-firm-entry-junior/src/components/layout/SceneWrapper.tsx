@@ -8,9 +8,10 @@ interface SceneWrapperProps {
   showBack?: boolean
   hideIllustration?: boolean
   backLabel?: string
+  compactIllustration?: boolean
 }
 
-export default function SceneWrapper({ children, illustration, showBack = false, hideIllustration = false, backLabel = 'Back to briefing' }: SceneWrapperProps) {
+export default function SceneWrapper({ children, illustration, showBack = false, hideIllustration = false, backLabel = 'Back to briefing', compactIllustration = false }: SceneWrapperProps) {
   const visitedNodes = useGameStore((s) => s.visitedNodes)
   const goBack = useGameStore((s) => s.goBack)
   const currentNodeId = useGameStore((s) => s.currentNodeId)
@@ -53,10 +54,9 @@ export default function SceneWrapper({ children, illustration, showBack = false,
     >
       <div
         style={{
-          width: 'min(calc(100vw - 2rem), 900px)',
+          width: 'min(calc(100vw - 2rem), 1800px)',
           backgroundColor: '#F2EBD9',
           border: '1px solid #000000',
-          boxShadow: '8px 8px 0px #000000',
           display: 'flex',
           flexDirection: 'column',
         }}
@@ -65,7 +65,8 @@ export default function SceneWrapper({ children, illustration, showBack = false,
           <div
             style={{
               width: '100%',
-              aspectRatio: '16 / 9',
+              aspectRatio: compactIllustration ? '24 / 7' : '16 / 9',
+              maxHeight: compactIllustration ? '22rem' : undefined,
               overflow: 'hidden',
               flexShrink: 0,
               borderBottom: '1px solid #000000',
@@ -75,7 +76,7 @@ export default function SceneWrapper({ children, illustration, showBack = false,
             <img
               src={illustration}
               alt=""
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: compactIllustration ? 'center 52%' : 'center center' }}
               onError={(e) => { e.currentTarget.style.display = 'none' }}
             />
           </div>
@@ -83,10 +84,10 @@ export default function SceneWrapper({ children, illustration, showBack = false,
         <div
           ref={contentRef}
           style={{
-            padding: '2.5rem 3rem',
+            padding: compactIllustration ? '1.5rem clamp(1rem, 4vw, 3rem) 2rem' : '2.5rem 3rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
+            gap: compactIllustration ? '0.85rem' : '1rem',
           }}
         >
           {canGoBack && (
@@ -97,7 +98,8 @@ export default function SceneWrapper({ children, illustration, showBack = false,
                   background: 'transparent',
                   border: 'none',
                   boxShadow: 'none',
-                  padding: '0',
+                  padding: '0.18rem 0',
+                  minHeight: 28,
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',

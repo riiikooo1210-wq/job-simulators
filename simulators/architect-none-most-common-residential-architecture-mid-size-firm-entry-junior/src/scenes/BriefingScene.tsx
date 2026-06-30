@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import { useScrollToTopOnChange } from '../components/hooks/useScrollToTopOnChange'
+import { useNarrowViewport } from '../components/hooks/useNarrowViewport'
 import ActionButton from '../components/ui/ActionButton'
 import SlackMessageEnhanced from '../components/ui/SlackMessageEnhanced'
 import EmailBlock from '../components/ui/EmailBlock'
@@ -13,15 +14,22 @@ import { ChartIcon, CheckIcon, DocumentIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
 import type { CSSProperties, ReactNode } from 'react'
 import type { BriefingNode, BriefingSubStep, SlackMessageData, SourceInboxFile } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
 
+type BriefingContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
+
 function resolveSlackMessage(
   msg: SlackMessageData,
-  ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> },
+  ctx: BriefingContext,
 ): SlackMessageData {
   return {
     ...msg,
@@ -56,6 +64,63 @@ function BriefingReferenceCard({ title, content }: { title: string; content: str
   )
 }
 
+function CoworkerRecapTranscript({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  const recap = node.coworkerRecap
+  const turns = recap?.turns || []
+
+  if (!recap || turns.length === 0) return null
+
+  const npc = recap.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap.speakerRole || npc?.role
+
+  return (
+    <section
+      style={{
+        border: '1px solid #000',
+        boxShadow: '4px 4px 0 #000',
+        backgroundColor: '#EFE8D2',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.85rem',
+      }}
+    >
+      <div>
+        <div style={{ fontSize: '0.6875rem', color: '#3A6B5E', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
+          Previous Chat
+        </div>
+        <h3 style={{ margin: '0.2rem 0 0', fontSize: '1rem', lineHeight: 1.3 }}>
+          {speakerName}'s recap
+        </h3>
+        {speakerRole && <div style={{ marginTop: '0.15rem', fontSize: '0.72rem', color: '#6f6758' }}>{speakerRole}</div>}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        {turns.map((turn, i) => (
+          <article
+            key={turn.id || i}
+            style={{
+              border: '1px solid #CDBF94',
+              backgroundColor: '#FBF7EA',
+              padding: '0.75rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.35rem',
+            }}
+          >
+            <div style={{ fontSize: '0.7rem', color: '#3A6B5E', fontWeight: 800 }}>
+              {turn.topic}
+            </div>
+            <div style={{ fontSize: '0.8125rem', lineHeight: 1.55, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+              {renderContentWithGlossary(interpolate(turn.coworkerLine, ctx))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export function BriefingDrawerContent({ node }: { node: BriefingNode }) {
   const playerName = useGameStore((s) => s.playerName)
   const branchFlags = useGameStore((s) => s.branchFlags)
@@ -72,6 +137,7 @@ export function BriefingDrawerContent({ node }: { node: BriefingNode }) {
           {renderContentWithGlossary(interpolate(node.content, ctx))}
         </p>
       )}
+      <CoworkerRecapTranscript node={node} ctx={ctx} />
       {referenceContent && (
         <BriefingReferenceCard title={node.referenceTitle || 'Reference'} content={referenceContent} />
       )}
@@ -209,6 +275,162 @@ function InlineIllustration({ src }: { src: string }) {
   )
 }
 
+function CoworkerRecap({ node, ctx, actionLabel, onComplete }: { node: BriefingNode; ctx: BriefingContext; actionLabel: string; onComplete: () => void }) {
+  const recap = node.coworkerRecap
+  const npc = recap?.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap?.speakerName || npc?.name || 'Your coworker'
+  const speakerRole = recap?.speakerRole || npc?.role
+  const turns = recap?.turns || []
+  const [step, setStep] = useState(0)
+
+  useEffect(() => {
+    setStep(0)
+  }, [node.id])
+
+  if (!recap || turns.length === 0) return null
+
+  const safeStep = Math.min(step, turns.length - 1)
+  const currentTurn = turns[safeStep]
+  const nextTurn = turns[safeStep + 1]
+  const isFinalStep = safeStep === turns.length - 1
+  const hasMultipleTurns = turns.length > 1
+  const finalFact = turns[turns.length - 1]?.answerFacts?.[0]
+
+  const handleNext = () => {
+    if (isFinalStep) {
+      onComplete()
+      return
+    }
+    setStep((current) => Math.min(current + 1, turns.length - 1))
+  }
+
+  return (
+    <section
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#FBF7EA',
+        boxShadow: '3px 3px 0 rgba(0,0,0,0.2)',
+        padding: 'clamp(0.9rem, 2vw, 1.25rem)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.95rem',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <div style={{ fontSize: '0.68rem', color: '#3A6B5E', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
+            Morning handoff
+          </div>
+          <div style={{ fontSize: '1rem', fontWeight: 900, color: '#1E1E1A', lineHeight: 1.2 }}>{speakerName}</div>
+          {speakerRole && <div style={{ fontSize: '0.75rem', color: '#6f6758' }}>{speakerRole}</div>}
+        </div>
+        {hasMultipleTurns && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            {turns.map((turn, index) => {
+              const active = index === safeStep
+              const revealed = index <= safeStep
+              return (
+                <button
+                  key={turn.id || index}
+                  type="button"
+                  onClick={() => revealed && setStep(index)}
+                  disabled={!revealed}
+                  aria-current={active ? 'step' : undefined}
+                  style={{
+                    border: active ? '1px solid #1E1E1A' : '1px solid #CDBF94',
+                    background: active ? '#6B9EA6' : revealed ? '#EFE8D2' : '#F7F1E3',
+                    color: active ? '#F2EBD9' : '#1E1E1A',
+                    borderRadius: '999px',
+                    padding: '0.22rem 0.55rem',
+                    fontSize: '0.68rem',
+                    fontWeight: 850,
+                    fontFamily: 'Inter, system-ui, sans-serif',
+                    cursor: revealed ? 'pointer' : 'default',
+                    opacity: revealed ? 1 : 0.55,
+                  }}
+                >
+                  {index + 1}. {turn.topic}
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      <article
+        key={currentTurn.id || safeStep}
+        style={{
+          border: '1px solid #B87D6B',
+          backgroundColor: '#FFFDF8',
+          borderRadius: '8px',
+          padding: '0.8rem 0.9rem',
+          boxShadow: '2px 2px 0 rgba(184,125,107,0.25)',
+        }}
+      >
+        <div style={{ marginBottom: '0.35rem', fontSize: '0.7rem', color: '#8B5E50', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
+          {currentTurn.topic}
+        </div>
+        <div style={{ fontSize: '0.86rem', lineHeight: 1.58, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+          {renderContentWithGlossary(interpolate(currentTurn.coworkerLine, ctx))}
+        </div>
+      </article>
+
+      {isFinalStep && finalFact && (
+        <div
+          style={{
+            borderLeft: '3px solid #3A6B5E',
+            backgroundColor: '#EFE8D2',
+            padding: '0.65rem 0.75rem',
+            fontSize: '0.8rem',
+            lineHeight: 1.5,
+            color: '#1E1E1A',
+          }}
+        >
+          <strong>Your job now: </strong>
+          {renderContentWithGlossary(interpolate(finalFact, ctx))}
+        </div>
+      )}
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: hasMultipleTurns ? 'space-between' : 'flex-end',
+          gap: '0.75rem',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          paddingTop: '0.1rem',
+        }}
+      >
+        {hasMultipleTurns && (
+          <div style={{ fontSize: '0.72rem', color: '#6A604B', fontWeight: 750 }}>
+            Context {safeStep + 1}/{turns.length}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={handleNext}
+          style={{
+            border: '1px solid #000000',
+            background: isFinalStep ? '#B87D6B' : '#F2EBD9',
+            color: isFinalStep ? '#F2EBD9' : '#1E1E1A',
+            boxShadow: '3px 3px 0 #000000',
+            borderRadius: '6px',
+            padding: '0.72rem 1.1rem',
+            minWidth: 'min(100%, 14rem)',
+            fontSize: '0.9rem',
+            fontWeight: 900,
+            fontFamily: 'Inter, system-ui, sans-serif',
+            cursor: 'pointer',
+            textAlign: 'center',
+          }}
+        >
+          {isFinalStep ? actionLabel : `Next: ${nextTurn?.topic || 'Context'}`}
+        </button>
+      </div>
+    </section>
+  )
+}
+
 function fileIcon(file: SourceInboxFile) {
   if (file.kind === 'spreadsheet' || file.kind === 'dashboard') return <ChartIcon size={16} />
   return <DocumentIcon size={16} />
@@ -331,6 +553,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
   const goNext = useGoNext()
   const sourceInbox = node.sourceInbox!
   const files = sourceInbox.folder.files
+  const isNarrow = useNarrowViewport()
   const requiredFileIds = sourceInbox.requiredFileIds || files.map((file) => file.id)
   const [folderOpen, setFolderOpen] = useState(canvasState.visited.length > 0)
   const [activeFileId, setActiveFileId] = useState<string | null>(canvasState.visited[canvasState.visited.length - 1] || null)
@@ -376,12 +599,12 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
           </p>
         )}
 
-        <DesktopOverlay width={sourceInbox.desktop?.width || '75%'} height={sourceInbox.desktop?.height || '80%'}>
+        <SourceInboxToolShell isNarrow={isNarrow} width={sourceInbox.desktop?.width || '75%'} height={sourceInbox.desktop?.height || '80%'}>
           <LaptopFrame
             variant={folderOpen ? 'doc' : entry.channel}
             title={folderOpen ? sourceInbox.folder.path : entryTitle}
             scrollable
-            fill
+            fill={!isNarrow}
           >
             {!folderOpen ? (
               entry.channel === 'email' ? (
@@ -420,8 +643,25 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                   </button>
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', paddingBottom: '0.75rem', borderBottom: '1px solid #CDBF94' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.95rem',
+                    minHeight: '100%',
+                    boxSizing: 'border-box',
+                    padding: 'clamp(0.85rem, 1.8vw, 1.15rem)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.35rem',
+                      paddingBottom: '0.75rem',
+                      borderBottom: '1px solid #CDBF94',
+                    }}
+                  >
                     <div style={{ fontSize: '0.75rem', color: '#555' }}><strong>From:</strong> {interpolate(entry.from, ctx)}</div>
                     {entry.to && <div style={{ fontSize: '0.75rem', color: '#555' }}><strong>To:</strong> {interpolate(entry.to, ctx)}</div>}
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline', flexWrap: 'wrap' }}>
@@ -429,7 +669,15 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                       {entry.timestamp && <span style={{ fontSize: '0.7rem', color: '#777' }}>{interpolate(entry.timestamp, ctx)}</span>}
                     </div>
                   </div>
-                  <div style={{ fontSize: '0.875rem', lineHeight: 1.65, whiteSpace: 'pre-wrap', color: '#1E1E1A' }}>
+                  <div
+                    style={{
+                      maxWidth: '64rem',
+                      fontSize: '0.875rem',
+                      lineHeight: 1.65,
+                      whiteSpace: 'pre-wrap',
+                      color: '#1E1E1A',
+                    }}
+                  >
                     {renderContentWithGlossary(interpolate(entry.body, ctx))}
                   </div>
                   <button
@@ -536,7 +784,7 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
               </div>
             )}
           </LaptopFrame>
-        </DesktopOverlay>
+        </SourceInboxToolShell>
 
         <div style={{ fontSize: '0.75rem', color: '#555' }}>
           Source files opened {openedRequiredCount}/{requiredFileIds.length}
@@ -553,6 +801,32 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
         )}
       </motion.div>
     </SceneWrapper>
+  )
+}
+
+function SourceInboxToolShell({
+  isNarrow,
+  width,
+  height,
+  children,
+}: {
+  isNarrow: boolean
+  width: string
+  height: string
+  children: ReactNode
+}) {
+  if (isNarrow) {
+    return (
+      <div style={{ width: '100%', minHeight: 620 }}>
+        {children}
+      </div>
+    )
+  }
+
+  return (
+    <DesktopOverlay width={width} height={height}>
+      {children}
+    </DesktopOverlay>
   )
 }
 
@@ -765,6 +1039,7 @@ export default function BriefingScene({ node }: Props) {
   const branchFlags = useGameStore((s) => s.branchFlags)
   const mcSelections = useGameStore((s) => s.mcSelections)
   const goNext = useGoNext()
+  const ctx = { playerName, branchFlags, mcSelections }
 
   if (node.sourceInbox) {
     return <SourceInboxBriefing node={node} />
@@ -773,9 +1048,10 @@ export default function BriefingScene({ node }: Props) {
   const onAdvance = () => goNext(node)
   const mode = node.briefingMode || 'simple'
   const actionLabel = node.actionLabel || 'Start the Task'
+  const hasCoworkerRecap = Boolean(node.coworkerRecap?.turns?.length)
 
   return (
-    <SceneWrapper illustration={node.illustration}>
+    <SceneWrapper illustration={node.illustration} compactIllustration={hasCoworkerRecap}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -797,16 +1073,19 @@ export default function BriefingScene({ node }: Props) {
           <PaginatedBriefing node={node} onAdvance={onAdvance} />
         ) : (
           <>
-            {node.illustration && <InlineIllustration src={node.illustration} />}
+            {node.illustration && !hasCoworkerRecap && <InlineIllustration src={node.illustration} />}
             {node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
-                {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
+                {renderContentWithGlossary(interpolate(node.content, ctx))}
               </p>
+            )}
+            {hasCoworkerRecap && (
+              <CoworkerRecap node={node} ctx={ctx} actionLabel={actionLabel} onComplete={onAdvance} />
             )}
             {node.referenceContent && (
               <BriefingReferenceCard
                 title={node.referenceTitle || 'Reference'}
-                content={interpolate(node.referenceContent, { playerName, branchFlags, mcSelections })}
+                content={interpolate(node.referenceContent, ctx)}
               />
             )}
             {node.slackMessages && node.slackMessages.length > 0 && (
@@ -845,9 +1124,11 @@ export default function BriefingScene({ node }: Props) {
                 delay={i * 0.1}
               />
             ))}
-            <ActionButton text={actionLabel} onClick={onAdvance} />
+            {!hasCoworkerRecap && <ActionButton text={actionLabel} onClick={onAdvance} />}
             {import.meta.env.DEV && (
-              <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
+              <div style={{ alignSelf: 'flex-start' }}>
+                <ActionButton text="Skip (dev)" onClick={onAdvance} variant="secondary" fullWidth={false} />
+              </div>
             )}
           </>
         )}

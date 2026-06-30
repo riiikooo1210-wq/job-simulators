@@ -1,6 +1,6 @@
 {
   "workMixDesign": {
-    "sourceDerivedSummary": "Entry/junior residential architecture is dominated by digital drawing/model artifacts, cognitive coordination, written documentation, and focused client/team communication. Site conditions matter, but this scenario uses Riley's digital site photo rather than asking the player to perform physical field work.",
+    "sourceDerivedSummary": "Entry/junior residential architecture is dominated by digital drawing/model artifacts, cognitive coordination, and focused client/team communication. Site and field constraints matter, but this shorter student version handles them through team rules and a guided design studio instead of long writing or live calls.",
     "categories": {
       "physicalProceduralTool": {
         "weight": "minor",
@@ -8,7 +8,7 @@
           "O*NET includes site visits/inspections and construction coordination. [onet]",
           "Junior site visit discussions emphasize observing, comparing to drawings, and escalating. [reddit:1c0xx7n]"
         ],
-        "simulatorImplication": "Represent site conditions through a digital photo-review and field-note desk task, not a physical playground."
+        "simulatorImplication": "Represent site conditions through Riley's verification reply and follow-on schematic constraints, not a physical playground."
       },
       "digitalToolArtifactWork": {
         "weight": "dominant",
@@ -32,7 +32,7 @@
           "O*NET emphasizes written documents and specifications. [onet]",
           "Junior advice emphasizes organized notes and concise questions. [reddit:159xtnc][reddit:12p6n9p]"
         ],
-        "simulatorImplication": "Require redline pickup tracker, prep notes, rationale, Slack site concern to Maya, and a Revit-like schematic option study."
+        "simulatorImplication": "Use a redline click board, a client-question checklist, read-only handoffs, and source tabs inside the design studio instead of long written prep."
       },
       "spokenInterpersonalCommunication": {
         "weight": "secondary",
@@ -40,18 +40,18 @@
           "O*NET shows frequent client/team communication. [onet]",
           "Residential architects explain changes and tradeoffs to clients. [reddit:13yf1i4][reddit:1alviwh]"
         ],
-        "simulatorImplication": "One homeowner voice meeting."
+        "simulatorImplication": "Represent the homeowner call as a deterministic Dana handoff so students can focus on question judgment and design moves."
       },
       "passiveMonitoringWaitingContextSwitching": {
         "weight": "secondary",
         "sourceEvidence": [
           "Architecture days include email, meetings, redlines, and interruptions. [reddit:1hh974y][reddit:17mwbky]"
         ],
-        "simulatorImplication": "Use Slack, contractor message, and deadline pressure."
+        "simulatorImplication": "Use Slack-style handoffs and deadline pressure without adding extra waiting or live-call workload."
       }
     },
-    "simulatorPlan": "Active scenes: Slack MCQ with redirects, redline pickup tracker, client prep, client voice meeting, digital site-photo Slack escalation to Maya, and a Revit-like schematic option study.",
-    "activeSceneMixRationale": "Six active scenes require constructed work or action; MCQ is limited and consequence-routed."
+    "simulatorPlan": "Active scenes: Slack MCQ with redirects, A101/A201 redline click board, client-question checklist, Dana handoff briefing, and a Revit-like schematic option study.",
+    "activeSceneMixRationale": "The shortened flow keeps hands-on drawing judgment and design manipulation while reducing open-ended writing and removing the live voice call."
   },
   "storyline": {
     "gameTitle": "Architect Simulation",
@@ -87,151 +87,135 @@
         "briefingMode": "simple",
         "section": 1,
         "title": "Maple Street Inbox",
-        "content": "Maya sends the project link for a 9:30 AM clarification call with Dana Moreno, the homeowner client. Review the shared folder before choosing how to prepare.",
-        "referenceTitle": "Files reviewed from /Projects/Maple_Street_Addition",
-        "referenceContent": "The shared folder contains A101 redlines, A201 elevation privacy notes, the site survey, R-2 zoning notes, and the permit readiness open items list. The exact file contents are opened in the Maple Street Inbox scene and reappear as redline cards or reference material in later work scenes.",
+        "content": "Maya gives you one short project summary before you choose your first move.",
         "illustration": "/scenes/maple_street_inbox.png",
-        "imageBrief": "First-person view at a residential architecture studio desk before redline pickup and homeowner call prep tasks. The scene shows trace paper, printed plan redlines, a site survey sheet, zoning notes, a laptop with generic unreadable email and folder shapes, pencils, and material samples. Keep the mood focused and realistic; do not render the exact file contents because the simulator UI displays those as coded text.",
+        "imageBrief": "First-person view at a residential architecture studio desk before redline pickup and homeowner call prep tasks. The scene shows trace paper, marked-up plans, a site survey sheet, zoning notes, a laptop with generic unreadable project-message shapes, pencils, and material samples. Keep the mood focused and realistic; do not render readable document text, emails, or answer text.",
+        "actionLabel": "Continue to first move",
         "sourceInbox": {
           "entryMessage": {
-            "channel": "email",
-            "from": "Maya Chen <maya.chen@harborash.example>",
-            "to": "{{playerName}}@harborash.example",
-            "subject": "Maple Street - redlines and questions before Dana call",
-            "timestamp": "8:47 AM",
-            "body": "Morning {{playerName}},\n\nDana Moreno is on the calendar at 9:30 AM for a homeowner clarification call. Before you touch the model, open the Maple Street shared folder and look at the redlines, zoning note, site survey, and permit readiness open items. I need a useful first pass: client questions, drawing gaps, and anything that needs verification before we talk to Dana.\n\nDo not treat the setback or lot coverage as solved yet. If a file raises a question, carry it forward instead of smoothing it over.",
-            "linkLabel": "Open Maple_Street_Addition shared folder"
+            "channel": "slack",
+            "from": "Maya Chen",
+            "channelName": "#maple-street-addition",
+            "timestamp": "8:48 AM",
+            "subject": "Maple Street morning handoff",
+            "body": "Please open the Maple Street project folder before you answer my first-move question. Use the brief, zoning notes, redline log, and site note to separate what is clear from what still needs checking.",
+            "linkLabel": "Open /Projects/Maple_Street_Addition"
           },
           "folder": {
-            "name": "Maple_Street_Addition",
+            "name": "Maple Street Addition - Project Files",
             "path": "/Projects/Maple_Street_Addition",
-            "updatedLabel": "Updated today 8:42 AM by Maya Chen",
+            "updatedLabel": "Updated today, 8:42 AM",
             "files": [
               {
-                "id": "a101",
-                "name": "A101 Proposed Plan - Maya redlines.pdf",
-                "kind": "pdf",
-                "modified": "8:32 AM",
+                "id": "project_brief",
+                "name": "01_Client_Brief_Dana_Luis.md",
+                "kind": "doc",
                 "owner": "Maya Chen",
-                "previewTitle": "Sheet A101 - Proposed Plan",
-                "summary": "Redline comments on rear-yard dimension and plan/elevation coordination.",
+                "modified": "Today 8:12 AM",
+                "previewTitle": "Client Brief - Dana and Luis Moreno",
                 "sections": [
                   {
-                    "heading": "Redline note",
-                    "body": "Rear addition dimension at the rear yard reads 24 ft 8 in. R-2 zoning note says the rear setback minimum is 25 ft. Verify before editing the model or telling the client the addition fits."
+                    "heading": "Client goals",
+                    "body": "Dana and Luis want a brighter kitchen, a useful mudroom for shoes and sports gear, and a second-floor bedroom suite."
                   },
                   {
-                    "heading": "Plan coordination",
-                    "body": "Kitchen window tag reads W-12 on A101, but A201 elevation currently shows W-10. Coordinate the tag before the permit review."
+                    "heading": "Call timing",
+                    "body": "Dana has a 9:30 call. Maya needs a careful first pass before anyone treats the model as final."
                   }
                 ]
               },
               {
-                "id": "a201",
-                "name": "A201 Elevations - privacy note.pdf",
-                "kind": "pdf",
-                "modified": "8:35 AM",
-                "owner": "Maya Chen",
-                "previewTitle": "Sheet A201 - West Elevation",
-                "summary": "Elevation markup about the west-facing bedroom window.",
-                "sections": [
-                  {
-                    "heading": "Open note on west elevation",
-                    "body": "Second-floor west-facing bedroom window is tagged: privacy review - confirm preference before finalizing. Maya's margin note asks whether Dana prefers sill height, translucent glazing, landscape screening, or a smaller window."
-                  },
-                  {
-                    "heading": "Client impact",
-                    "body": "The window affects daylight and privacy from the west neighbor, so it belongs in client questions rather than a silent drafting decision."
-                  }
-                ]
-              },
-              {
-                "id": "survey",
-                "name": "Site Survey - existing conditions.pdf",
-                "kind": "pdf",
-                "modified": "Yesterday",
-                "owner": "Survey upload",
-                "previewTitle": "Existing Conditions Survey",
-                "summary": "Site conditions near the proposed addition footprint.",
-                "sections": [
-                  {
-                    "heading": "Rear yard constraints",
-                    "body": "Mature maple tree is marked to preserve. Proposed addition footprint is close to the tree protection area and should not be treated as a blank rear yard."
-                  },
-                  {
-                    "heading": "Existing wall conditions",
-                    "body": "Existing basement window and utility meter sit near the proposed foundation line. Confirm field condition before relying on the generic foundation detail."
-                  }
-                ]
-              },
-              {
-                "id": "zoning",
-                "name": "R-2 Zoning Notes.txt",
+                "id": "zoning_notes",
+                "name": "02_Zoning_Notes_Setbacks_Coverage.txt",
                 "kind": "text",
-                "modified": "8:20 AM",
-                "owner": "Maya Chen",
-                "previewTitle": "R-2 Zoning Notes",
-                "summary": "Setback, lot coverage, height, and privacy rules.",
+                "owner": "Owen Reed",
+                "modified": "Yesterday 5:31 PM",
+                "previewTitle": "Zoning Notes",
                 "sections": [
                   {
-                    "heading": "Dimensional standards",
-                    "body": "Rear setback: 25 ft minimum. Side setback: 5 ft minimum. Maximum lot coverage: 45%. Maximum height: 30 ft."
+                    "heading": "Rules to check",
+                    "body": "Rear setback minimum is 25 ft. The permit worksheet should stay at or below 45% lot coverage."
                   },
                   {
-                    "heading": "Privacy review",
-                    "body": "Second-floor west-facing bedroom windows near the side lot line require privacy review before permit set signoff."
-                  },
-                  {
-                    "heading": "Permit set scope",
-                    "body": "Expected sheets include site plan, existing/demo plans, proposed plans, elevations, sections, wall details, door/window schedule, structural coordination, and code/energy notes."
+                    "heading": "Open issue",
+                    "body": "A101 currently shows 24 ft 8 in at the rear yard and a 46% coverage worksheet note. Do not promise city approval from this file."
                   }
                 ]
               },
               {
-                "id": "permit_qa",
-                "name": "Permit Readiness Open Items.xlsx",
-                "kind": "spreadsheet",
-                "modified": "8:41 AM",
+                "id": "redline_log",
+                "name": "03_A101_A201_Redline_Log.pdf",
+                "kind": "pdf",
                 "owner": "Owen Reed",
-                "previewTitle": "Permit Readiness Open Items",
-                "summary": "Current permit-readiness issues and open items.",
-                "rows": [
+                "modified": "Today 8:35 AM",
+                "previewTitle": "A101/A201 Redline Log",
+                "sections": [
                   {
-                    "item": "Rear setback",
-                    "status": "Verify first",
-                    "detail": "A101 dimension reads 24 ft 8 in; zoning minimum is 25 ft."
+                    "heading": "Known drawing fixes",
+                    "body": "Window tags need coordination between A101, A201, and the window schedule."
                   },
                   {
-                    "item": "Lot coverage",
-                    "status": "Escalate",
-                    "detail": "Current calc is 46% before deck revision; zoning maximum is 45%."
+                    "heading": "Verify before changing",
+                    "body": "Setback, lot coverage, privacy, and existing utility/site conditions need checking before design promises."
+                  }
+                ]
+              },
+              {
+                "id": "site_note",
+                "name": "04_Site_Survey_Note.txt",
+                "kind": "text",
+                "owner": "Riley Park",
+                "modified": "Today 8:28 AM",
+                "previewTitle": "Site Survey Note",
+                "sections": [
+                  {
+                    "heading": "Right-rear condition",
+                    "body": "The proposed addition is near a basement window and utility meter. The folder has a survey note, but the real site condition still needs field confirmation."
                   },
                   {
-                    "item": "Door/window schedule",
-                    "status": "Not started",
-                    "detail": "Schedule needs tags coordinated after W-12/W-10 conflict is resolved."
-                  },
-                  {
-                    "item": "A401 foundation detail",
-                    "status": "Generic",
-                    "detail": "Detail does not yet account for existing basement window and utility meter."
+                    "heading": "Maple tree",
+                    "body": "Keep the maple tree protection area visible when studying the footprint."
                   }
                 ]
               }
             ]
           },
           "requiredFileIds": [
-            "a101",
-            "a201",
-            "survey",
-            "zoning",
-            "permit_qa"
+            "project_brief",
+            "zoning_notes",
+            "redline_log",
+            "site_note"
           ],
           "continueLabel": "Continue to first move",
           "desktop": {
-            "width": "75%",
-            "height": "80%"
+            "width": "72%",
+            "height": "74%"
           }
+        },
+        "coworkerRecap": {
+          "fallback": "I do not want to make up extra project facts here. Stick with the handoff I just gave you and keep the open items labeled.",
+          "npcId": "maya_chen",
+          "turns": [
+            {
+              "id": "maya_summary",
+              "topic": "Maya's summary",
+              "coworkerLine": "Dana and Luis own the house. They want to know if the rear addition can make the kitchen brighter, add a mudroom, and add a second-floor bedroom suite.\n\nBefore Dana's 9:30 call, Maya needs one careful first pass. Do not start designing yet. First, sort what is already clear and what still needs checking.\n\nWatch for:\n- zoning limits, like setback and lot coverage\n- redlines in the drawing set\n- privacy for the west bedroom window\n- real site items, like the maple tree, basement window, and utility meter",
+              "answerFacts": [
+                "Choose the best first move: compare client goals with zoning limits, redlines, drawing gaps, and questions for Maya or Dana.",
+                "The owners want a brighter kitchen, a mudroom, and a second-floor bedroom suite.",
+                "Dana has a 9:30 client call.",
+                "Maya needs a first pass before the model is treated as final.",
+                "The rear setback may be too short.",
+                "Lot coverage may be too high.",
+                "The west bedroom window needs a privacy decision.",
+                "Window tags need drawing coordination.",
+                "The player should not sketch a fresh option first.",
+                "The player should not promise Dana that the setback is fine.",
+                "The player should not wait for Owen and Riley before writing anything.",
+                "Known facts should be separated from items that need verification."
+              ]
+            }
+          ]
         },
         "next": "first_move"
       },
@@ -240,10 +224,10 @@
         "type": "multiple_choice",
         "section": 1,
         "title": "Choose Your First Move",
-        "content": "Maya asks how you will use the first hour after opening the shared folder.",
+        "content": "Maya asks how you will use the first hour before Dana's 9:30 call.\n\nThe previous chat with Maya is available in View Briefing.",
         "appWindow": "slack",
         "windowTitle": "#maple-street-addition",
-        "prompt": "Choose the Slack reply you would send.",
+        "prompt": "Pick the best Slack reply to Maya.",
         "slackMessages": [
           {
             "sender": "Maya Chen",
@@ -256,12 +240,12 @@
         "options": [
           {
             "id": "sketch",
-            "label": "I will sketch a better option first so the call has a fresh design direction.",
+            "label": "I will sketch a better layout first so the call has a fresh design idea.",
             "branchFlag": "sketch_first"
           },
           {
             "id": "constraints",
-            "label": "I will map client goals against zoning, redlines, drawing gaps, and questions for you or the client.",
+            "label": "I will compare the client goals with zoning, redlines, drawing gaps, and questions for you or Dana.",
             "branchFlag": "constraints_first"
           },
           {
@@ -290,9 +274,9 @@
           "workSurface": "Slack",
           "inputArtifacts": [
             {
-              "id": "shared_folder",
-              "label": "Shared project folder",
-              "whereVisible": "maple_street_inbox.sourceInbox"
+              "id": "maya_recap",
+              "label": "Maya's Maple Street recap",
+              "whereVisible": "maple_street_inbox.coworkerRecap"
             }
           ],
           "studentAction": "Choose a careful first move.",
@@ -360,83 +344,178 @@
       },
       "redline_note": {
         "id": "redline_note",
-        "type": "kanban_board",
+        "type": "redline_click_board",
         "section": 2,
         "title": "Pick Up the A101/A201 Redlines",
-        "content": "Owen wants the pickup board before you draft Dana's call questions or open Revit. Sort each redline by whether it is a clean drafting fix, needs a question or verification, or should hold for Maya/Owen because it could change the design, permit path, or field assumptions.",
-        "appWindow": "kanban",
-        "windowTitle": "Maple Street Redline Pickup Tracker",
+        "content": "Mark 6 redline cards as Fix or Verify.\nUse the Evidence to use box on each card. That is the only evidence you need for that card.\nChoose Fix only for an obvious drawing problem when the evidence gives one exact drawing change.\nDo not choose Fix just because a card shows a rule problem. If a setback, lot coverage, site condition, or client choice still needs a decision, choose Verify.",
+        "inlineBriefingTitle": "Maya's redline reminder",
+        "inlineBriefingContent": "Dana and Luis want a brighter kitchen, a useful mudroom, and a second-floor bedroom suite.\nBefore Dana's 9:30 call, Maya needs a careful first pass. Do not start designing yet.\nYour job here is to fix obvious drawing coordination problems, like wrong or missing window tags, and mark rule, site, or client-choice problems as Verify.",
+        "windowTitle": "Maple Street Redline Pickup",
         "bindingKey": "redline_note",
-        "requireAllCardsMoved": true,
-        "hideRationale": true,
-        "columns": [
+        "requireAllCalloutsAnswered": true,
+        "decisionGuideTitle": "How to decide Fix or Verify",
+        "decisionGuideContent": "Use this guide for these six cards.\n\nThe Evidence to use box is enough. You do not need another hidden file.\n\nRead in this order:\n1. Read the card title and problem.\n2. Read the Evidence to use box.\n3. Ask: is this an obvious drawing coordination problem, or is it a rule, site, or client-choice problem?\n\nFix means: change an obvious drawing error now.\nChoose Fix only for proven window-tag work:\n- South-left window tag: the schedule says the opening is W-4, but A201 shows W-1. Change the A201 tag to W-4.\n- Missing W-10 tag: the window is already drawn, and the schedule says the tag is W-10. Add the missing W-10 tag.\nDo not choose Fix just because a measurement breaks a zoning or permit rule. A rule problem is usually Verify because the card does not tell you the safe design change.\n\nVerify means: do not change the drawing yet.\nChoose Verify when the evidence shows a problem but not one exact safe drawing change:\n- Rear setback short: 24 ft 8 in is under the 25 ft rule. The team must check the dimension and zoning path before changing the footprint.\n- Lot coverage over max: 46% is above the 45% rule. The team must check the worksheet and decide what changes.\n- West bedroom privacy: there are possible solutions, but Dana has not chosen one yet.\n- Existing utilities: the survey says utilities may be near the addition, but the real site has not been confirmed.\n\nFinal check:\nObvious drawing tag or label problem with one exact update = Fix.\nRule violation, permit math, site condition, or client choice = Verify.",
+        "tabs": [
           {
-            "id": "inbox",
-            "label": "Inbox"
+            "id": "a101",
+            "label": "A101",
+            "sheetTitle": "A101 Proposed Plan - Maya Redlines",
+            "imagePath": "/action-assets/revit/level1.png"
           },
           {
-            "id": "update",
-            "label": "Drafting Fix"
-          },
-          {
-            "id": "ask",
-            "label": "Ask / Verify"
-          },
-          {
-            "id": "hold",
-            "label": "Hold / Escalate"
+            "id": "a201",
+            "label": "A201",
+            "sheetTitle": "A201 West Elevation - Privacy Note",
+            "imagePath": "/action-assets/revit/west_elevation.png"
           }
         ],
-        "cards": [
+        "categories": [
+          {
+            "id": "fix",
+            "label": "Fix",
+            "description": "The evidence gives one clear answer, so the drawing can be changed now."
+          },
+          {
+            "id": "verify",
+            "label": "Verify",
+            "description": "The evidence still leaves a choice, site check, or rule problem, so someone must check first."
+          }
+        ],
+        "callouts": [
           {
             "id": "window_tag",
-            "text": "A101 tags the kitchen window as W-12; A201 shows that same kitchen opening as W-10. Window schedule says W-12 is the kitchen awning.",
-            "initialColumn": "inbox"
+            "sheetId": "a101",
+            "ref": "A101 / A201",
+            "title": "South-left window tag",
+            "text": "A101 and A201 use different tags for the same south-left window.",
+            "sourceLabel": "Window schedule excerpt",
+            "sourceLine": "Compare the drawing tag with this schedule excerpt.",
+            "sourceRows": [
+              {
+                "label": "Window schedule",
+                "value": "South-left opening = W-4"
+              },
+              {
+                "label": "A201 drawing",
+                "value": "South-left opening currently shows W-1"
+              }
+            ],
+            "x": 5,
+            "y": 48,
+            "width": 28,
+            "anchorX": 25.6,
+            "anchorY": 42,
+            "correctCategoryId": "fix",
+            "owenNote": "This is Fix. The schedule gives one exact tag: W-4. A201 shows W-1, so the drawing change is to update that A201 tag to W-4."
           },
           {
             "id": "schedule_shell",
-            "text": "Door/window schedule sheet is blank, but A101/A201 already show known tags W-10 and W-12.",
-            "initialColumn": "inbox"
+            "sheetId": "a201",
+            "ref": "A201 / Schedule",
+            "title": "Missing W-10 tag",
+            "text": "A201 shows the upper-left window, but its tag is missing.",
+            "sourceLabel": "Window schedule excerpt",
+            "sourceLine": "Compare A201 with this schedule excerpt.",
+            "sourceRows": [
+              {
+                "label": "Window schedule",
+                "value": "Upper-left A201 opening = W-10"
+              },
+              {
+                "label": "A201 drawing",
+                "value": "Opening is shown, but no tag is shown"
+              }
+            ],
+            "x": 9,
+            "y": 8,
+            "width": 28,
+            "anchorX": 28,
+            "anchorY": 29,
+            "correctCategoryId": "fix",
+            "owenNote": "This is Fix. The window is already drawn, and the schedule says its tag is W-10. Add the missing W-10 tag; do not redesign the window."
           },
           {
             "id": "rear_setback",
-            "text": "A101 rear yard dimension reads 24 ft 8 in; R-2 zoning note says 25 ft minimum.",
-            "initialColumn": "inbox"
+            "sheetId": "a101",
+            "ref": "A101",
+            "title": "Rear setback short",
+            "text": "A101 rear yard dimension reads 24 ft 8 in; local zoning requires a 25 ft minimum rear setback.",
+            "sourceLabel": "A101 + zoning rule",
+            "sourceLine": "A101 says the rear yard is 24 ft 8 in. The zoning rule says the minimum is 25 ft.",
+            "x": 73,
+            "y": 57,
+            "width": 24,
+            "anchorX": 76,
+            "anchorY": 54.2,
+            "correctCategoryId": "verify",
+            "owenNote": "This is Verify. Even though 24 ft 8 in is short of the 25 ft rule, the card does not give one safe drawing change. The team must check the dimension and zoning path first."
           },
           {
             "id": "lot_coverage",
+            "sheetId": "a101",
+            "ref": "A101",
+            "title": "Lot coverage over max",
             "text": "Permit worksheet shows lot coverage at 46% before deck revision; zoning max is 45%.",
-            "initialColumn": "inbox"
+            "sourceLabel": "Permit worksheet + zoning rule",
+            "sourceLine": "The permit worksheet says lot coverage is 46%. The zoning max is 45%.",
+            "x": 38,
+            "y": 56,
+            "width": 29,
+            "anchorX": 57,
+            "anchorY": 46,
+            "correctCategoryId": "verify",
+            "owenNote": "This is Verify. The 46% number is over the 45% rule, but that does not tell you which area to change. The team must check the worksheet and decide before updating the model."
           },
           {
             "id": "privacy_window",
-            "text": "A201 west bedroom window needs a privacy strategy, but Dana has not chosen sill height, glazing, screening, or a smaller window.",
-            "initialColumn": "inbox"
+            "sheetId": "a201",
+            "ref": "A201",
+            "title": "West bedroom privacy",
+            "text": "A201 west bedroom window needs a privacy strategy. Possible solutions include a higher sill, privacy glazing, exterior screening, or a smaller window, but Dana has not chosen one yet.",
+            "sourceLabel": "A201 privacy note",
+            "sourceLine": "A201 lists possible privacy options, but Dana has not chosen one yet.",
+            "x": 53,
+            "y": 8,
+            "width": 31,
+            "anchorX": 49,
+            "anchorY": 29,
+            "correctCategoryId": "verify",
+            "owenNote": "This is Verify. The card lists possible privacy options, but Dana has not picked one. Ask Dana about the daylight and privacy tradeoff before changing the elevation."
           },
           {
             "id": "foundation_existing",
-            "text": "Proposed foundation line is close to an existing basement window and utility meter; the folder has a survey note but no field confirmation.",
-            "initialColumn": "inbox"
+            "sheetId": "a101",
+            "ref": "A101",
+            "title": "Proposed addition area near existing utilities",
+            "text": "The proposed addition area is close to an existing basement window and utility meter. The folder has a survey note, but no field confirmation.",
+            "sourceLabel": "Survey note",
+            "sourceLine": "The survey note says utilities may be near the addition, but the real site has not been confirmed yet.",
+            "x": 63,
+            "y": 6,
+            "width": 30,
+            "anchorX": 73.5,
+            "anchorY": 38.5,
+            "correctCategoryId": "verify",
+            "owenNote": "This is Verify. The survey only says utilities may be near the addition. Someone must check the real site before the team moves ahead with that footprint."
           }
         ],
-        "referenceTitle": "Owen pickup rule",
-        "referenceContent": "Sort the redline by the thing you can prove before editing.\n\nDrafting Fix: use this only when the project folder, redline set, or schedule excerpt already tells you the correction. These are coordination or setup items: matching a tag to the schedule, adding a known row, cleaning up a sheet reference.\n\nAsk / Verify: use this when the next edit depends on an answer from Owen, Maya, Dana, the field lead, or another source that is not settled yet. Typical signals: client preference, which drawing controls, field condition, existing utility, or missing measurement.\n\nHold / Escalate: use this when editing could hide a bigger issue. Typical signals: zoning or permit conflict, design direction, foundation/structure, cost impact, or anything you would not want Dana to hear as a promise yet.\n\nIf a card fits two buckets, choose the riskier bucket.",
+        "reviewerIntro": "I checked your pickup. Use one rule: Fix is for an obvious drawing problem with one exact update. Verify is for a rule problem, permit math, site condition, or client choice that still needs a decision.",
         "deskWorkDesign": {
           "roleFamily": "residential architecture",
-          "workSurface": "Redline pickup tracker",
+          "workSurface": "A101/A201 redline click board",
           "inputArtifacts": [
             {
               "id": "redline_cards",
-              "label": "A101/A201 redline cards",
-              "whereVisible": "kanban cards"
+              "label": "A101/A201 redline callouts",
+              "whereVisible": "drawing callouts"
             },
             {
               "id": "pickup_rule",
               "label": "Owen pickup rule",
-              "whereVisible": "referenceContent"
+              "whereVisible": "redline instruction box"
             }
           ],
-          "studentAction": "Sort redline items into drafting fixes, ask/verify items, and hold/escalation items.",
+          "studentAction": "Classify each redline as a fix that can be drafted now or a verification item that should not be edited yet.",
           "outputArtifact": {
             "id": "redline_pickup_tracker",
             "label": "redline_pickup_tracker",
@@ -454,210 +533,146 @@
       },
       "client_prep": {
         "id": "client_prep",
-        "type": "structured_entry",
+        "type": "client_question_checklist",
         "section": 2,
-        "title": "Prepare Dana Client Call Questions",
-        "content": "Use the redline pickup board and shared folder to draft focused questions for Dana's 9:30 homeowner clarification call.",
-        "appWindow": "notion",
-        "windowTitle": "Maple Street - Dana Call Prep",
-        "prompt": "Write 4-6 questions for Dana. Ask about homeowner choices or priorities only; do not turn zoning, field-condition, or drawing-coordination issues into promises.",
-        "definition": {
-          "itemLabel": "Question",
-          "bindingKey": "client_prep",
-          "initialCount": 4,
-          "minItems": 4,
-          "maxItems": 6,
-          "fields": [
-            {
-              "key": "question",
-              "label": "Question",
-              "multiline": true,
-              "rows": 2
-            },
-            {
-              "key": "why",
-              "label": "Why it matters",
-              "multiline": true,
-              "rows": 2
-            }
-          ]
-        },
+        "title": "Build Dana Question Checklist",
+        "content": "Before Maya talks with Dana, choose the two Dana-facing questions that would help the design team. Keep zoning, drawing-tag, and field-condition items as team checks.",
+        "windowTitle": "Maple Street - Question Checklist",
+        "bindingKey": "client_prep",
+        "defaultAppTabId": "builder",
+        "prompt": "Choose exactly 2 Dana questions: one about privacy/daylight and one about the kitchen, mudroom, or daily routine.",
+        "requiredSelections": 2,
+        "requiredFocusGroups": [
+          "privacy",
+          "daily_life"
+        ],
+        "appTabs": [
+          {
+            "id": "project_notes",
+            "label": "Project Notes",
+            "heading": "Maya's pre-call notes",
+            "content": "Dana and Luis priorities:\n- Brighter kitchen, without growing beyond the current footprint.\n- Useful mudroom storage for shoes, coats, and sports gear without crowding the kitchen path.\n- Daily routine concerns, especially kitchen access during construction.\n\nOpen redline notes:\n- A101 rear yard reads 24 ft 8 in; zoning minimum is 25 ft.\n- Permit worksheet shows 46% lot coverage; zoning max is 45%.\n- A201 west bedroom window still needs a privacy/daylight choice.\n- A201 window-tag fix is already proven by the schedule.\n- Basement window and utility meter need field confirmation."
+          }
+        ],
+        "options": [
+          {
+            "id": "privacy_daylight",
+            "label": "Which privacy choice feels best for the west bedroom window while still keeping daylight?",
+            "source": "Open redline notes",
+            "focusGroup": "privacy",
+            "validForClient": true,
+            "why": "Dana needs to choose the privacy/daylight tradeoff."
+          },
+          {
+            "id": "kitchen_mudroom_priority",
+            "label": "What matters most near the kitchen: brighter cooking space, mudroom storage, or keeping the path open?",
+            "source": "Dana/Luis priorities",
+            "focusGroup": "daily_life",
+            "validForClient": true,
+            "why": "This helps the team place the kitchen and mudroom without guessing."
+          },
+          {
+            "id": "construction_routine",
+            "label": "During construction, what daily routine or kitchen access should the team protect most?",
+            "source": "Dana/Luis priorities",
+            "focusGroup": "daily_life",
+            "validForClient": true,
+            "why": "This helps the team plan around the homeowner's day-to-day needs."
+          },
+          {
+            "id": "rear_setback",
+            "label": "Can you approve the 25 ft rear setback if we move the addition?",
+            "source": "Open redline notes",
+            "focusGroup": "team_check",
+            "validForClient": false,
+            "teamCheckReason": "The team must verify zoning and drawing dimensions. Do not ask Dana to approve a rule."
+          },
+          {
+            "id": "lot_coverage",
+            "label": "Can you confirm whether 46% lot coverage is allowed?",
+            "source": "Open redline notes",
+            "focusGroup": "team_check",
+            "validForClient": false,
+            "teamCheckReason": "Lot coverage is a zoning and permit worksheet check for the team."
+          },
+          {
+            "id": "window_tag",
+            "label": "Should we change the A201 window tag from W-1 to W-4?",
+            "source": "Open redline notes",
+            "focusGroup": "team_check",
+            "validForClient": false,
+            "teamCheckReason": "The schedule already proves this drawing fix. Dana does not need to decide it."
+          },
+          {
+            "id": "field_condition",
+            "label": "Is the basement window and utility meter clear in the field?",
+            "source": "Open redline notes",
+            "focusGroup": "team_check",
+            "validForClient": false,
+            "teamCheckReason": "Riley or the project team must check the real site condition."
+          }
+        ],
+        "successFeedback": "Good. These questions ask Dana about choices only. The team will handle zoning, drawing tags, and field checks.",
         "deskWorkDesign": {
           "roleFamily": "residential architecture",
-          "workSurface": "Notion prep note",
+          "workSurface": "Guided client-question checklist",
           "inputArtifacts": [
             {
-              "id": "shared_folder",
-              "label": "Shared project folder",
-              "whereVisible": "referenceContent"
-            },
-            {
-              "id": "zoning",
-              "label": "Zoning Reference",
-              "whereVisible": "referenceContent"
-            },
-            {
-              "id": "redline_pickup",
-              "label": "Completed redline pickup board",
-              "whereVisible": "prior redline_note response"
+              "id": "project_notes",
+              "label": "Project Notes",
+              "whereVisible": "appTabs"
             }
           ],
-          "studentAction": "Draft client questions with rationale.",
+          "studentAction": "Select two homeowner-facing questions and leave technical checks with the team.",
           "outputArtifact": {
             "id": "client_prep",
-            "label": "client_prep",
-            "format": "submitted artifact"
+            "label": "client question checklist",
+            "format": "selected checklist questions"
           },
           "rubricEvidence": [
             "freeTextResponses.client_prep"
           ],
           "continuity": [
-            "Later scenes reference this work where realistic."
+            "Dana handoff uses the same client-choice topics before the design studio."
           ],
-          "authenticityCheck": "Visible source artifact -> student action -> workplace output -> rubric evidence."
+          "authenticityCheck": "Visible project notes -> guided client questions -> deterministic Dana handoff -> design constraints."
         },
         "next": "client_call",
-        "referenceTitle": "Client prep source files",
-        "referenceContent": "Use the redline pickup board as your filter.\nClient-facing: ask Dana about choices and priorities, such as daylight vs privacy at the west bedroom window, disruption tolerance, cost control, kitchen/mudroom priorities, and tree preservation preferences.\nTeam/field-facing: do not ask Dana to solve rear setback, lot coverage, W-10/W-12 tag control, generic foundation detail, or utility/basement-window field conditions. Carry those as Owen/Maya/Riley verification items.\n\nShared Project Folder\n/Projects/Maple_Street_Addition\nFiles: A101 Proposed Plan - Maya redlines.pdf; A201 Elevations - privacy note.pdf; Site Survey - existing conditions.pdf; R-2 Zoning Notes.txt; Permit Readiness Open Items.xlsx.\n\nClient Notes\nDana and Luis Moreno want more daylight, privacy from the west neighbor, cost control, preservation of the mature maple tree, a mudroom, a kitchen remodel, and a second-floor bedroom suite.\n\nKnown Constraints and Open Items\nA101 rear yard dimension reads 24 ft 8 in; R-2 rear setback minimum is 25 ft. Permit readiness open items show lot coverage at 46% before deck revision; zoning max is 45%. A201 has a west-facing bedroom window privacy note. Existing basement window and utility meter are near proposed foundation line. A401 foundation detail is still generic; door/window schedule not started.\n\n---\n\nZoning Reference\nR-2 zoning excerpt: rear setback 25 ft minimum; side setback 5 ft minimum; max lot coverage 45%; max height 30 ft; second-floor west-facing bedroom windows near side lot line require privacy review; permit set usually includes site plan, existing/demo plans, proposed plans, elevations, sections, wall details, door/window schedule, structural coordination, and code/energy notes."
+        "referenceTitle": "How to choose Dana questions",
+        "referenceContent": "Ask Dana about choices and priorities only. Keep zoning, field checks, drawing tags, and permit math with Maya, Owen, or Riley."
       },
       "client_call": {
         "id": "client_call",
-        "type": "voice_meeting",
-        "section": 3,
-        "title": "Client Call With Dana Moreno",
-        "content": "Use your prep notes to clarify priorities and explain constraints in plain language.",
-        "npcId": "dana_moreno",
-        "meetingMode": "remote",
-        "voiceName": "Kore",
-        "minTurns": 3,
-        "maxTurns": 6,
-        "playerGoal": "Clarify daylight, privacy, mudroom, kitchen clearance, budget, and schedule priorities while explaining that setback, lot coverage, and field conditions need verification.",
-        "endpoint": "End after clarifying priorities and next steps without promising approval or exact cost.",
-        "successCriteria": "Ask specific questions, use plain language, name tradeoffs, avoid jargon and overpromising, and summarize next steps.",
-        "prepNoteKey": "client_prep",
-        "prepNoteTitle": "Your client call prep",
-        "prepReferenceTitle": "Compact project facts",
-        "prepReferenceContent": "Rear setback minimum is 25 ft; one dimension reads 24 ft 8 in. Lot coverage may be 46%, over the 45% max. West-facing bedroom window needs privacy review. Existing basement window and utility meter may affect foundation detailing.",
-        "goalPrompt": "You are Dana Moreno, the homeowner client. Ask about daylight, privacy, cost, and construction disruption. If the player overpromises, ask what is actually known. After discussing priorities, privacy/daylight, and next steps, conclude with: \"Thanks, that gives me a clearer picture. Please send Maya the summary and next steps.\" Do not open new topics after that.",
-        "initialMessages": [
-          {
-            "role": "npc",
-            "content": "Thanks for joining. I want to know whether the bigger kitchen and bedroom suite are realistic without blowing up the budget."
-          }
-        ],
-        "deskWorkDesign": {
-          "roleFamily": "residential architecture",
-          "workSurface": "Remote voice meeting",
-          "inputArtifacts": [
-            {
-              "id": "prep",
-              "label": "Student prep questions",
-              "whereVisible": "prepNoteKey client_prep"
-            },
-            {
-              "id": "facts",
-              "label": "Compact facts",
-              "whereVisible": "prepReferenceContent"
-            }
-          ],
-          "studentAction": "Conduct a spoken homeowner clarification call.",
-          "outputArtifact": {
-            "id": "client_call",
-            "label": "client_call",
-            "format": "submitted artifact"
-          },
-          "rubricEvidence": [
-            "transcript.client_call"
-          ],
-          "continuity": [
-            "Later scenes reference this work where realistic."
-          ],
-          "authenticityCheck": "Visible source artifact -> student action -> workplace output -> rubric evidence."
-        },
-        "next": "site_observation",
+        "type": "briefing",
+        "briefingMode": "simple",
+        "section": 2,
+        "title": "Dana Call Notes",
+        "content": "Maya already talked with Dana. Read what Dana decided. Next you will use Dana's choices and the team rules in the design studio.",
         "illustration": "/scenes/client_call.png",
-        "imageBrief": "Remote client call with Dana Moreno in a home kitchen under renovation and student prep notes visible."
-      },
-      "site_observation": {
-        "id": "site_observation",
-        "type": "slack_thread",
-        "section": 3,
-        "title": "Send Maya the Site Concern",
-        "content": "Riley sent a digital site photo with a concern about the proposed foundation/excavation area. Compare the photo with Riley's message and the A401/survey concern, then send Maya what she needs to review. Do not reply to Riley with construction direction.",
-        "appWindow": "slack",
-        "windowTitle": "#maple-street-addition",
-        "workSurface": {
-          "kind": "slack_reply",
-          "device": "desktop",
-          "appWindow": "slack",
-          "title": "#maple-street-addition"
-        },
-        "defaultAppTabId": "site_photo",
-        "editorTabLabel": "Slack to Maya",
-        "appTabs": [
-          {
-            "id": "site_photo",
-            "label": "Site Photo",
-            "content": "Riley's attached site photo. The red-tinted area shows the proposed foundation/excavation area: the part of the yard/wall line planned for foundation work or digging. Compare that red area with the existing basement window/well and utility meter/conduit before messaging Maya.",
-            "imagePath": "/scenes/site_observation.png",
-            "imagePrompt": "Digital source image for Riley's site-photo tab: a direct rear-wall residential site photo. Show a muted red/terracotta-tinted ground-and-lower-wall area representing the proposed foundation/excavation area: the part planned for foundation work or digging. Place that red-tinted area near the existing basement window/well and utility service conduit so the conflict can be observed visually. The image itself should contain only the site condition: no sticky notes, labels, answer text, red circles, arrows, checkmarks, phone, hands, camera, photographer, app window, tablet, laptop, monitor, or screen-within-screen."
-          },
-          {
-            "id": "riley_message",
-            "label": "Riley Message",
-            "content": "Riley: The proposed footing/excavation layout appears to run across the existing basement window well and through the utility service area. Please have the design team confirm before the crew relies on this layout."
-          },
-          {
-            "id": "drawing_concern",
-            "label": "Drawing Concern",
-            "content": "A401 currently shows a generic continuous foundation wall. The survey notes an existing basement window and utility meter at this rear-wall segment, but the foundation/detail has not been coordinated around them."
-          }
-        ],
-        "npcId": "maya_chen",
-        "maxTurns": 1,
-        "initialMessages": [
-          {
-            "role": "npc",
-            "npcName": "Maya Chen",
-            "ts": "2:14 PM",
-            "content": "Riley sent a site photo from Maple Street. Before I answer him, can you check it against the A401/survey concern and send me what needs review? Keep it objective, and do not give Riley construction direction."
-          }
-        ],
-        "playerGoal": "Send Maya a concise Slack message that confirms what Riley's photo appears to show, names the drawing/detail concern, and states what needs Maya/Owen review before Riley gets layout direction.",
-        "goalPrompt": "Evaluate the junior architect's Slack message to Maya. A strong reply is concise and objective: it confirms the red-tinted proposed foundation/excavation area in Riley's photo appears to conflict with the existing basement window/well and utility meter/conduit; connects that observation to A401's generic continuous foundation wall and the survey note; asks Maya/Owen to review foundation/detail assumptions and MEP coordination before Riley or the crew relies on the layout; and avoids telling Riley what to build, remove, or change. After one substantive student reply, respond once as Maya with a brief acknowledgment or correction and a clear close. Do not ask follow-up questions.",
+        "actionLabel": "Continue to design studio",
+        "referenceTitle": "What Dana decided",
+        "referenceContent": "Use Dana's answers when you build the next design study.\n\nDana chose:\n- West bedroom privacy: use Translucent glass or privacy glazing. The goal is to let daylight in while making the bedroom harder to see into.\n- Kitchen and mudroom: keep the path through the kitchen open. Make the mudroom useful for shoes, coats, and sports gear.\n- Daily routine: protect kitchen access during construction. Do not promise timing or cost yet.\n\nThe design studio also has Team Rules for the 25 ft rear setback, 45% lot coverage limit, right-rear utility clear zone, and window-tag fixes.\n\nNext: use Dana's choices and the team rules to make the design option. Do not call the option city-approved or ready to build.",
         "deskWorkDesign": {
           "roleFamily": "residential architecture",
-          "workSurface": "Slack thread with source tabs",
+          "workSurface": "Read-only client handoff",
           "inputArtifacts": [
             {
-              "id": "site_photo",
-              "label": "Riley site photo",
-              "whereVisible": "Site Photo app tab"
-            },
-            {
-              "id": "riley_message",
-              "label": "Riley field message",
-              "whereVisible": "Riley Message app tab"
-            },
-            {
-              "id": "drawing_concern",
-              "label": "A401/survey concern",
-              "whereVisible": "Drawing Concern app tab"
+              "id": "client_question_checklist",
+              "label": "Selected Dana question areas",
+              "whereVisible": "client_prep output"
             }
           ],
-          "studentAction": "Review the digital site photo and notes, then send Maya a concise Slack message confirming the concern and review needed.",
+          "studentAction": "Read Dana's deterministic handoff before designing.",
           "outputArtifact": {
-            "id": "site_observation",
-            "label": "Slack message to Maya",
-            "format": "slack_thread"
+            "id": "dana_handoff",
+            "label": "Dana handoff",
+            "format": "read-only briefing"
           },
-          "rubricEvidence": [
-            "npcConversations.maya_chen"
-          ],
+          "rubricEvidence": [],
           "continuity": [
-            "The schematic option study should carry forward Maya/Owen's resolved utility-clear direction without giving Riley construction direction."
+            "The design studio carries forward Dana's privacy/daylight and daily-routine priorities."
           ],
-          "authenticityCheck": "Digital photo and notes -> Slack escalation to Maya -> schematic design constraint/rubric evidence."
+          "authenticityCheck": "Guided client questions -> client answers -> schematic design constraints."
         },
         "next": "schematic_option_study"
       },
@@ -665,39 +680,38 @@
         "id": "schematic_option_study",
         "type": "architect_design_studio",
         "section": 3,
-        "title": "Create the Maple Street Schematic Option",
-        "content": "Maya needs a quick schematic option that translates Dana's priorities into a plan move while respecting the redlines, zoning notes, site photo, and Maya/Owen's resolved utility-clear direction.",
-        "windowTitle": "Maple Street Addition.rvt",
+        "title": "Create the Maple Street Early Design Option",
+        "content": "Maya needs a quick early design option. Dana Choices tells you what the client wants. Team Rules tells you the limits the drawing must follow.\n\nYou do not need outside knowledge. Everything you need is in Dana Choices, Team Rules, and the Rules Check panel.",
+        "windowTitle": "Maple Street Addition Design File",
         "toolModel": "Autodesk Revit",
-        "prompt": "Use the Revit-like workspace to adjust the rear addition footprint, place Level 1 kitchen/mudroom tags, place the Level 2 bedroom-suite tag, use the West Elevation view to place a west-window privacy strategy, review the Site/Riley/Slack tabs, keep the right-rear utility clear zone open, watch the live constraint check, and write a short design note for Maya/Owen.",
+        "prompt": "Follow these steps:\n1. Open Dana Choices.\n2. Open Team Rules.\n3. Return to Design Tool.\n4. Fix the footprint until Rules Check is clear.\n5. Add room labels.\n6. Open West Elevation and choose Translucent glass.\n7. Submit when Your Checklist is complete.",
         "bindingKey": "schematic_option_study",
-        "minNotesWords": 50,
-        "notesPlaceholder": "Write 3-5 sentences for Maya/Owen: state the footprint move, where kitchen/mudroom/suite go, why the west-window strategy fits privacy/daylight, which constraints are clear, and what still needs review before permit drawings.",
+        "minNotesWords": 0,
         "deskWorkDesign": {
           "roleFamily": "residential architecture",
           "workSurface": "Revit-like BIM plan editor",
           "inputArtifacts": [
             {
-              "id": "project_constraints",
-              "label": "Maple Street design constraints",
-              "whereVisible": "Site/Riley/Slack tabs, constraint check, and drawing image labels"
+              "id": "team_rules",
+              "label": "Team Rules",
+              "whereVisible": "Team Rules reference tab, Rules Check, and drawing labels"
+            },
+            {
+              "id": "dana_handoff",
+              "label": "Dana Handoff",
+              "whereVisible": "Dana Handoff reference tab and west-window choice"
             },
             {
               "id": "plan_canvas",
               "label": "Revit project views",
-              "whereVisible": "Revit tab with Level 1, Level 2, and West Elevation sidebar views"
-            },
-            {
-              "id": "site_concern",
-              "label": "Maya/Owen utility-clear direction",
-              "whereVisible": "Slack tab and right-rear utility clear zone overlay"
+              "whereVisible": "Design Tool tab with Level 1, Level 2, and West Elevation views"
             }
           ],
-          "studentAction": "Create a bounded schematic option by adjusting a plan footprint, placing Level 1 and Level 2 room tags, placing a window privacy strategy in the West Elevation view, checking constraints, and writing a design note.",
+          "studentAction": "Create a bounded early design option by adjusting a plan footprint, placing Level 1 and Level 2 room labels, choosing Translucent glass in the West Elevation view, and checking rules.",
           "outputArtifact": {
             "id": "schematic_option_study",
-            "label": "Maple Street schematic option study",
-            "format": "Revit-like plan state plus design notes"
+            "label": "Maple Street early design option study",
+            "format": "Revit-like plan state"
           },
           "rubricEvidence": [
             "freeTextResponses.schematic_option_study"
@@ -707,7 +721,21 @@
           ],
           "authenticityCheck": "Visible constraints and plan canvas -> student design moves -> schematic option artifact -> rubric evidence."
         },
-        "next": "assessment_gate"
+        "next": "assessment_gate",
+        "referenceTabs": [
+          {
+            "id": "dana_handoff",
+            "label": "Dana Choices",
+            "heading": "Dana's choices to use",
+            "content": "Dana chose:\n- West bedroom privacy: use Translucent glass or privacy glazing so daylight still reaches the room while the bedroom is harder to see into.\n- Kitchen and mudroom: keep the kitchen path open, and use the mudroom for shoes, coats, and sports gear.\n- Daily routine: protect kitchen access during construction. Do not promise timing or cost.\n\nWhy this matters:\nDana wants privacy, but still wants daylight in the bedroom.\n\nUse Team Rules for setback, lot coverage, the right-rear utility clear zone, and window-tag fixes."
+          },
+          {
+            "id": "team_rules",
+            "label": "Team Rules",
+            "heading": "Rules for this design study",
+            "content": "Use these as rules for today's schematic option, not final city approval:\n\n- Keep the rear setback at 25 ft minimum.\n- Keep lot coverage at or below 45%.\n- Keep the right-rear utility clear zone open.\n- Window-tag fixes are drawing fixes that the drawings already prove.\n- Do not describe the option as city-approved or construction-ready."
+          }
+        ]
       },
       "assessment_gate": {
         "id": "assessment_gate",
@@ -741,14 +769,12 @@
     },
     "devSkips": [
       {
-        "label": "Client Prep",
-        "targetNodeId": "client_prep",
-        "prefillKey": "client_prep_dev"
+        "label": "Client Checklist",
+        "targetNodeId": "client_prep"
       },
       {
-        "label": "Client Call",
-        "targetNodeId": "client_call",
-        "prefillKey": "client_call_dev"
+        "label": "Dana Handoff",
+        "targetNodeId": "client_call"
       },
       {
         "label": "Assessment",
@@ -761,7 +787,7 @@
       "id": "maya_chen",
       "name": "Maya Chen",
       "role": "Project Architect",
-      "persona": "Licensed project architect, calm and direct, protective of technical accuracy. She expects focused questions, careful uncertainty handling, and constraint-aware schematic design notes."
+      "persona": "Licensed project architect, calm and direct, protective of technical accuracy. She expects focused questions, careful uncertainty handling, and constraint-aware schematic design moves."
     },
     "owen_reed": {
       "id": "owen_reed",
@@ -774,8 +800,7 @@
       "name": "Dana Moreno",
       "role": "Homeowner Client",
       "persona": "Budget-conscious homeowner who wants daylight, privacy, and clear next steps without jargon.",
-      "voice": "warm, anxious, practical homeowner",
-      "avatar": "/avatars/dana_moreno.png"
+      "voice": "warm, anxious, practical homeowner"
     },
     "riley_patel": {
       "id": "riley_patel",
@@ -790,25 +815,65 @@
     "steps": [
       {
         "label": "Read",
-        "content": "Review the shared project folder, zoning constraints, and senior redlines."
+        "content": "Get Maya's short handoff, then sort what is clear and what still needs checking."
       },
       {
-        "label": "Produce",
-        "content": "Sort redline pickups, draft prep questions, send Maya the site concern, and create a schematic option study."
+        "label": "Choose",
+        "content": "Pick two client questions from a checklist."
       },
       {
-        "label": "Communicate",
-        "content": "Clarify priorities with a homeowner client and escalate uncertainty professionally."
+        "label": "Design",
+        "content": "Use the Revit-like workspace to make a schematic option that follows Dana's choices and the team rules."
       }
     ]
   },
   "glossary": {
-    "redline": "A reviewer markup showing drawing edits, questions, or corrections.",
-    "permit set": "The drawing/document package submitted for building department review.",
-    "setback": "Required minimum distance between a building and a property line.",
-    "lot coverage": "The portion of a lot covered by buildings and certain structures, often limited by zoning.",
-    "revit": "A BIM application commonly used to model buildings and produce coordinated drawing sheets.",
-    "RFI": "Request for Information; a formal question seeking clarification."
+    "redline": "A note on a drawing that shows something to fix, check, or explain.",
+    "permit set": "The group of drawings and documents sent to the city for review before building work can begin.",
+    "permit package": "The group of drawings and forms prepared for city review before building work can begin.",
+    "setback": "The required open space between a building and the property line.",
+    "lot coverage": "How much of the land is covered by buildings or similar structures.",
+    "revit": "A building design program used to make 3D models and drawing sheets.",
+    "RFI": "Request for Information; a formal question that asks someone to clarify a detail.",
+    "verify": "Check with the right person or source before changing the drawing.",
+    "fix": "A change you can make now because the evidence gives one clear answer.",
+    "zoning": "City rules that control what can be built on a property.",
+    "constraint": "A rule or limit the design must follow.",
+    "coordination": "Making sure drawings, notes, people, and decisions all match.",
+    "drawing set": "A group of drawings for the same project.",
+    "window tag": "A short label, like W-4, that connects a window on a drawing to its details in the schedule.",
+    "schedule": "A table that lists building parts, such as windows, and their details.",
+    "elevation": "A flat drawing of one outside face of a building.",
+    "West Elevation": "The drawing that shows the west side of the house from the outside.",
+    "footprint": "The outline of the building area on the site plan.",
+    "schematic option": "An early design idea used to test a layout before final drawings.",
+    "field condition": "Something that must be checked at the real site, not only on the drawing.",
+    "utility meter": "A device on a building that measures services such as gas or electricity.",
+    "clear zone": "An area that must stay open and not be covered by the new addition.",
+    "permit worksheet": "A form used to check project numbers before sending drawings to the city.",
+    "mudroom": "A small entry area for shoes, coats, bags, and sports gear.",
+    "translucent glass": "Glass that lets light through but makes details hard to see.",
+    "privacy glazing": "Glass chosen to protect privacy while still allowing some light.",
+    "higher sill": "A window bottom placed higher on the wall for more privacy.",
+    "exterior screening": "A screen or planting outside a window that blocks views.",
+    "BIM": "Building Information Modeling; a digital building model that also helps produce drawings.",
+    "Level 1": "The first floor of the house.",
+    "Level 2": "The second floor of the house.",
+    "rubric": "The scoring guide used to judge the work.",
+    "assessment": "The final review of the choices and written answers.",
+    "homeowner": "The person who owns the house and is the client for this project.",
+    "pickup": "The act of reviewing a redline and deciding what to update or check.",
+    "model": "The digital building file the team uses to study and update the design.",
+    "foundation": "The part of a building that supports it from below.",
+    "rear addition": "A new part of the house added to the back side.",
+    "architectural designer": "A person who helps create building designs and drawings under an architect's direction.",
+    "callout": "A note or label on a drawing that points to a specific item.",
+    "jargon": "Special words used by a job or field that may not be familiar to everyone.",
+    "overpromising": "Saying something is certain before the team has checked it.",
+    "residential addition": "A new room or building area added to a house.",
+    "second-floor bedroom suite": "A bedroom area on the second floor, often with related spaces such as a closet or bathroom.",
+    "field verification": "Checking a detail at the real site before using it in the design.",
+    "verification": "The act of checking that something is true before using it."
   },
   "sample_answers": {},
   "rubric": {
@@ -817,42 +882,35 @@
     "sections": [
       {
         "section_number": 1,
-        "section_title": "タスク別採点",
+        "section_title": "Task Scores",
         "criteria": [
           {
-            "name": "最初の着手判断",
+            "name": "Choosing the first step",
             "evidenceSceneIds": [
               "first_move"
             ],
-            "rubric_text": "9-10: 制約が多い朝の状況で、クライアント連絡、図面影響、現場確認、期限のリスクを見て最初に扱うべき仕事を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: The student chooses a careful first step for a morning with many limits. They compare client goals with zoning, redlines, drawing gaps, and questions before acting. Score only this task. 7-8: The main choice is good, but one priority or reason is a little weak. 4-6: Some judgment is useful, but important checks or next steps are missing. 0-3: The choice misses the task, ignores evidence, creates a risky promise, or is not usable."
           },
           {
-            "name": "図面修正タスク",
+            "name": "Sorting drawing changes",
             "evidenceSceneIds": [
               "redline_note"
             ],
-            "rubric_text": "9-10: 赤字指摘の意味を読み取り、A101/A201の不整合、依存関係、次に確認すべき事項を実務メモとして整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: The student understands each redline and separates drawing changes that are already proven from items that need checking first. They do not mix up proven tag fixes, such as W-4/W-1 or missing W-10, with items that need verification, such as setback, lot coverage, privacy, and existing site conditions. Score only this task. 7-8: The main sorting is right, with one small gap. 4-6: Some items are sorted correctly, but several important Fix or Verify choices are wrong or unclear. 0-3: The task goal is missed, evidence is ignored, or the result would cause confusion or risky drawing changes."
           },
           {
-            "name": "顧客通話",
+            "name": "Choosing client questions",
             "evidenceSceneIds": [
-              "client_call"
+              "client_prep"
             ],
-            "rubric_text": "9-10: 準備メモではなく実際の通話内容として、顧客の優先条件、制約、未確定事項を聞き取り、過度な約束をせず次の確認に接続できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: The student chooses two Dana-facing questions that help the design team make choices: one about west-bedroom privacy/daylight and one about kitchen, mudroom, or daily routine priorities. They leave zoning, lot coverage, drawing tags, and field conditions as team checks. Score only this checklist. 7-8: The selected questions are mostly useful, but one is less focused or a team-check distractor is tempting. 4-6: The checklist includes only one useful client choice or mixes client questions with technical checks. 0-3: The selections ask Dana to solve zoning, permit, tag, or field issues instead of homeowner choices."
           },
           {
-            "name": "現場観察",
-            "evidenceSceneIds": [
-              "site_observation"
-            ],
-            "rubric_text": "9-10: 現場で見えた寸法、干渉、施工上のリスク、図面へ戻すべき確認事項を、観察事実として整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-          },
-          {
-            "name": "案の比較整理",
+            "name": "Creating the design option",
             "evidenceSceneIds": [
               "schematic_option_study"
             ],
-            "rubric_text": "9-10: 複数案の使いやすさ、採光、構造や設備への影響、顧客条件との整合を比較し、推奨と保留事項を分けて示せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+            "rubric_text": "9-10: The student creates a usable schematic option that fits Dana's goals and the team rules. The option places the needed room labels, uses Translucent glass or privacy glazing for the privacy choice, and clears live blockers. Score only this task. 7-8: The option mostly works, but one detail, priority, or unresolved item is a little weak. 4-6: Some pieces are present, but important design choices or checks are missing. 0-3: The task goal is missed, the rules are ignored, risky promises are made, or the submission is not usable."
           }
         ]
       }

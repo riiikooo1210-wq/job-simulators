@@ -18,17 +18,16 @@ Because this is residential architecture, the student deals with a homeowner rem
 The fictional firm is Harbor & Ash Studio, a 45-person residential architecture practice. The student supports Maple Street Addition, a fictional two-story rear addition and kitchen remodel for homeowners Dana and Luis Moreno.
 
 ## Work-Mix Design
-Residential junior architecture is primarily digital tool and artifact work: BIM/CAD sheets, redlines, schedules, markup review, permit checklists, emails, meeting notes, and bounded schematic studies [onet][reddit:17zcdma][reddit:14b6qjh]. Cognitive analysis matters because junior staff must understand how a requested change affects code, structure, cost, schedule, and other drawings before editing a model [reddit:15cyslv][reddit:12xw9j5]. Written communication appears throughout the day as intake questions, redline questions, Slack site concerns, and design notes tied to visible drawing/model decisions [onet][reddit:159xtnc][reddit:12p6n9p]. Spoken communication is focused around team and client clarification [onet][reddit:1alviwh]. Site observation is represented as reviewing a contractor's digital site photo, then carrying Maya/Owen's resolved utility-clear direction into a Revit-like schematic option study, not as physical site work [onet][reddit:1c0xx7n].
+Residential junior architecture is primarily digital tool and artifact work: BIM/CAD sheets, redlines, schedules, markup review, permit checklists, emails, meeting notes, and bounded schematic studies [onet][reddit:17zcdma][reddit:14b6qjh]. Cognitive analysis matters because junior staff must understand how a requested change affects code, structure, cost, schedule, and other drawings before editing a model [reddit:15cyslv][reddit:12xw9j5]. For high-school learners, this version keeps the realistic judgment but reduces writing: students choose client questions from a checklist, read a short Dana handoff, and complete the design work directly in the Revit-like workspace [onet][reddit:159xtnc][reddit:12p6n9p]. Site and field constraints are represented through team rules and carried into a schematic option study, not as physical site work [onet][reddit:1c0xx7n].
 
 ## Scene Arc
-1. Open the Maple Street shared project folder and review linked redlines, zoning notes, and permit readiness files [onet][reddit:1b6x4mr].
+1. Review Maya's short Maple Street handoff before choosing how to start [onet][reddit:1b6x4mr].
 2. Choose a first move in Slack; each choice has a consequence scene [reddit:12xw9j5][reddit:159xtnc].
-3. Sort a redline pickup tracker into drafting fixes, ask/verify items, and hold/escalation items [reddit:11qrdam][reddit:14b6qjh].
-4. Draft client questions from the pickup board and visible facts [reddit:18gmi8a][reddit:1dzkyeu].
-5. Speak with the homeowner client without overpromising [onet][reddit:13yf1i4][reddit:1alviwh].
-6. Review a contractor's digital site photo and send Maya a concise Slack message about the review needed [onet][reddit:1c0xx7n][reddit:140vqpd].
-7. Create a bounded schematic option study in a Revit-like plan editor by adjusting the addition footprint, keeping the right-rear utility clear zone open, placing room tags, choosing a privacy strategy, checking constraints, and explaining the design intent in notes [onet][reddit:17zcdma][reddit:151jxqr].
-8. Click View Assessment before grading.
+3. Classify A101/A201 drawing redline callouts into fixes that can be drafted now and verification items that should not be edited yet [reddit:11qrdam][reddit:14b6qjh].
+4. Build a two-question Dana checklist by choosing homeowner-choice questions and leaving zoning, drawing tags, and field conditions as team checks [reddit:18gmi8a][reddit:1dzkyeu].
+5. Read Maya's Dana handoff with deterministic answers for the design study [onet][reddit:13yf1i4][reddit:1alviwh].
+6. Create a bounded schematic option study in a Revit-like plan editor by adjusting the addition footprint, keeping the right-rear utility clear zone open, placing room labels, choosing translucent glass for the west bedroom privacy strategy, and checking rules [onet][reddit:17zcdma][reddit:151jxqr].
+7. Click View Assessment before grading.
 
 ## Constructed Response Tasks
-The simulator includes a redline pickup tracker, client intake questions, a spoken client meeting, a Slack site concern to Maya, and a Revit-like schematic option study. Multiple-choice appears only once and routes through distinct consequence scenes before converging [reddit:12xw9j5][reddit:159xtnc].
+The simulator includes an A101/A201 redline click board, a client-question checklist, a read-only Dana handoff, and a Revit-like schematic option study. Multiple-choice appears only once and routes through distinct consequence scenes before converging [reddit:12xw9j5][reddit:159xtnc].

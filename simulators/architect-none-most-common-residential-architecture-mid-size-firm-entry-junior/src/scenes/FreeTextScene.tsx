@@ -29,14 +29,14 @@ function RedlinePdfTab() {
     {
       ref: 'A101',
       title: 'Rear yard dimension',
-      body: 'Rear addition reads 24 ft 8 in; R-2 zoning note says rear setback minimum is 25 ft.',
+      body: 'Rear addition reads 24 ft 8 in; local zoning requires a 25 ft minimum rear setback.',
       status: 'Verify before editing',
     },
     {
       ref: 'A101 / A201',
-      title: 'Kitchen window tag',
-      body: 'Plan marks W-12, elevation marks W-10. Coordinate schedule before updating either sheet.',
-      status: 'Coordinate tags',
+      title: 'South-left window tag',
+      body: 'A101 marks the south-left opening W-4, but A201 shows W-1. The schedule sheet controls this as W-4.',
+      status: 'Fix tag',
     },
     {
       ref: 'A201',
@@ -53,7 +53,7 @@ function RedlinePdfTab() {
     {
       ref: 'Survey',
       title: 'Existing conditions',
-      body: 'Basement window and utility meter sit near the proposed foundation line; do not remove until field condition is confirmed.',
+      body: 'Basement window and utility meter sit near the proposed addition area; do not remove until field condition is confirmed.',
       status: 'Field verify',
     },
   ]
@@ -90,7 +90,7 @@ function RedlinePdfTab() {
                 <strong>24 ft 8 in</strong>
               </div>
               <div style={{ borderLeft: '3px solid #3A6B5E', paddingLeft: '0.55rem' }}>
-                <div style={{ fontSize: '0.7rem', color: '#6f6758' }}>R-2 rear setback min.</div>
+                <div style={{ fontSize: '0.7rem', color: '#6f6758' }}>Zoning rear setback min.</div>
                 <strong>25 ft</strong>
               </div>
             </div>
@@ -134,7 +134,7 @@ function ProjectFolderTab() {
       signal: 'Maple tree to preserve; basement window and utility meter near foundation line.',
     },
     {
-      name: 'R-2 Zoning Notes.txt',
+      name: 'Residential Zoning Notes.txt',
       type: 'TXT',
       updated: 'Yesterday 2:30 PM',
       signal: 'Rear setback 25 ft min; side setback 5 ft min; max lot coverage 45%.',

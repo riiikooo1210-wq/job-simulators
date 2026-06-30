@@ -6,10 +6,12 @@ interface ReferenceDrawerProps {
   isOpen: boolean
   onClose: () => void
   title?: string
+  width?: string
+  maxWidth?: string
   children: ReactNode
 }
 
-export default function ReferenceDrawer({ isOpen, onClose, title = 'Reference Info', children }: ReferenceDrawerProps) {
+export default function ReferenceDrawer({ isOpen, onClose, title = 'Reference Info', width = '420px', maxWidth = '90vw', children }: ReferenceDrawerProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -39,8 +41,8 @@ export default function ReferenceDrawer({ isOpen, onClose, title = 'Reference In
               top: 0,
               right: 0,
               bottom: 0,
-              width: '420px',
-              maxWidth: '90vw',
+              width,
+              maxWidth,
               backgroundColor: '#F2EBD9',
               zIndex: 999,
               boxShadow: '-4px 0 20px rgba(0,0,0,0.15)',

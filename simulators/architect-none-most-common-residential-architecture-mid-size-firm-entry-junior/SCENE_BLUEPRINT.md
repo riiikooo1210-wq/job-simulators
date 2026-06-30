@@ -4,13 +4,13 @@ Use this as the Phase 2 approval artifact before scaffolding. It shows the pract
 
 ## Work Mix
 
-- Summary: Entry/junior residential architecture is dominated by digital drawing/model artifacts, cognitive coordination, written documentation, and focused client/team communication. Site conditions matter, but this scenario uses Riley's digital site photo rather than asking the player to perform physical field work.
-- `physicalProceduralTool`: minor — Represent site conditions through a digital photo-review and field-note desk task, not a physical playground.
+- Summary: Entry/junior residential architecture is dominated by digital drawing/model artifacts, cognitive coordination, written documentation, and focused client/team communication. Site and field constraints matter, but this scenario handles them through team verification replies and schematic constraints rather than physical field work.
+- `physicalProceduralTool`: minor — Represent site conditions through Riley's verification reply and follow-on schematic constraints, not a physical playground.
 - `digitalToolArtifactWork`: dominant — Most active scenes use realistic desk work surfaces.
 - `cognitiveAnalysisDecision`: major — Tasks require issue spotting and uncertainty handling.
-- `writtenDocumentationArtifact`: major — Require redline pickup tracker, prep notes, rationale, Slack site concern to Maya, and a Revit-like schematic option study.
-- `spokenInterpersonalCommunication`: secondary — One homeowner voice meeting.
-- `passiveMonitoringWaitingContextSwitching`: secondary — Use Slack, contractor message, and deadline pressure.
+- `writtenDocumentationArtifact`: major — Require an A101/A201 redline click board, prep notes, a verify resolution summary, and a Revit-like schematic option study.
+- `spokenInterpersonalCommunication`: secondary — Represented through a read-only Dana call handoff rather than a live homeowner voice meeting.
+- `passiveMonitoringWaitingContextSwitching`: secondary — Use Slack-style coordination replies, client call pressure, and deadline pressure.
 
 ## Scene Table
 
@@ -23,11 +23,11 @@ Use this as the Phase 2 approval artifact before scaffolding. It shows the pract
 | `redirect_constraints`<br>Consequence: Useful First Pass | `briefing` | — | — | — | not explicitly mapped | redline_note |
 | `redirect_promise`<br>Consequence: Overpromising Risk | `briefing` | — | — | — | not explicitly mapped | redline_note |
 | `redirect_wait`<br>Consequence: Waiting Stalls the Team | `briefing` | — | — | — | not explicitly mapped | redline_note |
-| `redline_note`<br>Pick Up the A101/A201 Redlines | `kanban_board` / `kanban` | Owen pickup rule, A101/A201 redline cards (kanban cards), Owen pickup rule (referenceContent) | Sort redline items into drafting fixes, ask/verify items, and hold/escalation items. | redline_pickup_tracker | Junior judgment, Redline coordination | client_prep |
-| `client_prep`<br>Prepare Dana Client Call Questions | `structured_entry` / `notion` | Client prep source files, Shared project folder (referenceContent), Zoning Reference (referenceContent), Completed redline pickup board (prior redline_note response) | Draft client questions with rationale. | client_prep | Source-grounded intake | client_call |
-| `client_call`<br>Client Call With Dana Moreno | `voice_meeting` | Compact project facts, prep note from `client_prep`, Student prep questions (prepNoteKey client_prep), Compact facts (prepReferenceContent) | Conduct a spoken homeowner clarification call. | client_call | Client communication | site_observation |
-| `site_observation`<br>Send Maya the Site Concern | `slack_thread` / `slack_reply` | tab: Site Photo, tab: Riley Message, tab: Drawing Concern, Riley site photo (Site Photo app tab), Riley field message (Riley Message app tab), A401/survey concern (Drawing Concern app tab) | Review the digital site photo and notes, then send Maya a concise Slack message confirming the concern and review needed. | Slack message to Maya | Site observation and escalation | schematic_option_study |
-| `schematic_option_study`<br>Create the Maple Street Schematic Option | `architect_design_studio` / `Maple Street Addition.rvt` | Maple Street design constraints, Maple Street design constraints (referenceContent, Site/Riley/Slack tabs, and in-scene plan overlays), Revit project views (Revit tab with Level 1, Level 2, and West Elevation sidebar views), Maya/Owen utility-clear direction (Slack tab and right-rear utility clear zone overlay) | Create a bounded schematic option by adjusting a plan footprint, placing Level 1 and Level 2 room tags, placing a window privacy strategy in the West Elevati... | Maple Street schematic option study | Schematic design reasoning | assessment_gate |
+| `redline_note`<br>Pick Up the A101/A201 Redlines | `redline_click_board` / `bim` | Owen pickup rule, A101/A201 drawing callouts, Schedule tab, fixed proposed-addition and utility overlays | Classify redline callouts as Fix or Verify, then read Owen's Slack-style review. | redline_pickup_tracker | Junior judgment, Redline coordination | client_prep |
+| `client_prep`<br>Build Dana Question Checklist | `client_question_checklist` / `notion` | Merged Project Notes tab with Dana priorities and open redline notes | Select exactly two Dana-facing questions: one privacy/daylight question and one kitchen, mudroom, or daily-routine question; leave zoning, drawing-tag, and field-condition items as team checks. | client_prep | Source-grounded intake | client_call |
+| `client_call`<br>Dana Call Handoff | `briefing` | Selected Dana question areas from `client_prep`, deterministic Dana answers | Read the short Dana handoff before continuing. | dana_handoff | not explicitly mapped | review_verify_replies |
+| `review_verify_replies`<br>Review Verify Replies | `structured_entry` / `notion` | Verify Replies tab with Owen, Riley, and Maya replies | Write one concise coordination summary for the schematic option. | verify_resolution_summary | Verify coordination | schematic_option_study |
+| `schematic_option_study`<br>Create the Maple Street Schematic Option | `architect_design_studio` / `Maple Street Addition.rvt` | Maple Street design constraints, Verify Replies tab, Revit project views, resolved setback/coverage/privacy/utility constraints | Create a bounded schematic option by adjusting a plan footprint, placing Level 1 and Level 2 room tags, choosing translucent glass in the West Elevation view, checking constraints, and writing a design note. | Maple Street schematic option study | Schematic design reasoning | assessment_gate |
 | `assessment_gate`<br>Studio Day Complete | `section_transition` | — | — | — | not explicitly mapped | grading |
 | `grading`<br>Assessment | `grading` | — | — | — | not explicitly mapped | final_report |
 | `final_report`<br>Final Report | `final_report` | — | — | — | not explicitly mapped | null |

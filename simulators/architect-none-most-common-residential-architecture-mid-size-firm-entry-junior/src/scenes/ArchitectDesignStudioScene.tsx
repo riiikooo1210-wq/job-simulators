@@ -1,10 +1,11 @@
-import { useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
+import { useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 import LaptopFrame from '../components/ui/LaptopFrame'
 import ActionButton from '../components/ui/ActionButton'
 import ReferenceDrawer, { ReferenceButton } from '../components/ui/ReferenceDrawer'
+import { useNarrowViewport } from '../components/hooks/useNarrowViewport'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
@@ -14,8 +15,14 @@ import type { ArchitectDesignStudioNode } from '../types/game'
 
 type RoomLabelId = 'kitchen' | 'mudroom' | 'bedroom'
 type ActiveTool = 'select' | RoomLabelId
-type AppTabId = 'revit' | 'site' | 'photo' | 'slack'
+type AppTabId = string
 type RevitViewId = 'level1' | 'level2' | 'westElevation'
+
+interface WindowStrategy {
+  id: string
+  label: string
+  assetPath: string
+}
 
 interface Point {
   x: number
@@ -36,6 +43,7 @@ interface StudioState {
   labels: Record<RoomLabelId, PlacedItem>
   windowStrategy: string
   notes: string
+  sourceTabsRead: Record<string, boolean>
 }
 
 type DragState =
@@ -52,24 +60,17 @@ const TREE = { x: 24, y: 52, buffer: 11 }
 const FIELD_CONFLICT_ZONE: Rect = { x: 69.25, y: 35.8, w: 9, h: 8 }
 const FEET_PER_SITE_UNIT = 1.4
 
-const appTabs: { id: AppTabId; label: string }[] = [
-  { id: 'revit', label: 'Revit' },
-  { id: 'site', label: 'Site + Zoning' },
-  { id: 'photo', label: 'Riley Photo' },
-  { id: 'slack', label: 'Slack' },
-]
-
 const roomTools: { id: RoomLabelId; label: string; shortLabel: string; level: RevitViewId }[] = [
-  { id: 'kitchen', label: 'Kitchen remodel area', shortLabel: 'Kitchen', level: 'level1' },
-  { id: 'mudroom', label: 'Mudroom entry zone', shortLabel: 'Mudroom', level: 'level1' },
-  { id: 'bedroom', label: 'Bedroom suite above', shortLabel: 'Suite', level: 'level2' },
+  { id: 'kitchen', label: 'Kitchen area', shortLabel: 'Kitchen', level: 'level1' },
+  { id: 'mudroom', label: 'Mudroom area', shortLabel: 'Mudroom', level: 'level1' },
+  { id: 'bedroom', label: 'Bedroom suite', shortLabel: 'Suite', level: 'level2' },
 ]
 
-const windowStrategies = [
-  { id: 'higher_sill', label: 'Higher sill' },
-  { id: 'translucent_glass', label: 'Translucent glass' },
-  { id: 'smaller_window', label: 'Smaller window' },
-  { id: 'landscape_screen', label: 'Landscape screen' },
+const windowStrategies: WindowStrategy[] = [
+  { id: 'higher_sill', label: 'Higher sill', assetPath: '/action-assets/revit/higher_sill.PNG' },
+  { id: 'translucent_glass', label: 'Translucent glass', assetPath: '/action-assets/revit/translucent_glass.PNG' },
+  { id: 'smaller_window', label: 'Smaller window', assetPath: '/action-assets/revit/smaller_window.PNG' },
+  { id: 'landscape_screen', label: 'Outdoor screen', assetPath: '/action-assets/revit/landscape_screen.PNG' },
 ]
 
 const defaultState: StudioState = {
@@ -81,6 +82,10 @@ const defaultState: StudioState = {
   },
   windowStrategy: '',
   notes: '',
+  sourceTabsRead: {
+    dana_handoff: false,
+    team_rules: false,
+  },
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -105,6 +110,7 @@ function parseState(raw: string | undefined): StudioState {
       },
       windowStrategy: typeof option.windowStrategy === 'string' ? option.windowStrategy : '',
       notes: typeof option.notes === 'string' ? option.notes : '',
+      sourceTabsRead: { ...defaultState.sourceTabsRead, ...(option.sourceTabsRead || {}) },
     }
   } catch {
     return defaultState
@@ -137,7 +143,7 @@ function analyzeState(state: StudioState) {
       value: `${rearSetback.toFixed(1)} ft clear`,
       ok: rearSetback >= 25,
       severity: rearSetback >= 25 ? 'ok' : 'blocker',
-      message: rearSetback >= 25 ? 'Addition edge is inside the required line.' : 'Pull the rear edge north or reduce depth to reach 25 ft.',
+      message: rearSetback >= 25 ? 'Good. This rule is clear. The addition stays inside the required line.' : 'Try this first: lower Depth. Watch this rule until it reaches 25 ft or more.',
     },
     {
       id: 'coverage',
@@ -145,7 +151,7 @@ function analyzeState(state: StudioState) {
       value: `${lotCoverage.toFixed(1)}%`,
       ok: lotCoverage <= 45,
       severity: lotCoverage <= 45 ? 'ok' : 'blocker',
-      message: lotCoverage <= 45 ? 'Option stays under the 45% worksheet threshold.' : 'Reduce width or depth before review.',
+      message: lotCoverage <= 45 ? 'Good. This rule is clear. The option stays under the 45% worksheet limit.' : 'Try this first: lower Width or Depth. Watch this rule until it is 45% or less.',
     },
     {
       id: 'tree',
@@ -153,15 +159,15 @@ function analyzeState(state: StudioState) {
       value: treeClearance >= 0 ? `${treeClearance.toFixed(1)} ft clear` : `${Math.abs(treeClearance).toFixed(1)} ft overlap`,
       ok: treeClearance >= 0,
       severity: treeClearance >= 0 ? 'ok' : 'blocker',
-      message: treeClearance >= 0 ? 'Footprint avoids the root-protection buffer.' : 'Shift or narrow the option away from the maple buffer.',
+      message: treeClearance >= 0 ? 'Good. This rule is clear. The footprint avoids the tree protection area.' : 'Try this first: move sideways away from the tree. If it still overlaps, lower Width.',
     },
     {
       id: 'field',
-      label: 'Utility clear zone',
+      label: 'Right-rear utility clear zone',
       value: fieldConflict ? 'overlap' : 'clear',
       ok: !fieldConflict,
       severity: fieldConflict ? 'blocker' : 'ok',
-      message: fieldConflict ? 'Shift or narrow the footprint away from Maya/Owen clear zone.' : 'Footprint stays clear of the resolved utility zone.',
+      message: fieldConflict ? 'Try this first: move sideways to keep the addition out of the right-rear utility clear zone. If it still overlaps, lower Width.' : 'Good. This rule is clear. The footprint stays clear of the right-rear utility clear zone.',
     },
   ]
 
@@ -199,6 +205,15 @@ function statusColor(severity: string) {
   return '#3A6B5E'
 }
 
+function parsePromptSteps(prompt: string) {
+  const lines = prompt.split('\n').map((line) => line.trim()).filter(Boolean)
+  if (!lines[0]?.toLowerCase().startsWith('follow these steps')) return null
+
+  const steps = lines.slice(1).map((line) => line.replace(/^\d+\.\s*/, '').trim()).filter(Boolean)
+  if (steps.length === 0) return null
+  return { intro: 'Follow these steps:', steps }
+}
+
 function toolButtonStyle(active: boolean): CSSProperties {
   return {
     width: '100%',
@@ -213,6 +228,48 @@ function toolButtonStyle(active: boolean): CSSProperties {
     textAlign: 'left',
     fontFamily: 'Inter, system-ui, sans-serif',
   }
+}
+
+function TaskChecklistPanel({ items }: { items: { label: string; done: boolean }[] }) {
+  return (
+    <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 4, padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+      <div style={{ fontSize: '0.68rem', fontWeight: 950, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>Your Checklist</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.35rem' }}>
+        {items.map((item) => (
+          <div key={item.label} style={{ border: '1px solid #D8CBA4', background: item.done ? '#EEF8F1' : '#F7F1E3', borderRadius: 4, padding: '0.38rem 0.42rem', display: 'flex', justifyContent: 'space-between', gap: '0.4rem', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.62rem', lineHeight: 1.25, fontWeight: 800 }}>{renderContentWithGlossary(item.label)}</span>
+            <span style={{ flexShrink: 0, border: `1px solid ${item.done ? '#3A6B5E' : '#B87D6B'}`, background: item.done ? '#DFF1E8' : '#F4E2DB', color: item.done ? '#2F5F52' : '#8B5E50', borderRadius: 999, padding: '0.12rem 0.32rem', fontSize: '0.52rem', lineHeight: 1.1, fontWeight: 950 }}>
+              {item.done ? 'Done' : 'Still needed'}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function labelPlacementHelp(activeLevel: RevitViewId) {
+  if (activeLevel === 'level1') return 'Click Kitchen area, then click the Level 1 plan to place it. Do the same for Mudroom area.'
+  if (activeLevel === 'level2') return 'Click Bedroom suite, then click the Level 2 plan to place it.'
+  return ''
+}
+
+function labelConfirmation(activeLevel: RevitViewId, labels: StudioState['labels']) {
+  if (activeLevel === 'level1') {
+    const placed = [
+      labels.kitchen.placed ? 'Kitchen' : '',
+      labels.mudroom.placed ? 'Mudroom' : '',
+    ].filter(Boolean)
+    if (placed.length === 0) return ''
+    if (placed.length === 2) return 'Kitchen and Mudroom labels placed. You can drag them if needed.'
+    return `${placed[0]} label placed. You can drag it if needed.`
+  }
+
+  if (activeLevel === 'level2' && labels.bedroom.placed) {
+    return 'Bedroom suite label placed. You can drag it if needed.'
+  }
+
+  return ''
 }
 
 export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDesignStudioNode }) {
@@ -230,19 +287,87 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
   const [activeTool, setActiveTool] = useState<ActiveTool>('select')
   const [drag, setDrag] = useState<DragState | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
+  const isNarrow = useNarrowViewport()
 
   const context = { playerName, branchFlags, mcSelections }
+  const promptText = interpolate(node.prompt, context)
+  const promptSteps = parsePromptSteps(promptText)
+  const referenceTabs = node.referenceTabs || []
+  const appTabs = [
+    { id: 'revit', label: 'Design Tool' },
+    ...referenceTabs.map((tab) => ({ id: tab.id, label: tab.label })),
+  ]
   const analysis = useMemo(() => analyzeState(studio), [studio])
   const visibleRoomTools = roomTools.filter((tool) => tool.level === activeLevel)
   const minNotesWords = node.minNotesWords ?? Math.ceil((node.minNotesChars ?? 90) / 5)
   const noteWordCount = countNoteWords(studio.notes)
-  const notesReady = noteWordCount >= minNotesWords
-  const windowReady = Boolean(studio.windowStrategy)
-  const canSubmit = analysis.blockers.length === 0 && analysis.roomsPlaced && windowReady && notesReady
+  const notesRequired = minNotesWords > 0
+  const notesReady = !notesRequired || noteWordCount >= minNotesWords
+  const sourceTabsReady = Boolean(studio.sourceTabsRead.dana_handoff && studio.sourceTabsRead.team_rules)
+  const windowReady = studio.windowStrategy === 'translucent_glass'
+  const level1LabelsPlaced = studio.labels.kitchen.placed && studio.labels.mudroom.placed
+  const level2LabelPlaced = studio.labels.bedroom.placed
+  const checklistItems = [
+    { label: 'Open Dana Choices and Team Rules', done: sourceTabsReady },
+    { label: 'Footprint passes Rules Check', done: analysis.blockers.length === 0 },
+    { label: 'Level 1 kitchen and mudroom labels placed', done: level1LabelsPlaced },
+    { label: 'Level 2 bedroom suite label placed', done: level2LabelPlaced },
+    { label: 'West Elevation uses Translucent glass', done: windowReady },
+  ]
+  const canSubmit = sourceTabsReady && analysis.blockers.length === 0 && analysis.roomsPlaced && windowReady && notesReady
+  const firstBlocker = analysis.blockers[0]
+  const missingSubmitMessage = !sourceTabsReady
+    ? 'Cannot submit yet: open Dana Choices and Team Rules.'
+    : firstBlocker
+      ? `Cannot submit yet: Rules Check still needs ${firstBlocker.label}.`
+      : !level1LabelsPlaced
+        ? 'Cannot submit yet: Level 1 still needs Kitchen area and Mudroom area labels.'
+        : !level2LabelPlaced
+          ? 'Cannot submit yet: Level 2 still needs the Bedroom suite label.'
+          : !windowReady
+            ? 'Cannot submit yet: West Elevation still needs Translucent glass.'
+            : notesRequired && !notesReady
+              ? 'Cannot submit yet: the design note is too short.'
+              : 'Ready to submit. Your option meets Dana\'s choices and the team rules.'
+  const nextStepMessage = !sourceTabsReady
+    ? 'Next: open Dana Choices and Team Rules.'
+    : firstBlocker
+      ? `Next: clear Rules Check. Start with ${firstBlocker.label}.`
+      : !level1LabelsPlaced
+        ? activeLevel === 'level1'
+          ? 'Next: place Kitchen area and Mudroom area.'
+          : 'Next: open Level 1 plan and place Kitchen area and Mudroom area.'
+        : !level2LabelPlaced
+          ? activeLevel === 'level2'
+            ? 'Next: place Bedroom suite.'
+            : 'Next: open Level 2 plan and place Bedroom suite.'
+          : !windowReady
+            ? activeLevel === 'westElevation'
+              ? 'Next: choose Translucent glass.'
+              : 'Next: open West Elevation and choose Translucent glass.'
+            : 'Ready to submit. Your option meets Dana\'s choices and the team rules.'
+  const guidanceMessage = nextStepMessage
+  const placedLabelMessage = labelConfirmation(activeLevel, studio.labels)
+  const showDevControls = import.meta.env.DEV && import.meta.env.VITE_HIDE_DEV_JUMPS !== 'true'
 
   const save = (next: StudioState) => {
     setStudio(next)
     setFreeTextResponse(node.bindingKey, responsePayload(next))
+  }
+
+  const selectAppTab = (id: AppTabId) => {
+    setActiveAppTab(id)
+    setActiveTool('select')
+    setDrag(null)
+    if (id !== 'revit') {
+      save({
+        ...studio,
+        sourceTabsRead: {
+          ...studio.sourceTabsRead,
+          [id]: true,
+        },
+      })
+    }
   }
 
   const updateOption = (updater: (state: StudioState) => StudioState) => {
@@ -278,6 +403,7 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
   const startDrag = (event: ReactPointerEvent<SVGElement>, nextDrag: DragState) => {
     event.preventDefault()
     event.stopPropagation()
+    event.currentTarget.setPointerCapture?.(event.pointerId)
     setDrag(nextDrag)
   }
 
@@ -291,20 +417,18 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
         [id]: { x: clamp(point.x, 6, 94), y: clamp(point.y, 8, 69), placed: true },
       },
     })
+    setActiveTool('select')
+  }
+
+  const handleCanvasPointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
+    if (activeTool === 'select') return
+    event.preventDefault()
+    event.stopPropagation()
+    placeActiveTool(pointFromEvent(event))
   }
 
   const placeRoomTool = (id: RoomLabelId) => {
-    const item = studio.labels[id]
-    if (!item.placed) {
-      updateOption((state) => ({
-        ...state,
-        labels: {
-          ...state.labels,
-          [id]: { ...state.labels[id], placed: true },
-        },
-      }))
-    }
-    setActiveTool('select')
+    setActiveTool(id)
   }
 
   const handlePointerMove = (event: ReactPointerEvent<SVGSVGElement>) => {
@@ -366,11 +490,6 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
           <div>
             <h1 style={{ fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.3, margin: 0 }}>{node.title}</h1>
-            {node.toolModel && (
-              <div style={{ marginTop: '0.35rem', fontSize: '0.78rem', fontWeight: 800, color: '#3A6B5E' }}>
-                Closest real tool: {node.toolModel}
-              </div>
-            )}
           </div>
           {briefing && <ReferenceButton onClick={() => setRefOpen(true)} label="View Briefing" />}
         </div>
@@ -380,30 +499,38 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
           </div>
         )}
         <div style={{ backgroundColor: '#FBF7EA', border: '1px solid #CDBF94', padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 650 }}>
-          {renderContentWithGlossary(interpolate(node.prompt, context))}
+          {promptSteps ? (
+            <div>
+              <div style={{ fontWeight: 900, marginBottom: '0.5rem' }}>{promptSteps.intro}</div>
+              <ol style={{ margin: 0, paddingLeft: '1.25rem', display: 'grid', gap: '0.3rem', lineHeight: 1.45 }}>
+                {promptSteps.steps.map((step) => (
+                  <li key={step}>{renderContentWithGlossary(step)}</li>
+                ))}
+              </ol>
+            </div>
+          ) : (
+            renderContentWithGlossary(promptText)
+          )}
         </div>
 
-        <DesktopOverlay width="80%" height="82%" laptopZoom={1.05} laptopOffsetX="-1%">
+        <DesignStudioToolShell isNarrow={isNarrow}>
           <LaptopFrame
             variant="bim"
             title={node.windowTitle ?? 'Maple Street Addition.rvt'}
             titleTabs={appTabs}
             activeTitleTabId={activeAppTab}
-            onTitleTabChange={(id) => {
-              setActiveAppTab(id as AppTabId)
-              setActiveTool('select')
-              setDrag(null)
-            }}
-            fill
+            onTitleTabChange={(id) => selectAppTab(id as AppTabId)}
+            fill={!isNarrow}
+            scrollable={isNarrow}
           >
-            <div style={{ height: '100%', minWidth: 0, display: 'grid', gridTemplateColumns: activeAppTab === 'revit' ? '145px minmax(280px, 1fr) 220px' : 'minmax(280px, 1fr)', background: '#F7F1E3', color: '#1E1E1A' }}>
+            <div style={{ height: isNarrow ? 'auto' : '100%', minWidth: 0, display: 'grid', gridTemplateColumns: isNarrow ? 'minmax(0, 1fr)' : activeAppTab === 'revit' ? '145px minmax(280px, 1fr) 220px' : 'minmax(280px, 1fr)', background: '#F7F1E3', color: '#1E1E1A' }}>
               {activeAppTab === 'revit' && (
-                <aside style={{ borderRight: '1px solid #CDBF94', background: '#EFE8D2', padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', overflow: 'auto' }}>
+                <aside style={{ borderRight: isNarrow ? 'none' : '1px solid #CDBF94', borderBottom: isNarrow ? '1px solid #CDBF94' : undefined, background: '#EFE8D2', padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', overflow: 'auto' }}>
                   <section style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                    <PanelTitle>Project Views</PanelTitle>
+                    <PanelTitle>Drawing Views</PanelTitle>
                     {[
-                      { id: 'level1' as RevitViewId, label: 'Level 1' },
-                      { id: 'level2' as RevitViewId, label: 'Level 2' },
+                      { id: 'level1' as RevitViewId, label: 'Level 1 plan' },
+                      { id: 'level2' as RevitViewId, label: 'Level 2 plan' },
                       { id: 'westElevation' as RevitViewId, label: 'West Elevation' },
                     ].map((view) => (
                       <button
@@ -414,9 +541,11 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                           setActiveTool('select')
                           setDrag(null)
                         }}
+                        data-testid={`design-view-${view.id}`}
+                        aria-pressed={activeLevel === view.id}
                         style={toolButtonStyle(activeLevel === view.id)}
                       >
-                        {view.label}
+                        {renderContentWithGlossary(view.label)}
                       </button>
                     ))}
                   </section>
@@ -424,28 +553,40 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                   {activeLevel !== 'westElevation' ? (
                     <>
                       <section style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                        <PanelTitle>Modify</PanelTitle>
+                        <PanelTitle>Move or Resize</PanelTitle>
                         <button type="button" onClick={() => setActiveTool('select')} style={toolButtonStyle(activeTool === 'select')}>Select / move</button>
                         <div style={{ fontSize: '0.6rem', lineHeight: 1.35, color: '#6A604B' }}>
-                          Click a room tag button to place it. Drag placed tags to refine the drawing.
+                          {labelPlacementHelp(activeLevel)}
                         </div>
                       </section>
 
                       <section style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                        <PanelTitle>Room Tags</PanelTitle>
+                        <PanelTitle>Room Labels</PanelTitle>
                         {visibleRoomTools.map((tool) => (
-                          <button key={tool.id} type="button" onClick={() => placeRoomTool(tool.id)} style={toolButtonStyle(studio.labels[tool.id].placed)}>
+                          <button
+                            key={tool.id}
+                            type="button"
+                            onClick={() => placeRoomTool(tool.id)}
+                            data-testid={`room-tool-${tool.id}`}
+                            aria-pressed={activeTool === tool.id}
+                            style={toolButtonStyle(activeTool === tool.id || studio.labels[tool.id].placed)}
+                          >
                             {tool.label}
                           </button>
                         ))}
+                        {placedLabelMessage && (
+                          <div style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 4, padding: '0.35rem 0.4rem', fontSize: '0.6rem', lineHeight: 1.35, color: '#3A6B5E', fontWeight: 800 }}>
+                            {renderContentWithGlossary(placedLabelMessage)}
+                          </div>
+                        )}
                       </section>
 
                     </>
                   ) : (
                     <section style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                      <PanelTitle>Elevation Task</PanelTitle>
+                      <PanelTitle>Window Choice</PanelTitle>
                       <div style={{ border: '1px solid #CDBF94', background: '#FBF7EA', padding: '0.45rem', borderRadius: 4, fontSize: '0.66rem', lineHeight: 1.4, color: '#6A604B' }}>
-                        Use the West Window Strategy buttons to place a privacy approach at the upper-right bedroom-window location.
+                        {renderContentWithGlossary('Choose how the west bedroom window should protect privacy while keeping daylight.')}
                       </div>
                     </section>
                   )}
@@ -457,43 +598,56 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                   <div style={{ fontSize: '0.72rem', fontWeight: 850, color: '#3A6B5E' }}>
                     {activeAppTab === 'revit'
                       ? activeLevel === 'level1'
-                        ? 'Level 1 - Proposed Plan'
+                        ? 'Level 1 plan'
                         : activeLevel === 'level2'
-                          ? 'Level 2 - Proposed Plan'
+                          ? 'Level 2 plan'
                           : 'A201 West Elevation'
                       : appTabs.find((tab) => tab.id === activeAppTab)?.label}
                   </div>
                   <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', color: '#6A604B', fontSize: '0.6rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                     {activeAppTab === 'revit' ? (
                       <>
-                        <span>Scale 1/8 in = 1 ft</span>
-                        <span>Detail level: Medium</span>
-                        <span>Workset: Maple Street</span>
+                        <span>Scale: 1/8 in = 1 ft</span>
+                        <span>Project: Maple Street</span>
                       </>
                     ) : (
-                      <span>Source view</span>
+                      <span>Reference view</span>
                     )}
                   </div>
                 </div>
+                {activeAppTab === 'revit' && (
+                  <div style={{ borderBottom: '1px solid #CDBF94', background: '#F7F1E3', padding: isNarrow ? '0.55rem' : '0.45rem 0.55rem', display: 'flex', flexDirection: 'column', gap: '0.45rem', flexShrink: 0 }}>
+                    <div style={{ border: `1px solid ${sourceTabsReady ? '#8EB99B' : '#B87D6B'}`, background: sourceTabsReady ? '#EEF8F1' : '#F4E2DB', borderRadius: 4, padding: '0.42rem 0.5rem', fontSize: '0.66rem', lineHeight: 1.45, color: sourceTabsReady ? '#2F5F52' : '#8B5E50', fontWeight: 850 }}>
+                      {renderContentWithGlossary(sourceTabsReady ? 'Good. Dana Choices and Team Rules are checked.' : 'Start here: open Dana Choices and Team Rules before editing. You do not need outside knowledge.')}
+                    </div>
+                    <TaskChecklistPanel items={checklistItems} />
+                    <div style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 4, padding: '0.42rem 0.5rem', fontSize: '0.66rem', lineHeight: 1.45, color: '#5A5140', fontWeight: 750 }}>
+                      {renderContentWithGlossary(guidanceMessage)}
+                    </div>
+                  </div>
+                )}
 
                 {activeAppTab === 'revit' ? (
                   activeLevel === 'westElevation' ? (
-                    <WestElevationCanvas strategyId={studio.windowStrategy} selectedWindowStrategy={selectedWindowStrategy?.label} />
+                    <WestElevationCanvas selectedWindowStrategy={selectedWindowStrategy} isNarrow={isNarrow} />
                   ) : (
-                <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+                <div style={{ flex: 1, minHeight: isNarrow ? 330 : 0, padding: isNarrow ? '0.55rem' : '0.75rem', overflow: 'auto', background: '#F2EBD9', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
                   <div style={{ width: '100%', aspectRatio: '4 / 3', border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)' }}>
                     <svg
                       ref={svgRef}
+                      data-testid="design-canvas"
                       viewBox={`0 0 ${SITE.w} ${SITE.h}`}
                       preserveAspectRatio="xMidYMid meet"
+                      onPointerDown={handleCanvasPointerDown}
                       onPointerMove={handlePointerMove}
                       onPointerUp={() => setDrag(null)}
+                      onPointerCancel={() => setDrag(null)}
                       onPointerLeave={() => setDrag(null)}
                       style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: activeTool === 'select' ? 'default' : 'crosshair' }}
                     >
                       <rect x={0} y={0} width={SITE.w} height={SITE.h} fill="#FBF7EA" />
                       <image
-                        href={activeLevel === 'level1' ? '/action-assets/revit/level1.png' : '/action-assets/revit/level2.jpeg'}
+                        href={activeLevel === 'level1' ? '/action-assets/revit/level1.png' : '/action-assets/revit/level2.png'}
                         x={planImageX}
                         y={planImageY}
                         width={planImageWidth}
@@ -507,12 +661,26 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                         width={SITE.w}
                         height={SITE.h}
                         fill="transparent"
-                        onPointerDown={(event) => placeActiveTool(pointFromEvent(event))}
+                        pointerEvents="all"
+                        data-testid="design-canvas-hit-layer"
+                        onPointerDown={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          placeActiveTool(pointFromEvent(event))
+                        }}
                       />
 
                       <g
-                        onPointerDown={(event) => startDrag(event, { kind: 'footprint', start: pointFromEvent(event), startFootprint: studio.footprint })}
-                        style={{ cursor: 'move' }}
+                        onPointerDown={(event) => {
+                          if (activeTool !== 'select') {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            placeActiveTool(pointFromEvent(event))
+                            return
+                          }
+                          startDrag(event, { kind: 'footprint', start: pointFromEvent(event), startFootprint: studio.footprint })
+                        }}
+                        style={{ cursor: activeTool === 'select' ? 'move' : 'crosshair' }}
                       >
                         <rect
                           x={studio.footprint.x}
@@ -524,8 +692,11 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                           stroke="#B87D6B"
                           strokeWidth={0.75}
                         />
-                        <text x={studio.footprint.x + 1.4} y={studio.footprint.y + 3} fontSize={1.45} fill="#8B5E50" fontWeight={900}>
+	                        <text x={studio.footprint.x + 1.4} y={studio.footprint.y + 3} fontSize={1.45} fill="#8B5E50" fontWeight={900}>
                           {activeLevel === 'level1' ? 'proposed rear addition' : 'suite footprint above'}
+                        </text>
+                        <text x={studio.footprint.x + 1.4} y={studio.footprint.y + 5.2} fontSize={1.08} fill="#8B5E50" fontWeight={800}>
+                          Drag or resize this new addition
                         </text>
                       </g>
 
@@ -585,24 +756,30 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                 </div>
                   )
                 ) : (
-                  <SourceTabContent activeTab={activeAppTab} />
+                  <SourceTabContent activeTab={activeAppTab} referenceTabs={referenceTabs} context={context} />
                 )}
               </main>
 
               {activeAppTab === 'revit' && (
-                <aside style={{ borderLeft: '1px solid #CDBF94', background: '#EFE8D2', padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', overflow: 'auto' }}>
+                <aside style={{ borderLeft: isNarrow ? 'none' : '1px solid #CDBF94', borderTop: isNarrow ? '1px solid #CDBF94' : undefined, background: '#EFE8D2', padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', overflow: 'auto' }}>
                 {activeAppTab === 'revit' && activeLevel !== 'westElevation' && (
                   <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                    <PanelTitle>Properties</PanelTitle>
+                    <PanelTitle>Footprint Size</PanelTitle>
+                    <div style={{ border: '1px solid #CDBF94', background: '#F7F1E3', borderRadius: 4, padding: '0.4rem 0.45rem', fontSize: '0.62rem', lineHeight: 1.35, color: '#6A604B' }}>
+                      {renderContentWithGlossary('Footprint means the size and position of the new addition.')}
+                    </div>
                     <RangeControl label="Width" value={studio.footprint.w} min={22} max={45} unit="ft" onChange={(value) => setFootprint({ ...studio.footprint, w: value })} />
                     <RangeControl label="Depth" value={studio.footprint.h} min={10} max={24} unit="ft" onChange={(value) => setFootprint({ ...studio.footprint, h: value })} />
-                    <RangeControl label="Shift east" value={studio.footprint.x} min={16} max={52} unit="ft" onChange={(value) => setFootprint({ ...studio.footprint, x: value })} />
+                    <RangeControl label="Move sideways" value={studio.footprint.x} min={16} max={52} unit="ft" onChange={(value) => setFootprint({ ...studio.footprint, x: value })} />
+                    <div style={{ border: '1px solid #CDBF94', background: '#F7F1E3', borderRadius: 4, padding: '0.4rem 0.45rem', fontSize: '0.62rem', lineHeight: 1.35, color: '#6A604B' }}>
+                      {renderContentWithGlossary('Use Depth for rear setback. Use Width or Depth for lot coverage. Use Width or Move sideways to keep the right-rear utility clear zone open.')}
+                    </div>
                   </section>
                 )}
 
                 {activeLevel === 'westElevation' && (
                   <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-                    <PanelTitle>West Window Strategy</PanelTitle>
+                    <PanelTitle>West Window Choice</PanelTitle>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.35rem' }}>
                       {windowStrategies.map((strategy) => {
                         const active = studio.windowStrategy === strategy.id
@@ -622,30 +799,47 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
                               cursor: 'pointer',
                               fontFamily: 'Inter, system-ui, sans-serif',
                             }}
-                          >
-                            {strategy.label}
-                          </button>
+	                      >
+	                            {renderContentWithGlossary(strategy.label)}
+	                          </button>
                         )
                       })}
                     </div>
                     <div style={{ fontSize: '0.68rem', color: '#6A604B' }}>
-                      Selected: {selectedWindowStrategy?.label ?? 'none'}
+                      Selected: {selectedWindowStrategy ? renderContentWithGlossary(selectedWindowStrategy.label) : 'none'}
                     </div>
                   </section>
                 )}
 
                 {activeLevel !== 'westElevation' && (
                   <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', borderRadius: 6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <PanelTitle>Constraint Check</PanelTitle>
-                    {analysis.checks.map((check) => (
-                      <div key={check.id} style={{ borderLeft: `4px solid ${statusColor(check.severity)}`, background: '#F7F1E3', padding: '0.4rem 0.5rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.4rem', fontSize: '0.68rem', fontWeight: 900 }}>
-                          <span>{check.label}</span>
-                          <span>{check.value}</span>
+                    <PanelTitle>Rules Check</PanelTitle>
+                    {analysis.checks.map((check) => {
+                      const isActiveBlocker = firstBlocker?.id === check.id
+                      return (
+                        <div
+                          key={check.id}
+                          style={{
+                            border: isActiveBlocker ? '2px solid #8B5E50' : '1px solid transparent',
+                            borderLeft: `4px solid ${statusColor(check.severity)}`,
+                            background: isActiveBlocker ? '#FFF6E8' : '#F7F1E3',
+                            padding: '0.4rem 0.5rem',
+                            boxShadow: isActiveBlocker ? '2px 2px 0 rgba(139, 94, 80, 0.24)' : 'none',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.4rem', fontSize: '0.68rem', fontWeight: 900 }}>
+                            <span>{renderContentWithGlossary(check.label)}</span>
+                            <span>{check.value}</span>
+                          </div>
+                          {isActiveBlocker && (
+                            <div style={{ display: 'inline-flex', marginTop: '0.22rem', border: '1px solid #8B5E50', borderRadius: 999, padding: '0.08rem 0.32rem', fontSize: '0.52rem', lineHeight: 1.1, fontWeight: 950, color: '#8B5E50', background: '#F4E2DB' }}>
+                              Fix this first
+                            </div>
+                          )}
+                          <div style={{ marginTop: '0.2rem', fontSize: '0.64rem', lineHeight: 1.35, color: '#6A604B' }}>{renderContentWithGlossary(check.message)}</div>
                         </div>
-                        <div style={{ marginTop: '0.2rem', fontSize: '0.64rem', lineHeight: 1.35, color: '#6A604B' }}>{check.message}</div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </section>
                 )}
 
@@ -653,50 +847,57 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
               )}
             </div>
           </LaptopFrame>
-        </DesktopOverlay>
+        </DesignStudioToolShell>
 
-        <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', padding: '0.85rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <div>
-              <h2 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 900, color: '#3A6B5E' }}>Design Notes</h2>
-              <div style={{ marginTop: '0.25rem', fontSize: '0.78rem', lineHeight: 1.55, color: '#555' }}>
-                Write a short note to Maya/Owen that explains the plan move, the room locations, the west-window privacy choice, and how the option handles setback, lot coverage, maple tree, and utility-clear constraints.
+        {notesRequired && (
+          <section style={{ border: '1px solid #CDBF94', background: '#FBF7EA', padding: '0.85rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 900, color: '#3A6B5E' }}>Design Notes</h2>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.78rem', lineHeight: 1.55, color: '#555' }}>
+                  {renderContentWithGlossary('Write a short note to Maya/Owen. Explain the footprint move, room locations, Translucent glass choice, setback, lot coverage, maple tree, and right-rear utility clear zone.')}
+                </div>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: notesReady ? '#3A6B5E' : '#6A604B', fontWeight: 800 }}>
+                {noteWordCount}/{minNotesWords} words minimum
               </div>
             </div>
-            <div style={{ fontSize: '0.72rem', color: notesReady ? '#3A6B5E' : '#6A604B', fontWeight: 800 }}>
-              {noteWordCount}/{minNotesWords} words minimum
-            </div>
-          </div>
-          <textarea
-            value={studio.notes}
-            onChange={(event) => save({ ...studio, notes: event.target.value })}
-            placeholder={node.notesPlaceholder ?? 'Write 3-5 sentences for Maya/Owen: state the footprint move, where kitchen/mudroom/suite go, why the west-window strategy fits privacy/daylight, which constraints are clear, and what still needs review before permit drawings.'}
-            rows={5}
-            style={{
-              resize: 'vertical',
-              border: '1px solid #CDBF94',
-              background: '#F7F1E3',
-              color: '#1E1E1A',
-              borderRadius: 4,
-              padding: '0.65rem',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: '0.82rem',
-              lineHeight: 1.5,
-              minHeight: 120,
-            }}
-          />
-        </section>
+            <textarea
+              value={studio.notes}
+              onChange={(event) => save({ ...studio, notes: event.target.value })}
+              placeholder={node.notesPlaceholder ?? 'Write 3-5 sentences for Maya/Owen: state the footprint move, where kitchen/mudroom/suite go, why the west-window strategy fits privacy/daylight, which constraints are clear, and what still needs review before permit drawings.'}
+              rows={5}
+              style={{
+                resize: 'vertical',
+                border: '1px solid #CDBF94',
+                background: '#F7F1E3',
+                color: '#1E1E1A',
+                borderRadius: 4,
+                padding: '0.65rem',
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '0.82rem',
+                lineHeight: 1.5,
+                minHeight: 120,
+              }}
+            />
+          </section>
+        )}
 
-        <section style={{ border: '1px solid #B87D6B', background: '#F2EBD9', padding: '0.85rem 1rem', display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <section style={{ border: '1px solid #B87D6B', background: '#F2EBD9', padding: isNarrow ? '0.75rem' : '0.85rem 1rem', display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: isNarrow ? 'stretch' : 'center', flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 360px' }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: 950, color: '#8B5E50', marginBottom: '0.25rem' }}>Submit Full Schematic Option</div>
-            <div style={{ fontSize: '0.75rem', lineHeight: 1.45, color: canSubmit ? '#3A6B5E' : '#6A604B' }}>
-              Required: Level 1 kitchen/mudroom tags, Level 2 suite tag, window strategy, live constraints with no blockers, and design notes.
+            <div style={{ fontSize: '0.78rem', fontWeight: 950, color: '#8B5E50', marginBottom: '0.25rem' }}>Submit Design Option</div>
+            {isNarrow && (
+              <div style={{ marginBottom: '0.6rem' }}>
+                <TaskChecklistPanel items={checklistItems} />
+              </div>
+            )}
+            <div style={{ fontSize: '0.75rem', lineHeight: 1.45, color: canSubmit ? '#3A6B5E' : '#6A604B', fontWeight: 750 }}>
+              {renderContentWithGlossary(missingSubmitMessage)}
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-            <ActionButton text="Submit option study" onClick={() => goNext(node)} disabled={!canSubmit} variant="primary" fullWidth={false} />
-            {import.meta.env.DEV && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: isNarrow ? 'stretch' : 'center', flexWrap: 'wrap', flexDirection: isNarrow ? 'column' : 'row', width: isNarrow ? '100%' : 'auto' }}>
+            <ActionButton text="Submit design option" onClick={() => goNext(node)} disabled={!canSubmit} variant="primary" fullWidth={isNarrow} />
+            {showDevControls && <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />}
           </div>
         </section>
       </motion.div>
@@ -710,27 +911,42 @@ export default function ArchitectDesignStudioScene({ node }: { node: ArchitectDe
   )
 }
 
-function WestElevationCanvas({
-  strategyId,
-  selectedWindowStrategy,
-}: {
-  strategyId: string
-  selectedWindowStrategy?: string
-}) {
-  const target = { x: 61.4, y: 22.8, w: 12.4, h: 12.75 }
-  const placedWindowHref = strategyId ? `/action-assets/revit/${strategyId}.png` : ''
-  const placedWindowScale = strategyId === 'smaller_window' ? 0.8 : 1
-  const placedWindow = {
-    x: target.x + (target.w - target.w * placedWindowScale) / 2,
-    y: target.y + (target.h - target.h * placedWindowScale) / 2,
-    w: target.w * placedWindowScale,
-    h: target.h * placedWindowScale,
+function DesignStudioToolShell({ isNarrow, children }: { isNarrow: boolean; children: ReactNode }) {
+  if (isNarrow) {
+    return (
+      <div style={{ width: '100%', minHeight: 680 }}>
+        {children}
+      </div>
+    )
   }
 
   return (
-    <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+    <DesktopOverlay width="80%" height="82%" laptopZoom={1.05} laptopOffsetX="-1%">
+      {children}
+    </DesktopOverlay>
+  )
+}
+
+function WestElevationCanvas({
+  selectedWindowStrategy,
+  isNarrow,
+}: {
+  selectedWindowStrategy?: WindowStrategy
+  isNarrow: boolean
+}) {
+  const target = { x: 61.4, y: 22.8, w: 12.4, h: 12.75 }
+  const placedWindowHref = selectedWindowStrategy?.assetPath ?? ''
+  const clipId = 'west-window-w12-opening'
+
+  return (
+    <div style={{ flex: 1, minHeight: isNarrow ? 330 : 0, padding: isNarrow ? '0.55rem' : '0.75rem', overflow: 'auto', background: '#F2EBD9', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
       <div style={{ width: '100%', border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', display: 'flex', flexDirection: 'column' }}>
         <svg viewBox={`0 0 ${SITE.w} ${SITE.h}`} preserveAspectRatio="xMidYMid meet" style={{ width: '100%', aspectRatio: '4 / 3', height: 'auto', display: 'block', flexShrink: 0 }}>
+          <defs>
+            <clipPath id={clipId}>
+              <rect x={target.x} y={target.y} width={target.w} height={target.h} />
+            </clipPath>
+          </defs>
           <rect x={0} y={0} width={SITE.w} height={SITE.h} fill="#FBF7EA" />
           <image
             href="/action-assets/revit/west_elevation.png"
@@ -741,137 +957,69 @@ function WestElevationCanvas({
             preserveAspectRatio="none"
           />
           {placedWindowHref && (
-            <image
-              href={placedWindowHref}
-              x={placedWindow.x}
-              y={placedWindow.y}
-              width={placedWindow.w}
-              height={placedWindow.h}
-              preserveAspectRatio="xMidYMid meet"
+            <g clipPath={`url(#${clipId})`}>
+              <rect x={target.x} y={target.y} width={target.w} height={target.h} fill="#F8F2E2" />
+              <image
+                href={placedWindowHref}
+                x={target.x}
+                y={target.y}
+                width={target.w}
+                height={target.h}
+                preserveAspectRatio="none"
+              />
+            </g>
+          )}
+          {placedWindowHref && (
+            <rect
+              x={target.x}
+              y={target.y}
+              width={target.w}
+              height={target.h}
+              fill="none"
+              stroke="#1E1E1A"
+              strokeWidth={0.35}
+              vectorEffect="non-scaling-stroke"
             />
           )}
         </svg>
         <div style={{ borderTop: '1px solid #CDBF94', padding: '0.6rem 0.75rem', fontSize: '0.75rem', lineHeight: 1.55, color: '#333' }}>
-          West bedroom window privacy review. Placed strategy: <strong>{selectedWindowStrategy ?? 'none yet'}</strong>. Use this to balance daylight for Dana against the west-neighbor privacy concern.
+          {renderContentWithGlossary('West bedroom window privacy review. Placed choice: ')}
+          <strong>{selectedWindowStrategy?.label ?? 'none yet'}</strong>
+          {renderContentWithGlossary('. Dana wants privacy without losing daylight, so the verified direction is Translucent glass or privacy glazing.')}
         </div>
       </div>
     </div>
   )
 }
 
-function SourceTabContent({ activeTab }: { activeTab: Exclude<AppTabId, 'revit'> }) {
-  if (activeTab === 'site') {
-    return (
-      <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-        <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.75rem', alignContent: 'start' }}>
-            <InfoBlock title="Zoning">
-              Rear setback: 25 ft minimum. Side setback: 5 ft minimum. Max lot coverage: 45%. Max height: 30 ft.
-            </InfoBlock>
-            <InfoBlock title="Design Priorities">
-              More daylight, a better kitchen, mudroom, bedroom suite, cost control, privacy, and preserving the mature maple.
-            </InfoBlock>
-            <InfoBlock title="How to use this">
-              Read these limits, return to Revit, and adjust the footprint before submitting. This tab is a reference note, not a live model view.
-            </InfoBlock>
-        </div>
-      </div>
-    )
-  }
-
-  if (activeTab === 'slack') {
-    return (
-      <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-        <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem' }}>
-          <StaticSlackMessage
-            sender="Maya Chen"
-            role="Project Architect"
-            timestamp="2:38 PM"
-            initials="MC"
-            content="Owen and I reviewed Riley's basement-window / utility concern. Treat the right-rear utility clear zone as fixed for this option: keep the addition footprint out of it and note that the clearance is already coordinated for this schematic study."
-          />
-        </div>
-      </div>
-    )
-  }
+function SourceTabContent({
+  activeTab,
+  referenceTabs,
+  context,
+}: {
+  activeTab: AppTabId
+  referenceTabs: NonNullable<ArchitectDesignStudioNode['referenceTabs']>
+  context: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> }
+}) {
+  const tab = referenceTabs.find((item) => item.id === activeTab)
+  if (!tab) return <div style={{ flex: 1, minHeight: 0, background: '#F7F1E3' }} />
 
   return (
     <div style={{ flex: 1, minHeight: 0, padding: '0.75rem', overflow: 'auto', background: '#F2EBD9' }}>
-      <div style={{ minHeight: 420, height: '100%', border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', display: 'grid', gridTemplateRows: 'minmax(260px, 1fr) auto' }}>
-        <div style={{ padding: '0.75rem', minHeight: 0 }}>
-          <img
-            src="/scenes/site_observation.png"
-            alt="Riley site photo showing the proposed foundation area near the basement window and utility service"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', border: '1px solid #CDBF94', display: 'block' }}
-          />
-        </div>
-        <div style={{ borderTop: '1px solid #CDBF94', padding: '0.7rem 0.85rem', fontSize: '0.75rem', lineHeight: 1.55, color: '#333' }}>
-          Maya/Owen reviewed Riley's basement-window and utility concern before this study. Keep the footprint out of the right-rear utility clear zone.
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function StaticSlackMessage({
-  sender,
-  role,
-  timestamp,
-  initials,
-  content,
-}: {
-  sender: string
-  role: string
-  timestamp: string
-  initials: string
-  content: string
-}) {
-  return (
-    <div style={{ border: '1px solid #D8D1C1', background: '#F7F1E3', borderRadius: 6, overflow: 'hidden' }}>
-      <div style={{ borderBottom: '1px solid #D8D1C1', background: '#EFE8D2', padding: '0.45rem 0.65rem', fontSize: '0.68rem', fontWeight: 850, color: '#3F605C' }}>
-        #maple-street-addition
-      </div>
-      <div style={{ display: 'flex', gap: '0.625rem', padding: '0.65rem 0.75rem' }}>
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 6,
-            backgroundColor: '#3D405B',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            marginTop: 2,
-          }}
-        >
-          <span style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.02em' }}>{initials}</span>
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-            <span style={{ fontWeight: 800, fontSize: '0.86rem', color: '#1d1c1d' }}>{sender}</span>
-            <span style={{ fontSize: '0.68rem', color: '#616061', fontWeight: 650 }}>{role}</span>
-            <span style={{ fontSize: '0.68rem', color: '#9e9e9e', marginLeft: 'auto', whiteSpace: 'nowrap' }}>{timestamp}</span>
+      <div style={{ minHeight: 420, border: '1px solid #1E1E1A', background: '#FBF7EA', boxShadow: '4px 4px 0 rgba(0,0,0,0.22)', padding: '0.9rem', fontSize: '0.84rem', lineHeight: 1.65, color: '#1E1E1A', whiteSpace: 'pre-wrap' }}>
+        {tab.heading && (
+          <div style={{ fontSize: '0.72rem', color: '#3A6B5E', fontWeight: 950, textTransform: 'uppercase', letterSpacing: 0, marginBottom: '0.45rem' }}>
+            {renderContentWithGlossary(interpolate(tab.heading, context))}
           </div>
-          <div style={{ fontSize: '0.82rem', lineHeight: 1.55, color: '#1d1c1d', whiteSpace: 'pre-wrap', marginTop: '0.15rem' }}>
-            {content}
-          </div>
-        </div>
+        )}
+        {renderContentWithGlossary(interpolate(tab.content, context))}
       </div>
-    </div>
-  )
-}
-
-function InfoBlock({ title, children }: { title: string; children: string }) {
-  return (
-    <div style={{ borderLeft: '4px solid #3A6B5E', background: '#F7F1E3', padding: '0.55rem 0.65rem' }}>
-      <div style={{ fontSize: '0.7rem', fontWeight: 950, color: '#3A6B5E', marginBottom: '0.3rem' }}>{title}</div>
-      <div style={{ fontSize: '0.72rem', lineHeight: 1.45, color: '#333' }}>{children}</div>
     </div>
   )
 }
 
 function PanelTitle({ children }: { children: string }) {
-  return <div style={{ fontSize: '0.68rem', fontWeight: 950, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#3A6B5E' }}>{children}</div>
+  return <div style={{ fontSize: '0.68rem', fontWeight: 950, letterSpacing: 0, textTransform: 'uppercase', color: '#3A6B5E' }}>{renderContentWithGlossary(children)}</div>
 }
 
 function RangeControl({

@@ -123,6 +123,7 @@ export default function LaptopFrame({
     cursor: 'pointer',
     minWidth: 0,
     maxWidth: active ? '11rem' : '10rem',
+    flexShrink: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -169,9 +170,11 @@ export default function LaptopFrame({
               gap: '0.125rem',
               flex: 1,
               minWidth: 0,
-              overflowX: 'auto',
+              flexWrap: 'wrap',
+              overflowX: 'visible',
               marginLeft: '0.5rem',
               paddingTop: '0.1rem',
+              rowGap: '0.125rem',
             }}
           >
             {titleTabs.map((tab) => {

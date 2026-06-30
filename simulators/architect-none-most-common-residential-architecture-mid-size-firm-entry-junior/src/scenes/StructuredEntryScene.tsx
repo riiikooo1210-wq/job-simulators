@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 import ActionButton from '../components/ui/ActionButton'
 import LaptopFrame from '../components/ui/LaptopFrame'
 import ReferenceDrawer, { ReferenceButton } from '../components/ui/ReferenceDrawer'
+import { useNarrowViewport } from '../components/hooks/useNarrowViewport'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext, useSectionBriefing } from '../engine/resolveNext'
@@ -16,7 +17,14 @@ import type { StructuredEntryNode } from '../types/game'
 interface Props { node: StructuredEntryNode }
 
 type Item = Record<string, string>
-type AppTab = NonNullable<StructuredEntryNode['appTabs']>[number]
+export type StructuredEntryAppTab = NonNullable<StructuredEntryNode['appTabs']>[number]
+type AppTab = StructuredEntryAppTab
+type AppCard = NonNullable<AppTab['cards']>[number]
+export type StructuredEntryContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
 
 function parseItems(raw: string, fields: { key: string }[], initialCount: number): Item[] {
   if (!raw) return Array.from({ length: initialCount }, () =>
@@ -33,7 +41,36 @@ function parseItems(raw: string, fields: { key: string }[], initialCount: number
   )
 }
 
-function renderAppTab(tab: AppTab, ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> }) {
+function StandardCard({ card, ctx }: { card: AppCard; ctx: StructuredEntryContext }) {
+  return (
+    <div
+      style={{
+        border: '1px solid #CDBF94',
+        background: '#FBF7EA',
+        borderRadius: 6,
+        padding: '0.75rem 0.85rem',
+        boxShadow: '2px 2px 0 rgba(0,0,0,0.12)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <strong style={{ fontSize: '0.82rem', color: '#1E1E1A' }}>{card.title}</strong>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+          {card.ref && <span style={{ fontSize: '0.68rem', color: '#6A604B', fontWeight: 800 }}>{card.ref}</span>}
+          {card.status && (
+            <span style={{ border: '1px solid #B87D6B', borderRadius: 4, padding: '0.1rem 0.35rem', fontSize: '0.62rem', color: '#8B5E50', fontWeight: 900 }}>
+              {card.status}
+            </span>
+          )}
+        </div>
+      </div>
+      <div style={{ marginTop: '0.35rem', fontSize: '0.78rem', lineHeight: 1.5, color: '#333' }}>
+        {renderContentWithGlossary(interpolate(card.body, ctx))}
+      </div>
+    </div>
+  )
+}
+
+export function renderStructuredEntryAppTab(tab: AppTab, ctx: StructuredEntryContext) {
   return (
     <div
       style={{
@@ -45,19 +82,33 @@ function renderAppTab(tab: AppTab, ctx: { playerName: string; branchFlags: Recor
         background: '#F7F1E3',
       }}
     >
-      <div
-        style={{
-          border: '1px solid #CDBF94',
-          background: '#FBF7EA',
-          padding: '0.85rem',
-          fontSize: '0.875rem',
-          lineHeight: 1.65,
-          color: '#1E1E1A',
-          whiteSpace: 'pre-wrap',
-        }}
-      >
-        {renderContentWithGlossary(interpolate(tab.content, ctx))}
-      </div>
+      {tab.content && (
+        <div
+          style={{
+            border: '1px solid #CDBF94',
+            background: '#FBF7EA',
+            padding: '0.85rem',
+            fontSize: '0.875rem',
+            lineHeight: 1.65,
+            color: '#1E1E1A',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {tab.heading && (
+            <div style={{ fontWeight: 900, marginBottom: '0.35rem' }}>
+              {renderContentWithGlossary(interpolate(tab.heading, ctx))}
+            </div>
+          )}
+          {renderContentWithGlossary(interpolate(tab.content, ctx))}
+        </div>
+      )}
+      {tab.cards && tab.cards.length > 0 && (
+        <div style={{ display: 'grid', gap: '0.65rem' }}>
+          {tab.cards.map((card) => (
+            <StandardCard key={`${card.ref || 'card'}-${card.title}`} card={card} ctx={ctx} />
+          ))}
+        </div>
+      )}
       {tab.imagePath && (
         <div
           style={{
@@ -96,6 +147,7 @@ export default function StructuredEntryScene({ node }: Props) {
   const [refOpen, setRefOpen] = useState(false)
   const appTabs = node.appTabs || []
   const [activeAppTab, setActiveAppTab] = useState(() => node.defaultAppTabId || (appTabs[0]?.id ?? 'editor'))
+  const isNarrow = useNarrowViewport()
 
   const def = node.definition
   const initialCount = def.initialCount ?? def.minItems ?? 3
@@ -182,6 +234,7 @@ export default function StructuredEntryScene({ node }: Props) {
                     color: '#000',
                     outline: 'none',
                     resize: 'vertical',
+                    lineHeight: 1.55,
                   }}
                 />
               ) : (
@@ -265,21 +318,21 @@ export default function StructuredEntryScene({ node }: Props) {
         </div>
 
         {appWindow ? (
-          <DesktopOverlay>
+          <StructuredEntryToolShell isNarrow={isNarrow}>
             <LaptopFrame
               variant={appWindow}
               title={node.windowTitle}
-              fill
+              fill={!isNarrow}
               scrollable
               titleTabs={titleTabs}
               activeTitleTabId={activeAppTab}
               onTitleTabChange={setActiveAppTab}
             >
               {activeSourceTab
-                ? renderAppTab(activeSourceTab, { playerName, branchFlags, mcSelections })
+                ? renderStructuredEntryAppTab(activeSourceTab, { playerName, branchFlags, mcSelections })
                 : formContent}
             </LaptopFrame>
-          </DesktopOverlay>
+          </StructuredEntryToolShell>
         ) : (
           formContent
         )}
@@ -290,5 +343,21 @@ export default function StructuredEntryScene({ node }: Props) {
         </ReferenceDrawer>
       )}
     </SceneWrapper>
+  )
+}
+
+function StructuredEntryToolShell({ isNarrow, children }: { isNarrow: boolean; children: ReactNode }) {
+  if (isNarrow) {
+    return (
+      <div style={{ width: '100%', minHeight: 560 }}>
+        {children}
+      </div>
+    )
+  }
+
+  return (
+    <DesktopOverlay>
+      {children}
+    </DesktopOverlay>
   )
 }

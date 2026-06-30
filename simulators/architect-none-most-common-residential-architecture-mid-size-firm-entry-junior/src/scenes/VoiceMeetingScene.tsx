@@ -14,21 +14,55 @@ import type { ChatMessage, VoiceMeetingNode } from '../types/game'
 
 interface Props { node: VoiceMeetingNode }
 
+function formatStructuredPrepNote(raw: string): string {
+  if (!raw.trim()) return ''
+
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return raw
+
+    const formatted = parsed
+      .map((item, idx) => {
+        if (!item || typeof item !== 'object') return ''
+        const fields = item as Record<string, unknown>
+        const question = typeof fields.question === 'string' ? fields.question.trim() : ''
+        const why = typeof fields.why === 'string' ? fields.why.trim() : ''
+
+        if (question && why) return `${idx + 1}. ${question}\nWhy it matters: ${why}`
+        if (question) return `${idx + 1}. ${question}`
+
+        const fallback = Object.values(fields)
+          .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+          .map((value) => value.trim())
+          .join('\n')
+        return fallback ? `${idx + 1}. ${fallback}` : ''
+      })
+      .filter(Boolean)
+      .join('\n\n')
+
+    return formatted || raw
+  } catch {
+    return raw
+  }
+}
+
 function buildSystemPrompt(args: {
   node: VoiceMeetingNode
   npc: { name: string; role: string; persona: string; voice?: string }
   playerName: string
   goalPrompt: string
   meetingContext: string
+  prepReferenceForPrompt?: string
+  prepNoteForPrompt?: string
 }) {
-  const { node, npc, playerName, goalPrompt, meetingContext } = args
+  const { node, npc, playerName, goalPrompt, meetingContext, prepReferenceForPrompt, prepNoteForPrompt } = args
   const isInPerson = (node.meetingMode || node.presentation) === 'in_person'
   const meetingPhrase = isInPerson ? 'in an in-person workplace conversation' : 'in a live voice meeting'
   const speechStyle = isInPerson
     ? 'Speak naturally, like a real colleague or client sitting or standing with the student in the same workplace.'
     : 'Speak naturally, like a real colleague or client on a call.'
   const initial = (node.initialMessages || [])
-    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${m.content}`)
+    .map((m) => `${m.role === 'user' ? playerName || 'Student' : npc.name}: ${renderContentWithGlossary(m.content)}`)
     .join('\n')
 
   return `You are ${npc.name}, ${npc.role}, ${meetingPhrase} with ${playerName || 'the student'}.
@@ -43,11 +77,14 @@ ${goalPrompt}
 MEETING CONTEXT:
 ${meetingContext || 'Use the scene context and your persona to make this feel like a realistic workplace conversation.'}
 
+${prepReferenceForPrompt ? `REFERENCE FACTS:\n${prepReferenceForPrompt}\n` : ''}
+${prepNoteForPrompt ? `STUDENT PREP NOTE:\n${prepNoteForPrompt}\n` : ''}
 ${initial ? `INITIAL CONTEXT MESSAGES:\n${initial}\n` : ''}
 RULES:
 - ${speechStyle}
 - Keep each turn under 90 words unless the student asks for detail.
-- Ask follow-up questions, push back, clarify ambiguity, and react to the student's actual words.
+- Use reference facts and prep notes as context, not as a script to force through.
+- Answer and react to the student's actual words. Ask a clarifying question only when the meeting goal asks for it, the student overpromises, or the student's wording is too ambiguous to answer realistically.
 - Do not mention being an AI, a model, or a simulator.
 - Do not grade the student during the meeting.
 - Stay focused on the meeting goal and the workplace stakes.`
@@ -105,6 +142,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [liveNpc, setLiveNpc] = useState('')
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -118,7 +156,8 @@ export default function VoiceMeetingScene({ node }: Props) {
   const prepReference = node.prepReferenceContent
     ? interpolate(node.prepReferenceContent, { playerName, branchFlags, mcSelections })
     : ''
-  const prepNote = node.prepNoteKey ? freeTextResponses[node.prepNoteKey]?.trim() : ''
+  const rawPrepNote = node.prepNoteKey ? freeTextResponses[node.prepNoteKey]?.trim() : ''
+  const prepNote = rawPrepNote ? formatStructuredPrepNote(rawPrepNote) : ''
   const minTurns = node.minTurns ?? 2
   const maxTurns = node.maxTurns ?? 8
   const userTurns = messages.filter((m) => m.role === 'user').length
@@ -131,6 +170,12 @@ export default function VoiceMeetingScene({ node }: Props) {
       node.initialMessages.forEach((m) => appendNpcMessage(conversationKey, m))
     }
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
+
+  useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
 
   useEffect(() => {
     return () => {
@@ -200,7 +245,15 @@ export default function VoiceMeetingScene({ node }: Props) {
     await session.start({
       apiKey,
       voiceName: node.voiceName,
-      systemPrompt: buildSystemPrompt({ node, npc, playerName, goalPrompt, meetingContext }),
+      systemPrompt: buildSystemPrompt({
+        node,
+        npc,
+        playerName,
+        goalPrompt,
+        meetingContext,
+        prepReferenceForPrompt: prepReference,
+        prepNoteForPrompt: prepNote,
+      }),
     })
   }
 
@@ -279,6 +332,7 @@ export default function VoiceMeetingScene({ node }: Props) {
 
       {/* Transcript */}
       <div
+        ref={transcriptRef}
         style={{
           flex: 1,
           marginTop: '0.875rem',
@@ -314,7 +368,7 @@ export default function VoiceMeetingScene({ node }: Props) {
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </div>
           </div>
         ))}
@@ -461,9 +515,9 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            {playerGoal && <div><strong>Your goal: </strong>{playerGoal}</div>}
-            {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{endpoint}</div>}
-            {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{successCriteria}</div>}
+            {playerGoal && <div><strong>Your goal: </strong>{renderContentWithGlossary(playerGoal)}</div>}
+            {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{renderContentWithGlossary(endpoint)}</div>}
+            {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{renderContentWithGlossary(successCriteria)}</div>}
           </div>
         )}
 

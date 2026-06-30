@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useGameStore } from '../store/gameStore'
 import { storyline } from '../data/storyline'
 import type { SceneNode, SceneType } from '../types/game'
@@ -20,6 +21,8 @@ import FlowDiagramScene from '../scenes/FlowDiagramScene'
 import KanbanBoardScene from '../scenes/KanbanBoardScene'
 import PriorityMatrixScene from '../scenes/PriorityMatrixScene'
 import ArchitectDesignStudioScene from '../scenes/ArchitectDesignStudioScene'
+import RedlineClickBoardScene from '../scenes/RedlineClickBoardScene'
+import ClientQuestionChecklistScene from '../scenes/ClientQuestionChecklistScene'
 
 const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
   intro: IntroScene,
@@ -41,15 +44,25 @@ const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
   flow_diagram: FlowDiagramScene,
   kanban_board: KanbanBoardScene,
   priority_matrix: PriorityMatrixScene,
+  redline_click_board: RedlineClickBoardScene,
+  client_question_checklist: ClientQuestionChecklistScene,
   architect_design_studio: ArchitectDesignStudioScene,
 }
 
 export default function SceneEngine() {
   const currentNodeId = useGameStore((s) => s.currentNodeId)
+  const navigateTo = useGameStore((s) => s.navigateTo)
   useScrollToTopOnChange(currentNodeId)
   const node = storyline.nodes[currentNodeId] as SceneNode | undefined
 
+  useEffect(() => {
+    if (!node && currentNodeId === 'review_verify_replies') {
+      navigateTo('schematic_option_study')
+    }
+  }, [currentNodeId, navigateTo, node])
+
   if (!node) {
+    if (currentNodeId === 'review_verify_replies') return null
     return (
       <div className="flex items-center justify-center min-h-[100dvh] text-game-danger">
         Error: Node "{currentNodeId}" not found in storyline.

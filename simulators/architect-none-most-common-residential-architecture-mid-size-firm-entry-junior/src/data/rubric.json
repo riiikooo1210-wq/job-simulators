@@ -4,42 +4,35 @@
   "sections": [
     {
       "section_number": 1,
-      "section_title": "タスク別採点",
+      "section_title": "Task Scores",
       "criteria": [
         {
-          "name": "最初の着手判断",
+          "name": "Choosing the first step",
           "evidenceSceneIds": [
             "first_move"
           ],
-          "rubric_text": "9-10: 制約が多い朝の状況で、クライアント連絡、図面影響、現場確認、期限のリスクを見て最初に扱うべき仕事を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: The student chooses a careful first step for a morning with many limits. They compare client goals with zoning, redlines, drawing gaps, and questions before acting. Score only this task. 7-8: The main choice is good, but one priority or reason is a little weak. 4-6: Some judgment is useful, but important checks or next steps are missing. 0-3: The choice misses the task, ignores evidence, creates a risky promise, or is not usable."
         },
         {
-          "name": "図面修正タスク",
+          "name": "Sorting drawing changes",
           "evidenceSceneIds": [
             "redline_note"
           ],
-          "rubric_text": "9-10: 赤字指摘の意味を読み取り、A101/A201の不整合、依存関係、次に確認すべき事項を実務メモとして整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: The student understands each redline and separates drawing changes that are already proven from items that need checking first. They do not mix up proven tag fixes, such as W-4/W-1 or missing W-10, with items that need verification, such as setback, lot coverage, privacy, and existing site conditions. Score only this task. 7-8: The main sorting is right, with one small gap. 4-6: Some items are sorted correctly, but several important Fix or Verify choices are wrong or unclear. 0-3: The task goal is missed, evidence is ignored, or the result would cause confusion or risky drawing changes."
         },
         {
-          "name": "顧客通話",
+          "name": "Choosing client questions",
           "evidenceSceneIds": [
-            "client_call"
+            "client_prep"
           ],
-          "rubric_text": "9-10: 準備メモではなく実際の通話内容として、顧客の優先条件、制約、未確定事項を聞き取り、過度な約束をせず次の確認に接続できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: The student chooses two Dana-facing questions that help the design team make choices: one about west-bedroom privacy/daylight and one about kitchen, mudroom, or daily routine priorities. They leave zoning, lot coverage, drawing tags, and field conditions as team checks. Score only this checklist. 7-8: The selected questions are mostly useful, but one is less focused or a team-check distractor is tempting. 4-6: The checklist includes only one useful client choice or mixes client questions with technical checks. 0-3: The selections ask Dana to solve zoning, permit, tag, or field issues instead of homeowner choices."
         },
         {
-          "name": "現場観察",
-          "evidenceSceneIds": [
-            "site_observation"
-          ],
-          "rubric_text": "9-10: 現場で見えた寸法、干渉、施工上のリスク、図面へ戻すべき確認事項を、観察事実として整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-        },
-        {
-          "name": "案の比較整理",
+          "name": "Creating the design option",
           "evidenceSceneIds": [
             "schematic_option_study"
           ],
-          "rubric_text": "9-10: 複数案の使いやすさ、採光、構造や設備への影響、顧客条件との整合を比較し、推奨と保留事項を分けて示せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: The student creates a usable schematic option that fits Dana's goals and the team rules. The option places the needed room labels, uses Translucent glass or privacy glazing for the privacy choice, and clears live blockers. Score only this task. 7-8: The option mostly works, but one detail, priority, or unresolved item is a little weak. 4-6: Some pieces are present, but important design choices or checks are missing. 0-3: The task goal is missed, the rules are ignored, risky promises are made, or the submission is not usable."
         }
       ]
     }

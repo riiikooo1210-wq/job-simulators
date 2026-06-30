@@ -12,10 +12,14 @@ __pycache__/
 **/.next/
 **/.turbo/
 **/.cache/
+**/.playwright-cli/
 **/.env
 **/.env.local
 **/.venv/
 **/__pycache__/
+**/output/
+**/outputs/
+**/qa-screens/
 
 # OS
 .DS_Store

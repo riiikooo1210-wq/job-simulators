@@ -40,6 +40,7 @@ export default function ActionButton({
 }: ActionButtonProps) {
   const [pressed, setPressed] = useState(false)
   const style = variantStyles[variant]
+  if (text === 'Skip (dev)' && !import.meta.env.DEV) return null
 
   return (
     <button
