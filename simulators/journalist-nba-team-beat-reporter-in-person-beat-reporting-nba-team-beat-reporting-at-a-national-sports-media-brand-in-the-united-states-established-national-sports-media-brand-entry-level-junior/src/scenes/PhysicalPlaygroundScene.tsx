@@ -260,6 +260,12 @@ function needsHold(primitives: string[] | undefined, stepPrimitive?: string) {
   return [...(primitives || []), stepPrimitive || ''].some((p) => HOLD_PRIMITIVES.has(p))
 }
 
+function hasUsefulObservationNote(value: string | undefined) {
+  const trimmed = value?.trim() || ''
+  if (!trimmed) return false
+  return trimmed.split(/\s+/).filter(Boolean).length >= 3 || Array.from(trimmed).length >= 12
+}
+
 function buildInspectionBody(subject: {
   readableText?: string
   detail?: string
@@ -269,7 +275,7 @@ function buildInspectionBody(subject: {
     subject.playerInstruction,
     subject.readableText || subject.detail,
   ].filter(Boolean)
-  return parts.length ? parts.join('\n\nSource detail:\n') : 'Inspect the visible details, then record what you observed.'
+  return parts.length ? parts.join('\n\n') : 'Inspect the visible details, then record what you observed.'
 }
 
 function actionHint(args: { role?: string; primitives?: string[]; draggable?: boolean }) {
@@ -552,12 +558,7 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
     }
 
     const observation = modalObservation.trim()
-    if (current.requiresObservationText && observation.split(/\s+/).filter(Boolean).length < 3) {
-      warn('Write the observation you would record before submitting it.')
-      return
-    }
-
-    let next: PlaygroundState = state
+    let next: PlaygroundState = { ...state, warnings: [] }
     if (current.kind === 'surface') {
       next = {
         ...next,
@@ -817,6 +818,10 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
   const requiredReadables = node.requiredReadableSurfaceIds || derived.readables.filter((s) => s.required).map((s) => s.id)
   const requiredControls = node.requiredControlIds || derived.controls.filter((c) => c.required).map((c) => c.id)
   const requiredSelectionSurfaces = selectionSurfaces.filter((surface) => surface.required).map((surface) => surface.id)
+  const requiresRunningObservationNote = [
+    ...derived.objects,
+    ...derived.readables,
+  ].some((item) => item.requiresObservationText)
   const objectsDone = requiredObjects.every((id) => {
     const object = derived.objects.find((candidate) => candidate.id === id)
     const hasDropTarget = derived.targets.some((target) => !target.accepts?.length || target.accepts.includes(id))
@@ -827,8 +832,12 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
   const readablesDone = requiredReadables.every((id) => state.inspectedSurfaces.includes(id))
   const controlsDone = requiredControls.every((id) => state.completedControls.includes(id))
   const selectionSurfacesDone = requiredSelectionSurfaces.every((id) => state.selectedSurfaces.includes(id))
-  const canSubmit = objectsDone && stepsDone && readablesDone && controlsDone && selectionSurfacesDone
+  const observationNoteDone = !requiresRunningObservationNote || hasUsefulObservationNote(state.observations[RUNNING_NOTES_KEY])
+  const canSubmit = objectsDone && stepsDone && readablesDone && controlsDone && selectionSurfacesDone && observationNoteDone
   const activeStepCount = state.completedSteps.length + Object.keys(state.placements).length + state.inspectedSurfaces.length + state.completedControls.length + state.selectedSurfaces.length + state.completedProcedureActions.length
+  const incompleteHint = !observationNoteDone
+    ? 'Add short notes about what you observed, then save the popup.'
+    : `${activeStepCount} workplace move${activeStepCount === 1 ? '' : 's'} completed.`
   const footerLabel = node.completionBehavior?.footerLabel || (node.completionBehavior?.actionAlreadyPerformedInPopup ? 'Complete' : 'Continue')
 
   return (
@@ -1123,7 +1132,7 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
 
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <ActionButton text={footerLabel} onClick={() => goNext(node)} disabled={!canSubmit} variant={canSubmit ? 'primary' : 'secondary'} fullWidth={false} />
-          {!canSubmit && <span style={{ fontSize: '0.75rem', color: '#666' }}>{activeStepCount} workplace move{activeStepCount === 1 ? '' : 's'} completed.</span>}
+          {!canSubmit && <span style={{ fontSize: '0.75rem', color: '#666' }}>{incompleteHint}</span>}
         </div>
 
         {import.meta.env.DEV && (
@@ -1177,11 +1186,11 @@ export default function PhysicalPlaygroundScene({ node }: { node: PlaygroundNode
                 </div>
               )}
               <label className="physical-playground-observation-field">
-                <span>{modal.observationPrompt || 'Running reporter notes. Add what is useful, and keep earlier notes if they still matter.'}</span>
+                <span>{modal.observationPrompt || 'You are writing one running note for this scene. Add useful details from this observation and keep earlier details you still need.'}</span>
                 <textarea
                   value={modalObservation}
                   onChange={(e) => setModalObservation(e.currentTarget.value)}
-                  placeholder={modal.observationPlaceholder || 'Add concise notes from this source. Earlier saved notes will appear here in the next popup.'}
+                  placeholder={modal.observationPlaceholder || 'Add short notes about what you observed. Keep useful details from earlier observations in this same note.'}
                   rows={4}
                 />
               </label>

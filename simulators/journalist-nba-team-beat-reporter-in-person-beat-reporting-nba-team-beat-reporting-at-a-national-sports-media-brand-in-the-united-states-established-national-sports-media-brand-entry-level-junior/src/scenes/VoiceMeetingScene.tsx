@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import SceneWrapper from '../components/layout/SceneWrapper'
 import ActionButton from '../components/ui/ActionButton'
@@ -9,7 +9,7 @@ import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
 import { npcs } from '../data/npcs'
-import { GeminiLiveSession, type LiveStatus } from '../services/geminiLive'
+import { GeminiLiveSession, type LiveInputMode, type LiveStatus } from '../services/geminiLive'
 import type { ChatMessage, VoiceMeetingNode } from '../types/game'
 
 interface Props { node: VoiceMeetingNode }
@@ -65,10 +65,19 @@ function MicIcon({ muted }: { muted: boolean }) {
   )
 }
 
-function ReferenceBlock({ title, content }: { title: string; content: string }) {
+function ReferenceBlock({ title, content, tone = 'default' }: { title: string; content: string; tone?: 'default' | 'coach' }) {
+  const isCoachTone = tone === 'coach'
   return (
-    <section style={{ minWidth: 0 }}>
-      <div style={{ fontSize: '0.6875rem', opacity: 0.72, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0, marginBottom: '0.35rem' }}>
+    <section className={isCoachTone ? 'coach-availability-support-section' : undefined} style={{ minWidth: 0 }}>
+      <div style={{
+        fontSize: '0.6875rem',
+        opacity: isCoachTone ? 1 : 0.72,
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: 0,
+        marginBottom: '0.35rem',
+        color: isCoachTone ? '#2563EB' : undefined,
+      }}>
         {title}
       </div>
       <div
@@ -76,7 +85,7 @@ function ReferenceBlock({ title, content }: { title: string; content: string }) 
           fontSize: '0.75rem',
           lineHeight: 1.5,
           whiteSpace: 'pre-wrap',
-          color: '#1E1E1A',
+          color: isCoachTone ? '#334155' : '#1E1E1A',
         }}
       >
         {renderContentWithGlossary(content)}
@@ -96,15 +105,78 @@ function readTextField(item: Record<string, unknown>, key: string) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
+function possessionCategoryLabel(categoryId: string) {
+  const labels: Record<string, string> = {
+    confirmed_fact: 'Fact I can use',
+    ask_reed: 'Ask Reed',
+    ask_coach: 'Ask Coach',
+    scene_color: 'Scene detail',
+    hold_verify: 'Hold/check later',
+  }
+  return labels[categoryId] || ''
+}
+
+const structuredPlanLabels: Record<string, Record<string, string>> = {
+  'Coach availability question': {
+    need: 'Topic',
+    question: 'Question for Coach Harris',
+    risk: 'Why it matters',
+  },
+  'Reed postgame question': {
+    need: 'Topic',
+    question: 'Question for Reed',
+    risk: 'Why it matters',
+  },
+  'Confirmed fact from the given sources': {
+    need: 'Fact',
+    source: 'Given source',
+    question: 'Supports angle',
+  },
+  'Unconfirmed claim to leave out': {
+    need: 'Claim to avoid',
+    risk: 'Why not reportable',
+  },
+  'Proof and publish limits': {
+    need: 'Confirmed fact',
+    source: 'Source',
+    question: 'Claim to leave out',
+    risk: 'Why left out',
+  },
+  'Question for Coach Harris before the game': {
+    need: 'Topic',
+    question: 'Question for Coach Harris',
+    risk: 'Why it matters',
+  },
+  'Question for Reed after the game': {
+    need: 'Topic',
+    question: 'Question for Reed',
+    risk: 'Why it matters',
+  },
+  'Safe fact and unsafe claim': {
+    need: 'Safe fact',
+    source: 'Source',
+    question: 'Unsafe claim to leave out',
+    risk: 'Why left out',
+  },
+}
+
+function formatStructuredPlanField(item: Record<string, unknown>, key: string, fallbackLabel: string) {
+  const value = readTextField(item, key)
+  if (!value) return ''
+  const rowTitle = readTextField(item, 'rowTitle')
+  const label = structuredPlanLabels[rowTitle]?.[key] || fallbackLabel
+  return `${label}: ${value}`
+}
+
 function formatStructuredPlan(items: Array<Record<string, unknown>>) {
   return items
     .map((item, index) => {
       const lines = [
-        `Reporting Need #${index + 1}`,
-        readTextField(item, 'need') ? `Need: ${readTextField(item, 'need')}` : '',
-        readTextField(item, 'source') ? `Source: ${readTextField(item, 'source')}` : '',
-        readTextField(item, 'question') ? `Question or verification: ${readTextField(item, 'question')}` : '',
-        readTextField(item, 'risk') ? `Risk: ${readTextField(item, 'risk')}` : '',
+        readTextField(item, 'rowTitle') || `Plan Item #${index + 1}`,
+        formatStructuredPlanField(item, 'need', 'Need'),
+        formatStructuredPlanField(item, 'source', 'Source'),
+        formatStructuredPlanField(item, 'question', 'Question or verification'),
+        formatStructuredPlanField(item, 'risk', 'Risk'),
       ].filter(Boolean)
       return lines.join('\n')
     })
@@ -124,25 +196,22 @@ function formatPhysicalMemo(parsed: unknown) {
   const runningNotes = typeof observations.__running_reporter_notes === 'string'
     ? observations.__running_reporter_notes.trim()
     : ''
+  if (runningNotes) return runningNotes
   const observationLines = Object.entries(observations)
-    .filter(([key, value]) => key !== '__running_reporter_notes' && typeof value === 'string' && value.trim() && value.trim() !== runningNotes)
+    .filter(([key, value]) => key !== '__running_reporter_notes' && typeof value === 'string' && value.trim())
     .map(([key, value]) => `${humanizeKey(key)}: ${(value as string).trim()}`)
+  if (observationLines.length) return observationLines.join('\n')
   const actionLines = Array.isArray(record.actionLog)
     ? record.actionLog
-      .filter((entry) => typeof entry.observation === 'string' && entry.observation.trim() && entry.observation.trim() !== runningNotes)
+      .filter((entry) => typeof entry.observation === 'string' && entry.observation.trim())
       .map((entry) => `${typeof entry.label === 'string' ? entry.label : 'Observation'}: ${(entry.observation as string).trim()}`)
     : []
-  const lines = [
-    runningNotes ? `Running reporter notes:\n${runningNotes}` : '',
-    observationLines.length ? `Inspection notes:\n${observationLines.join('\n')}` : '',
-    actionLines.length ? `Action log notes:\n${actionLines.join('\n')}` : '',
-  ].filter(Boolean)
-  return lines.join('\n\n')
+  return actionLines.join('\n')
 }
 
 function formatPossessionTimelineNotes(parsed: unknown) {
   if (!parsed || typeof parsed !== 'object') return ''
-  const record = parsed as { viewedEventIds?: unknown; notes?: unknown }
+  const record = parsed as { viewedEventIds?: unknown; notes?: unknown; reedQuestions?: unknown; summary?: unknown }
   const notes = record.notes && typeof record.notes === 'object' && !Array.isArray(record.notes)
     ? record.notes as Record<string, unknown>
     : {}
@@ -154,13 +223,26 @@ function formatPossessionTimelineNotes(parsed: unknown) {
     .map((id) => {
       const note = notes[id]
       if (!note || typeof note !== 'object' || Array.isArray(note)) return ''
-      const category = readTextField(note as Record<string, unknown>, 'categoryId')
-      const text = readTextField(note as Record<string, unknown>, 'note')
+      const record = note as Record<string, unknown>
+      const text = readTextField(record, 'note')
       if (!text) return ''
-      return `${humanizeKey(id)}${category ? ` (${humanizeKey(category)})` : ''}: ${text}`
+      const category = possessionCategoryLabel(readTextField(record, 'categoryId'))
+      return `${humanizeKey(id)}${category ? ` [${category}]` : ''}: ${text}`
     })
     .filter(Boolean)
-  return lines.join('\n')
+  const questionLines = Array.isArray(record.reedQuestions)
+    ? record.reedQuestions
+      .filter((question): question is string => typeof question === 'string' && Boolean(question.trim()))
+      .map((question, index) => `Reed question ${index + 1}: ${question.trim()}`)
+    : []
+  const summary = typeof record.summary === 'string' && record.summary.trim()
+    ? `Summary:\n${record.summary.trim()}`
+    : ''
+  return [
+    lines.length ? `Possession timeline:\n${lines.join('\n')}` : '',
+    questionLines.length ? `Prepared Reed questions:\n${questionLines.join('\n')}` : '',
+    summary && !questionLines.length ? summary : '',
+  ].filter(Boolean).join('\n\n')
 }
 
 function formatPrepNote(raw: string, key: string) {
@@ -171,19 +253,79 @@ function formatPrepNote(raw: string, key: string) {
       return formatStructuredPlan(parsed)
     }
     if (key === 'warmup_observation') {
-      return formatPhysicalMemo(parsed) || raw
+      return formatPhysicalMemo(parsed)
     }
     if (key === 'possession_timeline_notes') {
-      return formatPossessionTimelineNotes(parsed) || raw
+      return formatPossessionTimelineNotes(parsed)
     }
   } catch {
     // Plain text legacy responses are still valid prep notes.
+    if (key === 'possession_timeline_notes') return ''
   }
   return raw
 }
 
+function splitMediaScrumQuestions(content: string) {
+  const normalize = (value: string) => value.replace(/\s+/g, ' ').replace(/^[-*\d.)\s]+/, '').trim()
+  const normalized = content.trim()
+  if (!normalized) return []
+
+  const numberedParts = Array.from(
+    normalized.matchAll(/(?:^|\s)(?:\d+[\).])\s*(.*?)(?=(?:\s+\d+[\).]\s*)|$)/g)
+  )
+    .map((match) => normalize(match[1] || ''))
+    .filter(Boolean)
+  if (numberedParts.length > 1) return numberedParts.slice(0, 2)
+
+  const askParts = normalized
+    .split(/\bAsk:\s*/i)
+    .map(normalize)
+    .filter(Boolean)
+  if (askParts.length > 1) return askParts.slice(0, 2)
+
+  const questionParts = normalized
+    .split(/\bQuestion\s*\d+\s*:\s*/i)
+    .map(normalize)
+    .filter(Boolean)
+  if (questionParts.length > 1) return questionParts.slice(0, 2)
+
+  const lines = normalized
+    .split(/\n+/)
+    .map(normalize)
+    .filter(Boolean)
+  return lines.slice(0, 2)
+}
+
+function readMediaScrumTimelineQuestions(raw: string) {
+  if (!raw.trim()) return []
+  try {
+    const parsed = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return []
+    const record = parsed as { reedQuestions?: unknown; summary?: unknown }
+    const reedQuestions = Array.isArray(record.reedQuestions)
+      ? record.reedQuestions
+        .filter((question): question is string => typeof question === 'string')
+        .map((question) => question.trim())
+        .filter(Boolean)
+        .slice(0, 2)
+      : []
+    if (reedQuestions.length) return reedQuestions
+    return typeof record.summary === 'string' ? splitMediaScrumQuestions(record.summary) : []
+  } catch {
+    return []
+  }
+}
+
+function getMediaScrumQuestionItems(summaryRaw: string, timelineRaw: string) {
+  const timelineQuestions = readMediaScrumTimelineQuestions(timelineRaw)
+  if (timelineQuestions.length) return timelineQuestions
+  return splitMediaScrumQuestions(summaryRaw)
+}
+
 export default function VoiceMeetingScene({ node }: Props) {
   const npc = npcs[node.npcId]
+  const isCoachAvailability = node.id === 'coach_availability'
+  const isMediaScrum = node.id === 'media_scrum'
   const conversationKey = `voice:${node.id}:${node.npcId}`
   const messages = useGameStore((s) => s.npcConversations[conversationKey] || [])
   const appendNpcMessage = useGameStore((s) => s.appendNpcMessage)
@@ -201,8 +343,13 @@ export default function VoiceMeetingScene({ node }: Props) {
   const [npcSpeaking, setNpcSpeaking] = useState(false)
   const [liveUser, setLiveUser] = useState('')
   const [liveNpc, setLiveNpc] = useState('')
+  const [inputMode, setInputMode] = useState<LiveInputMode>('voice')
+  const [typedInput, setTypedInput] = useState('')
+  const [typedSending, setTypedSending] = useState(false)
+  const [typedError, setTypedError] = useState('')
 
   const sessionRef = useRef<GeminiLiveSession | null>(null)
+  const transcriptRef = useRef<HTMLDivElement | null>(null)
   const pendingUserRef = useRef('')
   const pendingNpcRef = useRef('')
   const lastRoleRef = useRef<'user' | 'npc' | null>(null)
@@ -213,6 +360,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   const playerGoal = node.playerGoal ? interpolate(node.playerGoal, { playerName, branchFlags, mcSelections }) : ''
   const endpoint = node.endpoint ? interpolate(node.endpoint, { playerName, branchFlags, mcSelections }) : ''
   const successCriteria = node.successCriteria ? interpolate(node.successCriteria, { playerName, branchFlags, mcSelections }) : ''
+  const preStartPrompt = node.preStartPrompt ? interpolate(node.preStartPrompt, { playerName, branchFlags, mcSelections }) : ''
   const prepReference = node.prepReferenceContent
     ? interpolate(node.prepReferenceContent, { playerName, branchFlags, mcSelections })
     : ''
@@ -225,19 +373,33 @@ export default function VoiceMeetingScene({ node }: Props) {
     .map((entry) => {
       const raw = freeTextResponses[entry.key]?.trim() || ''
       const content = formatPrepNote(raw, entry.key)
-      return content ? { title: entry.title || humanizeKey(entry.key), content } : null
+      if (content) return { title: entry.title || humanizeKey(entry.key), content }
+      if (!isCoachAvailability && !isMediaScrum) return null
+      if (isMediaScrum) {
+        if (entry.key === 'possession_timeline_summary') return null
+        return {
+          title: entry.title || humanizeKey(entry.key),
+          content: 'No saved possession notes are available yet. Keep your questions fair and specific to what you saw late in the game.',
+        }
+      }
+      return {
+        title: entry.title || humanizeKey(entry.key),
+        content: `No saved ${humanizeKey(entry.key).toLowerCase()} yet.`,
+      }
     })
     .filter((entry): entry is { title: string; content: string } => Boolean(entry))
   const interviewNoteKey = node.noteBindingKey || ''
   const interviewNotes = interviewNoteKey ? freeTextResponses[interviewNoteKey] || '' : ''
   const interviewNotePrompt = node.notePrompt || 'Interview notes for your article'
-  const interviewNoteHelper = node.noteHelper || 'Take notes during this interview. You will write the fast gamer from these notes, your transcript, and the workplace source tabs.'
-  const interviewNotePlaceholder = node.notePlaceholder || 'Write exact quotes, useful paraphrases, follow-ups, and anything that needs verification before it becomes copy.'
+  const interviewNoteHelper = node.noteHelper || 'Take notes during this interview. You will write the game article from these notes, the conversation record, and the workplace tabs.'
+  const interviewNotePlaceholder = node.notePlaceholder || 'Write exact quotes, useful summaries, follow-ups, and anything that needs confirmation before it goes in the article.'
   const hasReferenceContent = Boolean(prepReference || prepNotes.length)
   const minTurns = node.minTurns ?? 2
   const maxTurns = node.maxTurns ?? 8
   const userTurns = messages.filter((m) => m.role === 'user').length
   const canSubmit = meetingEnded && userTurns >= minTurns
+  const supportsTypedMode = node.typedFallback !== false
+  const reachedTurnLimit = userTurns >= maxTurns
 
   useEffect(() => {
     if (initializedRef.current) return
@@ -248,6 +410,12 @@ export default function VoiceMeetingScene({ node }: Props) {
   }, [appendNpcMessage, conversationKey, messages.length, node.initialMessages])
 
   useEffect(() => {
+    const transcriptEl = transcriptRef.current
+    if (!transcriptEl) return
+    transcriptEl.scrollTop = transcriptEl.scrollHeight
+  }, [messages.length, liveUser, liveNpc])
+
+  useEffect(() => {
     return () => {
       sessionRef.current?.stop()
       sessionRef.current = null
@@ -255,11 +423,11 @@ export default function VoiceMeetingScene({ node }: Props) {
   }, [])
 
   useEffect(() => {
-    if (userTurns >= maxTurns && status === 'connected' && !meetingEnded) {
+    if (inputMode === 'voice' && userTurns >= maxTurns && status === 'connected' && !meetingEnded) {
       endMeeting()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userTurns, maxTurns, status, meetingEnded])
+  }, [inputMode, userTurns, maxTurns, status, meetingEnded])
 
   const flushPending = (role: 'user' | 'npc') => {
     const pending = role === 'user' ? pendingUserRef.current : pendingNpcRef.current
@@ -289,6 +457,7 @@ export default function VoiceMeetingScene({ node }: Props) {
       onStatus: (s, detail) => {
         setStatus(s)
         if (detail) setStatusDetail(detail)
+        if (s !== 'error') setTypedError('')
       },
       onUserTranscript: (text) => {
         if (lastRoleRef.current === 'npc') flushPending('npc')
@@ -316,6 +485,7 @@ export default function VoiceMeetingScene({ node }: Props) {
       apiKey,
       voiceName: node.voiceName,
       systemPrompt: buildSystemPrompt({ node, npc, playerName, goalPrompt, meetingContext }),
+      inputMode,
     })
   }
 
@@ -326,6 +496,26 @@ export default function VoiceMeetingScene({ node }: Props) {
     sessionRef.current = null
     setMeetingEnded(true)
     setMuted(false)
+  }
+
+  const submitTypedTurn = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!supportsTypedMode || inputMode !== 'text' || typedSending || meetingEnded || reachedTurnLimit) return
+    const question = typedInput.trim()
+    if (!question) return
+    setTypedSending(true)
+    setTypedError('')
+    try {
+      if (!sessionRef.current) throw new Error('Start the typed conversation first.')
+      sessionRef.current.sendTypedTurn(question)
+      const msg: ChatMessage = { role: 'user', content: question, ts: new Date().toISOString() }
+      appendNpcMessage(conversationKey, msg)
+      setTypedInput('')
+    } catch (error) {
+      setTypedError(error instanceof Error ? error.message : 'Typed question could not be sent.')
+    } finally {
+      setTypedSending(false)
+    }
   }
 
   const toggleMuted = () => {
@@ -344,24 +534,42 @@ export default function VoiceMeetingScene({ node }: Props) {
 
   const isInPerson = (node.meetingMode || node.presentation) === 'in_person'
   const interactionLabel = isInPerson ? 'conversation' : 'meeting'
-  const startLabel = isInPerson ? 'Start conversation' : 'Join meeting'
+  const startLabel = inputMode === 'text'
+    ? isInPerson ? 'Start typed conversation' : 'Start typed meeting'
+    : isInPerson ? 'Start voice conversation' : 'Join voice meeting'
   const endLabel = isInPerson ? 'End conversation' : 'End meeting'
   const meetingTitle = isInPerson ? `In-person conversation - ${npc.name}` : `Live meeting - ${npc.name}`
   const emptyTranscript = isInPerson
-    ? 'Start the conversation when you are ready. Your spoken transcript will appear here and feed the final grading.'
-    : 'Join the meeting when you are ready. Your spoken transcript will appear here and feed the final grading.'
+    ? 'Start the conversation when you are ready. Your transcript will appear here and feed the final grading.'
+    : 'Join the meeting when you are ready. Your transcript will appear here and feed the final grading.'
 
   const statusLabel =
     status === 'connecting' ? 'Connecting...'
-    : status === 'connected' ? (muted ? 'Muted' : npcSpeaking ? `${npc.name} is speaking...` : 'Listening...')
+    : status === 'connected' ? (
+      inputMode === 'text'
+        ? typedSending ? 'Sending...' : npcSpeaking ? `${npc.name} is replying...` : 'Ready for typed question'
+        : muted ? 'Muted' : npcSpeaking ? `${npc.name} is speaking...` : 'Listening...'
+    )
     : status === 'closed' ? `${interactionLabel[0].toUpperCase()}${interactionLabel.slice(1)} ended`
     : status === 'error' ? `Error: ${statusDetail}`
     : 'Ready'
 
   const inCall = status !== 'idle' && status !== 'closed' && status !== 'error'
+  const textModeActive = supportsTypedMode && inputMode === 'text'
+  const textComposerDisabled = !textModeActive || status !== 'connected' || typedSending || meetingEnded || reachedTurnLimit
 
   const meetingInner = (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: isInPerson ? 360 : undefined, color: '#1E1E1A', padding: '0.875rem' }}>
+    <div
+      className={isCoachAvailability ? 'coach-availability-call-inner' : undefined}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        minHeight: isMediaScrum ? 320 : isInPerson ? 360 : undefined,
+        color: isCoachAvailability ? '#1F2937' : '#1E1E1A',
+        padding: isCoachAvailability ? '1rem' : '0.875rem',
+      }}
+    >
 
       {/* NPC header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center', flexShrink: 0 }}>
@@ -371,14 +579,16 @@ export default function VoiceMeetingScene({ node }: Props) {
               width: 42,
               height: 42,
               borderRadius: '50%',
-              background: '#B87D6B',
-              color: '#F2EBD9',
+              background: isCoachAvailability ? '#2D8CFF' : '#B87D6B',
+              color: isCoachAvailability ? '#FFFFFF' : '#F2EBD9',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              border: '1px solid rgba(242,235,217,0.4)',
-              boxShadow: npcSpeaking ? '0 0 0 5px rgba(184,125,107,0.45)' : 'none',
+              border: isCoachAvailability ? '1px solid #1F7AE0' : '1px solid rgba(242,235,217,0.4)',
+              boxShadow: npcSpeaking
+                ? isCoachAvailability ? '0 0 0 5px rgba(45, 140, 255, 0.18)' : '0 0 0 5px rgba(184,125,107,0.45)'
+                : 'none',
               transition: 'box-shadow 0.2s',
             }}
           >
@@ -386,19 +596,92 @@ export default function VoiceMeetingScene({ node }: Props) {
           </div>
           <div>
             <div style={{ fontWeight: 700, fontSize: '0.9375rem' }}>{npc.name}</div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.68 }}>{npc.role}</div>
+            <div style={{ fontSize: '0.75rem', opacity: isCoachAvailability ? 0.82 : 0.68 }}>{npc.role}</div>
           </div>
         </div>
-        <div style={{ fontSize: '0.75rem', opacity: 0.72 }}>{statusLabel}</div>
+        <div
+          style={{
+            fontSize: '0.75rem',
+            opacity: isCoachAvailability ? 1 : 0.72,
+            color: isCoachAvailability ? '#1D4ED8' : undefined,
+            border: isCoachAvailability ? '1px solid #BFDBFE' : undefined,
+            background: isCoachAvailability ? '#EFF6FF' : undefined,
+            padding: isCoachAvailability ? '0.28rem 0.5rem' : undefined,
+            borderRadius: isCoachAvailability ? 999 : undefined,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {statusLabel}
+        </div>
       </div>
+
+      {preStartPrompt && !isMediaScrum && status === 'idle' && !meetingEnded && (
+        <div
+          style={{
+            marginTop: '0.875rem',
+            background: isCoachAvailability ? '#EFF6FF' : '#F7F1E3',
+            border: isCoachAvailability ? '1px solid #BFDBFE' : '1px solid #CDBF94',
+            borderLeft: isCoachAvailability ? '4px solid #2D8CFF' : '4px solid #B87D6B',
+            padding: '0.625rem 0.75rem',
+            fontSize: '0.8125rem',
+            lineHeight: 1.5,
+            color: isCoachAvailability ? '#1E3A8A' : '#3B3426',
+          }}
+        >
+          {renderContentWithGlossary(preStartPrompt)}
+        </div>
+      )}
+
+      {supportsTypedMode && status === 'idle' && !meetingEnded && (
+        <div
+          aria-label="Choose interview input mode"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: '0.5rem',
+            marginTop: '0.75rem',
+          }}
+        >
+          {([
+            { id: 'voice' as LiveInputMode, label: 'Voice', helper: 'Speak questions aloud.' },
+            { id: 'text' as LiveInputMode, label: 'Type', helper: 'Type questions; NPC still replies live.' },
+          ]).map((mode) => {
+            const selected = inputMode === mode.id
+            return (
+              <button
+                key={mode.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setInputMode(mode.id)}
+                style={{
+                  border: selected ? '2px solid #000' : isCoachAvailability ? '1px solid #CBD5E1' : '1px solid #CDBF94',
+                  background: selected ? isCoachAvailability ? '#DBEAFE' : '#F2EBD9' : isCoachAvailability ? '#FFFFFF' : '#FBF7EA',
+                  color: '#1E1E1A',
+                  borderRadius: 4,
+                  padding: selected ? '0.5rem 0.625rem' : 'calc(0.5rem + 1px) calc(0.625rem + 1px)',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <span style={{ display: 'block', fontWeight: 800, fontSize: '0.8125rem' }}>{mode.label}</span>
+                <span style={{ display: 'block', marginTop: 2, fontSize: '0.7rem', lineHeight: 1.35, color: isCoachAvailability ? '#475569' : '#5B5546' }}>
+                  {mode.helper}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {/* Transcript */}
       <div
+        ref={transcriptRef}
         style={{
           flex: 1,
           marginTop: '0.875rem',
-          background: '#FBF7EA',
-          border: '1px solid #CDBF94',
+          background: isCoachAvailability ? '#F8FAFC' : '#FBF7EA',
+          border: isCoachAvailability ? '1px solid #E2E8F0' : '1px solid #CDBF94',
           padding: '0.75rem',
           overflowY: 'auto',
           display: 'flex',
@@ -408,7 +691,7 @@ export default function VoiceMeetingScene({ node }: Props) {
         }}
       >
         {messages.length === 0 && !liveUser && !liveNpc && (
-          <div style={{ fontSize: '0.8125rem', opacity: 0.65 }}>
+          <div style={{ fontSize: '0.8125rem', opacity: isCoachAvailability ? 0.78 : 0.65 }}>
             {emptyTranscript}
           </div>
         )}
@@ -419,9 +702,15 @@ export default function VoiceMeetingScene({ node }: Props) {
             </div>
             <div
               style={{
-                background: m.role === 'user' ? '#B87D6B' : '#F7F1E3',
-                color: m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
-                border: m.role === 'user' ? '1px solid #B87D6B' : '1px solid #CDBF94',
+                background: isCoachAvailability
+                  ? m.role === 'user' ? '#2D8CFF' : '#FFFFFF'
+                  : m.role === 'user' ? '#B87D6B' : '#F7F1E3',
+                color: isCoachAvailability
+                  ? m.role === 'user' ? '#FFFFFF' : '#1F2937'
+                  : m.role === 'user' ? '#F2EBD9' : '#1E1E1A',
+                border: isCoachAvailability
+                  ? m.role === 'user' ? '1px solid #1F7AE0' : '1px solid #DDE3EA'
+                  : m.role === 'user' ? '1px solid #B87D6B' : '1px solid #CDBF94',
                 padding: '0.5rem 0.625rem',
                 borderRadius: '4px',
                 fontSize: '0.8125rem',
@@ -429,30 +718,105 @@ export default function VoiceMeetingScene({ node }: Props) {
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {m.content}
+              {renderContentWithGlossary(m.content)}
             </div>
           </div>
         ))}
         {liveUser && (
           <div style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.72 }}>
             <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>You</div>
-            <div style={{ border: '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: '#1E1E1A' }}>{liveUser}</div>
+            <div style={{ border: isCoachAvailability ? '1px dashed #93C5FD' : '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: isCoachAvailability ? '#1D4ED8' : '#1E1E1A' }}>{liveUser}</div>
           </div>
         )}
         {liveNpc && (
           <div style={{ alignSelf: 'flex-start', maxWidth: '88%', opacity: 0.72 }}>
             <div style={{ fontSize: '0.6875rem', marginBottom: 2 }}>{npc.name}</div>
-            <div style={{ border: '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: '#1E1E1A' }}>{liveNpc}</div>
+            <div style={{ border: isCoachAvailability ? '1px dashed #CBD5E1' : '1px dashed #CDBF94', borderRadius: '4px', padding: '0.5rem 0.625rem', fontSize: '0.8125rem', color: isCoachAvailability ? '#334155' : '#1E1E1A' }}>{liveNpc}</div>
           </div>
         )}
       </div>
+
+      {supportsTypedMode && inputMode === 'text' && (
+        <form
+          onSubmit={submitTypedTurn}
+          style={{
+            marginTop: '0.75rem',
+            border: isCoachAvailability ? '1px solid #CBD5E1' : '1px solid #CDBF94',
+            background: isCoachAvailability ? '#FFFFFF' : '#F7F1E3',
+            borderRadius: 4,
+            padding: '0.625rem',
+            display: 'grid',
+            gap: '0.5rem',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', alignItems: 'baseline', flexWrap: 'wrap' }}>
+            <strong style={{ fontSize: '0.75rem' }}>Typed questions</strong>
+            <span style={{ fontSize: '0.7rem', color: '#666' }}>
+              {reachedTurnLimit ? `${maxTurns}-turn limit reached` : `${Math.max(maxTurns - userTurns, 0)} turn${Math.max(maxTurns - userTurns, 0) === 1 ? '' : 's'} left`}
+            </span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: '0.5rem', alignItems: 'stretch' }}>
+            <textarea
+              value={typedInput}
+              onChange={(event) => setTypedInput(event.target.value)}
+              disabled={textComposerDisabled}
+              placeholder={inCall ? 'Ask one clear question, then wait for the answer.' : 'Start the typed conversation before writing a question.'}
+              rows={2}
+              style={{
+                width: '100%',
+                resize: 'vertical',
+                minHeight: 64,
+                border: isCoachAvailability ? '1px solid #CBD5E1' : '1px solid #000',
+                background: textComposerDisabled ? '#F1F5F9' : '#FFFFFF',
+                color: '#1E1E1A',
+                borderRadius: 4,
+                padding: '0.55rem',
+                fontSize: '0.8125rem',
+                lineHeight: 1.45,
+                fontFamily: 'inherit',
+                boxSizing: 'border-box',
+              }}
+            />
+            <button
+              type="submit"
+              disabled={textComposerDisabled || !typedInput.trim()}
+              style={{
+                border: isCoachAvailability ? '1px solid #1F7AE0' : '1px solid #000',
+                background: textComposerDisabled || !typedInput.trim() ? '#D8D0B9' : isCoachAvailability ? '#2D8CFF' : '#3A6B5E',
+                color: textComposerDisabled || !typedInput.trim() ? '#777' : '#FFFFFF',
+                borderRadius: 4,
+                padding: '0.5rem 0.75rem',
+                fontSize: '0.8125rem',
+                fontWeight: 800,
+                cursor: textComposerDisabled || !typedInput.trim() ? 'not-allowed' : 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              {typedSending ? 'Sending' : 'Send'}
+            </button>
+          </div>
+          {typedError && (
+            <div style={{ fontSize: '0.75rem', color: '#B91C1C', lineHeight: 1.4 }}>
+              {typedError}
+            </div>
+          )}
+        </form>
+      )}
 
       {/* In-screen controls */}
       <div style={{ display: 'flex', gap: '0.625rem', justifyContent: 'center', alignItems: 'center', paddingTop: '0.75rem', flexShrink: 0 }}>
         {import.meta.env.DEV && (
           <button
             onClick={() => goNext(node)}
-            style={{ background: '#F7F1E3', color: '#1E1E1A', border: '1px solid #CDBF94', borderRadius: '20px', padding: '0.35rem 0.75rem', fontSize: '0.7rem', cursor: 'pointer' }}
+            style={{
+              background: isCoachAvailability ? '#FFFFFF' : '#F7F1E3',
+              color: isCoachAvailability ? '#334155' : '#1E1E1A',
+              border: isCoachAvailability ? '1px solid #CBD5E1' : '1px solid #CDBF94',
+              borderRadius: '20px',
+              padding: '0.35rem 0.75rem',
+              fontSize: '0.7rem',
+              cursor: 'pointer',
+            }}
           >
             Skip (dev)
           </button>
@@ -460,35 +824,55 @@ export default function VoiceMeetingScene({ node }: Props) {
         {!inCall && !meetingEnded && (
           <button
             onClick={startMeeting}
-            style={{ background: '#B87D6B', color: '#F2EBD9', border: '1px solid #000000', borderRadius: '24px', padding: '0.55rem 1.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+            style={{
+              background: isCoachAvailability ? '#2D8CFF' : '#B87D6B',
+              color: isCoachAvailability ? '#FFFFFF' : '#F2EBD9',
+              border: isCoachAvailability ? '1px solid #1F7AE0' : '1px solid #000000',
+              borderRadius: '24px',
+              padding: '0.55rem 1.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
           >
             {startLabel}
           </button>
         )}
         {inCall && (
           <>
+            {inputMode === 'voice' && (
+              <button
+                onClick={toggleMuted}
+                style={{
+                  background: isCoachAvailability ? muted ? '#FEE2E2' : '#FFFFFF' : muted ? '#D2A39A' : '#F7F1E3',
+                  color: isCoachAvailability ? muted ? '#991B1B' : '#334155' : '#1E1E1A',
+                  border: isCoachAvailability ? muted ? '1px solid #FCA5A5' : '1px solid #CBD5E1' : muted ? '1px solid #B87D6B' : '1px solid #CDBF94',
+                  borderRadius: '50px',
+                  padding: '0.45rem 1rem',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}
+              >
+                <MicIcon muted={muted} />
+                {muted ? 'Unmute' : 'Mute'}
+              </button>
+            )}
             <button
-              onClick={toggleMuted}
+              onClick={endMeeting}
               style={{
-                background: muted ? '#D2A39A' : '#F7F1E3',
-                color: '#1E1E1A',
-                border: muted ? '1px solid #B87D6B' : '1px solid #CDBF94',
+                background: isCoachAvailability ? '#DC2626' : '#D2A39A',
+                color: isCoachAvailability ? '#FFFFFF' : '#1E1E1A',
+                border: isCoachAvailability ? '1px solid #B91C1C' : '1px solid #B87D6B',
                 borderRadius: '50px',
                 padding: '0.45rem 1rem',
                 fontSize: '0.8125rem',
-                fontWeight: 500,
+                fontWeight: 600,
                 cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
               }}
-            >
-              <MicIcon muted={muted} />
-              {muted ? 'Unmute' : 'Mute'}
-            </button>
-            <button
-              onClick={endMeeting}
-              style={{ background: '#D2A39A', color: '#1E1E1A', border: '1px solid #B87D6B', borderRadius: '50px', padding: '0.45rem 1rem', fontSize: '0.8125rem', fontWeight: 500, cursor: 'pointer' }}
             >
               {endLabel}
             </button>
@@ -501,23 +885,29 @@ export default function VoiceMeetingScene({ node }: Props) {
   const referenceContent = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
       {prepReference && (
-        <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} />
+        <ReferenceBlock title={node.prepReferenceTitle || 'Reference'} content={prepReference} tone={isCoachAvailability ? 'coach' : 'default'} />
       )}
       {prepNotes.map((note, index) => (
         <div key={note.title} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
           {(prepReference || index > 0) && (
-            <div style={{ height: 1, background: '#CDBF94', opacity: 0.8 }} />
+            <div style={{ height: 1, background: isCoachAvailability ? '#E2E8F0' : '#CDBF94', opacity: 0.8 }} />
           )}
-          <ReferenceBlock title={note.title} content={note.content} />
+          <ReferenceBlock title={note.title} content={note.content} tone={isCoachAvailability ? 'coach' : 'default'} />
         </div>
       ))}
     </div>
   )
 
   const referencePanel = hasReferenceContent ? (
-    <div className={isInPerson ? 'voice-meeting-inperson-reference' : 'voice-meeting-reference'}>
+    <div className={isInPerson ? `voice-meeting-inperson-reference${isCoachAvailability ? ' coach-availability-support' : ''}` : 'voice-meeting-reference'}>
       {isInPerson ? (
-        <div className="voice-meeting-reference-card">
+        <div className={isCoachAvailability ? 'coach-availability-support-card' : 'voice-meeting-reference-card'}>
+          {isCoachAvailability && (
+            <div className="coach-availability-support-header">
+              <span>Support Notes</span>
+              <small>Pregame plan, warmup memo, and limits</small>
+            </div>
+          )}
           {referenceContent}
         </div>
       ) : (
@@ -529,9 +919,9 @@ export default function VoiceMeetingScene({ node }: Props) {
   ) : null
 
   const meetingPanel = (
-    <div className={isInPerson ? 'voice-meeting-inperson-card' : 'voice-meeting-window'}>
+    <div className={isInPerson ? `voice-meeting-inperson-card${isCoachAvailability ? ' coach-availability-meeting-card' : ''}${isMediaScrum ? ' media-scrum-conversation-card' : ''}` : 'voice-meeting-window'}>
       {isInPerson ? (
-        <div className="voice-meeting-inperson-shell" aria-label={meetingTitle}>
+        <div className={`voice-meeting-inperson-shell${isCoachAvailability ? ' coach-availability-meeting-shell' : ''}${isMediaScrum ? ' media-scrum-conversation-shell' : ''}`} aria-label={meetingTitle}>
           <div className="voice-meeting-inperson-title">{meetingTitle}</div>
           {meetingInner}
         </div>
@@ -544,7 +934,7 @@ export default function VoiceMeetingScene({ node }: Props) {
   )
 
   const inPersonSceneImage = isInPerson && node.illustration ? (
-    <div className="voice-meeting-inperson-scene-image">
+    <div className={`voice-meeting-inperson-scene-image${isMediaScrum ? ' voice-meeting-inperson-scene-image--static' : ''}`}>
       <img
         src={node.illustration}
         alt=""
@@ -555,37 +945,39 @@ export default function VoiceMeetingScene({ node }: Props) {
 
   const interviewNotePanel = interviewNoteKey ? (
     <div
-      style={{
-        background: '#F7F1E3',
-        border: '1px solid #000000',
-        boxShadow: '4px 4px 0 #000000',
-        padding: '0.875rem',
+      className={isCoachAvailability ? 'coach-availability-notes' : isMediaScrum ? 'media-scrum-notes-card' : undefined}
+      style={isMediaScrum ? undefined : {
+        background: isCoachAvailability ? undefined : '#F7F1E3',
+        border: isCoachAvailability ? undefined : '1px solid #000000',
+        boxShadow: isCoachAvailability ? undefined : '4px 4px 0 #000000',
+        padding: isCoachAvailability ? undefined : '0.875rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-        <label htmlFor={`${node.id}-interview-notes`} style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#1E1E1A' }}>
-          {interviewNotePrompt}
+        <label htmlFor={`${node.id}-interview-notes`} style={{ fontSize: '0.8125rem', fontWeight: 800, color: isCoachAvailability ? '#1F2937' : '#1E1E1A' }}>
+          {isMediaScrum ? 'Reporter Notes' : interviewNotePrompt}
         </label>
-        <div style={{ fontSize: '0.75rem', color: '#5B5546', lineHeight: 1.45 }}>
-          {interviewNoteHelper}
+        <div style={{ fontSize: '0.75rem', color: isCoachAvailability ? '#64748B' : '#5B5546', lineHeight: 1.45 }}>
+          {renderContentWithGlossary(interviewNoteHelper)}
         </div>
       </div>
       <textarea
+        className={isCoachAvailability ? 'coach-availability-note-textarea' : isMediaScrum ? 'media-scrum-note-textarea' : undefined}
         id={`${node.id}-interview-notes`}
         value={interviewNotes}
         onChange={(event) => setFreeTextResponse(interviewNoteKey, event.target.value)}
         placeholder={interviewNotePlaceholder}
         rows={4}
-        style={{
+        style={isMediaScrum ? undefined : {
           width: '100%',
           resize: 'vertical',
           minHeight: 104,
-          border: '1px solid #CDBF94',
-          background: '#FBF7EA',
-          color: '#1E1E1A',
+          border: isCoachAvailability ? undefined : '1px solid #CDBF94',
+          background: isCoachAvailability ? undefined : '#FBF7EA',
+          color: isCoachAvailability ? undefined : '#1E1E1A',
           borderRadius: 4,
           padding: '0.75rem',
           fontSize: '0.875rem',
@@ -595,6 +987,59 @@ export default function VoiceMeetingScene({ node }: Props) {
         }}
       />
     </div>
+  ) : null
+
+  const mediaScrumQuestionItems = isMediaScrum
+    ? getMediaScrumQuestionItems(
+      freeTextResponses.possession_timeline_summary || '',
+      freeTextResponses.possession_timeline_notes || ''
+    )
+    : []
+  const mediaScrumGuide = isMediaScrum ? (
+    <section className="media-scrum-guide" aria-label="Interview guide">
+      <div className="media-scrum-guide-heading">
+        <h2>Interview Guide</h2>
+        <p>{renderContentWithGlossary('Use your two Reed questions from the {{possession timeline}}.')}</p>
+      </div>
+      <ol className="media-scrum-guide-steps">
+        <li><span>1</span><strong>Ask your two Reed questions, one at a time.</strong></li>
+        <li><span>2</span><strong>Listen for one useful quote or detail.</strong></li>
+        <li><span>3</span><strong>Write notes, then end the conversation.</strong></li>
+      </ol>
+    </section>
+  ) : null
+
+  const mediaScrumWorkspace = isMediaScrum ? (
+    <section className="media-scrum-workspace" aria-label="Malik Reed interview workspace">
+      <div className="media-scrum-workspace-header">
+        <div>
+          <h2>Ask Reed</h2>
+          <p>Voice or typed conversation. Ask clearly, then let Reed answer before you move on.</p>
+        </div>
+      </div>
+      <div className="media-scrum-workspace-grid">
+        <div className="media-scrum-main-column">
+          {meetingPanel}
+        </div>
+        <aside className="media-scrum-side-column" aria-label="Prepared questions and notes">
+          <section className="media-scrum-question-card">
+            <div className="media-scrum-card-label">Your 2 Reed Questions</div>
+            <ol className="media-scrum-question-list">
+              {mediaScrumQuestionItems.map((question, index) => (
+                <li key={`${question}-${index}`}>
+                  <span>{index + 1}</span>
+                  <p>{question}</p>
+                </li>
+              ))}
+            </ol>
+            {mediaScrumQuestionItems.length === 0 && (
+              <p className="media-scrum-empty-copy">No saved Reed questions found. Go back to Possession Timeline Watch, save both Reed questions, then return to this scrum.</p>
+            )}
+          </section>
+          {interviewNotePanel}
+        </aside>
+      </div>
+    </section>
   ) : null
 
   return (
@@ -612,8 +1057,13 @@ export default function VoiceMeetingScene({ node }: Props) {
           </div>
         )}
 
-        {(playerGoal || endpoint || successCriteria) && (
+        {isMediaScrum && inPersonSceneImage}
+
+        {mediaScrumGuide}
+
+        {!isMediaScrum && (playerGoal || endpoint || successCriteria) && (
           <div
+            className={undefined}
             style={{
               backgroundColor: '#fff',
               border: '1px solid #000',
@@ -622,21 +1072,37 @@ export default function VoiceMeetingScene({ node }: Props) {
               color: '#444',
             }}
           >
-            {playerGoal && <div><strong>Your goal: </strong>{playerGoal}</div>}
+            {playerGoal && <div><strong>Your goal: </strong>{renderContentWithGlossary(playerGoal)}</div>}
             {endpoint && <div style={{ marginTop: playerGoal ? '0.375rem' : 0 }}><strong>Endpoint: </strong>{endpoint}</div>}
             {successCriteria && <div style={{ marginTop: (playerGoal || endpoint) ? '0.375rem' : 0 }}><strong>Success looks like: </strong>{successCriteria}</div>}
           </div>
         )}
 
         {isInPerson ? (
-          <>
-            {inPersonSceneImage}
-            {interviewNotePanel}
-            <div className={`voice-meeting-inperson-layout${hasReferenceContent ? '' : ' voice-meeting-inperson-layout--solo'}`}>
-              {meetingPanel}
+          isCoachAvailability ? (
+            <div className="coach-availability-workspace">
+              <div className="coach-availability-main">
+                {meetingPanel}
+                {interviewNotePanel}
+              </div>
               {referencePanel}
             </div>
-          </>
+          ) : (
+            isMediaScrum ? (
+              <>
+                {mediaScrumWorkspace}
+              </>
+            ) : (
+              <>
+                {inPersonSceneImage}
+                {interviewNotePanel}
+                <div className={`voice-meeting-inperson-layout${hasReferenceContent ? '' : ' voice-meeting-inperson-layout--solo'}`}>
+                  {meetingPanel}
+                  {referencePanel}
+                </div>
+              </>
+            )
+          )
         ) : (
           <DesktopOverlay>
             <div className={`voice-meeting-workspace${hasReferenceContent ? '' : ' voice-meeting-workspace--solo'}`}>
@@ -657,7 +1123,7 @@ export default function VoiceMeetingScene({ node }: Props) {
           />
           {!canSubmit && (
             <span style={{ fontSize: '0.75rem', color: '#666' }}>
-              Speak at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then end the {interactionLabel} to continue.
+              Speak or type at least {minTurns} turn{minTurns === 1 ? '' : 's'}, then end the {interactionLabel} to continue.
             </span>
           )}
         </div>

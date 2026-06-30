@@ -68,11 +68,10 @@
         "The specific model of laptop and notebook used by the player",
         "A simple, padded folding chair"
       ],
-        "sceneIds": [
+      "sceneIds": [
         "intro",
         "warmup_observation",
-        "possession_timeline_watch",
-        "final_story"
+        "possession_timeline_watch"
       ],
       "referenceImage": "public/visual-refs/locations/arena-media-row.png"
     },
@@ -87,9 +86,8 @@
         "A coffee and snack station in a corner"
       ],
       "sceneIds": [
-        "assignment_brief",
+        "assignment_recap",
         "redirect_strong_angle",
-        "editor_slack",
         "grading"
       ],
       "referenceImage": "public/visual-refs/locations/arena-media-room.png"
@@ -131,11 +129,9 @@
       "appearancePrompt": "A modern 14-inch laptop with a dark gray aluminum body. It has a single, non-descript sticker of a city skyline silhouette on the lid. The screen display changes based on the scene, showing a CMS, Slack, box scores, or notes.",
       "sceneIds": [
         "intro",
-        "assignment_brief",
+        "assignment_recap",
         "possession_timeline_watch",
         "fast_gamer",
-        "editor_slack",
-        "final_story",
         "grading"
       ]
     },
@@ -168,7 +164,7 @@
       "appearancePrompt": "A laminated press pass on a navy blue 'Full Court Wire' branded lanyard. It features a generic avatar headshot, the name 'Press', outlet ('Full Court Wire'), and access permissions for 'Harbor City Arena'.",
       "sceneIds": [
         "intro",
-        "assignment_brief",
+        "assignment_recap",
         "reporting_plan",
         "warmup_observation"
       ]

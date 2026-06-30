@@ -19,11 +19,11 @@ Asset contract:
 - Do not include answer captions, checkmarks, conclusions, or completed documentation unless the real object genuinely contains that text.
 
 Physical work design notes:
-- Real workflow script: Arrive at media row, check the credential/deadline context, read the team PR status, watch Reed move during warmups, notice routine trainer contact, monitor rumor feed, and write one observation with a caveat.
-- Evidence: Team PR injury email, Reed movement during warmups, Trainer contact near baseline, Fan-account rumor feed
-- Objects: Credential/deadline card, Laptop PR email closeup, Court observation closeup, Phone rumor feed, Notebook
+- Real workflow script: Arrive at media row, check the credential/deadline context, read the team PR status, watch Reed move during warmups, notice late-clock closing-group drill reps, notice routine trainer contact, monitor rumor feed, and write one observation with a caveat.
+- Evidence: Team PR injury email, Reed movement during warmups, Closing-group drill reps, Trainer contact near baseline, Fan-account rumor feed
+- Objects: Credential/deadline card, Laptop PR email closeup, Court observation closeup, Closing-group drill closeup, Phone rumor feed, Notebook
 - Targets: Media-row work table, Court baseline, Notebook observation field
-- Procedure: Inspect official status, Inspect Reed movement, Inspect trainer contact, Inspect rumor feed, Write a caveated observation
+- Procedure: Inspect official status, Inspect Reed movement, Inspect closing-group drill reps, Inspect trainer contact, Inspect rumor feed, Write a caveated observation
 - State changes: Inspected surfaces are marked complete and the observation note is stored for grading.
 
 ### public/scenes/warmup_observation.png
@@ -224,6 +224,27 @@ Composition:
 Aspect ratio: 16:9 (1920x1080 recommended).
 
 Treat the listed palette as the dominant set; any extra colors must match its vibe. When in doubt, use fewer colors and flatter shading, not more.
+
+### public/action-assets/warmup_observation/closing-group-drill-closeup.png
+
+COPY THIS WHOLE ASSET PROMPT.
+
+Recommended local references to upload:
+- `public/scenes/warmup_observation.png` for the exact current stage context.
+- `public/visual-refs/npcs/malik.png` for Malik Reed's face, body type, uniform, and team colors.
+- `public/visual-refs/locations/arena-media-row.png` for arena/media-row perspective and illustration style.
+
+Asset-specific subject:
+Closeup from media row of Malik Reed taking late-clock defensive drill reps with four Cyclones teammates who look like the projected closing group. Coach Harris stands near the sideline with a clipboard, stopping one action and pointing Reed toward a weak-side switch. Show Reed in the same navy Cyclones uniform and with the same beard, haircut, and athletic build as the Malik reference. The drill should feel like a real pregame basketball action: five offensive/defensive players spaced around the arc and wing, Reed reacting to the switch call, the ball handler or coach restarting the possession, and empty lower-bowl seats plus court lights in the background. Do not include answer captions, arrows, checkmarks, conclusion labels, article text, note text, or medical/status text.
+
+Style:
+Generate an illustration in the EXACT same art style as the attached reference images. The style is a clean editorial 2D illustration with confident ink linework, flat cel-shaded color, and very subtle paper-grain texture. It should feel like a polished modern editorial storyboard, not photorealistic, not anime, not 3D rendered, not watercolor, and not icon-style vector.
+
+Color and rendering constraints:
+Use the same muted arena palette as the references: warm cream, warm tan, muted sage, dark teal green, muted terracotta red, Cyclones navy/orange, and dark charcoal outlines instead of pure black. Use flat base colors plus at most one simple darker shadow shape per object. No gradients, no glow, no dramatic rim lighting, no heavy texture, no lens flare, and no painterly brush strokes.
+
+Composition:
+16:9 horizontal closeup, first-person media-row perspective from the sideline or baseline. Reed should be clearly identifiable and central enough to inspect, but the four teammate drill context and Coach Harris's pointing/clipboard cue must also be visible. Keep the scene clean and readable at modal size.
 
 ### public/action-assets/warmup_observation/trainer-checkin-closeup.png
 

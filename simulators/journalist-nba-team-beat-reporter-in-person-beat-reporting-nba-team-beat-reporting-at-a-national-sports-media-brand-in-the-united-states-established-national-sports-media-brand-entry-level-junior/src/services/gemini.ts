@@ -126,6 +126,48 @@ RULES:
   })
 }
 
+export async function coworkerRecapReply(args: {
+  speakerName: string
+  speakerRole?: string
+  topic: string
+  question: string
+  facts: string[]
+  fallback: string
+}): Promise<string> {
+  if (!args.facts.length) return args.fallback
+
+  const system = `You are ${args.speakerName}${args.speakerRole ? `, ${args.speakerRole}` : ''}, giving a short onboarding recap for a workplace simulator.
+
+RULES:
+- Answer only from the provided facts.
+- If the student's question cannot be answered from the facts, reply exactly with the fallback.
+- Keep the reply under 55 words.
+- Do not invent names, numbers, documents, deadlines, risks, or decisions.
+- Do not mention being an AI, a model, or a simulator.`
+
+  const prompt = `TOPIC:
+${args.topic}
+
+FACTS YOU MAY USE:
+${args.facts.map((fact) => `- ${fact}`).join('\n')}
+
+FALLBACK:
+${args.fallback}
+
+STUDENT QUESTION:
+${args.question}
+
+Reply as ${args.speakerName}.`
+
+  return callGemini({
+    models: NPC_MODELS,
+    prompt,
+    temperature: 0.2,
+    jsonMode: false,
+    systemInstruction: system,
+  })
+}
+
 // ============================================================================
 // Grading
 // ============================================================================

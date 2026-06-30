@@ -13,16 +13,22 @@ import { ChartIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
 import { useGoNext } from '../engine/resolveNext'
 import { interpolate } from '../lib/interpolate'
+import { npcs } from '../data/npcs'
 import type { ReactNode } from 'react'
 import type { BriefingNode, BriefingSubStep, CmsSidebarRuleData, EmailData, SlackMessageData, SocialPostData } from '../types/game'
 import DesktopOverlay from '../components/layout/DesktopOverlay'
 
 interface Props { node: BriefingNode }
 type AssignmentAppId = 'messages' | 'email' | 'stats' | 'sns' | 'cms'
+type BriefingContext = {
+  playerName: string
+  branchFlags: Record<string, string>
+  mcSelections: Record<string, string>
+}
 
 function resolveSlackMessage(
   msg: SlackMessageData,
-  ctx: { playerName: string; branchFlags: Record<string, string>; mcSelections: Record<string, string> },
+  ctx: BriefingContext,
 ): SlackMessageData {
   return {
     ...msg,
@@ -32,6 +38,96 @@ function resolveSlackMessage(
     content: interpolate(msg.content, ctx),
     avatarInitials: msg.avatarInitials ? interpolate(msg.avatarInitials, ctx) : undefined,
   }
+}
+
+function BriefingInfoBox({
+  label,
+  note,
+  children,
+}: {
+  label: string
+  note?: string
+  children: ReactNode
+}) {
+  return (
+    <section
+      style={{
+        border: '1px solid #000',
+        backgroundColor: '#F7F1E3',
+        boxShadow: '3px 3px 0 rgba(0,0,0,0.18)',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.7rem',
+      }}
+    >
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '0.5rem', alignItems: 'baseline' }}>
+        <div style={{ fontSize: '0.8rem', fontWeight: 900, color: '#3A6B5E', textTransform: 'uppercase', letterSpacing: 0 }}>
+          {label}
+        </div>
+        {note && <div style={{ fontSize: '0.72rem', color: '#6F6A5B', fontWeight: 700 }}>{note}</div>}
+      </div>
+      {children}
+    </section>
+  )
+}
+
+function collectContextLines(node: BriefingNode, ctx: BriefingContext): string[] {
+  const lines: string[] = []
+  const seen = new Set<string>()
+  const addLine = (value?: string) => {
+    const line = value ? interpolate(value, ctx).trim() : ''
+    if (!line) return
+    const normalized = line.toLowerCase()
+    if (seen.has(normalized)) return
+    seen.add(normalized)
+    lines.push(line)
+  }
+
+  node.memoryCard?.bullets.forEach(addLine)
+  node.coworkerRecap?.turns.forEach((turn) => addLine(turn.coworkerLine))
+
+  return lines
+}
+
+function briefingSourceLabel(node: BriefingNode): string | undefined {
+  const recap = node.coworkerRecap
+  if (!recap) return undefined
+  const npc = recap.npcId ? npcs[recap.npcId] : undefined
+  const speakerName = recap.speakerName || npc?.name
+  const speakerRole = recap.speakerRole || npc?.role
+  if (speakerName && speakerRole) return `${speakerName}, ${speakerRole}`
+  return speakerName || speakerRole
+}
+
+function BriefingLeadIn({ node, ctx }: { node: BriefingNode; ctx: BriefingContext }) {
+  if (!node.memoryCard && !node.coworkerRecap) return null
+
+  const contextLines = collectContextLines(node, ctx)
+  const sourceLabel = briefingSourceLabel(node)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+      {node.content && (
+        <BriefingInfoBox label="Instructions">
+          <div style={{ fontSize: '0.9rem', lineHeight: 1.65, color: '#1E1E1A' }}>
+            {renderContentWithGlossary(interpolate(node.content, ctx))}
+          </div>
+        </BriefingInfoBox>
+      )}
+      {contextLines.length > 0 && (
+        <BriefingInfoBox label="Context" note={sourceLabel}>
+          <ul style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+            {contextLines.map((line, i) => (
+              <li key={i} style={{ fontSize: '0.86rem', lineHeight: 1.55, color: '#1E1E1A' }}>
+                {renderContentWithGlossary(line)}
+              </li>
+            ))}
+          </ul>
+        </BriefingInfoBox>
+      )}
+    </div>
+  )
 }
 
 function BriefingReferenceCard({ title, content }: { title: string; content: string }) {
@@ -84,7 +180,7 @@ function resolveCmsRule(
   }
 }
 
-function SocialFeed({ posts }: { posts: SocialPostData[] }) {
+export function SocialFeed({ posts }: { posts: SocialPostData[] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {posts.map((post, i) => (
@@ -138,7 +234,7 @@ const cmsSeverityColors: Record<NonNullable<CmsSidebarRuleData['severity']>, { b
   hold: { bg: '#F9DADA', border: '#c0392b', color: '#81261f' },
 }
 
-function CmsSidebarRules({ rules }: { rules: CmsSidebarRuleData[] }) {
+export function CmsSidebarRules({ rules }: { rules: CmsSidebarRuleData[] }) {
   return (
     <aside style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
       {rules.map((rule, i) => {
@@ -443,7 +539,7 @@ function AssignmentDesktopBriefing({ node, onAdvance }: { node: BriefingNode; on
     }
     if (activeApp === 'email' && sourceEmails.length > 0) {
       return (
-        <LaptopFrame variant="email" title="Email inbox - assignment sources" scrollable fill>
+        <LaptopFrame variant="email" title="Email inbox - work materials" scrollable fill>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0.875rem' }}>
             {sourceEmails.map((email, i) => (
               <EmailBlock
@@ -472,7 +568,7 @@ function AssignmentDesktopBriefing({ node, onAdvance }: { node: BriefingNode; on
     }
     if (activeApp === 'cms' && node.cmsSidebarRules?.length) {
       return (
-        <LaptopFrame variant="doc" title="CMS sidebar - publishability checks" scrollable fill>
+        <LaptopFrame variant="doc" title="CMS sidebar - story checks" scrollable fill>
           <CmsSidebarRules rules={node.cmsSidebarRules.map((rule) => resolveCmsRule(rule, ctx))} />
         </LaptopFrame>
       )
@@ -540,7 +636,7 @@ function AssignmentDesktopBriefing({ node, onAdvance }: { node: BriefingNode; on
               }}
             >
               <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#3A6B5E', textAlign: 'center', maxWidth: 290, lineHeight: 1.45 }}>
-                Open each assignment source before replying to Tessa.
+                Open the materials you need before replying to Tessa.
               </div>
             </div>
           )}
@@ -617,7 +713,7 @@ function renderSubStep(s: BriefingSubStep, playerName: string, branchFlags: Reco
       )}
       {s.cmsSidebarRules && s.cmsSidebarRules.length > 0 && (
         <DesktopOverlay width="48%" height="82%">
-          <LaptopFrame variant="doc" title="CMS sidebar - publishability checks" scrollable fill>
+          <LaptopFrame variant="doc" title="CMS sidebar - story checks" scrollable fill>
             <CmsSidebarRules rules={s.cmsSidebarRules.map((rule) => resolveCmsRule(rule, { playerName, branchFlags, mcSelections }))} />
           </LaptopFrame>
         </DesktopOverlay>
@@ -768,6 +864,7 @@ export default function BriefingScene({ node }: Props) {
   const onAdvance = () => goNext(node)
   const mode = node.briefingMode || 'simple'
   const actionLabel = node.actionLabel || 'Start the Task'
+  const hasBriefingLeadIn = Boolean(node.memoryCard || node.coworkerRecap)
 
   return (
     <SceneWrapper illustration={node.illustration}>
@@ -794,7 +891,8 @@ export default function BriefingScene({ node }: Props) {
           <PaginatedBriefing node={node} onAdvance={onAdvance} />
         ) : (
           <>
-            {node.content && (
+            <BriefingLeadIn node={node} ctx={{ playerName, branchFlags, mcSelections }} />
+            {!hasBriefingLeadIn && node.content && (
               <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000' }}>
                 {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
               </p>
@@ -849,7 +947,7 @@ export default function BriefingScene({ node }: Props) {
             )}
             {node.cmsSidebarRules && node.cmsSidebarRules.length > 0 && (
               <DesktopOverlay width="48%" height="82%">
-                <LaptopFrame variant="doc" title="CMS sidebar - publishability checks" scrollable fill>
+                <LaptopFrame variant="doc" title="CMS sidebar - story checks" scrollable fill>
                   <CmsSidebarRules rules={node.cmsSidebarRules.map((rule) => resolveCmsRule(rule, { playerName, branchFlags, mcSelections }))} />
                 </LaptopFrame>
               </DesktopOverlay>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Final score board placeholder</title>
+  <desc id="desc">Placeholder image for the seventh possession, showing the arena result board with the final score and Malik Reed's official stat line.</desc>
+  <rect width="1920" height="1080" fill="#1E1E1A"/>
+  <rect x="0" y="0" width="1920" height="1080" fill="#3F605C" opacity="0.18"/>
+  <rect x="130" y="115" width="1660" height="760" rx="18" fill="#11110F" stroke="#CDBF94" stroke-width="10"/>
+  <rect x="170" y="155" width="1580" height="680" rx="10" fill="#172320" stroke="#5F7F62" stroke-width="6"/>
+  <text x="960" y="250" text-anchor="middle" fill="#EFE8D2" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" letter-spacing="4">FINAL</text>
+  <line x1="270" y1="310" x2="1650" y2="310" stroke="#C75448" stroke-width="10"/>
+  <text x="320" y="455" fill="#EFE8D2" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="800">HARBOR CITY CYCLONES</text>
+  <text x="1585" y="455" text-anchor="end" fill="#EFE8D2" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="900">112</text>
+  <text x="320" y="610" fill="#CDBF94" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="800">DENVER ALTITUDE</text>
+  <text x="1585" y="610" text-anchor="end" fill="#CDBF94" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="900">107</text>
+  <rect x="270" y="690" width="1380" height="86" fill="#EFE8D2" opacity="0.08" stroke="#CDBF94" stroke-width="3"/>
+  <text x="960" y="748" text-anchor="middle" fill="#EFE8D2" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800">MALIK REED: 24 PTS  |  6 AST  |  2 STL</text>
+  <text x="960" y="948" text-anchor="middle" fill="#CDBF94" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">PLACEHOLDER SCOREBOARD ART - replace with generated image when ready</text>
+</svg>

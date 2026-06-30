@@ -34,51 +34,30 @@ export default function App() {
   return (
     <>
       <ProgressBar />
-      <div style={{ paddingTop: '28px' }}>
+      <div style={{ paddingTop: '34px' }}>
         <SceneEngine />
       </div>
 
-      {isDev && devSkips.map((skip, i) => (
-        <button
-          key={skip.targetNodeId}
-          onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
-          style={{
-            position: 'fixed',
-            bottom: '1rem',
-            right: `${5.5 + i * 9.5}rem`,
-            zIndex: 200,
-            backgroundColor: ['#A7F3D0', '#FDE68A', '#BFDBFE'][i] || '#E8DCC8',
-            border: '1px solid #000',
-            boxShadow: '2px 2px 0 #000',
-            padding: '0.375rem 0.75rem',
-            fontSize: '0.6875rem',
-            fontWeight: 600,
-            color: '#333',
-            cursor: 'pointer',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}
-        >
-          {skip.label} (Dev)
-        </button>
-      ))}
+      {isDev && (
+        <div className="dev-skip-controls" aria-label="Development scene shortcuts">
+          {devSkips.map((skip, i) => (
+            <button
+              className="dev-skip-button"
+              key={skip.targetNodeId}
+              onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
+              style={{
+                backgroundColor: ['#A7F3D0', '#FDE68A', '#BFDBFE'][i] || '#E8DCC8',
+              }}
+            >
+              {skip.label} (Dev)
+            </button>
+          ))}
+        </div>
+      )}
 
       <button
+        className="restart-button"
         onClick={resetGame}
-        style={{
-          position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          zIndex: 200,
-          backgroundColor: '#E8DCC8',
-          border: '1px solid #000',
-          boxShadow: '2px 2px 0 #000',
-          padding: '0.375rem 0.75rem',
-          fontSize: '0.6875rem',
-          fontWeight: 600,
-          color: '#333',
-          cursor: 'pointer',
-          fontFamily: 'Inter, system-ui, sans-serif',
-        }}
       >
         Restart
       </button>

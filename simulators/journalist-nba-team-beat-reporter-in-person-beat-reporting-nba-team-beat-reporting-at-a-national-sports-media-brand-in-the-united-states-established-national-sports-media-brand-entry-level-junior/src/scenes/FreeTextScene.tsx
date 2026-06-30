@@ -20,6 +20,15 @@ import type { ChatMessage, FreeTextNode } from '../types/game'
 interface Props { node: FreeTextNode }
 
 type AppTab = NonNullable<FreeTextNode['appTabs']>[number]
+type AppTabResponseSource = NonNullable<AppTab['responseSources']>[number]
+type CmsRequirement = NonNullable<FreeTextNode['cmsRequirements']>[number]
+type CmsSourceTabId = 'results' | 'notes' | 'rules'
+
+const cmsSourceTabs: { id: CmsSourceTabId; label: string }[] = [
+  { id: 'results', label: 'Results' },
+  { id: 'notes', label: 'Player Notes' },
+  { id: 'rules', label: 'Safe Rules' },
+]
 
 interface SourceSection {
   title?: string
@@ -32,20 +41,87 @@ function humanizeKey(key: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
+function cmsSourceElementId(key: string) {
+  return `cms-source-${key.replace(/[^a-z0-9_-]/gi, '-')}`
+}
+
 function readTextField(item: Record<string, unknown>, key: string) {
   const value = item[key]
   return typeof value === 'string' ? value.trim() : ''
+}
+
+function possessionCategoryLabel(categoryId: string) {
+  const labels: Record<string, string> = {
+    confirmed_fact: 'Fact I can use',
+    ask_reed: 'Ask Reed',
+    ask_coach: 'Ask Coach',
+    scene_color: 'Scene detail',
+    hold_verify: 'Hold/check later',
+  }
+  return labels[categoryId] || ''
+}
+
+const structuredPlanLabels: Record<string, Record<string, string>> = {
+  'Coach availability question': {
+    need: 'Topic',
+    question: 'Question for Coach Harris',
+    risk: 'Why it matters',
+  },
+  'Reed postgame question': {
+    need: 'Topic',
+    question: 'Question for Reed',
+    risk: 'Why it matters',
+  },
+  'Confirmed fact from the given sources': {
+    need: 'Fact',
+    source: 'Given source',
+    question: 'Supports angle',
+  },
+  'Unconfirmed claim to leave out': {
+    need: 'Claim to avoid',
+    risk: 'Why not reportable',
+  },
+  'Proof and publish limits': {
+    need: 'Confirmed fact',
+    source: 'Source',
+    question: 'Claim to leave out',
+    risk: 'Why left out',
+  },
+  'Question for Coach Harris before the game': {
+    need: 'Topic',
+    question: 'Question for Coach Harris',
+    risk: 'Why it matters',
+  },
+  'Question for Reed after the game': {
+    need: 'Topic',
+    question: 'Question for Reed',
+    risk: 'Why it matters',
+  },
+  'Safe fact and unsafe claim': {
+    need: 'Safe fact',
+    source: 'Source',
+    question: 'Unsafe claim to leave out',
+    risk: 'Why left out',
+  },
+}
+
+function formatStructuredPlanField(item: Record<string, unknown>, key: string, fallbackLabel: string) {
+  const value = readTextField(item, key)
+  if (!value) return ''
+  const rowTitle = readTextField(item, 'rowTitle')
+  const label = structuredPlanLabels[rowTitle]?.[key] || fallbackLabel
+  return `${label}: ${value}`
 }
 
 function formatStructuredPlan(items: Array<Record<string, unknown>>) {
   return items
     .map((item, index) => {
       const lines = [
-        `Reporting Need #${index + 1}`,
-        readTextField(item, 'need') ? `Need: ${readTextField(item, 'need')}` : '',
-        readTextField(item, 'source') ? `Source: ${readTextField(item, 'source')}` : '',
-        readTextField(item, 'question') ? `Question or verification: ${readTextField(item, 'question')}` : '',
-        readTextField(item, 'risk') ? `Risk: ${readTextField(item, 'risk')}` : '',
+        readTextField(item, 'rowTitle') || `Plan Item #${index + 1}`,
+        formatStructuredPlanField(item, 'need', 'Need'),
+        formatStructuredPlanField(item, 'source', 'Source'),
+        formatStructuredPlanField(item, 'question', 'Question or verification'),
+        formatStructuredPlanField(item, 'risk', 'Risk'),
       ].filter(Boolean)
       return lines.join('\n')
     })
@@ -57,28 +133,13 @@ function formatPhysicalMemo(parsed: unknown) {
   if (!parsed || typeof parsed !== 'object') return ''
   const record = parsed as {
     observations?: Record<string, unknown>
-    actionLog?: Array<{ label?: unknown; observation?: unknown }>
   }
   const observations = record.observations && typeof record.observations === 'object'
     ? record.observations
     : {}
-  const runningNotes = typeof observations.__running_reporter_notes === 'string'
+  return typeof observations.__running_reporter_notes === 'string'
     ? observations.__running_reporter_notes.trim()
     : ''
-  const observationLines = Object.entries(observations)
-    .filter(([key, value]) => key !== '__running_reporter_notes' && typeof value === 'string' && value.trim() && value.trim() !== runningNotes)
-    .map(([key, value]) => `${humanizeKey(key)}: ${(value as string).trim()}`)
-  const actionLines = Array.isArray(record.actionLog)
-    ? record.actionLog
-      .filter((entry) => typeof entry.observation === 'string' && entry.observation.trim() && entry.observation.trim() !== runningNotes)
-      .map((entry) => `${typeof entry.label === 'string' ? entry.label : 'Observation'}: ${(entry.observation as string).trim()}`)
-    : []
-  const lines = [
-    runningNotes ? `Running reporter notes:\n${runningNotes}` : '',
-    observationLines.length ? `Inspection notes:\n${observationLines.join('\n')}` : '',
-    actionLines.length ? `Action log notes:\n${actionLines.join('\n')}` : '',
-  ].filter(Boolean)
-  return lines.join('\n\n')
 }
 
 function formatPossessionTimelineNotes(parsed: unknown) {
@@ -95,10 +156,11 @@ function formatPossessionTimelineNotes(parsed: unknown) {
     .map((id) => {
       const note = notes[id]
       if (!note || typeof note !== 'object' || Array.isArray(note)) return ''
-      const category = readTextField(note as Record<string, unknown>, 'categoryId')
-      const text = readTextField(note as Record<string, unknown>, 'note')
+      const record = note as Record<string, unknown>
+      const text = readTextField(record, 'note')
       if (!text) return ''
-      return `${humanizeKey(id)}${category ? ` (${humanizeKey(category)})` : ''}: ${text}`
+      const category = possessionCategoryLabel(readTextField(record, 'categoryId'))
+      return `${humanizeKey(id)}${category ? ` [${category}]` : ''}: ${text}`
     })
     .filter(Boolean)
   const questionLines = Array.isArray(record.reedQuestions)
@@ -113,10 +175,39 @@ function formatPossessionTimelineNotes(parsed: unknown) {
     ? `Summary:\n${record.summary.trim()}`
     : ''
   return [
-    noteLines.length ? `Possession notes:\n${noteLines.join('\n')}` : '',
+    noteLines.length ? `Possession timeline:\n${noteLines.join('\n')}` : '',
     questionLines.length ? `Prepared Reed questions:\n${questionLines.join('\n')}` : '',
     followUp,
     summary && !questionLines.length ? summary : '',
+  ].filter(Boolean).join('\n\n')
+}
+
+function formatPossessionTimelineArticleNotes(parsed: unknown) {
+  if (!parsed || typeof parsed !== 'object') return ''
+  const record = parsed as { viewedEventIds?: unknown; notes?: unknown }
+  const notes = record.notes && typeof record.notes === 'object' && !Array.isArray(record.notes)
+    ? record.notes as Record<string, unknown>
+    : {}
+  const preferredOrder = Array.isArray(record.viewedEventIds)
+    ? record.viewedEventIds.filter((id): id is string => typeof id === 'string')
+    : []
+  const orderedIds = [...preferredOrder, ...Object.keys(notes).filter((id) => !preferredOrder.includes(id))]
+  const usableLines = orderedIds
+    .map((id) => {
+      if (id === 'final_score_board') return ''
+      const note = notes[id]
+      if (!note || typeof note !== 'object' || Array.isArray(note)) return ''
+      const noteRecord = note as Record<string, unknown>
+      const categoryId = readTextField(noteRecord, 'categoryId')
+      if (categoryId !== 'confirmed_fact' && categoryId !== 'scene_color') return ''
+      const text = readTextField(noteRecord, 'note')
+      return text ? `${humanizeKey(id)}: ${text}` : ''
+    })
+    .filter(Boolean)
+  const caution = 'Caution: Leave out rumors and any medical claim stronger than your named sources support.'
+  return [
+    usableLines.length ? `Verified facts and usable observations:\n${usableLines.join('\n')}` : '',
+    caution,
   ].filter(Boolean).join('\n\n')
 }
 
@@ -129,13 +220,21 @@ function formatStoredResponse(raw: string, key: string, responseFormat?: AppTab[
       return formatStructuredPlan(parsed)
     }
     if (format === 'physicalMemo' || (!format && key === 'warmup_observation')) {
-      return formatPhysicalMemo(parsed) || raw
+      return formatPhysicalMemo(parsed)
     }
     if (format === 'possessionTimelineNotes' || (!format && key === 'possession_timeline_notes')) {
-      return formatPossessionTimelineNotes(parsed) || raw
+      return formatPossessionTimelineNotes(parsed)
+    }
+    if (format === 'possessionTimelineArticleNotes') {
+      return formatPossessionTimelineArticleNotes(parsed)
     }
   } catch {
     // Plain text responses do not need special formatting.
+    if (
+      responseFormat === 'possessionTimelineNotes'
+      || responseFormat === 'possessionTimelineArticleNotes'
+      || key === 'possession_timeline_notes'
+    ) return ''
   }
   return raw.trim()
 }
@@ -313,6 +412,180 @@ function SlackHistory({
   )
 }
 
+function CmsBoxScore({ content }: { content: string }) {
+  const finalScore = content.match(/Final:\s*Harbor City Cyclones\s+(\d+),\s*Denver Altitude\s+(\d+)/i)
+  const reedLine = content.match(/Malik Reed finished with\s+([^.]*)\./i)
+  const cyclonesScore = finalScore?.[1] || '112'
+  const altitudeScore = finalScore?.[2] || '107'
+  const reedStats = reedLine?.[1] || '24 points, 6 assists, and 2 steals'
+
+  return (
+    <div className="cms-box-score" id={cmsSourceElementId('results')}>
+      <div className="cms-source-card-header">
+        <div>
+          <div className="cms-source-kind">Official box score</div>
+          <h3>Results desk</h3>
+        </div>
+        <span className="cms-source-state cms-source-state--saved">Verified</span>
+      </div>
+      <div className="cms-scoreboard">
+        <div className="cms-score-row cms-score-row--winner">
+          <span>Harbor City Cyclones</span>
+          <strong>{cyclonesScore}</strong>
+        </div>
+        <div className="cms-score-row">
+          <span>Denver Altitude</span>
+          <strong>{altitudeScore}</strong>
+        </div>
+      </div>
+      <div className="cms-stat-card">
+        <span>Malik Reed official line</span>
+        <strong>{reedStats}</strong>
+      </div>
+    </div>
+  )
+}
+
+function CmsSourceCard({
+  source,
+  content,
+  isSaved,
+}: {
+  source: AppTabResponseSource
+  content: string
+  isSaved: boolean
+}) {
+  return (
+    <article
+      className={isSaved ? 'cms-source-card' : 'cms-source-card cms-source-card--missing'}
+      id={cmsSourceElementId(source.key)}
+    >
+      <div className="cms-source-card-header">
+        <div>
+          <div className="cms-source-kind">{source.sourceKind || 'Source note'}</div>
+          <h3>{source.title || humanizeKey(source.key)}</h3>
+        </div>
+        <span className={isSaved ? 'cms-source-state cms-source-state--saved' : 'cms-source-state'}>
+          {isSaved ? 'Saved' : 'Missing'}
+        </span>
+      </div>
+
+      {source.articleUses?.length && (
+        <p className="cms-source-use-summary">
+          <strong>Use for:</strong> {source.articleUses.join(', ')}
+        </p>
+      )}
+
+      <div className="cms-source-card-body">
+        {renderContentWithGlossary(content)}
+      </div>
+
+      {source.caution && (
+        <details className="cms-source-care">
+          <summary>Use carefully</summary>
+          <p>{renderContentWithGlossary(source.caution)}</p>
+        </details>
+      )}
+    </article>
+  )
+}
+
+function CmsRequirementStrip({ requirements }: { requirements?: CmsRequirement[] }) {
+  if (!requirements?.length) return null
+
+  const includeItems = requirements.filter((item) => item.kind !== 'avoid')
+  const avoidItems = requirements.filter((item) => item.kind === 'avoid')
+
+  return (
+    <section className="cms-requirements" aria-label="Article requirements">
+      <div className="cms-requirements-heading">
+        <span className="cms-source-eyebrow">Article requirements</span>
+        <strong>Use the evidence guide, then write in your own words.</strong>
+      </div>
+      <div className="cms-requirement-groups">
+        {includeItems.length > 0 && (
+          <div className="cms-requirement-group">
+            <span>Include</span>
+            <div className="cms-requirement-list">
+              {includeItems.map((item) => (
+                <div className="cms-requirement-chip" key={item.id}>
+                  <strong>{item.label}</strong>
+                  <small>{item.sourceHint}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {avoidItems.length > 0 && (
+          <div className="cms-requirement-group">
+            <span>Avoid</span>
+            <div className="cms-requirement-list">
+              {avoidItems.map((item) => (
+                <div className="cms-requirement-chip cms-requirement-chip--avoid" key={item.id}>
+                  <strong>{item.label}</strong>
+                  <small>{item.sourceHint}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+function CmsStoryFrame({ guidance }: { guidance: NonNullable<AppTab['cmsGuidance']> }) {
+  const items = guidance.items || []
+  if (!items.length && !guidance.summary) return null
+
+  return (
+    <details className="cms-story-frame">
+      <summary>
+        <span>{guidance.title || 'Optional story frame'}</span>
+        <strong>Open help</strong>
+      </summary>
+      {guidance.summary && <p>{renderContentWithGlossary(guidance.summary)}</p>}
+      {items.length > 0 && (
+        <ol>
+          {items.map((item) => (
+            <li key={item.label}>
+              <strong>{item.label}</strong>
+              <span>{renderContentWithGlossary(item.detail)}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </details>
+  )
+}
+
+function CmsPublishChecks({ savedSourceCount, totalSourceCount }: { savedSourceCount: number; totalSourceCount: number }) {
+  const checks = [
+    'Final score and Reed stat line come from Results.',
+    'Health language needs Team PR, Reed, or another named source.',
+    'Final-minutes lineup claims need notes from the game or Coach Harris.',
+    'Trade-rumor language stays out unless a named source confirms it.',
+  ]
+
+  return (
+    <div className="cms-publish-checks">
+      <div>
+        <div className="cms-source-eyebrow">Safe rules</div>
+        <strong>Check these before you submit</strong>
+        <p className="cms-rule-note">{savedSourceCount}/{totalSourceCount || 0} note groups saved in Player Notes.</p>
+      </div>
+      <div className="cms-check-list">
+        {checks.map((check) => (
+          <div key={check} className="cms-check-row">
+            <span aria-hidden="true" />
+            <p>{check}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function FreeTextScene({ node }: Props) {
   const responses = useGameStore((s) => s.freeTextResponses)
   const setFreeTextResponse = useGameStore((s) => s.setFreeTextResponse)
@@ -324,6 +597,7 @@ export default function FreeTextScene({ node }: Props) {
   const briefing = useSectionBriefing()
   const [refOpen, setRefOpen] = useState(false)
   const [activeAppTab, setActiveAppTab] = useState('editor')
+  const [activeCmsSourceTab, setActiveCmsSourceTab] = useState<CmsSourceTabId>('notes')
 
   const value = responses[node.id] || ''
   const wordCount = value.trim() ? value.trim().split(/\s+/).length : 0
@@ -333,8 +607,9 @@ export default function FreeTextScene({ node }: Props) {
 
   const appWindow = node.appWindow as LaptopFrameVariant | undefined
   const isEmailCompose = appWindow === 'email'
+  const isCmsWindow = appWindow === 'cms'
   const appTabs = node.appTabs || []
-  const titleTabs = appTabs.length > 0
+  const titleTabs = appTabs.length > 0 && !isCmsWindow
     ? [{ id: 'editor', label: node.windowTitle || node.title }, ...appTabs.map((tab) => ({ id: tab.id, label: tab.label }))]
     : undefined
 
@@ -452,6 +727,10 @@ export default function FreeTextScene({ node }: Props) {
   )
 
   const renderAppTab = (tab: AppTab) => {
+    if (tab.layout === 'boxScore' || (isCmsWindow && tab.id === 'results')) {
+      return <CmsBoxScore content={resolveTabContent(tab)} />
+    }
+
     if (tab.layout === 'slackHistory') {
       const source = tab.conversationSources?.find((candidate) => (npcConversations[candidate.key] || []).length > 0)
         || tab.conversationSources?.[0]
@@ -465,6 +744,26 @@ export default function FreeTextScene({ node }: Props) {
           playerName={playerName}
           emptyText={source?.emptyText || tab.emptyText}
         />
+      )
+    }
+
+    if (isCmsWindow && tab.layout === 'notes' && tab.responseSources?.length) {
+      return (
+        <div className="cms-source-card-list">
+          {tab.responseSources.map((source) => {
+            const formatted = formatStoredResponse(responses[source.key] || '', source.key, source.responseFormat)
+            const isSaved = Boolean(formatted)
+            const content = formatted || `${source.emptyText || 'No note saved.'} Use only the sources that are shown.`
+            return (
+              <CmsSourceCard
+                key={source.key}
+                source={source}
+                content={content}
+                isSaved={isSaved}
+              />
+            )
+          })}
+        </div>
       )
     }
 
@@ -493,6 +792,168 @@ export default function FreeTextScene({ node }: Props) {
     ? editorContent
     : appTabs.map((tab) => activeAppTab === tab.id && <div key={tab.id}>{renderAppTab(tab)}</div>)
 
+  const cmsPlayerNotesTab = appTabs.find((tab) => tab.id === 'all_player_notes') || appTabs.find((tab) => tab.responseSources?.length)
+  const cmsResultsTab = appTabs.find((tab) => tab.id === 'results')
+  const cmsResponseSources = cmsPlayerNotesTab?.responseSources || []
+  const cmsTotalSources = appTabs.reduce((count, tab) => count + (tab.responseSources?.length || 0), 0)
+  const cmsSavedSources = appTabs.reduce((count, tab) => (
+    count + (tab.responseSources || []).filter((source) => (
+      Boolean(formatStoredResponse(responses[source.key] || '', source.key, source.responseFormat))
+    )).length
+  ), 0)
+  const cmsGuidance = appTabs.find((tab) => tab.cmsGuidance)?.cmsGuidance
+  const targetMin = node.minWords || 0
+  const targetMax = node.maxWords || 0
+  const targetProgress = targetMin ? Math.min(100, Math.round((wordCount / targetMin) * 100)) : 0
+  const cmsStatus = !wordCount
+    ? 'Draft not started'
+    : canSubmit
+      ? 'Ready to submit'
+      : !meetsMin && node.minWords
+        ? `${node.minWords - wordCount} words short`
+        : node.maxWords
+          ? `${wordCount - node.maxWords} words over`
+          : 'Keep drafting'
+
+  const cmsWindowContent = (
+    <div className="cms-deadline-shell">
+      <div className="cms-deadline-status">
+        <div>
+          <span>Slug</span>
+          <strong>cyclones-altitude-gamer</strong>
+        </div>
+        <div>
+          <span>Due</span>
+          <strong>11:10 PM ET</strong>
+        </div>
+        <div>
+          <span>Target</span>
+          <strong>{targetMin && targetMax ? `${targetMin}-${targetMax} words` : 'Deadline copy'}</strong>
+        </div>
+        <div>
+          <span>Draft</span>
+          <strong>{cmsStatus}</strong>
+        </div>
+      </div>
+
+      <div className="cms-deadline-grid">
+        <section className="cms-copy-panel">
+          <div className="cms-panel-header">
+            <div>
+              <span className="cms-source-eyebrow">Article editor</span>
+              <h2>{node.windowTitle || 'Deadline Draft'}</h2>
+            </div>
+            <span className="cms-deadline-pill">Autosaved 10:34 PM</span>
+          </div>
+
+          <div className="cms-editor-brief">
+            {renderContentWithGlossary(interpolate(node.prompt, { playerName, branchFlags, mcSelections }))}
+          </div>
+
+          <CmsRequirementStrip requirements={node.cmsRequirements} />
+
+          {cmsGuidance && <CmsStoryFrame guidance={cmsGuidance} />}
+
+          <LongFormEditor
+            value={value}
+            onChange={(v) => setFreeTextResponse(node.id, v)}
+            placeholder={node.placeholder}
+            maxWords={node.maxWords}
+            minRows={7}
+            label="Article copy"
+            variant="cms"
+          />
+
+          <div className="cms-word-meter" aria-label={`Draft is ${wordCount} words`}>
+            <div>
+              <strong>{wordCount}</strong>
+              <span>words</span>
+            </div>
+            <div className="cms-word-bar">
+              <span style={{ width: `${targetProgress}%` }} />
+            </div>
+            <p>{targetMin ? `Minimum ${targetMin}. ` : ''}{targetMax ? `Maximum ${targetMax}. ` : ''}Current draft: {cmsStatus}.</p>
+          </div>
+
+          <div className="cms-submit-row">
+            <ActionButton
+              text="Submit Draft"
+              onClick={() => goNext(node)}
+              disabled={!canSubmit}
+              variant={canSubmit ? 'primary' : 'secondary'}
+            />
+            {import.meta.env.DEV && (
+              <ActionButton text="Skip (dev)" onClick={() => goNext(node)} variant="secondary" fullWidth={false} />
+            )}
+          </div>
+        </section>
+
+        <aside className="cms-source-panel" aria-label="Deadline source tray">
+          <div className="cms-panel-header">
+            <div>
+              <span className="cms-source-eyebrow">Source tray</span>
+              <h2>Player Notes and Results</h2>
+            </div>
+          </div>
+
+          <div className="cms-source-summary">
+            <span>{cmsSavedSources}/{cmsTotalSources || 0} note groups saved</span>
+            <span>Results tab verified</span>
+          </div>
+
+          <div className="cms-source-tabs" role="tablist" aria-label="Source tray sections">
+            {cmsSourceTabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={activeCmsSourceTab === tab.id}
+                className={activeCmsSourceTab === tab.id ? 'cms-source-tab cms-source-tab--active' : 'cms-source-tab'}
+                onClick={() => setActiveCmsSourceTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="cms-source-content cms-source-content--tabbed" role="tabpanel">
+            {activeCmsSourceTab === 'results' && (
+              cmsResultsTab
+                ? <CmsBoxScore content={resolveTabContent(cmsResultsTab)} />
+                : <div className="cms-source-empty">No official results are configured for this draft.</div>
+            )}
+
+            {activeCmsSourceTab === 'notes' && (
+              cmsResponseSources.length ? (
+                <div className="cms-source-card-list">
+                  {cmsResponseSources.map((source) => {
+                    const formatted = formatStoredResponse(responses[source.key] || '', source.key, source.responseFormat)
+                    const isSaved = Boolean(formatted)
+                    const content = formatted || `${source.emptyText || 'No note saved.'} Use only the sources that are shown.`
+                    return (
+                      <CmsSourceCard
+                        key={source.key}
+                        source={source}
+                        content={content}
+                        isSaved={isSaved}
+                      />
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="cms-source-empty">No Player Notes are configured for this draft.</div>
+              )
+            )}
+
+            {activeCmsSourceTab === 'rules' && (
+              <CmsPublishChecks savedSourceCount={cmsSavedSources} totalSourceCount={cmsTotalSources} />
+            )}
+          </div>
+        </aside>
+      </div>
+    </div>
+  )
+
   return (
     <SceneWrapper illustration={node.illustration} showBack backLabel="Back">
       <motion.div
@@ -510,7 +971,7 @@ export default function FreeTextScene({ node }: Props) {
             {renderContentWithGlossary(interpolate(node.content, { playerName, branchFlags, mcSelections }))}
           </div>
         )}
-        <div
+        {!isCmsWindow && <div
           style={{
             backgroundColor: '#F7F1E3',
             border: '1px solid #CDBF94',
@@ -521,10 +982,10 @@ export default function FreeTextScene({ node }: Props) {
           }}
         >
           {renderContentWithGlossary(interpolate(node.prompt, { playerName, branchFlags, mcSelections }))}
-        </div>
+        </div>}
 
         {appWindow ? (
-          <DesktopOverlay>
+          <DesktopOverlay fitToScreen={isCmsWindow}>
             <LaptopFrame
               variant={appWindow}
               title={node.windowTitle}
@@ -534,7 +995,7 @@ export default function FreeTextScene({ node }: Props) {
               activeTitleTabId={activeAppTab}
               onTitleTabChange={setActiveAppTab}
             >
-              {appTabs.length > 0 ? tabbedWindowContent : editorContent}
+              {isCmsWindow ? cmsWindowContent : appTabs.length > 0 ? tabbedWindowContent : editorContent}
             </LaptopFrame>
           </DesktopOverlay>
         ) : (

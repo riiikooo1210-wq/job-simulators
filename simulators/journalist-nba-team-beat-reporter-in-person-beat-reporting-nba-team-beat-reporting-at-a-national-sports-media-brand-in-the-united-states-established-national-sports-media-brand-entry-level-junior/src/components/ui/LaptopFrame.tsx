@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting'
+export type LaptopFrameVariant = 'doc' | 'email' | 'email-read' | 'slack' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'meeting' | 'cms'
 
 interface LaptopFrameProps {
   children: ReactNode
@@ -30,6 +30,7 @@ const menuItems: Partial<Record<LaptopFrameVariant, string[]>> = {
   miro: [],
   kanban: [],
   meeting: [],
+  cms: [],
 }
 
 const titleBarColors: Record<LaptopFrameVariant, string> = {
@@ -44,6 +45,7 @@ const titleBarColors: Record<LaptopFrameVariant, string> = {
   miro: '#EFE8D2',
   kanban: '#EFE8D2',
   meeting: '#EFE8D2',
+  cms: '#263A35',
 }
 
 const titleTextColors: Record<LaptopFrameVariant, string> = {
@@ -58,6 +60,7 @@ const titleTextColors: Record<LaptopFrameVariant, string> = {
   miro: '#3F605C',
   kanban: '#3F605C',
   meeting: '#3F605C',
+  cms: '#F7F1E3',
 }
 
 const contentBgColors: Record<LaptopFrameVariant, string> = {
@@ -72,6 +75,7 @@ const contentBgColors: Record<LaptopFrameVariant, string> = {
   miro: '#F7F1E3',
   kanban: '#F7F1E3',
   meeting: '#F7F1E3',
+  cms: '#F4EFE2',
 }
 
 const defaultTitles: Record<LaptopFrameVariant, string> = {
@@ -86,6 +90,7 @@ const defaultTitles: Record<LaptopFrameVariant, string> = {
   miro: 'Untitled board',
   kanban: 'Project Board',
   meeting: 'Video call',
+  cms: 'Full Court Wire CMS',
 }
 
 export default function LaptopFrame({
@@ -230,6 +235,41 @@ export default function LaptopFrame({
         {!hasTitleTabs && variant === 'kanban' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, marginLeft: '0.5rem' }}>
             <span style={{ fontSize: '0.75rem', color: '#8899aa', fontWeight: 600 }}>{displayTitle}</span>
+          </div>
+        )}
+
+        {/* CMS: newsroom story file */}
+        {!hasTitleTabs && variant === 'cms' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', flex: 1, minWidth: 0, marginLeft: '0.5rem' }}>
+            <span style={{ fontSize: '0.68rem', color: '#A6D7C8', fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+              Full Court Wire CMS
+            </span>
+            <span style={{ color: 'rgba(247,241,227,0.55)' }}>/</span>
+            <span
+              style={{
+                fontSize: '0.75rem',
+                color: titleTextColor,
+                fontWeight: 700,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {displayTitle}
+            </span>
+            <span
+              style={{
+                marginLeft: 'auto',
+                fontSize: '0.65rem',
+                color: '#E8D7A8',
+                border: '1px solid rgba(232,215,168,0.55)',
+                borderRadius: '999px',
+                padding: '0.15rem 0.45rem',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Draft autosaved
+            </span>
           </div>
         )}
 
@@ -413,10 +453,43 @@ export default function LaptopFrame({
         </div>
       )}
 
+      {/* CMS newsroom toolbar */}
+      {variant === 'cms' && (
+        <div
+          style={{
+            backgroundColor: '#FCFAF4',
+            borderBottom: '1px solid #D6C8A4',
+            padding: '0.35rem 0.75rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            flexShrink: 0,
+            overflowX: 'auto',
+          }}
+        >
+          {['Story', 'Sources', 'Fact check', 'Copy desk', 'Publish'].map((tool) => (
+            <span
+              key={tool}
+              style={{
+                fontSize: '0.68rem',
+                color: tool === 'Story' ? '#1F5B49' : '#5A554C',
+                fontWeight: tool === 'Story' ? 800 : 650,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tool}
+            </span>
+          ))}
+          <span style={{ marginLeft: 'auto', fontSize: '0.68rem', color: '#8D4C3D', fontWeight: 800, whiteSpace: 'nowrap' }}>
+            Deadline 11:10 PM ET
+          </span>
+        </div>
+      )}
+
       {/* Content area */}
       <div
         style={{
-          padding: variant === 'slack' || variant === 'figma' || variant === 'kanban' || variant === 'meeting' ? '0' : '1.25rem',
+          padding: variant === 'slack' || variant === 'figma' || variant === 'kanban' || variant === 'meeting' || variant === 'cms' || (variant === 'doc' && hasTitleTabs) ? '0' : '1.25rem',
           backgroundColor: contentBg,
           flex: '1 1 auto',
           minHeight: 0,

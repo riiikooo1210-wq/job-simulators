@@ -4,6 +4,10 @@ import type { ChatMessage, GradingResult } from '../types/game'
 import { storyline } from '../data/storyline'
 
 const persistKey = 'journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior-simulator-storage'
+const removedNodeRedirects: Record<string, string> = {
+  editor_slack: 'assessment_gate',
+  final_story: 'assessment_gate',
+}
 
 interface GameState {
   // Navigation
@@ -204,6 +208,16 @@ export const useGameStore = create<GameState>()(
           : {}
         const merged = { ...currentState, ...persisted } as GameState
         if (!storyline.nodes[merged.currentNodeId]) {
+          const redirectNodeId = removedNodeRedirects[merged.currentNodeId]
+          if (redirectNodeId && storyline.nodes[redirectNodeId]) {
+            const visited = Array.isArray(merged.visitedNodes)
+              ? merged.visitedNodes.filter((nodeId) => typeof nodeId === 'string' && storyline.nodes[nodeId])
+              : []
+            merged.currentNodeId = redirectNodeId
+            merged.currentSection = storyline.nodes[redirectNodeId]?.section ?? 0
+            merged.visitedNodes = visited.includes(redirectNodeId) ? visited : [...visited, redirectNodeId]
+            return merged
+          }
           merged.currentNodeId = storyline.startNode
           merged.currentSection = storyline.nodes[storyline.startNode]?.section ?? 0
           merged.visitedNodes = [storyline.startNode]

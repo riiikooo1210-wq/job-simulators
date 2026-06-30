@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-06-25T02:07:50+09:00",
+  "model": "image_gen",
+  "kind": "action_asset",
+  "sceneId": "warmup_observation",
+  "itemId": "closing-group-drill-closeup",
+  "references": [
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/scenes/warmup_observation.png",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/npcs/malik.png",
+    "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/public/visual-refs/locations/arena-media-row.png"
+  ],
+  "sourceFile": "simulators/journalist-nba-team-beat-reporter-in-person-beat-reporting-nba-team-beat-reporting-at-a-national-sports-media-brand-in-the-united-states-established-national-sports-media-brand-entry-level-junior/ACTION_ASSETS.md"
+}

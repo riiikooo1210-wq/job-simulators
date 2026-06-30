@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node scripts/test-scene-config.mjs",
+    "qa:coach-meeting": "node scripts/qa-coach-availability-live.mjs",
+    "qa:media-scrum": "node scripts/qa-media-scrum-live.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

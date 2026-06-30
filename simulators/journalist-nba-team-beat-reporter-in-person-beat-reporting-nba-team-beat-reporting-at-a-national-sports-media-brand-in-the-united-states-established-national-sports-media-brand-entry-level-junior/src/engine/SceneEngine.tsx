@@ -8,6 +8,7 @@ import IntroScene from '../scenes/IntroScene'
 import BriefingScene from '../scenes/BriefingScene'
 import MultipleChoiceScene from '../scenes/MultipleChoiceScene'
 import FreeTextScene from '../scenes/FreeTextScene'
+import ArticleAssemblyScene from '../scenes/ArticleAssemblyScene'
 import StructuredEntryScene from '../scenes/StructuredEntryScene'
 import LiveChatScene from '../scenes/LiveChatScene'
 import VoiceMeetingScene from '../scenes/VoiceMeetingScene'
@@ -26,6 +27,7 @@ const SCENE_MAP: Record<SceneType, React.ComponentType<{ node: any }>> = {
   briefing: BriefingScene,
   multiple_choice: MultipleChoiceScene,
   free_text: FreeTextScene,
+  article_assembly: ArticleAssemblyScene,
   structured_entry: StructuredEntryScene,
   slack_thread: LiveChatScene,
   email_thread: LiveChatScene,

@@ -5,6 +5,7 @@ const INPUT_SAMPLE_RATE = 16000
 const OUTPUT_SAMPLE_RATE = 24000
 
 export type LiveStatus = 'idle' | 'connecting' | 'connected' | 'closed' | 'error'
+export type LiveInputMode = 'voice' | 'text'
 
 export interface LiveSessionHandlers {
   onStatus?: (status: LiveStatus, detail?: string) => void
@@ -58,16 +59,18 @@ export class GeminiLiveSession {
   private systemPrompt = ''
   private apiKey = ''
   private voiceName = 'Charon'
+  private inputMode: LiveInputMode = 'voice'
   private resumptionHandle: string | null = null
   private reconnectAttempts = 0
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null
 
   constructor(private handlers: LiveSessionHandlers) {}
 
-  async start(args: { apiKey: string; systemPrompt: string; voiceName?: string }) {
+  async start(args: { apiKey: string; systemPrompt: string; voiceName?: string; inputMode?: LiveInputMode }) {
     this.apiKey = args.apiKey
     this.systemPrompt = args.systemPrompt
     this.voiceName = args.voiceName || 'Charon'
+    this.inputMode = args.inputMode || 'voice'
     this.closed = false
     this.connect(false)
   }
@@ -148,6 +151,10 @@ export class GeminiLiveSession {
     if (msg.setupComplete) {
       this.setupDone = true
       this.reconnectAttempts = 0
+      if (this.inputMode === 'text') {
+        this.handlers.onStatus?.('connected')
+        return
+      }
       try {
         if (!this.micStream) await this.startMic()
         this.handlers.onStatus?.('connected')
@@ -185,6 +192,26 @@ export class GeminiLiveSession {
     }
 
     if (sc.turnComplete) this.handlers.onNpcSpeakingChange?.(false)
+  }
+
+  sendTypedTurn(text: string) {
+    const trimmed = text.trim()
+    if (!trimmed) return
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.setupDone) {
+      throw new Error('The conversation is still connecting. Try again in a moment.')
+    }
+    this.handlers.onNpcSpeakingChange?.(true)
+    this.ws.send(JSON.stringify({
+      clientContent: {
+        turns: [
+          {
+            role: 'user',
+            parts: [{ text: trimmed }],
+          },
+        ],
+        turnComplete: true,
+      },
+    }))
   }
 
   private async startMic() {

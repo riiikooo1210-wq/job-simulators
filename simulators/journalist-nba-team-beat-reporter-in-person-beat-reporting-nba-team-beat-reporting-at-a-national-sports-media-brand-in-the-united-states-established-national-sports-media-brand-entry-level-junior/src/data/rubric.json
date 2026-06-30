@@ -4,70 +4,56 @@
   "sections": [
     {
       "section_number": 1,
-      "section_title": "タスク別採点",
+      "section_title": "Task-by-task scoring",
       "criteria": [
         {
-          "name": "記事角度の選択",
+          "name": "Story Angle Selection",
           "evidenceSceneIds": [
             "lead_angle"
           ],
-          "rubric_text": "9-10: 噂ではなく、ニュース価値、検証可能性、締切、読者への意味を見て取材の角度を選べている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: Chooses a reportable angle based on news value, verification, deadline fit, and reader meaning instead of rumor. Score only this task; do not use later notes, prep work, or downstream artifacts as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "取材計画",
+          "name": "Reporting Plan",
           "evidenceSceneIds": [
             "reporting_plan"
           ],
-          "rubric_text": "9-10: この計画タスクだけで、聞く相手、聞く理由、確認したい事実、避けるべき断定を具体化できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: The plan gives specific Coach Harris and Reed questions, identifies a confirmed fact and source, and names one unconfirmed claim to leave out with a clear reason. Score only this planning task; do not use later notes, interviews, or article work as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "練習観察",
+          "name": "Warmup Observation",
           "evidenceSceneIds": [
             "warmup_observation"
           ],
-          "rubric_text": "9-10: 公式情報、観察事実、噂、医学的断定を分けて記録し、公開できる情報と保留すべき情報を区別できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 安全上の必須条件を飛ばした場合は、他の要素ができていても満点にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: Separates official information, observed movement, rumor, and medical claims, and clearly distinguishes publishable facts from material to hold or verify. Score only this observation task; do not use later prep notes or artifacts as evidence. If a safety-critical source distinction is skipped, do not award full credit even if other elements are strong. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "監督への質問",
+          "name": "Coach Harris Questioning",
           "evidenceSceneIds": [
             "coach_availability"
           ],
-          "rubric_text": "9-10: 実際の取材で、監督に聞くべき範囲の質問を短く具体的に行い、本人にしか答えにくい内容を混ぜすぎない。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: In the coach availability transcript, asks short, specific coach-appropriate questions and avoids asking Coach Harris to answer for Reed personally or confirm unsupported claims. Score only this interview task; do not use later notes or article work as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "選手囲み取材",
+          "name": "Player Scrum Questioning",
           "evidenceSceneIds": [
             "media_scrum"
           ],
-          "rubric_text": "9-10: 実際の囲みで、選手に答えやすく、記事に使える発言を引き出す質問をし、圧迫や誘導を避けられている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: In the player scrum transcript, asks player-friendly, answerable questions that can produce attributable story material without pressure, leading wording, or unsupported health claims. Score only this interview task; do not use later article work as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "試合中観察",
+          "name": "Game Observation Notes",
           "evidenceSceneIds": [
             "possession_timeline_watch"
           ],
-          "rubric_text": "9-10: 試合中の重要な流れ、観察、数字、使える場面を、速報や最終記事に使える形で整理できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: Organizes late-game events, observations, stats, usable scenes, and hold-back items in a form that supports a deadline game story. Score only this possession timeline task; do not use later interview or article work as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         },
         {
-          "name": "速報原稿",
+          "name": "Deadline Game Article",
           "evidenceSceneIds": [
             "fast_gamer"
           ],
-          "rubric_text": "9-10: 確認済み事実と取材内容だけで、締切に間に合うリード、要点、帰属のある速報原稿を書けている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-        },
-        {
-          "name": "編集者連絡",
-          "evidenceSceneIds": [
-            "editor_slack"
-          ],
-          "rubric_text": "9-10: 編集者の指摘に対して、何を直すか、何を未確認として避けるか、現在使える根拠を短く返せている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
-        },
-        {
-          "name": "最終記事",
-          "evidenceSceneIds": [
-            "final_story"
-          ],
-          "rubric_text": "9-10: 最終記事だけを根拠に、見出し、構成、根拠、引用、未確認情報の扱いが整った記事にできている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: Uses only confirmed facts and interview material, selects safe and strong paragraphs for News Lead, Proof, Angle, and Close, and writes a clear deadline headline. Score only this article assembly task; do not use unrelated notes as evidence. 7-8: The main elements are present, but one small gap in evidence, specificity, priority, notes, or response quality remains. 4-6: Some work is useful, but multiple important decisions, checks, explanations, notes, or next actions are missing. 0-3: The response misses the task goal, ignores evidence, creates risky claims or confusion, or is not usable."
         }
       ]
     }

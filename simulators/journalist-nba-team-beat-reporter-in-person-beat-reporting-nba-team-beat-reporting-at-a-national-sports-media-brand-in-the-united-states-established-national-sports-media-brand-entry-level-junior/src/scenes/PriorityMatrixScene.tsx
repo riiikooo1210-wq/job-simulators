@@ -286,7 +286,7 @@ export default function PriorityMatrixScene({ node }: { node: PriorityMatrixNode
                   <textarea
                     value={rationale}
                     onChange={(e) => setFreeTextResponse(rationaleKey, e.target.value)}
-                    placeholder="e.g. I placed push notifications in the high-impact/low-effort quadrant because it leverages our existing notification infrastructure and directly addresses the retention problem..."
+                    placeholder="e.g. I placed push notifications in the high-impact/low-effort quadrant because it uses our existing notification system and directly addresses the retention problem..."
                     rows={3}
                     style={{
                       padding: '0.5rem 0.625rem',

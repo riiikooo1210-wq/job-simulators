@@ -6,6 +6,7 @@ export type SceneType =
   | 'briefing'
   | 'multiple_choice'
   | 'free_text'
+  | 'article_assembly'
   | 'structured_entry'
   | 'slack_thread'
   | 'email_thread'
@@ -79,6 +80,27 @@ export interface BriefingSubStep {
   cmsSidebarRules?: CmsSidebarRuleData[]
 }
 
+export interface BriefingMemoryCard {
+  title?: string
+  bullets: string[]
+}
+
+export interface CoworkerRecapTurn {
+  id: string
+  topic: string
+  coworkerLine: string
+  answerFacts?: string[]
+  nextCue?: string
+}
+
+export interface CoworkerRecap {
+  npcId?: string
+  speakerName?: string
+  speakerRole?: string
+  fallback?: string
+  turns: CoworkerRecapTurn[]
+}
+
 export type NextRule =
   | string
   | null
@@ -144,6 +166,13 @@ export interface StructuredEntryField {
 export interface StructuredEntryDefinition {
   itemLabel: string
   fields: StructuredEntryField[]
+  rowGuides?: {
+    title: string
+    sourceHint?: string
+    hiddenFields?: string[]
+    fieldOverrides?: Record<string, Partial<Omit<StructuredEntryField, 'key'>>>
+    fieldValues?: Record<string, string>
+  }[]
   initialCount?: number
   minItems?: number
   maxItems?: number
@@ -160,7 +189,7 @@ export interface BaseNode {
   imageBrief?: string
   isPivot?: boolean
   next?: NextRule
-  appWindow?: 'doc' | 'slack' | 'email' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban'
+  appWindow?: 'doc' | 'slack' | 'email' | 'figma' | 'notion' | 'spreadsheet' | 'code' | 'miro' | 'kanban' | 'cms'
   windowTitle?: string
   deskWorkDesign?: DeskWorkDesign
 }
@@ -192,6 +221,9 @@ export interface IntroNode extends BaseNode {
 export interface BriefingNode extends BaseNode {
   type: 'briefing'
   briefingMode: 'simple' | 'sequential' | 'paginated'
+  memoryCard?: BriefingMemoryCard
+  coworkerRecap?: CoworkerRecap
+  referenceForSection?: boolean
   actionLabel?: string
   referenceTitle?: string
   referenceContent?: string
@@ -205,11 +237,24 @@ export interface BriefingNode extends BaseNode {
   cmsSidebarRules?: CmsSidebarRuleData[]
 }
 
+export interface StaticAppTab {
+  id: string
+  label: string
+  kind?: 'text' | 'editor_thread' | 'email' | 'game_materials' | 'social_media'
+  content?: string
+  slackMessages?: SlackMessageData[]
+  emails?: EmailData[]
+  metrics?: MetricRow[]
+  socialPosts?: SocialPostData[]
+  cmsSidebarRules?: CmsSidebarRuleData[]
+}
+
 export interface MultipleChoiceNode extends BaseNode {
   type: 'multiple_choice'
   options: MCOption[]
   prompt?: string
   slackMessages?: SlackMessageData[]
+  appTabs?: StaticAppTab[]
 }
 
 export interface FreeTextNode extends BaseNode {
@@ -218,6 +263,12 @@ export interface FreeTextNode extends BaseNode {
   minWords?: number
   maxWords?: number
   placeholder?: string
+  cmsRequirements?: {
+    id: string
+    label: string
+    sourceHint: string
+    kind: 'include' | 'avoid'
+  }[]
   emailHeaders?: {
     from: string
     to: string
@@ -227,16 +278,28 @@ export interface FreeTextNode extends BaseNode {
     id: string
     label: string
     content: string
-    layout?: 'notes' | 'slackHistory'
+    layout?: 'notes' | 'slackHistory' | 'boxScore'
     responseKey?: string
     responseTitle?: string
-    responseFormat?: 'plain' | 'structuredPlan' | 'physicalMemo' | 'possessionTimelineNotes'
+    responseFormat?: 'plain' | 'structuredPlan' | 'physicalMemo' | 'possessionTimelineNotes' | 'possessionTimelineArticleNotes'
     responseSources?: {
       key: string
       title?: string
-      responseFormat?: 'plain' | 'structuredPlan' | 'physicalMemo' | 'possessionTimelineNotes'
+      sourceKind?: string
+      safeUse?: string
+      caution?: string
+      articleUses?: string[]
+      responseFormat?: 'plain' | 'structuredPlan' | 'physicalMemo' | 'possessionTimelineNotes' | 'possessionTimelineArticleNotes'
       emptyText?: string
     }[]
+    cmsGuidance?: {
+      title?: string
+      summary?: string
+      items?: {
+        label: string
+        detail: string
+      }[]
+    }
     conversationKey?: string
     conversationTitle?: string
     conversationNpcId?: string
@@ -250,9 +313,38 @@ export interface FreeTextNode extends BaseNode {
   }[]
 }
 
+export interface ArticleAssemblyChoice {
+  id: string
+  label: string
+  text: string
+  sourceHint?: string
+  quality: 'strong' | 'weak' | 'unsafe'
+  isCorrect?: boolean
+}
+
+export interface ArticleAssemblySection {
+  id: string
+  label: string
+  instruction?: string
+  choices: ArticleAssemblyChoice[]
+}
+
+export interface ArticleAssemblyNode extends BaseNode {
+  type: 'article_assembly'
+  prompt: string
+  headlinePrompt?: string
+  headlinePlaceholder?: string
+  minHeadlineWords?: number
+  metadataKey?: string
+  articleSections: ArticleAssemblySection[]
+  cmsRequirements?: FreeTextNode['cmsRequirements']
+  appTabs?: FreeTextNode['appTabs']
+}
+
 export interface StructuredEntryNode extends BaseNode {
   type: 'structured_entry'
   prompt: string
+  appTabs?: StaticAppTab[]
   definition: StructuredEntryDefinition
 }
 
@@ -299,6 +391,7 @@ export interface VoiceMeetingNode extends BaseNode {
   endpoint?: string
   successCriteria?: string
   meetingContext?: string
+  preStartPrompt?: string
   /** Use in_person for colocated workplace conversations; omit/remote for video or phone calls. */
   meetingMode?: 'in_person' | 'remote'
   /** Legacy alias used by older generated simulators; prefer meetingMode in new configs. */
@@ -317,6 +410,7 @@ export interface VoiceMeetingNode extends BaseNode {
   notePlaceholder?: string
   minTurns?: number
   maxTurns?: number
+  typedFallback?: boolean
   voiceName?: string
   initialMessages?: ChatMessage[]
 }
@@ -754,10 +848,17 @@ export interface PossessionTimelineNode extends BaseNode {
   categories: PossessionTimelineCategory[]
   events: PossessionTimelineEvent[]
   summaryPrompt: string
+  questionCount?: number
   questionPrompts?: string[]
   questionPlaceholders?: string[]
-  followUpPrompt?: string
-  followUpPlaceholder?: string
+  questionReference?: {
+    bindingKey: string
+    rowTitle: string
+    title?: string
+    helper?: string
+  }
+  questionGuidanceTitle?: string
+  questionGuidance?: string
   referenceTitle?: string
   referenceContent?: string
 }
@@ -767,6 +868,7 @@ export type SceneNode =
   | BriefingNode
   | MultipleChoiceNode
   | FreeTextNode
+  | ArticleAssemblyNode
   | StructuredEntryNode
   | ChatNode
   | VoiceMeetingNode
@@ -784,6 +886,12 @@ export type SceneNode =
 export interface Section {
   num: number
   label: string
+}
+
+export interface ProgressTask {
+  id: string
+  label: string
+  nodeIds: string[]
 }
 
 export interface NPC {
@@ -805,6 +913,7 @@ export interface Storyline {
   gameTitle: string
   startNode: string
   sections: Section[]
+  progressTasks?: ProgressTask[]
   nodes: Record<string, SceneNode>
   devSkips?: DevSkip[]
 }

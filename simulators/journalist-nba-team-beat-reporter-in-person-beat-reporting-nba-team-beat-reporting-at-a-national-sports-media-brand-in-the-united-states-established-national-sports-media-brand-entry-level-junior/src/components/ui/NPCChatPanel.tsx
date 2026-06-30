@@ -200,7 +200,7 @@ export default function NPCChatPanel({
 
   const contextBlock = buildContextBlock(contextResponses)
   const contextualGoalPrompt = contextBlock
-    ? `${goalPrompt}\n\nSOURCE CONTEXT AVAILABLE TO YOU:\n${contextBlock}`
+    ? `${renderContentWithGlossary(goalPrompt)}\n\nSOURCE CONTEXT AVAILABLE TO YOU:\n${contextBlock}`
     : goalPrompt
 
   useEffect(() => {
@@ -363,7 +363,7 @@ export default function NPCChatPanel({
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem', padding: '0.5rem 0' }}>
         {messages.length === 0 && !loading && (
           <p style={{ fontStyle: 'italic', color: '#616061', fontSize: '0.8125rem', margin: 0, padding: '0.375rem 0.875rem' }}>
-            {emptyMessage}
+            {renderContentWithGlossary(emptyMessage)}
           </p>
         )}
         {messages.map((m, i) => (
@@ -388,7 +388,7 @@ export default function NPCChatPanel({
       }}
     >
       {messages.length === 0 && !loading && (
-        <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{emptyMessage}</p>
+        <p style={{ fontStyle: 'italic', color: '#888', fontSize: '0.8125rem' }}>{renderContentWithGlossary(emptyMessage)}</p>
       )}
       {messages.map((m, i) => (
         <motion.div
@@ -411,7 +411,7 @@ export default function NPCChatPanel({
           <div style={{ fontWeight: 700, fontSize: '0.6875rem', marginBottom: '0.125rem', opacity: 0.8 }}>
             {m.role === 'user' ? 'You' : (m.npcName ?? npc.name)}
           </div>
-          {m.content}
+          {renderContentWithGlossary(m.content)}
         </motion.div>
       ))}
       {loading && (
@@ -500,7 +500,7 @@ export default function NPCChatPanel({
                   }}
                 >
                   {used ? '✓ ' : ''}
-                  {p.label}
+                  {renderContentWithGlossary(p.label)}
                 </button>
               )
             })}

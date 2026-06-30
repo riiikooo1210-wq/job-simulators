@@ -18,7 +18,9 @@ export function useSectionBriefing(): BriefingNode | null {
   for (const n of Object.values(storyline.nodes)) {
     const candidate = n as SceneNode
     if (candidate.section === section && candidate.type === 'briefing') {
-      return candidate as BriefingNode
+      const briefing = candidate as BriefingNode
+      if (briefing.referenceForSection === false) continue
+      return briefing
     }
   }
   return null
