@@ -4,12 +4,12 @@
 
 - Mercury Market is a fictional enterprise ecommerce marketplace that sells household goods, electronics, apparel, pantry items, and third-party marketplace products through a national delivery network.
 - The company hires customer support representatives to answer customer calls, explain product/order/service information, resolve routine complaints, record actions taken, and refer unresolved grievances to the right department [onet].
-- The simulator focuses on a normal inbound-call loop: the agent has a shared support manual and the relevant policy article open before the call, but the customer's concrete case details become known only after the call connects and the agent verifies/looks up the account [onet][yt:ZWAHrY6T3qM][reddit:1tgqc3z].
+- The simulator focuses on a normal inbound-call loop: the agent works in Mercury Assist, a support console with queue context, knowledge-base articles, CRM/case records, and order timeline data. The shared support manual and relevant policy article are open before the call, but the customer's concrete case details become known only after the call connects and the agent verifies/looks up the account [onet][yt:ZWAHrY6T3qM][reddit:1tgqc3z].
 
 ## The Protagonist (You)
 
 - You are a 1st-3rd year Customer Support Representative on Mercury Market's general calls queue.
-- You do not invent policy or write your own prep. Before each call, you see the common support manual plus the relevant policy article for that call type; after answering, you learn the customer's specific situation through the customer and CRM lookup [onet][reddit:1tgqc3z][reddit:143zi1y].
+- You do not invent policy or write your own prep. Before each call, you see the common support manual plus the relevant policy article inside the Mercury Assist knowledge-base console; after answering, you learn the customer's specific situation through the customer and CRM lookup [onet][reddit:1tgqc3z][reddit:143zi1y].
 - Your assessment is based on how well you use the manual in live calls: verify identity, explain clearly, stay empathetic, avoid overpromising, and escalate edge cases correctly [onet][reddit:z66ezf][reddit:103gqsb][reddit:hi0g56].
 
 ## Cast
@@ -24,7 +24,7 @@
 
 ### Scene 1 - Prep: Normal Order-Status Inbound Call
 
-Setting: A common call-flow manual and the order-status policy article appear before the first inbound call. Customer support representatives commonly work from phone systems, CRM records, contact-center software, and policy references [onet][yt:ZWAHrY6T3qM][yt:OCvPqEY6hbk].
+Setting: The Mercury Assist knowledge-base prep console opens with the common call-flow manual, order-status policy article, queue metadata, and locked customer/case preview before the first inbound call. Customer support representatives commonly work from phone systems, CRM records, contact-center software, and policy references [onet][yt:ZWAHrY6T3qM][yt:OCvPqEY6hbk].
 
 Interaction mode: briefing/source inbox only.
 
@@ -40,13 +40,13 @@ Poor looks like: sounding vague, skipping verification, guessing delivery timing
 
 ### Scene 2 - Call: Normal Order-Status Inbound Call
 
-Setting: Mia asks where her order is and whether she needs to stay home. Normal calls are a large part of support volume; agents must help efficiently without turning simple contacts into repeat contacts [onet][reddit:1ets90x][reddit:1se8ndj].
+Setting: Mia asks where her order is and whether she needs to stay home. The live Mercury Assist console keeps the call, CRM/case record, order timeline, and knowledge-base articles in view. Normal calls are a large part of support volume; agents must help efficiently without turning simple contacts into repeat contacts [onet][reddit:1ets90x][reddit:1se8ndj].
 
 Interaction mode: remote voice meeting.
 
 Visible input artifacts: common support manual and order-status policy article; the customer-specific order status becomes available only during the call after verification/lookup.
 
-Work surface: phone call with manual/reference visible.
+Work surface: Mercury Assist live support console with call transcript, locked/unlocked CRM and case record, order timeline, and knowledge-base panel.
 
 Output artifact: voice transcript for grading.
 
@@ -56,7 +56,7 @@ Poor looks like: generic reassurance, unsupported exact delivery claims, or no n
 
 ### Scene 3 - Prep: Late Delivery and Supervisor Request Inbound Call
 
-Setting: The second prep screen gives the common call-flow manual plus the late-delivery/refund policy article: carrier handoff, refund limits, carrier-trace rules, and supervisor callback within 2 business hours. The specific customer and order details are not visible until the call connects. Shipped-order refund misconceptions and supervisor demands are common support tensions [reddit:z66ezf][reddit:1c6mc8q][reddit:d7slwa].
+Setting: The second Mercury Assist prep console gives the common call-flow manual plus the late-delivery/refund policy article: carrier handoff, refund limits, carrier-trace rules, and supervisor callback within 2 business hours. The specific customer and order details are not visible until the call connects. Shipped-order refund misconceptions and supervisor demands are common support tensions [reddit:z66ezf][reddit:1c6mc8q][reddit:d7slwa].
 
 Interaction mode: briefing/source inbox only.
 
@@ -72,13 +72,13 @@ Poor looks like: blaming the carrier, promising an impossible delivery fix, gran
 
 ### Scene 4 - Call: Late Delivery and Supervisor Request
 
-Setting: Renee answers upset and asks for a refund or supervisor. Customer service representatives deal with external customers by phone and may encounter angry or discouraged people [onet][reddit:hi0g56].
+Setting: Renee answers upset and asks for a refund or supervisor. The live Mercury Assist console shows the call workspace, policy articles, CRM/case record, and carrier timeline after lookup. Customer service representatives deal with external customers by phone and may encounter angry or discouraged people [onet][reddit:hi0g56].
 
 Interaction mode: remote voice meeting.
 
 Visible input artifacts: common support manual and late-delivery/refund policy article; Renee's specific case details become available only during the call after verification/lookup.
 
-Work surface: phone call with manual/reference visible.
+Work surface: Mercury Assist live support console with call transcript, locked/unlocked CRM and case record, order timeline, and knowledge-base panel.
 
 Output artifact: voice transcript for grading.
 
@@ -88,7 +88,7 @@ Poor looks like: defensiveness, overpromising, or refusing help with no alternat
 
 ### Scene 5 - Prep: High-Value Refund Risk Review Inbound Call
 
-Setting: The third prep screen gives the common call-flow manual plus the high-value refund/Trust-Risk policy article. The specific caller, delivery proof, and risk flags become known only after the call connects and the account is looked up. Customer service representatives examine relevant information to assess complaint validity and refer unresolved grievances to designated departments [onet][reddit:103gqsb][reddit:jqegyu].
+Setting: The third Mercury Assist prep console gives the common call-flow manual plus the high-value refund/Trust-Risk policy article. The specific caller, delivery proof, and risk flags become known only after the call connects and the account is looked up. Customer service representatives examine relevant information to assess complaint validity and refer unresolved grievances to designated departments [onet][reddit:103gqsb][reddit:jqegyu].
 
 Interaction mode: briefing/source inbox only.
 
@@ -104,13 +104,13 @@ Poor looks like: accusing the customer, approving the high-value refund, hiding 
 
 ### Scene 6 - Call: High-Value Refund Risk Review
 
-Setting: Marcus is angry and demands an immediate refund. Edge cases require the agent to combine empathy with compliance and escalation judgment [onet][reddit:103gqsb][reddit:r3wi44].
+Setting: Marcus is angry and demands an immediate refund. The live Mercury Assist console shows delivery proof, case status, safe next steps, and internal notes only after lookup. Edge cases require the agent to combine empathy with compliance and escalation judgment [onet][reddit:103gqsb][reddit:r3wi44].
 
 Interaction mode: remote voice meeting.
 
 Visible input artifacts: common support manual and Trust/Risk policy article; Marcus's specific account and delivery details become available only during the call after verification/lookup.
 
-Work surface: phone call with manual/reference visible.
+Work surface: Mercury Assist live support console with call transcript, locked/unlocked CRM and case record, order timeline, Trust/Risk-safe actions, and knowledge-base panel.
 
 Output artifact: voice transcript for grading.
 
@@ -131,7 +131,7 @@ Good looks like: all call paths route here before grading.
 ## Work-Mix Design
 
 - Physical/procedural/tool manipulation: minor. The role uses headset/computer controls, but the source-derived work is digital call-center work rather than physical package handling [onet][yt:ZWAHrY6T3qM].
-- Digital tool/artifact work: major. The student reads the common support manual, policy references, and approved language before calls, then uses CRM details that appear after verification during the call [onet][yt:Ahep5veCw88][reddit:1se8ndj].
+- Digital tool/artifact work: major. The student reads the common support manual, policy references, and approved language in Mercury Assist before calls, then uses CRM/case/order/timeline details that appear after verification during the call [onet][yt:Ahep5veCw88][reddit:1se8ndj].
 - Cognitive analysis/decision-making: major. The student must decide what the manual allows, when to escalate, and how to separate confirmed facts from assumptions [onet][reddit:z66ezf][reddit:103gqsb].
 - Written documentation/artifact production: minor in this revised design. Normal agents do write records, but this simulator intentionally assesses live manual use rather than student-written notes, per user direction [onet][reddit:189rg4v].
 - Spoken/interpersonal communication: dominant. The simulator is centered on three customer calls because telephone conversations and customer complaint handling are core to the occupation [onet][yt:CrFUxjJw_CY][reddit:hi0g56].
@@ -139,13 +139,13 @@ Good looks like: all call paths route here before grading.
 
 ## Grading Rubric
 
-> この本文内の採点表は `src/data/rubric.json` と同じ採点単位です。各採点項目は根拠シーン欄にあるタスクだけを根拠にします。会議・通話・面談の直前準備タスクは採点しません。複数シーンが並ぶ項目は、同じプレイグラウンドまたはワークフローを1つの10点枠に足し上げる例外です。
+> The rubric below uses the same scoring units as `src/data/rubric.json`. Each criterion uses only the task listed in the evidence-scene column. Prep scenes immediately before calls are not graded directly.
 
-| 採点項目 | 根拠シーン | 採点基準 |
+| Criterion | Evidence scene | Scoring guide |
 | :--- | :--- | :--- |
-| 注文状況通話 | call_order_status | 9-10: 実際の通話で、本人確認、注文状況の確認、手順に沿った説明、解決策の提示を落ち着いて行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 遅配送通話 | call_late_delivery | 9-10: 実際の通話で、共感、規定説明、選択肢提示、できない約束の線引きを両立できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
-| 高額返金通話 | call_risk_refund | 9-10: 実際の通話で、共感しつつ不正や高額リスクを見抜き、規定とエスカレーション境界を守れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。 |
+| Order-Status Call | call_order_status | 9-10: In the actual call, verifies identity, confirms the order status, explains the policy-backed status clearly, offers useful next steps, and stays calm. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable. |
+| Late-Delivery Call | call_late_delivery | 9-10: In the actual call, balances empathy, policy explanation, allowed options, and clear boundaries around promises the agent cannot make. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable. |
+| High-Value Refund Call | call_risk_refund | 9-10: In the actual call, shows empathy while recognizing high-value refund risk, protecting policy boundaries, and routing correctly to Trust/Risk without accusation. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable. |
 ## Glossary
 
 - AHT: Average handle time, the tracked length of a customer interaction including talk time and sometimes hold or wrap time [reddit:1mz8y9c][reddit:143zi1y].

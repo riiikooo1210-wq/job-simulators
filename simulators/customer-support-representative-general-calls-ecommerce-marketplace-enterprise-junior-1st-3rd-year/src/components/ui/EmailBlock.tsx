@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { renderContentWithGlossary } from './JargonTerm'
 import type { EmailData } from '../../types/game'
 
 interface EmailBlockProps {
@@ -11,7 +12,7 @@ interface EmailBlockProps {
 export default function EmailBlock({ email, delay = 0, initialExpanded = false }: EmailBlockProps) {
   const [expanded, setExpanded] = useState(initialExpanded)
   const senderName = email.from.split('<')[0].split('(')[0].trim() || email.from
-  const preview = email.content.replace(/\s+/g, ' ').trim()
+  const preview = email.content.replace(/\{\{([^}]+)\}\}/g, '$1').replace(/\s+/g, ' ').trim()
 
   return (
     <motion.div
@@ -147,7 +148,7 @@ export default function EmailBlock({ email, delay = 0, initialExpanded = false }
                 backgroundColor: '#FFFFFF',
               }}
             >
-              {email.content}
+              {renderContentWithGlossary(email.content)}
             </div>
           </motion.div>
         )}

@@ -261,6 +261,13 @@ export type WorkSurfaceKind =
   | 'code_review'
   | 'generic_tool'
 
+export type SupportConsoleScenarioId = 'order_status' | 'late_delivery' | 'risk_refund'
+
+export interface SupportConsoleConfig {
+  scenarioId: SupportConsoleScenarioId
+  mode: 'prep' | 'call'
+}
+
 export type WorkSurfaceDevice = 'desktop' | 'laptop' | 'phone' | 'meeting' | 'document' | 'none'
 
 export interface WorkSurfaceTab {
@@ -323,6 +330,7 @@ export interface BaseNode {
   windowTitle?: string
   workSurface?: WorkSurfaceSpec
   deskWorkDesign?: DeskWorkDesign
+  supportConsole?: SupportConsoleConfig
   sourceRealismException?: {
     approvedByUser: true
     reason: string

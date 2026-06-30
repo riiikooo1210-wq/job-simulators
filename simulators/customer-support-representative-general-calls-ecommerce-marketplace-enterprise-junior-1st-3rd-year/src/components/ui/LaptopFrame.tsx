@@ -8,6 +8,7 @@ interface LaptopFrameProps {
   title?: string
   scrollable?: boolean
   fill?: boolean
+  showBase?: boolean
   titleTabs?: LaptopFrameTab[]
   activeTitleTabId?: string
   onTitleTabChange?: (id: string) => void
@@ -43,7 +44,7 @@ const titleBarColors: Record<LaptopFrameVariant, string> = {
   code: '#EFE8D2',
   miro: '#EFE8D2',
   kanban: '#EFE8D2',
-  meeting: '#EFE8D2',
+  meeting: '#F8FBFF',
 }
 
 const titleTextColors: Record<LaptopFrameVariant, string> = {
@@ -57,7 +58,7 @@ const titleTextColors: Record<LaptopFrameVariant, string> = {
   code: '#3F605C',
   miro: '#3F605C',
   kanban: '#3F605C',
-  meeting: '#3F605C',
+  meeting: '#1D4ED8',
 }
 
 const contentBgColors: Record<LaptopFrameVariant, string> = {
@@ -71,7 +72,7 @@ const contentBgColors: Record<LaptopFrameVariant, string> = {
   code: '#F7F1E3',
   miro: '#F7F1E3',
   kanban: '#F7F1E3',
-  meeting: '#F7F1E3',
+  meeting: '#FFFFFF',
 }
 
 const defaultTitles: Record<LaptopFrameVariant, string> = {
@@ -94,6 +95,7 @@ export default function LaptopFrame({
   title,
   scrollable = false,
   fill = false,
+  showBase = true,
   titleTabs = [],
   activeTitleTabId,
   onTitleTabChange,
@@ -127,10 +129,12 @@ export default function LaptopFrame({
   return (
     <div
       style={{
-        border: isDark ? '2px solid #444' : '2px solid #333',
+        border: isDark ? '1px solid #3F3F46' : '1px solid rgba(31, 41, 55, 0.28)',
         borderRadius: '8px',
         overflow: 'hidden',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        boxShadow: isDark
+          ? '0 18px 42px rgba(0,0,0,0.32)'
+          : '0 18px 44px rgba(31, 41, 55, 0.20), 0 2px 8px rgba(31, 41, 55, 0.12)',
         backgroundColor: contentBg,
         display: 'flex',
         flexDirection: 'column',
@@ -427,7 +431,7 @@ export default function LaptopFrame({
       </div>
 
       {/* Laptop base/bezel */}
-      {variant !== 'meeting' && (
+      {showBase && variant !== 'meeting' && (
         <div
           style={{
             height: '12px',

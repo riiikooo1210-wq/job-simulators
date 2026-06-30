@@ -4,12 +4,35 @@ interface Props {
   children: ReactNode
   width?: string
   height?: string
+  screenRect?: Partial<ScreenRect>
 }
 
-/** Desktop background with overlaid app window — use for any scene where the candidate does computer work. */
-export default function DesktopOverlay({ children, width = '75%', height = '80%' }: Props) {
+interface ScreenRect {
+  left: string
+  top: string
+  width: string
+  height: string
+}
+
+const defaultScreenRect: ScreenRect = {
+  left: '11.5%',
+  top: '7%',
+  width: '77%',
+  height: '80%',
+}
+
+/** Desktop background with the app window placed inside the illustrated monitor screen. */
+export default function DesktopOverlay({
+  children,
+  width = '96%',
+  height = '92%',
+  screenRect,
+}: Props) {
+  const resolvedScreenRect = { ...defaultScreenRect, ...screenRect }
+
   return (
     <div
+      className="desktop-overlay"
       style={{
         position: 'relative',
         width: 'calc(100% + 6rem)',
@@ -20,19 +43,35 @@ export default function DesktopOverlay({ children, width = '75%', height = '80%'
         overflow: 'hidden',
       }}
     >
-      <img src="/desktop.jpg" alt="" style={{ width: '100%', display: 'block' }} />
       <div
+        className="desktop-overlay__stage"
         style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingBottom: '3%',
+          position: 'relative',
+          width: '100%',
         }}
       >
-        <div style={{ width, height, display: 'flex', flexDirection: 'column' }}>
-          {children}
+        <img className="desktop-overlay__image" src="/desktop.jpg" alt="" style={{ width: '100%', display: 'block' }} />
+        <div
+          className="desktop-overlay__screen"
+          style={{
+            position: 'absolute',
+            left: resolvedScreenRect.left,
+            top: resolvedScreenRect.top,
+            width: resolvedScreenRect.width,
+            height: resolvedScreenRect.height,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            borderRadius: '2.3%',
+          }}
+        >
+          <div
+            className="desktop-overlay__content"
+            style={{ width, height, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: 0 }}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>

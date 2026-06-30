@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { renderContentWithGlossary } from './JargonTerm'
 import type { QuoteData } from '../../types/game'
 
 interface QuoteBlockProps {
@@ -23,7 +24,7 @@ export default function QuoteBlock({ quote, delay = 0 }: QuoteBlockProps) {
         <span style={{ fontSize: '0.75rem', color: '#555' }}>{quote.role}</span>
       </div>
       <p style={{ fontSize: '0.875rem', lineHeight: 1.7, fontStyle: 'italic', color: '#000' }}>
-        "{quote.text}"
+        "{renderContentWithGlossary(quote.text)}"
       </p>
     </motion.div>
   )

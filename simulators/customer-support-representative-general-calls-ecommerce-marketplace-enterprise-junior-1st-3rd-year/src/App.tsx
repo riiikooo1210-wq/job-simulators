@@ -30,58 +30,34 @@ export default function App() {
   }
 
   const devSkips = (storyline.devSkips || []).slice(0, 3)
+  const devSkipColors = ['#A7F3D0', '#FDE68A', '#BFDBFE']
 
   return (
-    <>
+    <div className="app-shell">
       <ProgressBar />
       <div style={{ paddingTop: '28px' }}>
         <SceneEngine />
       </div>
 
-      {isDev && devSkips.map((skip, i) => (
-        <button
-          key={skip.targetNodeId}
-          onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
-          style={{
-            position: 'fixed',
-            bottom: '1rem',
-            right: `${5.5 + i * 9.5}rem`,
-            zIndex: 200,
-            backgroundColor: ['#A7F3D0', '#FDE68A', '#BFDBFE'][i] || '#E8DCC8',
-            border: '1px solid #000',
-            boxShadow: '2px 2px 0 #000',
-            padding: '0.375rem 0.75rem',
-            fontSize: '0.6875rem',
-            fontWeight: 600,
-            color: '#333',
-            cursor: 'pointer',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}
-        >
-          {skip.label} (Dev)
-        </button>
-      ))}
+      <div className="dev-controls" aria-label="Development controls">
+        {isDev && devSkips.map((skip, i) => (
+          <button
+            key={skip.targetNodeId}
+            className="dev-control-button"
+            onClick={() => handleDevSkip(skip.targetNodeId, skip.prefillKey)}
+            style={{ backgroundColor: devSkipColors[i] || '#E8DCC8' }}
+          >
+            {skip.label} (Dev)
+          </button>
+        ))}
 
-      <button
-        onClick={resetGame}
-        style={{
-          position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          zIndex: 200,
-          backgroundColor: '#E8DCC8',
-          border: '1px solid #000',
-          boxShadow: '2px 2px 0 #000',
-          padding: '0.375rem 0.75rem',
-          fontSize: '0.6875rem',
-          fontWeight: 600,
-          color: '#333',
-          cursor: 'pointer',
-          fontFamily: 'Inter, system-ui, sans-serif',
-        }}
-      >
-        Restart
-      </button>
-    </>
+        <button
+          className="dev-control-button"
+          onClick={resetGame}
+        >
+          Restart
+        </button>
+      </div>
+    </div>
   )
 }

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "qa:static": "node scripts/qa-static.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

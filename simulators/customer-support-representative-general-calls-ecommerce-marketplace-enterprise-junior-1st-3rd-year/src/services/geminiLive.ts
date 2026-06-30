@@ -1,4 +1,4 @@
-const MODEL = 'models/gemini-2.5-flash-native-audio-preview-12-2025'
+const MODEL = 'models/gemini-3.1-flash-live-preview'
 const WS_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent'
 
 const INPUT_SAMPLE_RATE = 16000
@@ -61,15 +61,49 @@ export class GeminiLiveSession {
   private resumptionHandle: string | null = null
   private reconnectAttempts = 0
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null
+  private micRequested = true
+  private setupWaiters: Array<{ resolve: () => void; reject: (error: Error) => void }> = []
 
   constructor(private handlers: LiveSessionHandlers) {}
 
-  async start(args: { apiKey: string; systemPrompt: string; voiceName?: string }) {
+  async start(args: { apiKey: string; systemPrompt: string; voiceName?: string; micEnabled?: boolean }) {
     this.apiKey = args.apiKey
     this.systemPrompt = args.systemPrompt
     this.voiceName = args.voiceName || 'Charon'
+    this.micRequested = args.micEnabled ?? true
     this.closed = false
     this.connect(false)
+  }
+
+  primeAudioOutput() {
+    this.ensurePlayContext()
+    void this.playCtx?.resume?.()
+  }
+
+  async enableMic() {
+    this.micRequested = true
+    if (!this.setupDone) return
+    await this.startMic()
+    this.handlers.onStatus?.('connected')
+  }
+
+  async sendText(text: string) {
+    const trimmed = text.trim()
+    if (!trimmed) return
+    this.primeAudioOutput()
+    await this.waitForSetup()
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      throw new Error('Meeting connection is not open.')
+    }
+    this.ws.send(JSON.stringify({
+      clientContent: {
+        turns: [{
+          role: 'user',
+          parts: [{ text: trimmed }],
+        }],
+        turnComplete: true,
+      },
+    }))
   }
 
   private connect(isReconnect: boolean) {
@@ -95,7 +129,6 @@ export class GeminiLiveSession {
           systemInstruction: { parts: [{ text: this.systemPrompt }] },
           inputAudioTranscription: {},
           outputAudioTranscription: {},
-          contextWindowCompression: { slidingWindow: {} },
           sessionResumption: this.resumptionHandle ? { handle: this.resumptionHandle } : {},
         },
       }
@@ -149,10 +182,13 @@ export class GeminiLiveSession {
       this.setupDone = true
       this.reconnectAttempts = 0
       try {
-        if (!this.micStream) await this.startMic()
+        if (this.micRequested && !this.micStream) await this.startMic()
         this.handlers.onStatus?.('connected')
+        this.resolveSetupWaiters()
       } catch (e) {
-        this.handlers.onStatus?.('error', e instanceof Error ? e.message : 'Microphone failed')
+        const error = e instanceof Error ? e : new Error('Microphone failed')
+        this.handlers.onStatus?.('error', error.message)
+        this.rejectSetupWaiters(error)
       }
       return
     }
@@ -188,6 +224,7 @@ export class GeminiLiveSession {
   }
 
   private async startMic() {
+    if (this.micStream) return
     this.micStream = await navigator.mediaDevices.getUserMedia({
       audio: {
         channelCount: 1,
@@ -222,6 +259,36 @@ export class GeminiLiveSession {
     this.processor.connect(this.micCtx.destination)
   }
 
+  private waitForSetup() {
+    if (this.setupDone && this.ws?.readyState === WebSocket.OPEN) return Promise.resolve()
+    return new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        const idx = this.setupWaiters.findIndex((waiter) => waiter.resolve === wrappedResolve)
+        if (idx >= 0) this.setupWaiters.splice(idx, 1)
+        reject(new Error('Meeting connection timed out.'))
+      }, 10000)
+      const wrappedResolve = () => {
+        clearTimeout(timer)
+        resolve()
+      }
+      const wrappedReject = (error: Error) => {
+        clearTimeout(timer)
+        reject(error)
+      }
+      this.setupWaiters.push({ resolve: wrappedResolve, reject: wrappedReject })
+    })
+  }
+
+  private resolveSetupWaiters() {
+    const waiters = this.setupWaiters.splice(0)
+    waiters.forEach((waiter) => waiter.resolve())
+  }
+
+  private rejectSetupWaiters(error: Error) {
+    const waiters = this.setupWaiters.splice(0)
+    waiters.forEach((waiter) => waiter.reject(error))
+  }
+
   private resample(input: Float32Array, fromRate: number, toRate: number): Float32Array {
     const ratio = fromRate / toRate
     const outLen = Math.floor(input.length / ratio)
@@ -237,12 +304,9 @@ export class GeminiLiveSession {
   }
 
   private enqueueAudio(b64: string) {
-    if (!this.playCtx) {
-      this.playCtx = new (window.AudioContext || (window as any).webkitAudioContext)({
-        sampleRate: OUTPUT_SAMPLE_RATE,
-      })
-      this.playheadTime = this.playCtx.currentTime
-    }
+    this.ensurePlayContext()
+    if (!this.playCtx) return
+    void this.playCtx.resume?.()
     const bytes = base64Decode(b64)
     const pcm = new Int16Array(bytes.buffer, bytes.byteOffset, bytes.byteLength / 2)
     const floats = pcm16ToFloat(pcm)
@@ -258,6 +322,14 @@ export class GeminiLiveSession {
     this.handlers.onNpcSpeakingChange?.(true)
   }
 
+  private ensurePlayContext() {
+    if (this.playCtx) return
+    this.playCtx = new (window.AudioContext || (window as any).webkitAudioContext)({
+      sampleRate: OUTPUT_SAMPLE_RATE,
+    })
+    this.playheadTime = this.playCtx.currentTime
+  }
+
   setMuted(muted: boolean) {
     this.muted = muted
   }
@@ -268,6 +340,7 @@ export class GeminiLiveSession {
 
   stop() {
     this.closed = true
+    this.rejectSetupWaiters(new Error('Meeting connection closed.'))
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer)
       this.reconnectTimer = null

@@ -4,28 +4,28 @@
   "sections": [
     {
       "section_number": 1,
-      "section_title": "タスク別採点",
+      "section_title": "Task-Based Scoring",
       "criteria": [
         {
-          "name": "注文状況通話",
+          "name": "Order-Status Call",
           "evidenceSceneIds": [
             "call_order_status"
           ],
-          "rubric_text": "9-10: 実際の通話で、本人確認、注文状況の確認、手順に沿った説明、解決策の提示を落ち着いて行えている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: In the actual call, verifies identity, confirms the order status, explains the policy-backed status clearly, offers useful next steps, and stays calm. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable."
         },
         {
-          "name": "遅配送通話",
+          "name": "Late-Delivery Call",
           "evidenceSceneIds": [
             "call_late_delivery"
           ],
-          "rubric_text": "9-10: 実際の通話で、共感、規定説明、選択肢提示、できない約束の線引きを両立できている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: In the actual call, balances empathy, policy explanation, allowed options, and clear boundaries around promises the agent cannot make. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable."
         },
         {
-          "name": "高額返金通話",
+          "name": "High-Value Refund Call",
           "evidenceSceneIds": [
             "call_risk_refund"
           ],
-          "rubric_text": "9-10: 実際の通話で、共感しつつ不正や高額リスクを見抜き、規定とエスカレーション境界を守れている。この点数は、指定されたそのタスクだけを根拠にし、前後の別タスク、準備メモ、後続成果物は根拠にしない。 7-8: 主要要素は満たすが、根拠、具体性、優先順位、記録、または相手への応答に小さな抜けがある。4-6: 一部はできているが、重要な判断、確認、説明、記録、または次の行動に複数の抜けがある。0-3: タスクの目的を外す、根拠を無視する、危険な約束や混乱を生む、または提出がほぼ使えない。"
+          "rubric_text": "9-10: In the actual call, shows empathy while recognizing high-value refund risk, protecting policy boundaries, and routing correctly to Trust/Risk without accusation. This score must use only this task's evidence; do not use earlier/later tasks, prep notes, or later deliverables as evidence. 7-8: Covers the main requirements but has small gaps in evidence, specificity, priority, follow-up, or responsiveness. 4-6: Partly completes the task but misses several important pieces of judgment, confirmation, explanation, or next action. 0-3: Misses the task purpose, ignores evidence, makes unsafe promises or creates confusion, or provides evidence that is mostly unusable."
         }
       ]
     }

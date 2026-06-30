@@ -1,28 +1,53 @@
-# Scene Blueprint — customer-support-representative-general-calls-ecommerce-marketplace-enterprise-junior-1st-3rd-year
+# Scene Blueprint - customer-support-representative-general-calls-ecommerce-marketplace-enterprise-junior-1st-3rd-year
 
-Use this as the Phase 2 approval artifact before scaffolding. It shows the practical chain that reduces manual repair: visible input artifact → student action → output artifact → rubric evidence.
+Last updated: 2026-06-30 JST
+
+This blueprint reflects the live simulator route after the Customer Support quality-upgrader hardening pass and Mercury Assist realistic-software UI pass. The core loop is:
+
+`read focused support manual -> handle customer call -> repeat for three call types -> assessment gate -> grading -> final report`
+
+Release-readiness note: the 2026-06-30 Mercury Assist pass addressed the prior realistic-workplace-software blocker by giving the prep and call scenes role-specific support software. Final release still needs human review of mobile scrolling comfort and a live-grading retry when Gemini quota is available.
 
 ## Work Mix
 
-- Summary: Enterprise ecommerce customer support representative work is phone-centered and manual-driven. O*NET emphasizes daily telephone conversations, complaint handling, computer use, policy-bounded refunds or adjustments, escalation, time pressure, and angry customers. The collected videos and Reddit threads reinforce the loop this simulator now uses: review the shared support manual and relevant policy article, take the inbound call, learn the customer's concrete case after verification/lookup, apply policy in real time, reset, and repeat across normal and edge cases.
-- `physicalProceduralTool`: minor — No physical playground is needed. The concrete workplace action is reading manuals and using them during phone calls.
-- `digitalToolArtifactWork`: major — Each prep scene uses a sourceInbox-style common support manual plus the relevant policy article, not a customer-specific case packet. The calls keep the same reference visible while customer details emerge live.
-- `cognitiveAnalysisDecision`: major — Assessment focuses on whether the student applies the manual correctly in a normal call, a late-delivery edge case, and a refund-risk edge case.
-- `writtenDocumentationArtifact`: minor — Written artifacts are intentionally removed. The student's constructed-response evidence is spoken call performance.
-- `spokenInterpersonalCommunication`: dominant — Three voice meetings are the core active scenes and the primary grading evidence.
-- `passiveMonitoringWaitingContextSwitching`: secondary — Context switching is represented by the repeated prep -> call rhythm.
+- Summary: Mercury Market support work is phone-centered and policy-driven. The simulator assesses whether the learner can use a shared support manual and call-specific policy article during live customer calls.
+- `physicalProceduralTool`: minor. The realistic work is headset/computer use, but no physical manipulation is needed for this call-focused simulator.
+- `digitalToolArtifactWork`: major. Each prep scene uses a Mercury Assist knowledge-base prep console; each call uses a Mercury Assist live support console with call, CRM/case, order timeline, and knowledge-base panels.
+- `cognitiveAnalysisDecision`: major. The learner must verify identity, use confirmed facts, apply policy limits, avoid unsafe promises, and escalate when required.
+- `writtenDocumentationArtifact`: minor. Written artifacts are intentionally not required in this version; graded evidence is the call transcript.
+- `spokenInterpersonalCommunication`: dominant. Three live customer calls are the active scoreable scenes.
+- `passiveMonitoringWaitingContextSwitching`: secondary. The repeated prep-call rhythm models queue work and emotional reset.
 
-## Scene Table
+## Route Table
 
-| Scene | Type / Surface | Visible Inputs | Student Action | Output Artifact | Rubric Evidence | Next |
+| Scene | Type / surface | Visible inputs | Student action | Output artifact | Rubric evidence | Next |
 | --- | --- | --- | --- | --- | --- | --- |
-| `intro`<br>Welcome to Mercury Market Support | `intro` | — | — | — | not explicitly mapped | prep_order_status |
-| `prep_order_status`<br>Prep 1: Shared Manual + Order-Status Policy | `briefing` | sourceInbox: Mercury Support / Knowledge Base / Order Status, Shared manual and order-status policy (prep_order_status.sourceInbox) | Read the complete manual before the call. | Manual read before normal call | not explicitly mapped | call_order_status |
-| `call_order_status`<br>Call 1: Order-Status Inbound Call | `voice_meeting` | Shared manual + order-status policy, Shared manual and order-status policy (call_order_status.prepReferenceContent) | Handle a normal inbound order-status call using the visible manual and live customer/CRM details. | Normal order-status call transcript | Manual Use, Normal-Call Efficiency | prep_late_delivery |
-| `prep_late_delivery`<br>Prep 2: Late Delivery and Supervisor Request Manual | `briefing` | sourceInbox: Mercury Support / Knowledge Base / Late Delivery, Shared manual and late-delivery policy (prep_late_delivery.sourceInbox) | Read the late-delivery manual before the call. | Manual read before delivery edge call | not explicitly mapped | call_late_delivery |
-| `call_late_delivery`<br>Call 2: Late-Delivery Inbound Call | `voice_meeting` | Shared manual + late-delivery policy, Shared manual and late-delivery policy (call_late_delivery.prepReferenceContent) | Handle an inbound late-delivery complaint using the visible manual and live customer/CRM details. | Late-delivery call transcript | Manual Use, Empathy and De-escalation, Policy-Safe Late Delivery Resolution, Boundary-Setting Under Pressure | prep_risk_refund |
-| `prep_risk_refund`<br>Prep 3: High-Value Refund Risk Manual | `briefing` | sourceInbox: Mercury Support / Knowledge Base / High-Value Refund, Shared manual and high-value refund policy (prep_risk_refund.sourceInbox) | Read the high-value refund manual before the call. | Manual read before refund risk call | not explicitly mapped | call_risk_refund |
-| `call_risk_refund`<br>Call 3: High-Value Refund Inbound Call | `voice_meeting` | Shared manual + high-value refund policy, Shared manual and high-value refund policy (call_risk_refund.prepReferenceContent) | Handle a high-value refund inbound edge case using the visible manual and live customer/CRM details. | Refund risk call transcript | Manual Use, Empathy and De-escalation, Trust/Risk Escalation Judgment, Boundary-Setting Under Pressure | assessment_gate |
-| `assessment_gate`<br>The Shift Is Complete | `section_transition` | — | — | — | not explicitly mapped | grading |
-| `grading`<br>Assessment | `grading` | — | — | — | not explicitly mapped | final_report |
-| `final_report`<br>Final Report | `final_report` | — | — | — | not explicitly mapped | null |
+| `intro`<br>Welcome to Mercury Market Support | `intro` | Role, company, three-call overview | Enter learner name and start | Name/progress state | Not scored | `prep_order_status` |
+| `prep_order_status`<br>Prep 1: Manual + Order-Status Policy | `briefing` / Mercury Assist KB prep console | Shared inbound-call manual; order-status policy; queue metadata; locked customer/case preview | Open/read required source files | Source-read completion state | Not scored directly | `call_order_status` |
+| `call_order_status`<br>Call 1: Order-Status Call | `voice_meeting` / Mercury Assist live support console | Call checklist; shared manual; order-status policy; CRM/case/order/timeline facts revealed after lookup | Confirm identity, ask what Mia needs, check CRM, explain tracking status and notification path | Call transcript | `Order-Status Call` | `prep_late_delivery` |
+| `prep_late_delivery`<br>Prep 2: Late Delivery + Supervisor Request | `briefing` / Mercury Assist KB prep console | Shared inbound-call manual; late-delivery and supervisor policy; queue metadata; locked customer/case preview | Open/read required source files | Source-read completion state | Not scored directly | `call_late_delivery` |
+| `call_late_delivery`<br>Call 2: Late-Delivery Call | `voice_meeting` / Mercury Assist live support console | Call checklist; shared manual; late-delivery policy; CRM/case/order/timeline facts revealed after lookup | Show empathy, explain carrier handoff, offer allowed options, set callback boundary | Call transcript | `Late-Delivery Call` | `prep_risk_refund` |
+| `prep_risk_refund`<br>Prep 3: High-Value Refund Review | `briefing` / Mercury Assist KB prep console | Shared inbound-call manual; high-value refund and Trust/Risk policy; queue metadata; locked customer/case preview | Open/read required source files | Source-read completion state | Not scored directly | `call_risk_refund` |
+| `call_risk_refund`<br>Call 3: High-Value Refund Call | `voice_meeting` / Mercury Assist live support console | Call checklist; shared manual; high-value refund policy; delivery proof, case status, risk notes, and Trust/Risk-safe actions revealed after lookup | Verify identity, avoid accusation, refuse unauthorized refund, route to Trust/Risk review, give status path | Call transcript | `High-Value Refund Call` | `assessment_gate` |
+| `assessment_gate`<br>The Shift Is Complete | `section_transition` | Completion recap | Choose `View Assessment` | Assessment readiness | Not scored | `grading` |
+| `grading`<br>Assessment | `grading` | Serialized call transcripts and rubric | Wait for AI grading or retry on error | `gradingResult` or error state | All three criteria | `final_report` |
+| `final_report`<br>Final Report | `final_report` | Completed grading result | Review score, comments, and recommendation | Assessment report | Displays rubric output | `null` |
+
+## Rubric Mapping
+
+| Criterion | Evidence scene | What the grader should use |
+| --- | --- | --- |
+| `Order-Status Call` | `call_order_status` | Only the normal order-status call transcript. |
+| `Late-Delivery Call` | `call_late_delivery` | Only the late-delivery call transcript. |
+| `High-Value Refund Call` | `call_risk_refund` | Only the high-value refund call transcript. |
+
+## Implementation Notes
+
+- The prep/call software shell renders through `src/components/ui/SupportConsole.tsx` and case data from `src/data/supportConsole.ts`.
+- The live calls still render the conversation surface through `src/scenes/VoiceMeetingScene.tsx`, embedded inside the Mercury Assist live support console.
+- Typed turns and spoken turns are both stored under `voice:<sceneId>:<npcId>` conversation keys.
+- The app currently reads persisted state from `job-simulator-storage`; keep that behavior unless a broader migration explicitly handles old saved state.
+- Prep scenes are intentionally not graded directly, but they provide required visible evidence for fair call performance.
+- CRM/case/order/timeline/internal-note data is masked before lookup and unlocks after the transcript contains `CRM lookup result`; this protects answer-key details while making the interface look realistic.
+- All six prep/call scenes carry `supportConsole` metadata in `src/data/scene-config.json`.
+- Future UI changes should preserve the Mercury Assist objects that make the software feel realistic: queue strip, side navigation, KB article cards, search affordance, locked CRM preview, customer/case/order fields, timeline, safe actions, and internal notes.

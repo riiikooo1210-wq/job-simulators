@@ -8,6 +8,7 @@ import EmailBlock from '../components/ui/EmailBlock'
 import MetricsTable from '../components/ui/MetricsTable'
 import QuoteBlock from '../components/ui/QuoteBlock'
 import LaptopFrame from '../components/ui/LaptopFrame'
+import { SupportConsolePrep } from '../components/ui/SupportConsole'
 import { renderContentWithGlossary } from '../components/ui/JargonTerm'
 import { ChartIcon, CheckIcon, DocumentIcon } from '../components/ui/Icons'
 import { useGameStore } from '../store/gameStore'
@@ -237,9 +238,10 @@ export function renderSourceInboxFilePreview(file: SourceInboxFile | null, compa
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '1px dashed #CDBF94',
-          backgroundColor: '#F2EBD9',
-          color: '#6f6758',
+          border: '1px dashed #CBD5E1',
+          borderRadius: '8px',
+          backgroundColor: '#FFFFFF',
+          color: '#64748B',
           fontSize: '0.875rem',
           textAlign: 'center',
           padding: '1rem',
@@ -265,10 +267,10 @@ export function renderSourceInboxFilePreview(file: SourceInboxFile | null, compa
           </div>
           <h3 style={{ margin: compact ? 0 : '0.15rem 0 0', fontSize: compact ? '0.9rem' : '1rem', lineHeight: 1.3 }}>{file.previewTitle}</h3>
         </div>
-        <div style={{ overflowX: 'auto', border: '1px solid #000' }}>
+        <div style={{ overflowX: 'auto', border: '1px solid #E2E8F0', borderRadius: '8px', backgroundColor: '#FFFFFF' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', tableLayout: 'fixed' }}>
             <thead>
-              <tr style={{ backgroundColor: '#E8DCC8' }}>
+              <tr style={{ backgroundColor: '#F8FAFC' }}>
                 {columns.map((column) => (
                   <th key={column} style={thStyle}>{formatSourceColumnLabel(column)}</th>
                 ))}
@@ -276,7 +278,7 @@ export function renderSourceInboxFilePreview(file: SourceInboxFile | null, compa
             </thead>
             <tbody>
               {rows.map((row, i) => (
-                <tr key={i} style={{ backgroundColor: i % 2 === 0 ? '#F7F1E3' : '#F2EBD9' }}>
+                <tr key={i} style={{ backgroundColor: i % 2 === 0 ? '#FFFFFF' : '#F8FAFC' }}>
                   {columns.map((column) => {
                     const value = row[column] || ''
                     const isStatus = column.toLowerCase() === 'status'
@@ -304,30 +306,46 @@ export function renderSourceInboxFilePreview(file: SourceInboxFile | null, compa
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-      <div>
-        <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
+    <div
+      style={{
+        border: '1px solid #E2E8F0',
+        borderRadius: '10px',
+        backgroundColor: '#FFFFFF',
+        boxShadow: '0 1px 3px rgba(15, 23, 42, 0.06)',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#F8FAFC', padding: compact ? '0.65rem 0.75rem' : '0.85rem 1rem' }}>
+        <div style={{ fontSize: compact ? '0.65rem' : '0.7rem', color: '#3F605C', fontWeight: 900, textTransform: 'uppercase', letterSpacing: 0 }}>
           {file.kind}
         </div>
-        <h3 style={{ margin: '0.15rem 0 0', fontSize: '1rem', lineHeight: 1.3 }}>{file.previewTitle}</h3>
+        <h3 style={{ margin: '0.15rem 0 0', fontSize: compact ? '0.92rem' : '1rem', lineHeight: 1.3, color: '#0F172A' }}>{file.previewTitle}</h3>
       </div>
-      {file.sections?.map((section) => (
-        <div
-          key={section.heading}
-          style={{
-            borderLeft: '3px solid #B87D6B',
-            padding: '0.15rem 0 0.15rem 0.75rem',
-            backgroundColor: '#F2EBD9',
-          }}
-        >
-          <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#1E1E1A', marginBottom: '0.25rem' }}>
-            {section.heading}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? '0.6rem' : '0.75rem', padding: compact ? '0.75rem' : '1rem' }}>
+        {file.sections?.map((section) => (
+          <section
+            key={section.heading}
+            style={{
+              border: '1px solid #E2E8F0',
+              borderRadius: '8px',
+              backgroundColor: '#FFFFFF',
+              padding: compact ? '0.65rem 0.75rem' : '0.85rem 0.95rem',
+            }}
+          >
+            <div style={{ fontSize: compact ? '0.72rem' : '0.78rem', fontWeight: 900, color: '#315D50', marginBottom: '0.35rem' }}>
+              {section.heading}
+            </div>
+            <div style={{ fontSize: compact ? '0.78rem' : '0.875rem', lineHeight: compact ? 1.5 : 1.6, color: '#1E293B' }}>
+              {renderContentWithGlossary(section.body)}
+            </div>
+          </section>
+        ))}
+        {(!file.sections || file.sections.length === 0) && (
+          <div style={{ color: '#64748B', fontSize: '0.875rem', textAlign: 'center', padding: '2rem 1rem' }}>
+            No preview is available for this file.
           </div>
-          <div style={{ fontSize: '0.875rem', lineHeight: 1.6, color: '#1E1E1A' }}>
-            {renderContentWithGlossary(section.body)}
-          </div>
-        </div>
-      ))}
+        )}
+      </div>
     </div>
   )
 }
@@ -354,6 +372,11 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
   const entryTitle = entry.channel === 'slack'
     ? (entry.channelName || 'Source request')
     : (entry.subject || 'Inbox')
+  const prepGuideItems = [
+    { label: 'Do', text: 'Open the manual files below.' },
+    { label: 'Materials', text: 'Use the call flow and policy article.' },
+    { label: 'Next', text: 'Answer, confirm identity, then look up the account.' },
+  ]
 
   const openFile = (fileId: string) => {
     setFolderOpen(true)
@@ -367,12 +390,12 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
   }
 
   return (
-    <SceneWrapper illustration={node.illustration}>
+    <SceneWrapper illustration={node.illustration} hideIllustration>
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}
       >
         <div>
           <span style={{ fontSize: '0.7rem', color: '#555' }}>Section {node.section}</span>
@@ -381,20 +404,79 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
           </h2>
         </div>
 
-        {node.content && (
-          <p style={{ fontSize: '0.875rem', lineHeight: 1.7, color: '#000', margin: 0 }}>
-            {renderContentWithGlossary(interpolate(node.content, ctx))}
-          </p>
-        )}
-
-        <DesktopOverlay width={sourceInbox.desktop?.width || '75%'} height={sourceInbox.desktop?.height || '80%'}>
-          <LaptopFrame
-            variant={folderOpen ? 'doc' : entry.channel}
-            title={folderOpen ? sourceInbox.folder.path : entryTitle}
-            scrollable
-            fill
+        <section
+          style={{
+            borderTop: '1px solid rgba(30, 30, 26, 0.18)',
+            borderBottom: '1px solid rgba(30, 30, 26, 0.18)',
+            padding: '0.85rem 0',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.7rem',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))',
+              gap: '0.75rem',
+            }}
           >
-            {!folderOpen ? (
+            {prepGuideItems.map((item, index) => (
+              <div key={item.label} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '0.5rem', alignItems: 'start' }}>
+                <span
+                  style={{
+                    width: '1.65rem',
+                    height: '1.65rem',
+                    borderRadius: '999px',
+                    backgroundColor: '#DCE6D2',
+                    color: '#315D50',
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontSize: '0.72rem',
+                    fontWeight: 900,
+                  }}
+                >
+                  {index + 1}
+                </span>
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 900, color: '#3F605C', textTransform: 'uppercase', letterSpacing: 0 }}>
+                    {item.label}
+                  </span>
+                  <span style={{ display: 'block', fontSize: '0.86rem', lineHeight: 1.45, color: '#1E1E1A' }}>
+                    {item.text}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {node.content && (
+            <p style={{ fontSize: '0.875rem', lineHeight: 1.55, color: '#000', margin: 0 }}>
+              <strong style={{ color: '#3F605C' }}>Call clue: </strong>
+              {renderContentWithGlossary(interpolate(node.content, ctx))}
+            </p>
+          )}
+        </section>
+
+        <DesktopOverlay width={sourceInbox.desktop?.width || '98%'} height={sourceInbox.desktop?.height || '94%'}>
+          {node.supportConsole ? (
+            <SupportConsolePrep
+              scenarioId={node.supportConsole.scenarioId}
+              files={files}
+              requiredFileIds={requiredFileIds}
+              visitedFileIds={visitedFiles}
+              activeFileId={activeFileId}
+              onOpenFile={openFile}
+            />
+          ) : (
+            <LaptopFrame
+              variant={folderOpen ? 'doc' : entry.channel}
+              title={folderOpen ? sourceInbox.folder.path : entryTitle}
+              scrollable
+              fill
+              showBase={false}
+            >
+              {!folderOpen ? (
               entry.channel === 'email' ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   <EmailBlock
@@ -468,8 +550,8 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                   </button>
                 </div>
               )
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', height: '100%', minHeight: 0 }}>
+              ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', minHeight: '100%' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: '#3F605C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0 }}>
@@ -483,17 +565,18 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                 </div>
 
                 <div
+                  className="source-inbox-folder-layout"
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+                    gridTemplateColumns: 'minmax(13rem, 18rem) minmax(0, 1fr)',
                     gap: '0.85rem',
                     alignItems: 'stretch',
                     flex: '1 1 auto',
-                    minHeight: 0,
+                    minHeight: '18rem',
                   }}
                 >
-                  <div style={{ border: '1px solid #CDBF94', backgroundColor: '#EFE8D2', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #CDBF94', fontSize: '0.75rem', fontWeight: 800, color: '#3F605C', flexShrink: 0 }}>
+                  <div style={{ border: '1px solid #E2E8F0', borderRadius: '8px', backgroundColor: '#FFFFFF', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+                    <div style={{ padding: '0.55rem 0.75rem', borderBottom: '1px solid #E2E8F0', fontSize: '0.75rem', fontWeight: 900, color: '#3F605C', backgroundColor: '#F8FAFC', flexShrink: 0 }}>
                       Name
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', flex: '1 1 auto', minHeight: 0, overflowY: 'auto' }}>
@@ -512,8 +595,8 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                               alignItems: 'start',
                               textAlign: 'left',
                               border: 'none',
-                              borderBottom: '1px solid #D7CDBA',
-                              backgroundColor: active ? '#DCE6D2' : '#F7F1E3',
+                              borderBottom: '1px solid #E2E8F0',
+                              backgroundColor: active ? '#E8F3EE' : '#FFFFFF',
                               color: '#1E1E1A',
                               cursor: 'pointer',
                               padding: '0.7rem 0.75rem',
@@ -544,9 +627,10 @@ function SourceInboxBriefing({ node }: { node: BriefingNode }) {
                     {renderSourceInboxFilePreview(activeFile)}
                   </div>
                 </div>
-              </div>
-            )}
-          </LaptopFrame>
+                </div>
+              )}
+            </LaptopFrame>
+          )}
         </DesktopOverlay>
 
         <div style={{ fontSize: '0.75rem', color: '#555' }}>
@@ -1046,7 +1130,7 @@ function SourceWorkspaceBriefing({ node }: { node: BriefingNode }) {
 const sourceFileThStyle: CSSProperties = {
   textAlign: 'left',
   padding: '0.55rem 0.65rem',
-  borderBottom: '1px solid #000',
+  borderBottom: '1px solid #E2E8F0',
   fontWeight: 800,
   fontSize: '0.72rem',
   textTransform: 'uppercase',
@@ -1056,7 +1140,7 @@ const sourceFileThStyle: CSSProperties = {
 
 const sourceFileTdStyle: CSSProperties = {
   padding: '0.55rem 0.65rem',
-  borderBottom: '1px solid rgba(0,0,0,0.15)',
+  borderBottom: '1px solid #E2E8F0',
   whiteSpace: 'normal',
   verticalAlign: 'top',
   lineHeight: 1.5,
